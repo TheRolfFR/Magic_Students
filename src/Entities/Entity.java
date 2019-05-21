@@ -34,8 +34,7 @@ public class Entity {
     public void move() {
         this.speed.computeNorm();
         if (this.speed.getNorm() + this.acceleration.getNorm() >= this.MAX_SPEED) {
-            this.speed.setX(this.MAX_COMPONENT);
-            this.speed.setY(this.MAX_COMPONENT;
+            // set speed to max speed
         }
         else {
             this.speed.add(this.acceleration);
