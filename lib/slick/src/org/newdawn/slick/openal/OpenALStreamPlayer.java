@@ -54,7 +54,7 @@ public class OpenALStreamPlayer {
 	private float positionOffset;
 	
 	/**
-	 * Create a new player to work on an audio stream
+	 * Create a new Player to work on an audio stream
 	 * 
 	 * @param source The source on which we'll play the audio
 	 * @param ref A reference to the audio file to stream
@@ -68,7 +68,7 @@ public class OpenALStreamPlayer {
 	}
 
 	/**
-	 * Create a new player to work on an audio stream
+	 * Create a new Player to work on an audio stream
 	 * 
 	 * @param source The source on which we'll play the audio
 	 * @param url A reference to the audio file to stream

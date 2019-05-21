@@ -12,7 +12,7 @@ public class ItemContainer extends Item {
 	private ArrayList items = new ArrayList();
 
 	/**
-	 * Called by XML parser to add a configured item to the entity 
+	 * Called by XML parser to add a configured item to the Entity
 	 * 
 	 * @param item The item to be added 
 	 */
