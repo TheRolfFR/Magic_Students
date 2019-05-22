@@ -11,5 +11,5 @@ public class Player extends Entity implements MeleeAttack, RangedAttack {
         this.life = 100;
     }
 
-    public boolean can_move() { return true; }
+    public boolean canMove() { return true; }
 }

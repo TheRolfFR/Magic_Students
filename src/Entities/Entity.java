@@ -35,19 +35,27 @@ public abstract class Entity {
         this.ACCELERATION_RATE = accelerationRate;
     }
 
-    abstract boolean can_move();
+    public Vector2f getPosition() { return this.position; }
+    public Vector2f getSpeed() { return this.speed; }
+
+    abstract boolean canMove();
+
+    public void updateSpeed(Vector2f acceleration) {
+        acceleration.scale(this.ACCELERATION_RATE);
+
+        Vector2f newSpeed = this.speed.copy();
+        newSpeed.add(acceleration);
+
+        if (newSpeed.length() <= this.MAX_SPEED) {
+            this.speed = newSpeed;
+        }
+        else {
+            this.speed = newSpeed.normalise().scale(this.MAX_SPEED);
+        }
+    }
 
     public void move() {
-        if (this.speed.length() != this.MAX_SPEED) {
-            if (this.speed.length() + this.ACCELERATION_RATE > this.MAX_SPEED) {
-                this.speed.scale(this.MAX_SPEED / this.speed.length());
-            }
-            else {
-                this.speed.add(this.ACCELERATION_RATE);
-            }
-        }
-
-        if (this.can_move()) {
+        if (this.canMove()) {
             this.position.add(this.speed);
         }
     }
