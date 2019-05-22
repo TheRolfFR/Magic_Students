@@ -1,52 +1,54 @@
 package Entities;
 
-import static java.lang.Math.sqrt;
+import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Entity {
-    protected Vector position;
-    protected Vector speed;
-    private Vector acceleration;
+    protected Vector2f position;
+    protected Vector2f speed;
 
     private float MAX_SPEED;
-    private float MAX_COMPONENT;
+    private float ACCELERATION_RATE;
 
     public Entity() {
-        this.position = new Vector(0, 0);
-        this.speed = new Vector(0, 0);
+        this.position = new Vector2f(0, 0);
+        this.speed = new Vector2f(0, 0);
         this.MAX_SPEED = 0;
-        this.MAX_COMPONENT = 0;
+        this.ACCELERATION_RATE = 0;
     }
 
-
-    public Entity(float x, float y, float max_speed) {
-        this.position = new Vector(x, y);
-        this.speed = new Vector(0, 0);
-        this.MAX_SPEED = max_speed;
-        this.MAX_COMPONENT = (float) (max_speed / sqrt(2));
+    public Entity(float x, float y, float maxSpeed, float accelerationRate) {
+        this.position = new Vector2f(x, y);
+        this.speed = new Vector2f(0, 0);
+        this.MAX_SPEED = maxSpeed;
+        this.ACCELERATION_RATE = accelerationRate;
     }
-    public Entity(float x, float y, float vx, float vy, float max_speed) {
-        this.position = new Vector(x, y);
-        this.speed = new Vector(vx, vy);
-        this.MAX_SPEED = max_speed;
-        this.MAX_COMPONENT = (float) (max_speed / sqrt(2));
+    public Entity(float x, float y, float vx, float vy, float maxSpeed, float accelerationRate) {
+        this.position = new Vector2f(x, y);
+        this.speed = new Vector2f(vx, vy);
+        this.MAX_SPEED = maxSpeed;
+        this.ACCELERATION_RATE = accelerationRate;
     }
-    public Entity(Vector position, Vector speed, float max_speed) {
+    public Entity(Vector2f position, Vector2f speed, float maxSpeed, float accelerationRate) {
         this.position = position;
         this.speed = speed;
-        this.MAX_SPEED = max_speed;
-        this.MAX_COMPONENT = (float) (max_speed / sqrt(2));
+        this.MAX_SPEED = maxSpeed;
+        this.ACCELERATION_RATE = accelerationRate;
     }
 
+    abstract boolean can_move();
 
     public void move() {
-        this.speed.computeNorm();
-        if (this.speed.getNorm() + this.acceleration.getNorm() >= this.MAX_SPEED) {
-            // set speed to max speed
-        }
-        else {
-            this.speed.add(this.acceleration);
+        if (this.speed.length() != this.MAX_SPEED) {
+            if (this.speed.length() + this.ACCELERATION_RATE > this.MAX_SPEED) {
+                this.speed.scale(this.MAX_SPEED / this.speed.length());
+            }
+            else {
+                this.speed.add(this.ACCELERATION_RATE);
+            }
         }
 
-        this.position.add(this.speed);
+        if (this.can_move()) {
+            this.position.add(this.speed);
+        }
     }
 }
