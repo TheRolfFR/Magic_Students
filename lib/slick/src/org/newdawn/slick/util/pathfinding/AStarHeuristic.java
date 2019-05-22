@@ -2,7 +2,7 @@ package org.newdawn.slick.util.pathfinding;
 
 /**
  * The description of a class providing a cost for a given tile based
- * on a target location and Entity being moved. This heuristic controls
+ * on a target location and entity being moved. This heuristic controls
  * what priority is placed on different tiles during the search for a path
  * 
  * @author Kevin Glass
@@ -16,7 +16,7 @@ public interface AStarHeuristic {
 	 * be searched.
 	 * 
 	 * @param map The map on which the path is being found
-	 * @param mover The Entity that is moving along the path
+	 * @param mover The entity that is moving along the path
 	 * @param x The x coordinate of the tile being evaluated
 	 * @param y The y coordinate of the tile being evaluated
 	 * @param tx The x coordinate of the target location

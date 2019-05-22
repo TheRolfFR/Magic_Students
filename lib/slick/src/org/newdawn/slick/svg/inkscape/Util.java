@@ -181,7 +181,7 @@ public class Util {
 	}
 	
 	/**
-	 * Get the attribute value as a reference to another Entity
+	 * Get the attribute value as a reference to another entity
 	 * 
 	 * @param value The value to treat as reference
 	 * @return The reference part of the attribute value

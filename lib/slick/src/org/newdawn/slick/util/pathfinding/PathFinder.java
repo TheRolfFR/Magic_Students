@@ -15,8 +15,8 @@ public interface PathFinder {
 	 * location (tx,ty) avoiding blockages and attempting to honour costs 
 	 * provided by the tile map.
 	 * 
-	 * @param mover The Entity that will be moving along the path. This provides
-	 * a place to pass context information about the game Entity doing the moving, e.g.
+	 * @param mover The entity that will be moving along the path. This provides
+	 * a place to pass context information about the game entity doing the moving, e.g.
 	 * can it fly? can it swim etc.
 	 * 
 	 * @param sx The x coordinate of the start location

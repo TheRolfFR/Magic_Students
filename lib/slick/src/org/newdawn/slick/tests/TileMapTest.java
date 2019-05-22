@@ -71,7 +71,7 @@ public class TileMapTest extends BasicGame {
 		g.resetTransform();
 		
 		g.drawString("map name: " + mapName, 10, 500);
-		g.drawString("Monster difficulty: " + monsterDifficulty, 10, 550);
+		g.drawString("monster difficulty: " + monsterDifficulty, 10, 550);
 		
 		g.drawString("non existing map property: " + nonExistingMapProperty, 10, 525);
 		g.drawString("non existing layer property: " + nonExistingLayerProperty, 10, 575);

@@ -12,7 +12,7 @@ public class Inventory {
 	private ArrayList items = new ArrayList();
 
 	/**
-	 * Called by XML parser to add a configured item to the Entity
+	 * Called by XML parser to add a configured item to the entity 
 	 * 
 	 * @param item The item to be added 
 	 */

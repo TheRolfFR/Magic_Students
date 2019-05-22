@@ -155,7 +155,7 @@ public class NonGeometricData {
 	}
 	
 	/**
-	 * Get the attribute value as a reference to another Entity
+	 * Get the attribute value as a reference to another entity
 	 * 
 	 * @param attribute The name of the attribute to retrieve
 	 * @return The reference part of the attribute value

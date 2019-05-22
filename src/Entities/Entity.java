@@ -2,13 +2,20 @@ package Entities;
 
 import static java.lang.Math.sqrt;
 
-public class Entity {
+public abstract class Entity {
     protected Vector position;
     protected Vector speed;
     private Vector acceleration;
 
     private float MAX_SPEED;
     private float MAX_COMPONENT;
+
+    public Entity() {
+        this.position = new Vector(0, 0);
+        this.speed = new Vector(0, 0);
+        this.MAX_SPEED = 0;
+        this.MAX_COMPONENT = 0;
+    }
 
 
     public Entity(float x, float y, float max_speed) {
