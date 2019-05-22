@@ -1,5 +1,6 @@
 package Entities;
 
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Entity {
@@ -59,4 +60,11 @@ public abstract class Entity {
             this.position.add(this.speed);
         }
     }
+
+    public abstract Shape getBounds();
+
+    public boolean collides(Entity opponent){
+        return this.getBounds().intersects(opponent.getBounds());
+    }
+
 }
