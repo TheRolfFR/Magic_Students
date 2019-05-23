@@ -44,6 +44,7 @@ public abstract class Entity {
     public void updateSpeed(Vector2f acceleration) {
         acceleration.scale(this.ACCELERATION_RATE);
 
+        // a changer avec newSpeed = this.speed.add(acceleration); car la méthode add renvoie un vecteur qui est la somme, voir doc @Xwaler
         Vector2f newSpeed = this.speed.copy();
         newSpeed.add(acceleration);
 

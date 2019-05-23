@@ -10,6 +10,5 @@ public abstract class Projectile extends Entity {
         return damage;
     }
 
-    public abstract Shape getBounds();
     public boolean canMove() { return true; }
 }
