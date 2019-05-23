@@ -131,7 +131,6 @@ public class MainClass extends BasicGame
         this.localImgG.flush();
 
         g.drawImage(localImg, 0, 0);
-        //System.out.println("speed : " + this.player.getSpeed());
     }
 
     public static void main(String[] args) {
