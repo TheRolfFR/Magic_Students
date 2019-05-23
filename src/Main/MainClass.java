@@ -15,6 +15,10 @@ public class MainClass extends BasicGame
     private Graphics localImgG;
     private Player player;
 
+    private static int MAX_FPS = 60;
+    public static int WIDTH = 640;
+    public static int HEIGHT = 480;
+
     private boolean keyUp;
     private boolean keyDown;
     private boolean keyLeft;
@@ -29,27 +33,28 @@ public class MainClass extends BasicGame
     public void init(GameContainer gc) throws SlickException {
         this.localImg = new Image(640,480);
         this.localImgG = localImg.getGraphics();
-        this.player = new Player(100, 100, 3, 0.5f);
+
+        this.player = new Player(100, 100, 450 / MAX_FPS, 135 / MAX_FPS);
     }
 
     @Override
     public void update(GameContainer gc, int i) {
         if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
             if (this.keyUp) {
-                this.player.updateSpeed(new Vector2f(0, -1));
+                this.player.updateSpeed(new Vector2f(0, -1).scale(this.player.getAccelerationRate()));
             }
             if (this.keyDown) {
-                this.player.updateSpeed(new Vector2f(0, 1));
+                this.player.updateSpeed(new Vector2f(0, 1).scale(this.player.getAccelerationRate()));
             }
             if (this.keyLeft) {
-                this.player.updateSpeed(new Vector2f(-1, 0));
+                this.player.updateSpeed(new Vector2f(-1, 0).scale(this.player.getAccelerationRate()));
             }
             if (this.keyRight) {
-                this.player.updateSpeed(new Vector2f(1, 0));
+                this.player.updateSpeed(new Vector2f(1, 0).scale(this.player.getAccelerationRate()));
             }
         }
         else {
-            this.player.updateSpeed(this.player.getSpeed().negate().normalise());
+            this.player.updateSpeed(this.player.getSpeed().negate().scale(0.2f));
         }
         this.player.move();
     }
@@ -102,7 +107,8 @@ public class MainClass extends BasicGame
         this.localImgG.clear();
 
         this.localImgG.setColor(Color.white);
-        this.localImgG.drawRect(round(this.player.getPosition().x), round(this.player.getPosition().y), 20, 20);
+        this.localImgG.drawRect(round(this.player.getPosition().x), round(this.player.getPosition().y),
+                20, 20);
         this.localImgG.flush();
 
         g.drawImage(localImg, 0, 0);
@@ -112,8 +118,8 @@ public class MainClass extends BasicGame
         try {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));
-            appgc.setDisplayMode(640, 480, false);
-            appgc.setTargetFrameRate(90);
+            appgc.setDisplayMode(WIDTH, HEIGHT, false);
+            appgc.setTargetFrameRate(MAX_FPS);
             appgc.start();
         }
         catch (SlickException ex)

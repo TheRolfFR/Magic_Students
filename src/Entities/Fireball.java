@@ -9,4 +9,9 @@ public class Fireball extends Projectile {
     public Shape getBounds(){
         return new Circle(position.x,position.y,radius);
     }
+
+    @Override
+    protected int getWidth() { return this.radius; }
+    @Override
+    protected int getHeight() { return this.radius; }
 }

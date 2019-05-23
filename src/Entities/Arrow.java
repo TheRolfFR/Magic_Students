@@ -5,11 +5,17 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Arrow extends Projectile {
-    protected int length;
+    protected int width;
+    protected int height;
 
     public Shape getBounds(){
-        Vector2f arrowHeadposition = position.add(speed.scale(length/(2*this.speed.length())));
+        Vector2f arrowHeadposition = position.copy().add(this.speed.copy().normalise().scale(this.height));
 
-        return new Rectangle(arrowHeadposition.x,arrowHeadposition.y,1,1);
+        return new Rectangle(arrowHeadposition.x, arrowHeadposition.y,1,1);
     }
+
+    @Override
+    protected int getWidth() { return this.width; }
+    @Override
+    protected int getHeight() { return this.height; }
 }

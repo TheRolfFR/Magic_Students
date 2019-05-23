@@ -1,5 +1,6 @@
 package Entities;
 
+import Main.MainClass;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -38,28 +39,22 @@ public abstract class Entity {
 
     public Vector2f getPosition() { return this.position; }
     public Vector2f getSpeed() { return this.speed; }
-
-    abstract boolean canMove();
+    public float getAccelerationRate() { return this.ACCELERATION_RATE; }
+    protected abstract int getWidth();
+    protected abstract int getHeight();
 
     public void updateSpeed(Vector2f acceleration) {
-        acceleration.scale(this.ACCELERATION_RATE);
+        this.speed.add(acceleration);
 
-        // a changer avec newSpeed = this.speed.add(acceleration); car la méthode add renvoie un vecteur qui est la somme, voir doc @Xwaler
-        Vector2f newSpeed = this.speed.copy();
-        newSpeed.add(acceleration);
-
-        if (newSpeed.length() <= this.MAX_SPEED) {
-            this.speed = newSpeed;
-        }
-        else {
-            this.speed = newSpeed.normalise().scale(this.MAX_SPEED);
+        if (this.speed.length() > this.MAX_SPEED) {
+            this.speed.normalise().scale(this.MAX_SPEED);
         }
     }
 
     public void move() {
-        if (this.canMove()) {
-            this.position.add(this.speed);
-        }
+        this.position.add(this.speed);
+
+        //if outside, move back to the border
     }
 
     public abstract Shape getBounds();
@@ -67,5 +62,4 @@ public abstract class Entity {
     public boolean collides(Entity opponent){
         return this.getBounds().intersects(opponent.getBounds());
     }
-
 }

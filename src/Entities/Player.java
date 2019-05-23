@@ -2,6 +2,7 @@ package Entities;
 
 import Entities.Attacks.MeleeAttack;
 import Entities.Attacks.RangedAttack;
+import Main.MainClass;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
@@ -17,8 +18,11 @@ public class Player extends Entity implements MeleeAttack, RangedAttack {
 
     @Override
     public Shape getBounds() {
-        return new Rectangle(position.x,position.y,width,height);
+        return new Rectangle(position.x, position.y, width, height);
     }
 
-    public boolean canMove() { return true; }
+    @Override
+    protected int getWidth() { return this.width; }
+    @Override
+    protected int getHeight() { return this.height; }
 }
