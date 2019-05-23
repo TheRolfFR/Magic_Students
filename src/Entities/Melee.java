@@ -1,7 +1,7 @@
 package Entities;
 
 import Entities.Attacks.MeleeAttack;
-import Main.MainClass;
+
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 

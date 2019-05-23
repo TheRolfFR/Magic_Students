@@ -1,6 +1,7 @@
 package Entities;
 
 import Main.MainClass;
+
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
