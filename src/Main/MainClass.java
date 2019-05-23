@@ -1,6 +1,7 @@
 package Main;
 
 import Entities.Player;
+import Entities.SpriteRenderer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -24,6 +25,7 @@ public class MainClass extends BasicGame
     private boolean keyLeft;
     private boolean keyRight;
 
+    private SpriteRenderer pokemon;
 
     private MainClass(String name) {
         super(name);
@@ -34,7 +36,19 @@ public class MainClass extends BasicGame
         this.localImg = new Image(640,480);
         this.localImgG = localImg.getGraphics();
 
-        this.player = new Player(100, 100, 20, 20,450 / MAX_FPS, 135 / MAX_FPS);
+        Image original = new Image("img/24x24.png", false, Image.FILTER_NEAREST);
+        original = original.getScaledCopy(2);
+        Vector2f tileSize = new Vector2f(48, 48);
+        int[] viewFrames =  {2, 2, 2, 2, 2, 2, 2, 2};
+
+        this.player = new Player(100, 100, (int) tileSize.getX(), (int) tileSize.getY(),450 / MAX_FPS, 135 / MAX_FPS);
+
+
+        try {
+            this.pokemon = new SpriteRenderer(this.player, tileSize, original.getSubImage(0, (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -107,6 +121,9 @@ public class MainClass extends BasicGame
         this.localImgG.clear();
 
         this.localImgG.setColor(Color.white);
+
+        this.pokemon.render();
+
         this.localImgG.drawRect(round(this.player.getPosition().x), round(this.player.getPosition().y),
                 this.player.getWidth(), this.player.getHeight());
         this.localImgG.flush();
