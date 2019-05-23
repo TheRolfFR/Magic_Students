@@ -41,11 +41,13 @@ public class MainClass extends BasicGame
         Vector2f tileSize = new Vector2f(48, 48);
         int[] viewFrames =  {2, 2, 2, 2, 2, 2, 2, 2};
 
-        this.player = new Player(100, 100, (int) tileSize.getX(), (int) tileSize.getY(),450 / MAX_FPS, 135 / MAX_FPS);
+        this.player = new Player(100, 100, (int) tileSize.getX(), (int) tileSize.getY(),
+                450 / MAX_FPS, 135 / MAX_FPS);
 
 
         try {
-            this.pokemon = new SpriteRenderer(this.player, tileSize, original.getSubImage(0, (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
+            this.pokemon = new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
+                    (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,7 +131,7 @@ public class MainClass extends BasicGame
         this.localImgG.flush();
 
         g.drawImage(localImg, 0, 0);
-        System.out.println("speed : x : " + this.player.getSpeed());
+        //System.out.println("speed : " + this.player.getSpeed());
     }
 
     public static void main(String[] args) {

@@ -12,7 +12,7 @@ public abstract class Entity {
     private float MAX_SPEED;
     private float ACCELERATION_RATE;
 
-    private static final float SPEED_THRESHOLD = 0.001f;
+    private static final float SPEED_THRESHOLD = 0.5f;
 
     public Entity() {
         this.position = new Vector2f(0, 0);

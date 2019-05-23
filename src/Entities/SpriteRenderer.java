@@ -8,10 +8,10 @@ import org.newdawn.slick.geom.Vector2f;
 public class SpriteRenderer {
     private Entity entity;
 
-    int numberOfViews;
-    float speed;
+    private int numberOfViews;
+    private float speed;
 
-    private Animation idleView;
+    private Animation view;
     private Animation topView;
     private Animation topLeftView;
     private Animation topRightView;
@@ -33,7 +33,8 @@ public class SpriteRenderer {
 
     public SpriteRenderer(Entity entity, Vector2f tileSize, Image image, int[] viewsFrames, float speed) throws Exception {
         // throws error if number of views incorrect
-        if( (viewsFrames.length <= 0 || viewsFrames.length >2) && viewsFrames.length != 4 && viewsFrames.length != 8 ) {
+        if ( (viewsFrames.length <= 0 || viewsFrames.length >2) &&
+                (viewsFrames.length != 4 && viewsFrames.length != 8) ) {
             throw new Exception("invalid number of views");
         }
 
@@ -44,20 +45,22 @@ public class SpriteRenderer {
         // defines the offset
         Vector2f offset = SpriteRenderer.zero.copy();
 
-        this.idleView = loadAnimation(image, offset, tileSize, 1); // idle is the first image
+        this.view = loadAnimation(image, offset, tileSize, 1); // idle is the first image
 
-        if(this.numberOfViews == 1) {
+        if (this.numberOfViews == 1) {
             this.bottomView = loadAnimation(image, offset, tileSize, viewsFrames[0]);
-        } else if(this.numberOfViews == 2) {
+        }
+        else if (this.numberOfViews == 2) {
             this.leftView = loadAnimation(image, offset, tileSize, viewsFrames[0]);
 
             // offsetting
             offset.add(new Vector2f(tileSize.getX()*viewsFrames[0], 0));
 
             this.rightView = loadAnimation(image, offset, tileSize, viewsFrames[1]);
-        } else {
+        }
+        else {
 
-            if(this.numberOfViews == 4 || this.numberOfViews == 8) {
+            if (this.numberOfViews == 4 || this.numberOfViews == 8) {
                 this.bottomView = loadAnimation(image, offset, tileSize, viewsFrames[0]);
 
                 // offsetting
@@ -76,7 +79,7 @@ public class SpriteRenderer {
                 this.rightView = loadAnimation(image, offset, tileSize, viewsFrames[3]);
             }
 
-            if(this.numberOfViews == 8) {
+            if (this.numberOfViews == 8) {
 
                 // offsetting
                 offset.add(new Vector2f(tileSize.getX()*viewsFrames[3], 0));
@@ -101,7 +104,7 @@ public class SpriteRenderer {
         }
     }
 
-    private final Animation loadAnimation(Image image, Vector2f offset, Vector2f tileSize, int nbOfFrames) {
+    private Animation loadAnimation(Image image, Vector2f offset, Vector2f tileSize, int nbOfFrames) {
         SpriteSheet sp = new SpriteSheet(image.getSubImage((int) offset.getX(), (int) offset.getY(), nbOfFrames * (int) tileSize.getX(), (int) tileSize.getY()), (int) tileSize.getX(), (int) tileSize.getY());
 
         return new Animation(sp,(int) this.speed);
@@ -111,62 +114,65 @@ public class SpriteRenderer {
         Vector2f speed = entity.getSpeed();
         Vector2f position = entity.getPosition();
 
-        Animation animation = this.idleView;
-
-        if(!speed.equals(SpriteRenderer.zero)) {
-            if(numberOfViews == 1) {
-                animation = this.bottomView;
-            } else {
+        if (!speed.equals(SpriteRenderer.zero)) {
+            if (numberOfViews == 1) {
+                this.view = this.bottomView;
+            }
+            else {
                 // 2 views or more
 
                 // looking right
-                if(speed.getX() > 0f) {
-                    if(this.numberOfViews == 2 || this.numberOfViews == 4) {
-                        animation = rightView;
-                    } else {
+                if (speed.getX() > 0f) {
+                    if (this.numberOfViews == 2 || this.numberOfViews == 4) {
+                        this.view = rightView;
+                    }
+                    else {
                         // 8 views
-                        if(speed.getY() > 0) {
+                        if (speed.getY() > 0) {
                             // looking bottom right
-                            animation = bottomRightView;
-                        } else if(speed.getY() < 0) {
+                            this.view = bottomRightView;
+                        } else if (speed.getY() < 0) {
                             // looking top right
-                            animation = topRightView;
+                            this.view = topRightView;
                         } else {
                             // looking just right
-                            animation = rightView;
+                            this.view = rightView;
                         }
                     }
-                } else if(speed.getX() < 0) {
+                }
+                else if(speed.getX() < 0) {
                     // looking left
-                    if(this.numberOfViews == 2 || this.numberOfViews == 4) {
-                        animation = leftView;
-                    } else {
+                    if (this.numberOfViews == 2 || this.numberOfViews == 4) {
+                        this.view = leftView;
+                    }
+                    else {
                         // 8 views
-                        if(speed.getY() > 0) {
+                        if (speed.getY() > 0) {
                             // looking bottom left
-                            animation = bottomLeftView;
-                        } else if(speed.getY() < 0) {
+                            this.view = bottomLeftView;
+                        } else if (speed.getY() < 0) {
                             // looking top left
-                            animation = topLeftView;
+                            this.view = topLeftView;
                         } else {
                             // looking just left
-                            animation = leftView;
+                            this.view = leftView;
                         }
                     }
-                } else {
+                }
+                else {
                     // looking top or bottom
-                    if(speed.getY() > 0) {
+                    if (speed.getY() > 0) {
                         // looking bottom
-                        animation = bottomView;
+                        this.view = bottomView;
                     } else {
                         // looking top
-                        animation = topView;
+                        this.view = topView;
                     }
                 }
             }
         }
 
         // draw sprite
-        animation.draw((int) position.getX(), (int) position.getY());
+        this.view.draw((int) position.getX(), (int) position.getY());
     }
 }
