@@ -8,8 +8,8 @@ import org.newdawn.slick.geom.Vector2f;
 public class SpriteRenderer {
     private Entity entity;
 
-    int numberOfViews;
-    float speed;
+    private int numberOfViews;
+    private float speed;
 
     private Animation idleView;
     private Animation topView;
