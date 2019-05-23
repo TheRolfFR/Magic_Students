@@ -54,7 +54,18 @@ public abstract class Entity {
     public void move() {
         this.position.add(this.speed);
 
-        //if outside, move back to the border
+        if (this.position.x < 0) {
+            this.position.set(0, this.position.y);
+        }
+        if (this.position.x + this.getWidth() + 1 >= MainClass.WIDTH) {
+            this.position.set(MainClass.WIDTH - this.getWidth() - 1, this.position.y);
+        }
+        if (this.position.y < 0) {
+            this.position.set(this.position.x, 0);
+        }
+        if (this.position.y + this.getHeight() + 1 >= MainClass.HEIGHT) {
+            this.position.set(this.position.x, MainClass.HEIGHT - this.getHeight() - 1);
+        }
     }
 
     public abstract Shape getBounds();

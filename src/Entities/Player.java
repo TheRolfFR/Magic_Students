@@ -11,8 +11,10 @@ public class Player extends Entity implements MeleeAttack, RangedAttack {
     protected int width;
     protected int height;
 
-    public Player(float x, float y, float maxSpeed, float accelerationRate) {
+    public Player(float x, float y, int width, int height, float maxSpeed, float accelerationRate) {
         super(x, y, maxSpeed, accelerationRate);
+        this.width = width;
+        this.height = height;
         this.life = 100;
     }
 
@@ -22,7 +24,7 @@ public class Player extends Entity implements MeleeAttack, RangedAttack {
     }
 
     @Override
-    protected int getWidth() { return this.width; }
+    public int getWidth() { return this.width; }
     @Override
-    protected int getHeight() { return this.height; }
+    public int getHeight() { return this.height; }
 }

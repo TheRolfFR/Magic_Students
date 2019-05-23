@@ -34,7 +34,7 @@ public class MainClass extends BasicGame
         this.localImg = new Image(640,480);
         this.localImgG = localImg.getGraphics();
 
-        this.player = new Player(100, 100, 450 / MAX_FPS, 135 / MAX_FPS);
+        this.player = new Player(100, 100, 20, 20,450 / MAX_FPS, 135 / MAX_FPS);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class MainClass extends BasicGame
 
         this.localImgG.setColor(Color.white);
         this.localImgG.drawRect(round(this.player.getPosition().x), round(this.player.getPosition().y),
-                20, 20);
+                this.player.getWidth(), this.player.getHeight());
         this.localImgG.flush();
 
         g.drawImage(localImg, 0, 0);
