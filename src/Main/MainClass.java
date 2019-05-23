@@ -1,6 +1,7 @@
 package Main;
 
 import Entities.Player;
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -34,7 +35,7 @@ public class MainClass extends BasicGame
         this.localImg = new Image(640,480);
         this.localImgG = localImg.getGraphics();
 
-        this.player = new Player(100, 100, 20, 20,450 / MAX_FPS, 135 / MAX_FPS);
+        this.player = new Player(100, 100, 20, 20, 450 / MAX_FPS, 135 / MAX_FPS);
     }
 
     @Override
@@ -59,6 +60,7 @@ public class MainClass extends BasicGame
         this.player.move();
     }
 
+    @Override
     public void keyPressed(int key, char c) {
         switch (key) {
             case Input.KEY_UP:
@@ -80,6 +82,7 @@ public class MainClass extends BasicGame
         }
     }
 
+    @Override
     public void keyReleased(int key, char c) {
         switch (key) {
             case Input.KEY_UP:
