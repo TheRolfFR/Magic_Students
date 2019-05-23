@@ -111,7 +111,7 @@ public class SpriteRenderer {
         Vector2f speed = entity.getSpeed();
         Vector2f position = entity.getPosition();
 
-        Animation animation = animation = this.idleView;
+        Animation animation = this.idleView;
 
         if(!speed.equals(SpriteRenderer.zero)) {
             if(numberOfViews == 1) {
@@ -126,11 +126,14 @@ public class SpriteRenderer {
                     } else {
                         // 8 views
                         if(speed.getY() > 0) {
-                            // looking bottom
+                            // looking bottom right
                             animation = bottomRightView;
-                        } else {
-                            // looking top
+                        } else if(speed.getY() < 0) {
+                            // looking top right
                             animation = topRightView;
+                        } else {
+                            // looking just right
+                            animation = rightView;
                         }
                     }
                 } else if(speed.getX() < 0) {
@@ -140,11 +143,14 @@ public class SpriteRenderer {
                     } else {
                         // 8 views
                         if(speed.getY() > 0) {
-                            // looking bottom
+                            // looking bottom left
                             animation = bottomLeftView;
-                        } else {
-                            // looking top
+                        } else if(speed.getY() < 0) {
+                            // looking top left
                             animation = topLeftView;
+                        } else {
+                            // looking just left
+                            animation = leftView;
                         }
                     }
                 } else {
@@ -157,8 +163,6 @@ public class SpriteRenderer {
                         animation = topView;
                     }
                 }
-
-
             }
         }
 
