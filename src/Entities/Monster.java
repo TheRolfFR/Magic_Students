@@ -1,16 +1,16 @@
 package Entities;
 
-public abstract class Monster extends LinvingBeing {
+public abstract class Monster extends LivingBeing {
 
     protected int damage;
 
-    public Monster(float x,float y,float maxSpeed, float accelerationRate, int hpCount, int armor, int damage){
-        super(x,y,maxSpeed,accelerationRate,hpCount,armor);
+    Monster(float x, float y, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage){
+        super(x, y, maxSpeed, accelerationRate, hpCount, armor);
         this.damage=damage;
     }
 
-    public void doDamage(LinvingBeing opponent){
-        if(opponent.collides(this)){
+    void doDamage(LivingBeing opponent){
+        if (this.collides(opponent)){
             opponent.takeDamage(this.damage);
         }
     }

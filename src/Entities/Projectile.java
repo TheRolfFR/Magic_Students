@@ -7,7 +7,7 @@ public abstract class Projectile extends Entity {
         return damage;
     }
 
-    public void collidingAction(LinvingBeing opponent) {
+    public void collidingAction(LivingBeing opponent) {
         if (collides(opponent)){
             opponent.takeDamage(damage);
             //kill();

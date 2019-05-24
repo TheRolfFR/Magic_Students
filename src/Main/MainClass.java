@@ -1,6 +1,7 @@
 package Main;
 
 import Entities.Player;
+import Entities.Rusher;
 import Entities.SpriteRenderer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -15,6 +16,7 @@ public class MainClass extends BasicGame
     private Image localImg;
     private Graphics localImgG;
     private Player player;
+    private Rusher rusher;
 
     private static int MAX_FPS = 60;
     public static int WIDTH = 640;
@@ -26,6 +28,7 @@ public class MainClass extends BasicGame
     private boolean keyRight;
 
     private SpriteRenderer pokemon;
+    private SpriteRenderer rusherRenderer;
 
     private MainClass(String name) {
         super(name);
@@ -44,10 +47,19 @@ public class MainClass extends BasicGame
         this.player = new Player(100, 100, (int) tileSize.getX(), (int) tileSize.getY(),
                 450 / MAX_FPS, 135 / MAX_FPS);
 
+        this.rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
+                150 / MAX_FPS, 135 / MAX_FPS, 100, 5f, 10);
 
         try {
             this.pokemon = new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
                     (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            this.rusherRenderer = new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
+                    (int) tileSize.getY() + 48, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,6 +85,8 @@ public class MainClass extends BasicGame
             this.player.updateSpeed(this.player.getSpeed().negate().scale(0.2f));
         }
         this.player.move();
+
+        this.rusher.chaseAI(this.player);
     }
 
     public void keyPressed(int key, char c) {
@@ -125,12 +139,16 @@ public class MainClass extends BasicGame
         this.localImgG.setColor(Color.white);
 
         this.pokemon.render();
+        this.rusherRenderer.render();
 
         this.localImgG.drawRect(round(this.player.getPosition().x), round(this.player.getPosition().y),
                 this.player.getWidth(), this.player.getHeight());
+        this.localImgG.drawRect(round(this.rusher.getPosition().x), round(this.rusher.getPosition().y),
+                this.rusher.getWidth(), this.rusher.getHeight());
         this.localImgG.flush();
 
         g.drawImage(localImg, 0, 0);
+        System.out.println("player health " + this.player.getHp() + " / rusher health " + this.rusher.getHp());
     }
 
     public static void main(String[] args) {
