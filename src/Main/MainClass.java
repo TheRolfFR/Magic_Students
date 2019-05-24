@@ -48,7 +48,7 @@ public class MainClass extends BasicGame
                 450 / MAX_FPS, 135 / MAX_FPS);
 
         this.rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
-                150 / MAX_FPS, 135 / MAX_FPS, 100, 5f, 10);
+                150 / MAX_FPS, 60 / MAX_FPS, 100, 5f, 10);
 
         try {
             this.pokemon = new SpriteRenderer(this.player, tileSize, original.getSubImage(0,

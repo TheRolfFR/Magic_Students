@@ -10,7 +10,7 @@ public abstract class Entity {
     protected Vector2f speed;
 
     private float MAX_SPEED;
-    private float ACCELERATION_RATE;
+    float ACCELERATION_RATE;
 
     private static final float SPEED_THRESHOLD = 0.5f;
 
@@ -53,11 +53,11 @@ public abstract class Entity {
             this.speed.normalise().scale(this.MAX_SPEED);
         }
 
-        if(this.speed.getX() > -SPEED_THRESHOLD  && this.speed.getX() < SPEED_THRESHOLD) {
+        if (this.speed.getX() > -SPEED_THRESHOLD  && this.speed.getX() < SPEED_THRESHOLD) {
             this.speed.set(0, this.speed.getY());
         }
 
-        if(this.speed.getY() > -SPEED_THRESHOLD && this.speed.getY() < SPEED_THRESHOLD) {
+        if (this.speed.getY() > -SPEED_THRESHOLD && this.speed.getY() < SPEED_THRESHOLD) {
             this.speed.set(this.speed.getX(), 0);
         }
     }
