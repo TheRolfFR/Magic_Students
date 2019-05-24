@@ -8,19 +8,20 @@ public class Rusher extends Melee {
         super(x,y,width,height,maxSpeed,accelerationRate, hpCount,armor, damage);
     }
 
-    public void chaseAI(Entity target){
+    public void chaseAI(LinvingBeing target){
         if(this.position.getX() < target.position.getX()){
             this.updateSpeed(new Vector2f(1,0));
         }
-        if(this.position.getX() > target.position.getX()){
+        else{
             this.updateSpeed(new Vector2f(-1,0));
         }
         if(this.position.getY() < target.position.getY()){
             this.updateSpeed(new Vector2f(0,1));
         }
-        if(this.position.getY() > target.position.getY()){
+        else {
             this.updateSpeed(new Vector2f(0,-1));
         }
         this.move();
+        this.doDamage(target);
     }
 }

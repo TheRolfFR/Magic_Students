@@ -8,4 +8,10 @@ public abstract class Monster extends LinvingBeing {
         super(x,y,maxSpeed,accelerationRate,hpCount,armor);
         this.damage=damage;
     }
+
+    public void doDamage(LinvingBeing opponent){
+        if(opponent.collides(this)){
+            opponent.takeDamage(this.damage);
+        }
+    }
 }
