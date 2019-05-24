@@ -6,7 +6,7 @@ import Entities.Attacks.RangedAttack;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
-public class Player extends Entity implements MeleeAttack, RangedAttack {
+public class Player extends LinvingBeing implements MeleeAttack, RangedAttack {
     private float life;
     protected int width;
     protected int height;

@@ -84,4 +84,5 @@ public abstract class Entity {
     public boolean collides(Entity opponent){
         return this.getBounds().intersects(opponent.getBounds());
     }
+
 }
