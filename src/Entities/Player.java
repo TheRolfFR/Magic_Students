@@ -7,15 +7,14 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
 public class Player extends LinvingBeing implements MeleeAttack, RangedAttack {
-    private float life;
+
     protected int width;
     protected int height;
 
     public Player(float x, float y, int width, int height, float maxSpeed, float accelerationRate) {
-        super(x, y, maxSpeed, accelerationRate);
+        super(x, y, maxSpeed, accelerationRate, 100, 10);
         this.width = width;
         this.height = height;
-        this.life = 100;
     }
 
     @Override

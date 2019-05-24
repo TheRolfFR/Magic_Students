@@ -9,6 +9,12 @@ public class Melee extends Monster implements MeleeAttack {
     protected int width;
     protected int height;
 
+    public Melee(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage){
+        super(x,y,maxSpeed,accelerationRate,hpCount,armor, damage);
+        this.width=width;
+        this.height=height;
+    }
+
     @Override
     public Shape getBounds() {
         return new Rectangle(position.x, position.y, width, height);

@@ -4,8 +4,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Rusher extends Melee {
 
-    public Rusher(float x, float y, int width, int height, float maxSpeed, float accelerationRate, float life, float damage){
-        super(x,y,width,height,life,damage,maxSpeed,accelerationRate);
+    public Rusher(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage){
+        super(x,y,width,height,maxSpeed,accelerationRate, hpCount,armor, damage);
     }
 
     public void chaseAI(Entity target){
