@@ -11,7 +11,7 @@ public class SpriteRenderer {
     private int numberOfViews;
     private float speed;
 
-    private Animation view;
+    private Animation actualView;
     private Animation topView;
     private Animation topLeftView;
     private Animation topRightView;
@@ -27,6 +27,15 @@ public class SpriteRenderer {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+
+        this.actualView.setSpeed(this.speed);
+        this.topView.setSpeed(this.speed);
+        this.topLeftView.setSpeed(this.speed);
+        this.topRightView.setSpeed(this.speed);
+        this.leftView.setSpeed(this.speed);
+        this.rightView.setSpeed(this.speed);
+        this.bottomLeftView.setSpeed(this.speed);
+        this.bottomRightView.setSpeed(this.speed);
     }
 
     private static final Vector2f zero = new Vector2f(0, 0);
@@ -45,7 +54,7 @@ public class SpriteRenderer {
         // defines the offset
         Vector2f offset = SpriteRenderer.zero.copy();
 
-        this.view = loadAnimation(image, offset, tileSize, 1); // idle is the first image
+        this.actualView = loadAnimation(image, offset, tileSize, 1); // idle is the first image
 
         if (this.numberOfViews == 1) {
             this.bottomView = loadAnimation(image, offset, tileSize, viewsFrames[0]);
@@ -116,7 +125,7 @@ public class SpriteRenderer {
 
         if (!speed.equals(SpriteRenderer.zero)) {
             if (numberOfViews == 1) {
-                this.view = this.bottomView;
+                this.actualView = this.bottomView;
             }
             else {
                 // 2 views or more
@@ -124,38 +133,38 @@ public class SpriteRenderer {
                 // looking right
                 if (speed.getX() > 0f) {
                     if (this.numberOfViews == 2 || this.numberOfViews == 4) {
-                        this.view = rightView;
+                        this.actualView = rightView;
                     }
                     else {
                         // 8 views
                         if (speed.getY() > 0) {
                             // looking bottom right
-                            this.view = bottomRightView;
+                            this.actualView = bottomRightView;
                         } else if (speed.getY() < 0) {
                             // looking top right
-                            this.view = topRightView;
+                            this.actualView = topRightView;
                         } else {
                             // looking just right
-                            this.view = rightView;
+                            this.actualView = rightView;
                         }
                     }
                 }
                 else if(speed.getX() < 0) {
                     // looking left
                     if (this.numberOfViews == 2 || this.numberOfViews == 4) {
-                        this.view = leftView;
+                        this.actualView = leftView;
                     }
                     else {
                         // 8 views
                         if (speed.getY() > 0) {
                             // looking bottom left
-                            this.view = bottomLeftView;
+                            this.actualView = bottomLeftView;
                         } else if (speed.getY() < 0) {
                             // looking top left
-                            this.view = topLeftView;
+                            this.actualView = topLeftView;
                         } else {
                             // looking just left
-                            this.view = leftView;
+                            this.actualView = leftView;
                         }
                     }
                 }
@@ -163,16 +172,19 @@ public class SpriteRenderer {
                     // looking top or bottom
                     if (speed.getY() > 0) {
                         // looking bottom
-                        this.view = bottomView;
+                        this.actualView = bottomView;
                     } else {
                         // looking top
-                        this.view = topView;
+                        this.actualView = topView;
                     }
                 }
             }
+            this.actualView.start();
+        } else {
+            this.actualView.stop();
         }
 
         // draw sprite
-        this.view.draw((int) position.getX(), (int) position.getY());
+        this.actualView.draw((int) position.getX(), (int) position.getY());
     }
 }
