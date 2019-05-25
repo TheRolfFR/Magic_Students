@@ -1,7 +1,6 @@
 package Entities;
 
 public abstract class Monster extends LivingBeing {
-
     protected int damage;
 
     Monster(float x, float y, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage){

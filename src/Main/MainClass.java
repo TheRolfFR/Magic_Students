@@ -11,8 +11,6 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.lang.Math.round;
-
 public class MainClass extends BasicGame
 {
     private Player player;
@@ -23,8 +21,6 @@ public class MainClass extends BasicGame
     public static int HEIGHT = 480;
 
     private HealthBar healthBar;
-
-    private SpriteRenderer rusherRenderer;
 
     private Snowball snowball;
 
@@ -41,27 +37,28 @@ public class MainClass extends BasicGame
 
         this.player = new Player(100, 100, (int) tileSize.getX(), (int) tileSize.getY(),
                 450 / MAX_FPS, 135 / MAX_FPS);
-
-        this.rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
-                150 / MAX_FPS, 60 / MAX_FPS, 100, 5f, 10);
-
         this.player.setRenderer(new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
                 (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
+        //this.player.setShowDebugRect(true);
 
-        this.rusherRenderer = new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
-                (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
+        this.rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
+                150 / MAX_FPS, 60 / MAX_FPS, 100, 5f,
+                10);
+        this.rusher.setRenderer(new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
+                (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
+        //this.rusher.setShowDebugRect(true);
 
-        this.snowball = new Snowball(200, 200, 250/MAX_FPS, 135/MAX_FPS, "img/snowball.png", new Vector2f(1, 0));
-
-        healthBar = new HealthBar(this.player);
+        this.snowball = new Snowball(200, 200, 250/MAX_FPS, 135/MAX_FPS,
+                "img/snowball.png", new Vector2f(1, 0));
+        this.healthBar = new HealthBar(this.player);
         SceneRenderer.generateBackground("img/ground.png", gc);
     }
 
     @Override
     public void update(GameContainer gc, int i) {
-        this.player.update(gc, i);
-        this.rusher.chaseAI(this.player);
-        this.snowball.updateSpeed(new Vector2f(1, 0));
+        this.player.update();
+        this.rusher.update(this.player);
+        this.snowball.update();
     }
 
     @Override
@@ -79,15 +76,9 @@ public class MainClass extends BasicGame
         SceneRenderer.renderBackground(g, 0, 0);
 
         this.player.render(g);
-        this.rusherRenderer.render();
+        this.rusher.render(g);
         this.snowball.render(g);
-
-        g.setColor(Color.white);
-        g.drawRect(round(this.rusher.getPosition().x), round(this.rusher.getPosition().y),
-                this.rusher.getWidth(), this.rusher.getHeight());
-
-        healthBar.render(g);
-        //System.out.println("player health " + this.player.getHp() + " / rusher health " + this.rusher.getHp());
+        this.healthBar.render(g);
     }
 
     public static void main(String[] args) {

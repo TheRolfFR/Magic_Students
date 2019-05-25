@@ -17,21 +17,6 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     private boolean keyLeft;
     private boolean keyRight;
 
-    private boolean showDebugRect;
-
-    private SpriteRenderer renderer;
-
-    public void setShowDebugRect(boolean showDebugRect) {
-        this.showDebugRect = showDebugRect;
-    }
-
-    public SpriteRenderer getRenderer() {
-        return renderer;
-    }
-
-    public void setRenderer(SpriteRenderer renderer) {
-        this.renderer = renderer;
-    }
 
     @Override
     public int getWidth() { return this.width; }
@@ -48,12 +33,10 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.keyLeft = false;
         this.keyRight = false;
 
-        this.showDebugRect = false;
 
-        this.renderer = null;
     }
 
-    public void doAttack() {
+    private void doAttack() {
 
     }
 
@@ -62,7 +45,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         return new Rectangle(position.x, position.y, width, height);
     }
 
-    public void update(GameContainer gc, int i) {
+    public void update() {
         if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
             if (this.keyUp) {
                 this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
@@ -83,23 +66,6 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.move();
     }
 
-    public void render(Graphics g) {
-        if(this.renderer != null) {
-            this.renderer.render();
-        }
-
-        if(this.showDebugRect) {
-            Color c = g.getColor();
-
-            g.setColor(Color.white);
-            g.drawRect(Math.round(this.getPosition().x), Math.round(this.getPosition().y),
-                    this.getWidth(), this.getHeight());
-
-            g.setColor(c);
-        }
-    }
-
-    @Override
     public void keyPressed(int key, char c) {
         switch (key) {
             case Input.KEY_UP:
@@ -124,7 +90,6 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         }
     }
 
-    @Override
     public void keyReleased(int key, char c) {
         switch (key) {
             case Input.KEY_UP:
