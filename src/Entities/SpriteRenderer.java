@@ -21,6 +21,17 @@ public class SpriteRenderer {
     private Animation bottomLeftView;
     private Animation bottomRightView;
 
+    private int width;
+    private int height;
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public float getSpeed() {
         return speed;
     }
@@ -47,6 +58,9 @@ public class SpriteRenderer {
             System.err.println("invalid number of views");
             System.exit(1);
         }
+
+        this.width = (int) tileSize.getX();
+        this.height = (int) tileSize.getY();
 
         this.entity = entity;
         this.numberOfViews = viewsFrames.length;

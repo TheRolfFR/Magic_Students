@@ -2,6 +2,7 @@ package Main;
 
 import Entities.Player;
 import Entities.Rusher;
+import Entities.Snowball;
 import Entities.SpriteRenderer;
 import HUD.HealthBar;
 import org.newdawn.slick.*;
@@ -24,6 +25,8 @@ public class MainClass extends BasicGame
     private HealthBar healthBar;
 
     private SpriteRenderer rusherRenderer;
+
+    private Snowball snowball;
 
     private MainClass(String name) {
         super(name);
@@ -48,6 +51,8 @@ public class MainClass extends BasicGame
         this.rusherRenderer = new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
                 (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
 
+        this.snowball = new Snowball(200, 200, 250/MAX_FPS, 135/MAX_FPS, "img/snowball.png", new Vector2f(1, 0));
+
         healthBar = new HealthBar(this.player);
         SceneRenderer.generateBackground("img/ground.png", gc);
     }
@@ -56,6 +61,7 @@ public class MainClass extends BasicGame
     public void update(GameContainer gc, int i) {
         this.player.update(gc, i);
         this.rusher.chaseAI(this.player);
+        this.snowball.updateSpeed(new Vector2f(1, 0));
     }
 
     @Override
@@ -74,6 +80,7 @@ public class MainClass extends BasicGame
 
         this.player.render(g);
         this.rusherRenderer.render();
+        this.snowball.render(g);
 
         g.setColor(Color.white);
         g.drawRect(round(this.rusher.getPosition().x), round(this.rusher.getPosition().y),
