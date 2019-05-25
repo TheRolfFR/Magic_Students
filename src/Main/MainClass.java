@@ -21,14 +21,8 @@ public class MainClass extends BasicGame
     public static int WIDTH = 640;
     public static int HEIGHT = 480;
 
-    private boolean keyUp;
-    private boolean keyDown;
-    private boolean keyLeft;
-    private boolean keyRight;
-
     private HealthBar healthBar = new HealthBar();
 
-    private SpriteRenderer pokemon;
     private SpriteRenderer rusherRenderer;
 
     private MainClass(String name) {
@@ -48,104 +42,33 @@ public class MainClass extends BasicGame
         this.rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
                 150 / MAX_FPS, 60 / MAX_FPS, 100, 5f, 10);
 
-        this.pokemon = new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
-                (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
+        this.player.setRenderer(new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
+                (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
 
-        try {
-            this.rusherRenderer = new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
-                    (int) tileSize.getY() + 48, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.rusherRenderer = new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
+                (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
 
         SceneRenderer.generateBackground("img/ground.png", gc);
     }
 
     @Override
     public void update(GameContainer gc, int i) {
-        if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
-            if (this.keyUp) {
-                this.player.updateSpeed(new Vector2f(0, -1).scale(this.player.getAccelerationRate()));
-            }
-            if (this.keyDown) {
-                this.player.updateSpeed(new Vector2f(0, 1).scale(this.player.getAccelerationRate()));
-            }
-            if (this.keyLeft) {
-                this.player.updateSpeed(new Vector2f(-1, 0).scale(this.player.getAccelerationRate()));
-            }
-            if (this.keyRight) {
-                this.player.updateSpeed(new Vector2f(1, 0).scale(this.player.getAccelerationRate()));
-            }
-        }
-        else {
-            this.player.updateSpeed(this.player.getSpeed().negate().scale(0.2f));
-        }
-        this.player.move();
-
+        this.player.update(gc, i);
         this.rusher.chaseAI(this.player);
-    }
-
-    public void keyPressed(int key, char c) {
-        switch (key) {
-            case Input.KEY_UP:
-            case Input.KEY_Z:
-                this.keyUp = true;
-                break;
-            case Input.KEY_DOWN:
-            case Input.KEY_S:
-                this.keyDown = true;
-                break;
-            case Input.KEY_LEFT:
-            case Input.KEY_Q:
-                this.keyLeft = true;
-                break;
-            case Input.KEY_RIGHT:
-            case Input.KEY_D:
-                this.keyRight = true;
-                break;
-            case Input.KEY_L:
-                this.player.doAttack();
-                break;
-        }
-    }
-
-    public void keyReleased(int key, char c) {
-        switch (key) {
-            case Input.KEY_UP:
-            case Input.KEY_Z:
-                this.keyUp = false;
-                break;
-            case Input.KEY_DOWN:
-            case Input.KEY_S:
-                this.keyDown = false;
-                break;
-            case Input.KEY_LEFT:
-            case Input.KEY_Q:
-                this.keyLeft = false;
-                break;
-            case Input.KEY_RIGHT:
-            case Input.KEY_D:
-                this.keyRight = false;
-                break;
-        }
     }
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-
         SceneRenderer.renderBackground(g, 0, 0);
 
-        this.pokemon.render();
+        this.player.render(g);
         this.rusherRenderer.render();
 
         g.setColor(Color.white);
-        g.drawRect(round(this.player.getPosition().x), round(this.player.getPosition().y),
-                this.player.getWidth(), this.player.getHeight());
         g.drawRect(round(this.rusher.getPosition().x), round(this.rusher.getPosition().y),
                 this.rusher.getWidth(), this.rusher.getHeight());
 
         healthBar.render(g, this.player.getHp());
-
         //System.out.println("player health " + this.player.getHp() + " / rusher health " + this.rusher.getHp());
     }
 
