@@ -1,5 +1,6 @@
 package HUD;
 
+import Entities.LivingBeing;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -12,8 +13,14 @@ public class HealthBar {
     private static final int width=50;
     private static final int height = 10;
 
-    public void render(Graphics g, int health){
+    private LivingBeing being;
+
+    public HealthBar(LivingBeing being) {
+        this.being = being;
+    }
+
+    public void render(Graphics g){
         g.setColor(new Color(255,0,0));
-        g.fillRect(this.x, this.y, round(health/100.0 * this.width), this.height);
+        g.fillRect(this.x, this.y, round(being.getCurrentHealthPoints()/(float) being.getMaxHealthPoints() * this.width), this.height);
     }
 }

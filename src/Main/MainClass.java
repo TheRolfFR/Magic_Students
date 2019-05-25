@@ -21,7 +21,7 @@ public class MainClass extends BasicGame
     public static int WIDTH = 640;
     public static int HEIGHT = 480;
 
-    private HealthBar healthBar = new HealthBar();
+    private HealthBar healthBar;
 
     private SpriteRenderer rusherRenderer;
 
@@ -48,6 +48,7 @@ public class MainClass extends BasicGame
         this.rusherRenderer = new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
                 (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
 
+        healthBar = new HealthBar(this.player);
         SceneRenderer.generateBackground("img/ground.png", gc);
     }
 
@@ -55,6 +56,16 @@ public class MainClass extends BasicGame
     public void update(GameContainer gc, int i) {
         this.player.update(gc, i);
         this.rusher.chaseAI(this.player);
+    }
+
+    @Override
+    public void keyPressed(int key, char c) {
+        this.player.keyPressed(key, c);
+    }
+
+    @Override
+    public void keyReleased(int key, char c) {
+        this.player.keyReleased(key, c);
     }
 
     @Override
@@ -68,7 +79,7 @@ public class MainClass extends BasicGame
         g.drawRect(round(this.rusher.getPosition().x), round(this.rusher.getPosition().y),
                 this.rusher.getWidth(), this.rusher.getHeight());
 
-        healthBar.render(g, this.player.getHp());
+        healthBar.render(g);
         //System.out.println("player health " + this.player.getHp() + " / rusher health " + this.rusher.getHp());
     }
 
