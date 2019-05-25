@@ -40,11 +40,12 @@ public class SpriteRenderer {
 
     private static final Vector2f zero = new Vector2f(0, 0);
 
-    public SpriteRenderer(Entity entity, Vector2f tileSize, Image image, int[] viewsFrames, float speed) throws Exception {
+    public SpriteRenderer(Entity entity, Vector2f tileSize, Image image, int[] viewsFrames, float speed) {
         // throws error if number of views incorrect
         if ( (viewsFrames.length <= 0 || viewsFrames.length >2) &&
                 (viewsFrames.length != 4 && viewsFrames.length != 8) ) {
-            throw new Exception("invalid number of views");
+            System.err.println("invalid number of views");
+            System.exit(1);
         }
 
         this.entity = entity;

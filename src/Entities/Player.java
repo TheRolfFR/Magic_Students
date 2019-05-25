@@ -16,6 +16,10 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack {
         this.height = height;
     }
 
+    public void doAttack() {
+
+    }
+
     @Override
     public Shape getBounds() {
         return new Rectangle(position.x, position.y, width, height);

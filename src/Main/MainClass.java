@@ -14,8 +14,6 @@ import static java.lang.Math.round;
 
 public class MainClass extends BasicGame
 {
-    private Image localImg;
-    private Graphics localImgG;
     private Player player;
     private Rusher rusher;
 
@@ -39,9 +37,6 @@ public class MainClass extends BasicGame
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        this.localImg = new Image(640,480);
-        this.localImgG = localImg.getGraphics();
-
         Image original = new Image("img/24x24.png", false, Image.FILTER_NEAREST);
         original = original.getScaledCopy(2);
         Vector2f tileSize = new Vector2f(48, 48);
@@ -53,12 +48,8 @@ public class MainClass extends BasicGame
         this.rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
                 150 / MAX_FPS, 60 / MAX_FPS, 100, 5f, 10);
 
-        try {
-            this.pokemon = new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
-                    (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.pokemon = new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
+                (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12);
 
         try {
             this.rusherRenderer = new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
@@ -66,6 +57,8 @@ public class MainClass extends BasicGame
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        SceneRenderer.generateBackground("img/ground.png", gc);
     }
 
     @Override
@@ -139,23 +132,21 @@ public class MainClass extends BasicGame
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        this.localImgG.setBackground(new Color(0,0,0,0));
-        this.localImgG.clear();
 
-        this.localImgG.setColor(Color.white);
+        SceneRenderer.renderBackground(g, 0, 0);
 
         this.pokemon.render();
         this.rusherRenderer.render();
 
-        this.localImgG.drawRect(round(this.player.getPosition().x), round(this.player.getPosition().y),
+        g.setColor(Color.white);
+        g.drawRect(round(this.player.getPosition().x), round(this.player.getPosition().y),
                 this.player.getWidth(), this.player.getHeight());
-        this.localImgG.drawRect(round(this.rusher.getPosition().x), round(this.rusher.getPosition().y),
+        g.drawRect(round(this.rusher.getPosition().x), round(this.rusher.getPosition().y),
                 this.rusher.getWidth(), this.rusher.getHeight());
-        this.localImgG.flush();
+
         healthBar.render(g, this.player.getHp());
 
-        g.drawImage(localImg, 0, 0);
-        System.out.println("player health " + this.player.getHp() + " / rusher health " + this.rusher.getHp());
+        //System.out.println("player health " + this.player.getHp() + " / rusher health " + this.rusher.getHp());
     }
 
     public static void main(String[] args) {
