@@ -3,6 +3,7 @@ package Main;
 import Entities.Player;
 import Entities.Rusher;
 import Entities.SpriteRenderer;
+import HUD.HealthBar;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -26,6 +27,8 @@ public class MainClass extends BasicGame
     private boolean keyDown;
     private boolean keyLeft;
     private boolean keyRight;
+
+    private HealthBar healthBar = new HealthBar();
 
     private SpriteRenderer pokemon;
     private SpriteRenderer rusherRenderer;
@@ -107,6 +110,9 @@ public class MainClass extends BasicGame
             case Input.KEY_D:
                 this.keyRight = true;
                 break;
+            case Input.KEY_L:
+                this.player.doAttack();
+                break;
         }
     }
 
@@ -146,6 +152,7 @@ public class MainClass extends BasicGame
         this.localImgG.drawRect(round(this.rusher.getPosition().x), round(this.rusher.getPosition().y),
                 this.rusher.getWidth(), this.rusher.getHeight());
         this.localImgG.flush();
+        healthBar.render(g, this.player.getHp());
 
         g.drawImage(localImg, 0, 0);
         System.out.println("player health " + this.player.getHp() + " / rusher health " + this.rusher.getHp());
