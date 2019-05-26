@@ -17,20 +17,24 @@ public class MainClass extends BasicGame
     private Player player;
     private Rusher rusher;
 
-    private static int MAX_FPS = 60;
+    public static int MAX_FPS = 60;
     public static int WIDTH = 640;
     public static int HEIGHT = 480;
 
+    private static GameContainer instanceGameContainer;
+
     private HealthBar healthBar;
 
-    private Snowball snowball;
-
-    private MainClass(String name) {
-        super(name);
+    public static Input getInput() {
+        return instanceGameContainer.getInput();
     }
+
+    public MainClass(String name) { super(name); }
 
     @Override
     public void init(GameContainer gc) throws SlickException {
+        instanceGameContainer = gc;
+
         Image original = new Image("img/24x24.png", false, Image.FILTER_NEAREST);
         original = original.getScaledCopy(2);
         Vector2f tileSize = new Vector2f(48, 48);
@@ -49,28 +53,16 @@ public class MainClass extends BasicGame
                 (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.rusher.setShowDebugRect(true);
 
-        this.snowball = new Snowball(200, 200, 250/MAX_FPS, 135/MAX_FPS,
-                "img/snowball.png", new Vector2f(1, 0));
-        this.snowball.setShowDebugRect(true);
         this.healthBar = new HealthBar(this.player);
         SceneRenderer.generateBackground("img/ground.png", gc);
-        SceneRenderer.setRoomShapeShowed(true);
+
+        gc.getInput().addKeyListener(this.player);
     }
 
     @Override
     public void update(GameContainer gc, int i) {
         this.player.update();
         this.rusher.update(this.player);
-
-        if(this.snowball != null) {
-            this.snowball.update();
-
-            System.out.println(this.snowball.getBounds().getLocation());
-            if(SceneRenderer.inRoomLimits(this.snowball.getBounds())) {
-                this.snowball = null;
-                System.out.println("Snowball destroyed");
-            }
-        }
     }
 
     @Override
@@ -89,10 +81,6 @@ public class MainClass extends BasicGame
 
         this.player.render(g);
         this.rusher.render(g);
-
-        if(this.snowball != null) {
-            this.snowball.render(g);
-        }
 
         this.healthBar.render(g);
     }

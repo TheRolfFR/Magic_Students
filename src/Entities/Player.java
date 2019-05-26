@@ -3,10 +3,13 @@ package Entities;
 import Entities.Attacks.MeleeAttack;
 import Entities.Attacks.RangedAttack;
 
+import Main.MainClass;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
+
+import java.util.LinkedList;
 
 public class Player extends LivingBeing implements MeleeAttack, RangedAttack, KeyListener {
     protected int width;
@@ -17,6 +20,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     private boolean keyLeft;
     private boolean keyRight;
 
+    private LinkedList<Projectile> playerProjectiles;
 
     @Override
     public int getWidth() { return this.width; }
@@ -33,11 +37,12 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.keyLeft = false;
         this.keyRight = false;
 
-
+        this.playerProjectiles = new LinkedList<Projectile>();
     }
 
     private void doAttack() {
-
+        Vector2f direction = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getPosition());
+        this.playerProjectiles.add(new Snowball(this.position.getX(), this.position.getY(), direction));
     }
 
     @Override
@@ -64,6 +69,24 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
             this.updateSpeed(this.getSpeed().negate().scale(0.2f));
         }
         this.move();
+
+        Projectile p;
+        for(int i = 0; i < playerProjectiles.size(); i++) {
+            p = playerProjectiles.get(i);
+            p.update();
+
+            if(p.isFadeOut()) {
+                playerProjectiles.remove(i);
+            }
+        }
+    }
+
+    public void render(Graphics g) {
+        super.render(g);
+
+        for(Projectile p : playerProjectiles) {
+            p.render(g);
+        }
     }
 
     public void keyPressed(int key, char c) {

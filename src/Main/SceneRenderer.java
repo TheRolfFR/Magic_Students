@@ -50,7 +50,7 @@ public class SceneRenderer {
 
                 backgroundImage.getGraphics().flush();
 
-                roomShape = new Rectangle(50,50,gc.getWidth()-100, gc.getHeight()-100);
+                roomShape = new Rectangle(33,33,gc.getWidth()-66, gc.getHeight()-66);
             } catch (SlickException e) {
                 e.printStackTrace();
             }
@@ -72,7 +72,6 @@ public class SceneRenderer {
     }
 
     public static boolean inRoomLimits(Shape shape) {
-        System.out.println(roomShape.getWidth());
-        return shape.contains(roomShape);
+        return roomShape.intersects(shape);
     }
 }

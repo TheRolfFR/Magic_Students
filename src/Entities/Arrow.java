@@ -31,4 +31,9 @@ public class Arrow extends Projectile {
     protected int getHeight() {
         return this.image.getHeight();
     }
+
+    @Override
+    public void fadeOut() {
+
+    }
 }
