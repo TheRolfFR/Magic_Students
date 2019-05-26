@@ -55,7 +55,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      */
     private void doAttack() {
         Vector2f direction = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getPosition());
-        this.playerProjectiles.add(new Snowball(this.position.getX(), this.position.getY(), direction));
+        this.playerProjectiles.add(new Snowball(this.getPosition(), direction));
     }
 
     @Override
