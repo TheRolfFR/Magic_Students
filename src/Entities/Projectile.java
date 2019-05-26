@@ -39,8 +39,8 @@ public abstract class Projectile extends Entity {
         this.move();
     }
 
-    @Override
     public void render(Graphics g) {
+        super.render(g);
         g.drawImage(image, this.getPosition().getX(), this.getPosition().getY());
     }
 }

@@ -1,5 +1,7 @@
 package Entities;
 
+import Main.SceneRenderer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
@@ -13,7 +15,7 @@ public class Snowball extends Projectile {
 
     @Override
     public Shape getBounds(){
-        return new Circle(position.x, position.y, this.getWidth());
+        return new Circle(position.x + this.getWidth()/2, position.y + this.getHeight()/2, this.getWidth()/2);
     }
 
     @Override
@@ -24,5 +26,12 @@ public class Snowball extends Projectile {
     @Override
     protected int getHeight() {
         return this.image.getHeight();
+    }
+
+    public void render(Graphics g) {
+        super.render(g);
+        if(showDebugRect) {
+            g.draw(this.getBounds());
+        }
     }
 }

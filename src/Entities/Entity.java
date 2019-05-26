@@ -16,7 +16,7 @@ public abstract class Entity {
 
     private static final float SPEED_THRESHOLD = 0.5f;
 
-    private boolean showDebugRect;
+    protected boolean showDebugRect;
     private SpriteRenderer renderer;
 
     public Entity() {

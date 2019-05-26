@@ -5,6 +5,7 @@ import Entities.Rusher;
 import Entities.Snowball;
 import Entities.SpriteRenderer;
 import HUD.HealthBar;
+import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -50,15 +51,26 @@ public class MainClass extends BasicGame
 
         this.snowball = new Snowball(200, 200, 250/MAX_FPS, 135/MAX_FPS,
                 "img/snowball.png", new Vector2f(1, 0));
+        this.snowball.setShowDebugRect(true);
         this.healthBar = new HealthBar(this.player);
         SceneRenderer.generateBackground("img/ground.png", gc);
+        SceneRenderer.setRoomShapeShowed(true);
     }
 
     @Override
     public void update(GameContainer gc, int i) {
         this.player.update();
         this.rusher.update(this.player);
-        this.snowball.update();
+
+        if(this.snowball != null) {
+            this.snowball.update();
+
+            System.out.println(this.snowball.getBounds().getLocation());
+            if(SceneRenderer.inRoomLimits(this.snowball.getBounds())) {
+                this.snowball = null;
+                System.out.println("Snowball destroyed");
+            }
+        }
     }
 
     @Override
@@ -77,7 +89,11 @@ public class MainClass extends BasicGame
 
         this.player.render(g);
         this.rusher.render(g);
-        this.snowball.render(g);
+
+        if(this.snowball != null) {
+            this.snowball.render(g);
+        }
+
         this.healthBar.render(g);
     }
 

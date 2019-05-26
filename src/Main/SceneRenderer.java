@@ -1,11 +1,24 @@
 package Main;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 
 import java.util.Random;
 
-class SceneRenderer {
+public class SceneRenderer {
     private static Image backgroundImage = null;
+
+    private static boolean roomShapeShowed = false;
+    private static Rectangle roomShape = null;
+
+    public static boolean isRoomShapeShowed() {
+        return roomShapeShowed;
+    }
+
+    public static void setRoomShapeShowed(boolean roomShapeShowed) {
+        SceneRenderer.roomShapeShowed = roomShapeShowed;
+    }
 
     static void generateBackground(String path, GameContainer gc) {
         if (backgroundImage == null) {
@@ -36,6 +49,8 @@ class SceneRenderer {
                 }
 
                 backgroundImage.getGraphics().flush();
+
+                roomShape = new Rectangle(50,50,gc.getWidth()-100, gc.getHeight()-100);
             } catch (SlickException e) {
                 e.printStackTrace();
             }
@@ -47,5 +62,17 @@ class SceneRenderer {
             return;
 
         g.drawImage(backgroundImage, x, y);
+
+        if(isRoomShapeShowed()) {
+            Color c = g.getColor();
+            g.setColor(Color.green);
+            g.draw(roomShape);
+            g.setColor(c);
+        }
+    }
+
+    public static boolean inRoomLimits(Shape shape) {
+        System.out.println(roomShape.getWidth());
+        return shape.contains(roomShape);
     }
 }
