@@ -27,6 +27,16 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     @Override
     public int getHeight() { return this.height; }
 
+    /**
+     * Single contructor
+     *
+     * @param x initial x position of the player
+     * @param y initial y position of the player
+     * @param width hitbox width of the player
+     * @param height hitbox height of the player
+     * @param maxSpeed max speed of the player
+     * @param accelerationRate max acceleration of the player
+     */
     public Player(float x, float y, int width, int height, float maxSpeed, float accelerationRate) {
         super(x, y, maxSpeed, accelerationRate, 100, 10);
         this.width = width;
@@ -40,6 +50,9 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.playerProjectiles = new LinkedList<Projectile>();
     }
 
+    /**
+     * Do an attack
+     */
     private void doAttack() {
         Vector2f direction = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getPosition());
         this.playerProjectiles.add(new Snowball(this.position.getX(), this.position.getY(), direction));
@@ -50,6 +63,9 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         return new Rectangle(position.x, position.y, width, height);
     }
 
+    /**
+     * In game calculations
+     */
     public void update() {
         if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
             if (this.keyUp) {
@@ -81,6 +97,10 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         }
     }
 
+    /**
+     * In game rendering
+     * @param g the graphics to draw on
+     */
     public void render(Graphics g) {
         super.render(g);
 
@@ -89,6 +109,11 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         }
     }
 
+    /**
+     * KeyListener interface key down implementation
+     * @param key integer value of the key
+     * @param c char associated to the int value
+     */
     public void keyPressed(int key, char c) {
         switch (key) {
             case Input.KEY_UP:
@@ -113,6 +138,12 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         }
     }
 
+
+    /**
+     * KeyListener interface key up implementation
+     * @param key integer value of the key
+     * @param c char associated to the int value
+     */
     public void keyReleased(int key, char c) {
         switch (key) {
             case Input.KEY_UP:
@@ -134,8 +165,25 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         }
     }
 
+    /**
+     * key listener interface implementation (empty)
+     * @param input the input
+     */
     @Override public void setInput(Input input) {}
+
+    /**
+     * key listener interface implementation (empty)
+     * @return false
+     */
     @Override public boolean isAcceptingInput() { return false; }
+
+    /**
+     * key listener interface implementation (empty)
+     */
     @Override public void inputEnded() {}
+
+    /**
+     * key listener interface implementation (empty)
+     */
     @Override public void inputStarted() {}
 }
