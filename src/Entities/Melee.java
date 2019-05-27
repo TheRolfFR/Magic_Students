@@ -16,11 +16,6 @@ public abstract class Melee extends Monster implements MeleeAttack {
     }
 
     @Override
-    public Shape getBounds() {
-        return new Rectangle(position.x, position.y, width, height);
-    }
-
-    @Override
     public int getWidth() { return this.width; }
     @Override
     public int getHeight() { return this.height; }

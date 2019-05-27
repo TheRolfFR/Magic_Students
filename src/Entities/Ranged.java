@@ -16,11 +16,6 @@ public abstract class Ranged extends Monster implements RangedAttack {
     }
 
     @Override
-    public Shape getBounds() {
-        return new Rectangle(position.x, position.y, width, height);
-    }
-
-    @Override
     protected int getWidth() { return this.width; }
     @Override
     protected int getHeight() { return this.height; }

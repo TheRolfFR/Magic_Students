@@ -11,10 +11,6 @@ public class Fireball extends Projectile {
         this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
     }
 
-    @Override
-    public Shape getBounds(){
-        return new Circle(position.x, position.y, this.getWidth());
-    }
 
     @Override
     protected int getWidth() {

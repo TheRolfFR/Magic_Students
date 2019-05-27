@@ -10,6 +10,7 @@ import org.newdawn.slick.geom.Vector2f;
 public abstract class Entity {
     protected Vector2f position;
     protected Vector2f speed;
+    protected int radius;
 
     private float MAX_SPEED;
     private float ACCELERATION_RATE;
@@ -24,6 +25,12 @@ public abstract class Entity {
      * @return hitbox top left corner
      */
     public Vector2f getPosition() { return this.position; }
+
+    /**
+     * Returns hitbox radius
+     * @return hitbox radius
+     */
+    public int getRadius() { return this.radius; }
 
     /**
      * Returns entity speed
@@ -49,11 +56,6 @@ public abstract class Entity {
      */
     protected abstract int getHeight();
 
-    /**
-     * Returns the associated hitbox shape
-     * @return the associated hitbox shape
-     */
-    public abstract Shape getBounds();
 
     /**
      * Allows to show the debug rect shape
@@ -211,6 +213,6 @@ public abstract class Entity {
      * @return whether it collides with another entity
      */
     public boolean collides(Entity other){
-        return this.getBounds().intersects(other.getBounds());
+        return (this.position.copy().sub(other.getPosition()).length()<this.radius+other.getRadius());
     }
 }
