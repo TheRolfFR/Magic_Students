@@ -17,7 +17,7 @@ public class Snowball extends Projectile {
      * Returns the associated hitbox shape
      * @return the associated hitbox shape
      */
-    @Override
+
     public Shape getBounds(){
         return new Circle(position.x + this.getWidth()/2, position.y + this.getHeight()/2, this.getWidth()/2);
     }

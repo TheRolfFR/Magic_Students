@@ -94,6 +94,9 @@ public class MainClass extends BasicGame
     public void update(GameContainer gc, int i) {
         this.player.update();
         this.rusher.update(this.player);
+        if (rusher.collides(player)){
+            rusher.collidingAction(player);
+        }
     }
 
     @Override

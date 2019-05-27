@@ -58,11 +58,6 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.playerProjectiles.add(new Snowball(this.getPosition(), direction));
     }
 
-    @Override
-    public Shape getBounds() {
-        return new Rectangle(position.x, position.y, width, height);
-    }
-
     /**
      * In game calculations
      */
