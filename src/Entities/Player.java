@@ -30,6 +30,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     /**
      * Single contructor
      *
+     * @param gc game container
      * @param x initial x position of the player
      * @param y initial y position of the player
      * @param width hitbox width of the player
@@ -37,7 +38,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * @param maxSpeed max speed of the player
      * @param accelerationRate max acceleration of the player
      */
-    public Player(float x, float y, int width, int height, float maxSpeed, float accelerationRate) {
+    public Player(GameContainer gc, float x, float y, int width, int height, float maxSpeed, float accelerationRate) {
         super(x, y, maxSpeed, accelerationRate, 100, 10);
         this.width = width;
         this.height = height;
@@ -48,6 +49,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.keyRight = false;
 
         this.playerProjectiles = new LinkedList<Projectile>();
+        gc.getInput().addKeyListener(this);
     }
 
     /**

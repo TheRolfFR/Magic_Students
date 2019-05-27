@@ -71,7 +71,7 @@ public class MainClass extends BasicGame
         Vector2f tileSize = new Vector2f(48, 48);
         int[] viewFrames =  {2, 2, 2, 2, 2, 2, 2, 2};
 
-        this.player = new Player(100, 100, (int) tileSize.getX(), (int) tileSize.getY(),
+        this.player = new Player(gc,100, 100, (int) tileSize.getX(), (int) tileSize.getY(),
                 450 / MAX_FPS, 135 / MAX_FPS);
         this.player.setRenderer(new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
                 (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
