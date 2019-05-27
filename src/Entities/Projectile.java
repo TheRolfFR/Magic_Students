@@ -4,6 +4,8 @@ import Main.SceneRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Projectile extends Entity {
@@ -41,6 +43,10 @@ public abstract class Projectile extends Entity {
             opponent.takeDamage(damage);
             //kill();
         }
+    }
+
+    public Shape getBounds(){
+        return new Circle(position.x,position.y,radius);
     }
 
     public void update() {

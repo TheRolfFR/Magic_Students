@@ -5,7 +5,7 @@ import static java.lang.Math.round;
 public abstract class LivingBeing extends Entity {
     private int currentHealthPoints;
     private int maxHealthPoints;
-    private int weight;
+    protected int weight;
     private float armorPoints;
 
     /**
@@ -38,6 +38,7 @@ public abstract class LivingBeing extends Entity {
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
+        this.weight = 2;
     }
 
     /**
@@ -58,7 +59,7 @@ public abstract class LivingBeing extends Entity {
 
     public void collidingAction(LivingBeing opponent) {
         if (collides(opponent)){
-            if (weight<opponent.getWeight()){
+            if (weight<=opponent.getWeight()){
                 tpOutside(opponent);
             }
             else {

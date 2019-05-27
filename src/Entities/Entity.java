@@ -106,6 +106,7 @@ public abstract class Entity {
         this.speed = new Vector2f(0, 0);
         this.MAX_SPEED = maxSpeed;
         this.ACCELERATION_RATE = accelerationRate;
+        radius = 20;
 
         this.showDebugRect = false;
         this.renderer = null;
