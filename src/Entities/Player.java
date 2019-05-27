@@ -175,7 +175,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * key listener interface implementation (empty)
      * @return false
      */
-    @Override public boolean isAcceptingInput() { return false; }
+    @Override public boolean isAcceptingInput() { return true; }
 
     /**
      * key listener interface implementation (empty)

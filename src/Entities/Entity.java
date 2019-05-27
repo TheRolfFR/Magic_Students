@@ -153,7 +153,7 @@ public abstract class Entity {
         this.speed.add(acceleration);
 
         if (this.speed.length() > this.MAX_SPEED) {
-            this.speed.normalise().scale(this.MAX_SPEED);
+            this.speed.normalise().scale(this.MAX_SPEED * MainClass.getInGameTimeScale().getTimeScale());
         }
 
         if (this.speed.getX() > -SPEED_THRESHOLD  && this.speed.getX() < SPEED_THRESHOLD) {
@@ -169,7 +169,7 @@ public abstract class Entity {
      * Moves the entity
      */
     public void move() {
-        this.position.add(this.speed);
+        this.position.add(this.speed.scale(MainClass.getInGameTimeScale().getTimeScale()));
 
         if (this.position.x < 0) {
             this.position.set(0, this.position.y);

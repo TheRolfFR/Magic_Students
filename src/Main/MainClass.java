@@ -5,6 +5,7 @@ import Entities.Rusher;
 import Entities.Snowball;
 import Entities.SpriteRenderer;
 import HUD.HealthBar;
+import HUD.PauseMenu;
 import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -21,9 +22,37 @@ public class MainClass extends BasicGame
     public static int WIDTH = 640;
     public static int HEIGHT = 480;
 
+    private static TimeScale inGameTimeScale = new TimeScale(1f);
+    private static TimeScale guiTimeScale = new TimeScale(1f);
+
     private static GameContainer instanceGameContainer;
+    private static MainClass instance = null;
 
     private HealthBar healthBar;
+
+    private PauseMenu menu;
+
+    public static boolean isGamePaused() {
+        return instance.menu.isActive();
+    }
+
+    public static void setGamePaused(boolean gamePaused) {
+        getInGameTimeScale().setTimeScale((gamePaused) ? 0f : 1f);
+        instance.menu.setActive(gamePaused);
+    }
+
+    public static void triggerGamePaused() {
+        getInGameTimeScale().setTimeScale((isGamePaused()) ? 1f : 0f);
+        instance.menu.setActive(isGamePaused() == false);
+    }
+
+    public static TimeScale getInGameTimeScale() {
+        return inGameTimeScale;
+    }
+
+    public static TimeScale getGuiTimeScale() {
+        return guiTimeScale;
+    }
 
     public static Input getInput() {
         return instanceGameContainer.getInput();
@@ -34,6 +63,8 @@ public class MainClass extends BasicGame
     @Override
     public void init(GameContainer gc) throws SlickException {
         instanceGameContainer = gc;
+        instance = this;
+        menu = new PauseMenu(gc);
 
         Image original = new Image("img/24x24.png", false, Image.FILTER_NEAREST);
         original = original.getScaledCopy(2);
@@ -67,7 +98,10 @@ public class MainClass extends BasicGame
 
     @Override
     public void keyPressed(int key, char c) {
-        this.player.keyPressed(key, c);
+
+        if(key == Input.KEY_ESCAPE) {
+            triggerGamePaused();
+        }
     }
 
     @Override
@@ -83,6 +117,7 @@ public class MainClass extends BasicGame
         this.rusher.render(g);
 
         this.healthBar.render(g);
+        this.menu.render(g);
     }
 
     public static void main(String[] args) {
