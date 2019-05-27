@@ -4,6 +4,7 @@ import Entities.Player;
 import Entities.Rusher;
 import Entities.Snowball;
 import Entities.SpriteRenderer;
+import HUD.Button;
 import HUD.HealthBar;
 import HUD.PauseMenu;
 import org.lwjgl.Sys;

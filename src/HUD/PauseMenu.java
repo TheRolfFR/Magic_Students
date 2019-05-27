@@ -6,6 +6,10 @@ import org.newdawn.slick.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Pause menu graphic interface
+ * @author TheRolf
+ */
 public class PauseMenu implements MouseListener {
     private Image background;
     private List<Button> buttons;
@@ -18,14 +22,26 @@ public class PauseMenu implements MouseListener {
 
     public boolean isActive;
 
+    /**
+     * Returns whether the menu is visible
+     * @return whether the menu is visible
+     */
     public boolean isActive() {
         return isActive;
     }
 
+    /**
+     * Set active or not the menu
+     * @param active the state of the menu
+     */
     public void setActive(boolean active) {
         isActive = active;
     }
 
+    /**
+     * Default constructor
+     * @param gc the GameContainer instance
+     */
     public PauseMenu(GameContainer gc) {
         try {
             this.windowHeight = gc.getHeight();
@@ -218,6 +234,10 @@ public class PauseMenu implements MouseListener {
 
     }
 
+    /**
+     * In game rendering
+     * @param g the graphics to draw on
+     */
     public void render(Graphics g) {
         if(this.isActive()) {
             g.drawImage(this.background, 0, 0);
@@ -229,11 +249,22 @@ public class PauseMenu implements MouseListener {
     }
 
 
+    /**
+     * Implementation of the MouseListener interface (empty)
+     * @param i The amount of the wheel has moved
+     */
     @Override
     public void mouseWheelMoved(int i) {
 
     }
 
+    /**
+     * Implementation of the MouseListener interface : triggered if the menu is active
+     * @param i The index of the button (starting at 0)
+     * @param i1 The x position of the mouse when the button was pressed
+     * @param i2 The y position of the mouse when the button was pressed
+     * @param i3 The number of times the button was clicked
+     */
     @Override
     public void mouseClicked(int i, int i1, int i2, int i3) {
         if(this.isActive()) {
@@ -243,41 +274,83 @@ public class PauseMenu implements MouseListener {
         }
     }
 
+    /**
+     * Implementation of the MouseListener interface (empty)
+     * @param i button
+     * @param i1 x
+     * @param i2 y
+     */
     @Override
     public void mousePressed(int i, int i1, int i2) {
 
     }
 
+    /**
+     * Implementation of the MouseListener interface (empty)
+     * @param i button
+     * @param i1 x
+     * @param i2 y
+     */
     @Override
     public void mouseReleased(int i, int i1, int i2) {
 
     }
 
+    /**
+     * Implementation of the MouseListener interface (empty)
+     * @param i oldx
+     * @param i1 oldy
+     * @param i2 newx
+     * @param i3 newy
+     */
     @Override
     public void mouseMoved(int i, int i1, int i2, int i3) {
 
     }
 
+    /**
+     * Implementation of the MouseListener interface (empty)
+     * @param i oldx
+     * @param i1 oldy
+     * @param i2 newx
+     * @param i3 newy
+     */
     @Override
     public void mouseDragged(int i, int i1, int i2, int i3) {
 
     }
 
+    /**
+     * Implementation of the ControlledInputReciever interface (empty)
+     * @param input The input instance sending events
+     */
     @Override
     public void setInput(Input input) {
 
     }
 
+    /**
+     * Implementation of the ControlledInputReciever interface (empty)
+     * @return True if the input listener should receive events
+     */
     @Override
     public boolean isAcceptingInput() {
         return true;
     }
 
+    /**
+     * Implementation of the ControlledInputReciever interface (empty)
+     * Notification that all input events have been sent for this frame
+     */
     @Override
     public void inputEnded() {
 
     }
 
+    /**
+     * Implementation of the ControlledInputReciever interface (empty)
+     * Notification that input is about to be processed
+     */
     @Override
     public void inputStarted() {
 
