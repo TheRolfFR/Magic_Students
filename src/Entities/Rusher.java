@@ -1,8 +1,8 @@
 package Entities;
 
 public class Rusher extends Melee {
-    public Rusher(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage){
-        super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage);
+    public Rusher(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage, int radius){
+        super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
     }
 
     public void update(LivingBeing target){

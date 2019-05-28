@@ -87,6 +87,7 @@ public abstract class Entity {
     public Entity() {
         this.position = new Vector2f(0, 0);
         this.speed = new Vector2f(0, 0);
+        this.radius = 0;
         this.MAX_SPEED = 0;
         this.ACCELERATION_RATE = 0;
 
@@ -100,49 +101,14 @@ public abstract class Entity {
      * @param y initial y position of the entity
      * @param maxSpeed maximum speed of the entity
      * @param accelerationRate acceleration factor of the entity
+     * @param radius the hitbox radius
      */
-    public Entity(float x, float y, float maxSpeed, float accelerationRate) {
+    public Entity(float x, float y, float maxSpeed, float accelerationRate, int radius) {
         this.position = new Vector2f(x, y);
         this.speed = new Vector2f(0, 0);
         this.MAX_SPEED = maxSpeed;
         this.ACCELERATION_RATE = accelerationRate;
-        radius = 20;
-
-        this.showDebugRect = false;
-        this.renderer = null;
-    }
-
-    /**
-     * Simple constructor with position, initkal speed, maximum speed and acceleration rate
-     * @param x initial x position of the entity
-     * @param y initial y position of the entity
-     * @param vx initial x speed ot the entity
-     * @param vy initial y speed of the entity
-     * @param maxSpeed maximum speed of the entity
-     * @param accelerationRate acceleration factor of the entity
-     */
-    public Entity(float x, float y, float vx, float vy, float maxSpeed, float accelerationRate) {
-        this.position = new Vector2f(x, y);
-        this.speed = new Vector2f(vx, vy);
-        this.MAX_SPEED = maxSpeed;
-        this.ACCELERATION_RATE = accelerationRate;
-
-        this.showDebugRect = false;
-        this.renderer = null;
-    }
-
-    /**
-     * Simple constructor with position, initial speed, maximum speed and acceleration rate
-     * @param position initial position of the entity
-     * @param speed intial speed of the entity
-     * @param maxSpeed maximum speed of the entity
-     * @param accelerationRate acceleration factor of the entity
-     */
-    public Entity(Vector2f position, Vector2f speed, float maxSpeed, float accelerationRate) {
-        this.position = position;
-        this.speed = speed;
-        this.MAX_SPEED = maxSpeed;
-        this.ACCELERATION_RATE = accelerationRate;
+        this.radius = radius;
 
         this.showDebugRect = false;
         this.renderer = null;
@@ -214,6 +180,6 @@ public abstract class Entity {
      * @return whether it collides with another entity
      */
     public boolean collides(Entity other){
-        return (this.position.copy().sub(other.getPosition()).length()<this.radius+other.getRadius());
+        return (this.position.copy().sub(other.getPosition()).length() < this.radius+other.getRadius());
     }
 }

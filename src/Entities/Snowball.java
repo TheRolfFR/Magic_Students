@@ -12,6 +12,7 @@ public class Snowball extends Projectile {
     private static final float MAX_SPEED = 250/ MainClass.MAX_FPS;
     private static final float ACCELERATION_RATE = 135/ MainClass.MAX_FPS;
     private static final String IMAGE_PATH = "img/snowball.png";
+    private static final int RADIUS = 10;
 
     /**
      * Returns the associated hitbox shape
@@ -57,7 +58,7 @@ public class Snowball extends Projectile {
      * @param direction the direction vector
      */
     public Snowball(Vector2f position, Vector2f direction) {
-        super(position.getX(), position.getY(), MAX_SPEED, ACCELERATION_RATE, direction, IMAGE_PATH);
+        super(position.getX(), position.getY(), MAX_SPEED, ACCELERATION_RATE, direction, IMAGE_PATH, RADIUS);
 
         this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
     }
@@ -69,7 +70,7 @@ public class Snowball extends Projectile {
      * @param direction the direction of the snowball
      */
     public Snowball(float x, float y, Vector2f direction) {
-        super(x, y, MAX_SPEED, ACCELERATION_RATE, direction, IMAGE_PATH);
+        super(x, y, MAX_SPEED, ACCELERATION_RATE, direction, IMAGE_PATH, RADIUS);
 
         this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
     }
@@ -84,7 +85,7 @@ public class Snowball extends Projectile {
      * @param direction the direction vector
      */
     public Snowball(float x, float y, float maxSpeed, float accelerationRate, String imagePath, Vector2f direction) {
-        super(x, y, maxSpeed, accelerationRate, direction, imagePath);
+        super(x, y, maxSpeed, accelerationRate, direction, imagePath, RADIUS);
 
         this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
     }

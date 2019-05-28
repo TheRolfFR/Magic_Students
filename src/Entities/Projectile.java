@@ -18,8 +18,8 @@ public abstract class Projectile extends Entity {
         return opacity;
     }
 
-    Projectile(float x, float y, float maxSpeed, float accelerationRate, Vector2f direction, String imagePath) {
-        super(x, y, maxSpeed, accelerationRate);
+    Projectile(float x, float y, float maxSpeed, float accelerationRate, Vector2f direction, String imagePath, int radius) {
+        super(x, y, maxSpeed, accelerationRate, radius);
         this.direction = direction;
 
         this.image = null;

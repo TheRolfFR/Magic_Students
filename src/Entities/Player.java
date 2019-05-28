@@ -9,9 +9,11 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Player extends LivingBeing implements MeleeAttack, RangedAttack, KeyListener {
+
     protected int width;
     protected int height;
 
@@ -20,7 +22,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     private boolean keyLeft;
     private boolean keyRight;
 
-    private LinkedList<Projectile> playerProjectiles;
+    private ArrayList<Projectile> playerProjectiles;
 
     @Override
     public int getWidth() { return this.width; }
@@ -38,8 +40,8 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * @param maxSpeed max speed of the player
      * @param accelerationRate max acceleration of the player
      */
-    public Player(GameContainer gc, float x, float y, int width, int height, float maxSpeed, float accelerationRate) {
-        super(x, y, maxSpeed, accelerationRate, 100, 10);
+    public Player(GameContainer gc, float x, float y, int width, int height, float maxSpeed, float accelerationRate, int radius) {
+        super(x, y, maxSpeed, accelerationRate, 100, 10, radius);
         this.width = width;
         this.height = height;
 
@@ -48,7 +50,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.keyLeft = false;
         this.keyRight = false;
 
-        this.playerProjectiles = new LinkedList<Projectile>();
+        this.playerProjectiles = new ArrayList<Projectile>();
         gc.getInput().addKeyListener(this);
     }
 
@@ -56,7 +58,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * Do an attack
      */
     private void doAttack() {
-        Vector2f direction = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getPosition());
+        Vector2f direction = new Vector2f( MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY() ).sub( this.getPosition() );
         this.playerProjectiles.add(new Snowball(this.getPosition(), direction));
     }
 

@@ -8,8 +8,8 @@ import java.lang.Math;
 public class Arrow extends Projectile {
 
     public Arrow(float x, float y, float maxSpeed, float accelerationRate, String imagePath, Vector2f direction,
-                 int hitBoxSize) {
-        super(x, y, maxSpeed, accelerationRate, direction, imagePath);
+                 int hitBoxSize, int radius) {
+        super(x, y, maxSpeed, accelerationRate, direction, imagePath, radius);
 
         this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
         this.radius = hitBoxSize;

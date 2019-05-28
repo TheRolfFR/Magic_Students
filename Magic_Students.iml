@@ -10,5 +10,6 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="lwjgl-2.9" level="project" />
     <orderEntry type="library" name="slick" level="project" />
+    <orderEntry type="library" name="org-json" level="project" />
   </component>
 </module>

@@ -1,16 +1,16 @@
 package Entities;
 
 import Entities.Attacks.RangedAttack;
-
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
+import java.util.ArrayList;
 
 public abstract class Ranged extends Monster implements RangedAttack {
     protected int width;
     protected int height;
 
-    public Ranged(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage){
-        super(x,y,maxSpeed,accelerationRate,hpCount,armor, damage);
+    protected static ArrayList<Projectile> enemyProjectiles = new ArrayList<>();
+
+    public Ranged(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
+        super(x,y,maxSpeed,accelerationRate,hpCount,armor, damage, radius);
         this.width=width;
         this.height=height;
     }

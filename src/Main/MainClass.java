@@ -1,9 +1,6 @@
 package Main;
 
-import Entities.Player;
-import Entities.Rusher;
-import Entities.Snowball;
-import Entities.SpriteRenderer;
+import Entities.*;
 import HUD.Button;
 import HUD.HealthBar;
 import HUD.PauseMenu;
@@ -73,14 +70,14 @@ public class MainClass extends BasicGame
         int[] viewFrames =  {2, 2, 2, 2, 2, 2, 2, 2};
 
         this.player = new Player(gc,100, 100, (int) tileSize.getX(), (int) tileSize.getY(),
-                450 / MAX_FPS, 135 / MAX_FPS);
+                450 / MAX_FPS, 135 / MAX_FPS, (int) Math.round(0.4*tileSize.getY()));
         this.player.setRenderer(new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
                 (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.player.setShowDebugRect(true);
 
         this.rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
                 150 / MAX_FPS, 60 / MAX_FPS, 100, 5f,
-                10);
+                10, (int) Math.round(0.4*tileSize.getY()));
         this.rusher.setRenderer(new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
                 (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.rusher.setShowDebugRect(true);
@@ -89,6 +86,8 @@ public class MainClass extends BasicGame
         SceneRenderer.generateBackground("img/ground.png", gc);
 
         gc.getInput().addKeyListener(this.player);
+
+        System.out.println(Configuration.getConfigurationFile().getJSONObject("glossary").getString("title"));
     }
 
     @Override
@@ -117,14 +116,14 @@ public class MainClass extends BasicGame
     public void render(GameContainer gc, Graphics g) {
         SceneRenderer.renderBackground(g, 0, 0);
 
-        this.player.render(g);
-        this.rusher.render(g);
+        LivingBeing.sortAndRenderLivingBeings(g);
 
         this.healthBar.render(g);
         this.menu.render(g);
     }
 
     public static void main(String[] args) {
+        float arr[] = {2,3,5,6,6,0,7};
         try {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));

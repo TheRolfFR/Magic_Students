@@ -1,12 +1,29 @@
 package Entities;
 
+import org.newdawn.slick.Graphics;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import static java.lang.Math.round;
 
-public abstract class LivingBeing extends Entity {
+public abstract class LivingBeing extends Entity implements Comparable {
     private int currentHealthPoints;
     private int maxHealthPoints;
-    protected int weight;
     private float armorPoints;
+
+    protected static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
+
+    /**
+     * In game rendering of all Living beings
+     * @param g the graphics to draw on
+     */
+    public static void sortAndRenderLivingBeings(Graphics g) {
+        Collections.sort(livingBeings);
+
+        for(LivingBeing lb : livingBeings) {
+            lb.render(g);
+        }
+    }
 
     /**
      * Returns the current health points
@@ -33,12 +50,13 @@ public abstract class LivingBeing extends Entity {
      * @param maxHealthPoints maximum health points of the living being
      * @param armorPoints armor points of the living being
      */
-    LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints){
-        super(x, y, maxSpeed, accelerationRate);
+    LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius){
+        super(x, y, maxSpeed, accelerationRate, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
-        this.weight = 2;
+
+        livingBeings.add(this);
     }
 
     /**
@@ -49,22 +67,27 @@ public abstract class LivingBeing extends Entity {
         currentHealthPoints = Math.max(0, currentHealthPoints - round(damage / armorPoints));
     }
 
-    int getWeight(){
-        return this.weight;
-    }
-
     void tpOutside(LivingBeing opponent){
         position = position.add(position.copy().sub(opponent.position).normalise().scale(radius+opponent.radius-opponent.position.copy().sub(position).length()));
     }
 
     public void collidingAction(LivingBeing opponent) {
         if (collides(opponent)){
-            if (weight<=opponent.getWeight()){
+            if (this.getMaxHealthPoints() <= opponent.getMaxHealthPoints()){
                 tpOutside(opponent);
             }
             else {
                 opponent.tpOutside(this);
             }
+        }
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(this.getPosition().getY() > ((LivingBeing) o).getPosition().getY()) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 }

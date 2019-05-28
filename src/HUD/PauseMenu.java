@@ -213,11 +213,13 @@ public class PauseMenu implements MouseListener {
             }));
 
             this.totalButtonsHeight = (this.buttons.size() - 1) * SPACING;
+            for(Button btn : this.buttons) {
+                this.totalButtonsHeight += btn.getHeight();
+            }
             this.totalButtonsWidth = 0;
 
             int offsetY = (this.windowHeight - this.totalButtonsHeight) / 2;
             for(Button btn : this.buttons) {
-                this.totalButtonsHeight += btn.getHeight();
                 this.totalButtonsWidth = Math.max(totalButtonsWidth, btn.getWidth());
 
                 btn.setLocation((this.windowWidth - btn.getWidth())/2, offsetY);
