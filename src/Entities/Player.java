@@ -12,7 +12,7 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Player extends LivingBeing implements MeleeAttack, RangedAttack, KeyListener {
+public class Player extends LivingBeing implements MeleeAttack, RangedAttack, KeyListener, MouseListener{
 
     protected int width;
     protected int height;
@@ -52,6 +52,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
 
         this.playerProjectiles = new ArrayList<Projectile>();
         gc.getInput().addKeyListener(this);
+        gc.getInput().addMouseListener(this);
     }
 
     /**
@@ -140,9 +141,6 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
             case Input.KEY_D:
                 this.keyRight = true;
                 break;
-            case Input.KEY_L:
-                this.doAttack();
-                break;
         }
     }
 
@@ -194,4 +192,33 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * key listener interface implementation (empty)
      */
     @Override public void inputStarted() {}
+
+
+    @Override
+    public void mouseWheelMoved(int change) {
+
+    }
+
+    @Override
+    public void mouseClicked(int button, int x, int y, int clickCount) {
+    }
+
+    @Override
+    public void mousePressed(int button, int x, int y) {
+        this.doAttack();
+    }
+
+    @Override
+    public void mouseReleased(int button, int x, int y) {
+    }
+
+    @Override
+    public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+
+    }
+
+    @Override
+    public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+
+    }
 }
