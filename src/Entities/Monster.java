@@ -13,4 +13,10 @@ public abstract class Monster extends LivingBeing {
             opponent.takeDamage(this.damage);
         }
     }
+
+    /**
+     * method to update the monster during the game
+     * @param opponent the opponent that the monster will react to
+     */
+    public abstract void update(LivingBeing opponent);
 }

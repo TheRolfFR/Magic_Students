@@ -22,6 +22,8 @@ public abstract class Projectile extends Entity {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.direction = direction;
 
+        this.damage = 25;
+
         this.image = null;
 
         this.opacity = 1f;

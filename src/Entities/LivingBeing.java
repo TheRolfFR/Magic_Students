@@ -67,6 +67,10 @@ public abstract class LivingBeing extends Entity implements Comparable {
         currentHealthPoints = Math.max(0, currentHealthPoints - round(damage / armorPoints));
     }
 
+    public boolean isDead(){
+        return this.currentHealthPoints<=0;
+    }
+
     void tpOutside(LivingBeing opponent){
         position = position.add(position.copy().sub(opponent.position).normalise().scale(radius+opponent.radius-opponent.position.copy().sub(position).length()));
     }

@@ -8,13 +8,15 @@ import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainClass extends BasicGame
 {
     private Player player;
-    private Rusher rusher;
+
+    private ArrayList<Monster> enemies = new ArrayList<>();
 
     public static int MAX_FPS = 60;
     public static int WIDTH = 640;
@@ -75,10 +77,10 @@ public class MainClass extends BasicGame
                 (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.player.setShowDebugRect(true);
 
-        this.rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
+        enemies.add(new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
                 150 / MAX_FPS, 60 / MAX_FPS, 100, 5f,
-                10, (int) Math.round(0.4*tileSize.getY()));
-        this.rusher.setRenderer(new SpriteRenderer(this.rusher, tileSize, original.getSubImage(0,
+                10, (int) Math.round(0.4*tileSize.getY())));
+        this.enemies.get(0).setRenderer(new SpriteRenderer(this.enemies.get(0), tileSize, original.getSubImage(0,
                 (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.rusher.setShowDebugRect(true);
 
@@ -93,9 +95,23 @@ public class MainClass extends BasicGame
     @Override
     public void update(GameContainer gc, int i) {
         this.player.update();
-        this.rusher.update(this.player);
-        if (rusher.collides(player)){
-            rusher.collidingAction(player);
+        for(Monster enemy : this.enemies){
+            enemy.update(this.player);
+            if (enemy.collides(player)){
+                enemy.collidingAction(player);
+                if(this.player.isDead()){
+                    //System.out.println("You Died");
+                }
+            }
+        }
+
+
+        for(int j=0; j<this.enemies.size(); j++){
+            this.player.checkCollidesProjectile(this.enemies.get(j));
+            if(this.enemies.get(j).isDead()){
+                System.out.println("You killed an enemy");
+                this.enemies.remove(this.enemies.get(j));
+            }
         }
     }
 
