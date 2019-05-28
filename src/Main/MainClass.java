@@ -12,10 +12,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.lang.Math.round;
+
 public class MainClass extends BasicGame
 {
     private Player player;
-
     private ArrayList<Monster> enemies = new ArrayList<>();
 
     public static int MAX_FPS = 60;
@@ -72,14 +73,14 @@ public class MainClass extends BasicGame
         int[] viewFrames =  {2, 2, 2, 2, 2, 2, 2, 2};
 
         this.player = new Player(gc,100, 100, (int) tileSize.getX(), (int) tileSize.getY(),
-                450 / MAX_FPS, 135 / MAX_FPS, (int) Math.round(0.4*tileSize.getY()));
+                450 / MAX_FPS, 135 / MAX_FPS, (int) round(0.4*tileSize.getY()));
         this.player.setRenderer(new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
                 (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.player.setShowDebugRect(true);
 
         enemies.add(new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
                 150 / MAX_FPS, 60 / MAX_FPS, 100, 5f,
-                10, (int) Math.round(0.4*tileSize.getY())));
+                10, (int) round(0.4*tileSize.getY())));
         this.enemies.get(0).setRenderer(new SpriteRenderer(this.enemies.get(0), tileSize, original.getSubImage(0,
                 (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.rusher.setShowDebugRect(true);
@@ -100,11 +101,10 @@ public class MainClass extends BasicGame
             if (enemy.collides(player)){
                 enemy.collidingAction(player);
                 if(this.player.isDead()){
-                    //System.out.println("You Died");
+                    triggerGamePaused();
                 }
             }
         }
-
 
         for(int j=0; j<this.enemies.size(); j++){
             this.player.checkCollidesProjectile(this.enemies.get(j));
@@ -136,6 +136,10 @@ public class MainClass extends BasicGame
         LivingBeing.sortAndRenderLivingBeings(g);
 
         this.healthBar.render(g);
+        for(Monster enemy : enemies){
+            enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
+            enemy.getHealthBar().render(g);
+        }
         this.menu.render(g);
     }
 

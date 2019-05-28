@@ -7,8 +7,8 @@ import org.newdawn.slick.Graphics;
 import static java.lang.Math.round;
 
 public class HealthBar {
-    private static final int x = 80;
-    private static final int y = 10;
+    private int x;
+    private int y;
     private static final int width = 50;
     private static final int height = 10;
 
@@ -16,6 +16,14 @@ public class HealthBar {
 
     public HealthBar(LivingBeing being) {
         this.being = being;
+        this.x = 80;
+        this.y = 10;
+    }
+
+    public HealthBar(LivingBeing being, int x, int y){
+        this.being = being;
+        this.x = x;
+        this.y = y;
     }
 
     public void render(Graphics g){
