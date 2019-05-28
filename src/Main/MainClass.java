@@ -110,6 +110,7 @@ public class MainClass extends BasicGame
             this.player.checkCollidesProjectile(this.enemies.get(j));
             if(this.enemies.get(j).isDead()){
                 System.out.println("You killed an enemy");
+                this.enemies.get(j).setRenderer(null);
                 this.enemies.remove(this.enemies.get(j));
             }
         }
