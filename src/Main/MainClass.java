@@ -115,6 +115,31 @@ public class MainClass extends BasicGame
         for (Monster m: enemies) {
             m.update(player);
         }
+        int j;
+        for (i = 0; i<this.player.playerProjectiles.size(); i++){
+            for(j = 0; j<this.enemies.size(); j++){
+                this.player.playerProjectiles.get(i).collidingAction(enemies.get(j));
+                if (enemies.get(j).isDead()){
+                    this.enemies.get(j).setRenderer(null);
+                    this.enemies.remove(this.enemies.get(j));
+                }
+            }
+            if (player.playerProjectiles.get(i).isDead()){
+                this.player.playerProjectiles.get(i).setRenderer(null);
+                this.player.playerProjectiles.remove(this.player.playerProjectiles.get(i));
+            }
+        }
+        for (i = 0; i<Ranged.enemyProjectiles.size(); i++){
+            Ranged.enemyProjectiles.get(i).collidingAction(player);
+            if (Ranged.enemyProjectiles.get(i).isDead()){
+                Ranged.enemyProjectiles.get(i).setRenderer(null);
+                Ranged.enemyProjectiles.remove(Ranged.enemyProjectiles.get(i));
+            }
+        }
+        for (Monster m: this.enemies) {
+            m.collidingAction(player);
+        }
+
          */
         for (int j=0; j<this.enemies.size(); j++) {
             this.player.checkCollidesProjectile(this.enemies.get(j));
