@@ -5,12 +5,9 @@ import Entities.Attacks.RangedAttack;
 
 import Main.MainClass;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Player extends LivingBeing implements MeleeAttack, RangedAttack, KeyListener, MouseListener{
 
@@ -50,7 +47,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.keyLeft = false;
         this.keyRight = false;
 
-        this.playerProjectiles = new ArrayList<Projectile>();
+        this.playerProjectiles = new ArrayList<>();
         gc.getInput().addKeyListener(this);
         gc.getInput().addMouseListener(this);
     }
@@ -87,12 +84,13 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.move();
 
         Projectile p;
-        for(int i = 0; i < playerProjectiles.size(); i++) {
+        for (int i = 0; i < playerProjectiles.size(); i++) {
             p = playerProjectiles.get(i);
             p.update();
 
-            if(p.isFadeOut()) {
+            if (p.isFadeOut()) {
                 playerProjectiles.remove(i);
+                i--;
             }
         }
     }

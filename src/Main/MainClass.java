@@ -1,10 +1,8 @@
 package Main;
 
 import Entities.*;
-import HUD.Button;
 import HUD.HealthBar;
 import HUD.PauseMenu;
-import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -33,7 +31,7 @@ public class MainClass extends BasicGame
 
     private PauseMenu menu;
 
-    public static boolean isGamePaused() {
+    private static boolean isGamePaused() {
         return instance.menu.isActive();
     }
 
@@ -42,9 +40,9 @@ public class MainClass extends BasicGame
         instance.menu.setActive(gamePaused);
     }
 
-    public static void triggerGamePaused() {
+    private static void triggerGamePaused() {
         getInGameTimeScale().setTimeScale((isGamePaused()) ? 1f : 0f);
-        instance.menu.setActive(isGamePaused() == false);
+        instance.menu.setActive(!isGamePaused());
     }
 
     public static TimeScale getInGameTimeScale() {
@@ -78,12 +76,13 @@ public class MainClass extends BasicGame
                 (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.player.setShowDebugRect(true);
 
-        enemies.add(new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
+        Rusher rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
                 150 / MAX_FPS, 60 / MAX_FPS, 100, 5f,
-                10, (int) round(0.4*tileSize.getY())));
-        this.enemies.get(0).setRenderer(new SpriteRenderer(this.enemies.get(0), tileSize, original.getSubImage(0,
+                10, (int) round(0.4*tileSize.getY()));
+        rusher.setRenderer(new SpriteRenderer(rusher, tileSize, original.getSubImage(0,
                 (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
-        //this.rusher.setShowDebugRect(true);
+        enemies.add(rusher);
+
 
         this.healthBar = new HealthBar(this.player);
         SceneRenderer.generateBackground("img/ground.png", gc);
@@ -100,15 +99,15 @@ public class MainClass extends BasicGame
             enemy.update(this.player);
             if (enemy.collides(player)){
                 enemy.collidingAction(player);
-                if(this.player.isDead()){
-                    //triggerGamePaused();
+                if (this.player.isDead()){
+                    triggerGamePaused();
                 }
             }
         }
 
-        for(int j=0; j<this.enemies.size(); j++){
+        for (int j=0; j<this.enemies.size(); j++) {
             this.player.checkCollidesProjectile(this.enemies.get(j));
-            if(this.enemies.get(j).isDead()){
+            if (this.enemies.get(j).isDead()) {
                 System.out.println("You killed an enemy");
                 this.enemies.get(j).setRenderer(null);
                 this.enemies.remove(this.enemies.get(j));
@@ -119,7 +118,7 @@ public class MainClass extends BasicGame
     @Override
     public void keyPressed(int key, char c) {
 
-        if(key == Input.KEY_ESCAPE) {
+        if (key == Input.KEY_ESCAPE) {
             triggerGamePaused();
         }
     }
@@ -136,7 +135,7 @@ public class MainClass extends BasicGame
         LivingBeing.sortAndRenderLivingBeings(g);
 
         this.healthBar.render(g);
-        for(Monster enemy : enemies){
+        for (Monster enemy: enemies){
             enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
             enemy.getHealthBar().render(g);
         }
@@ -144,7 +143,7 @@ public class MainClass extends BasicGame
     }
 
     public static void main(String[] args) {
-        float arr[] = {2,3,5,6,6,0,7};
+        float arr[] = {2,3,5,6,6,0,7}; // ?
         try {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));

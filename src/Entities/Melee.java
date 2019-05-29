@@ -2,9 +2,6 @@ package Entities;
 
 import Entities.Attacks.MeleeAttack;
 
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
-
 public abstract class Melee extends Monster implements MeleeAttack {
     protected int width;
     protected int height;

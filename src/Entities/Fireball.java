@@ -1,7 +1,5 @@
 package Entities;
 
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Fireball extends Projectile {

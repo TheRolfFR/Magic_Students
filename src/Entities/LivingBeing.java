@@ -11,7 +11,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     private int maxHealthPoints;
     private float armorPoints;
 
-    protected static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
+    private static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
 
     /**
      * In game rendering of all Living beings
@@ -71,7 +71,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         return this.currentHealthPoints<=0;
     }
 
-    void tpOutside(LivingBeing opponent){
+    private void tpOutside(LivingBeing opponent){
         position = position.add(position.copy().sub(opponent.position).normalise().scale(radius+opponent.radius-opponent.position.copy().sub(position).length()));
     }
 
@@ -88,7 +88,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        if(this.getPosition().getY() > ((LivingBeing) o).getPosition().getY()) {
+        if (this.getPosition().getY() > ((LivingBeing) o).getPosition().getY()) {
             return 1;
         } else {
             return 0;

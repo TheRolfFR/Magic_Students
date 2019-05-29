@@ -1,7 +1,6 @@
 package Entities;
 
 import Main.MainClass;
-import Main.SceneRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
@@ -20,7 +19,7 @@ public class Snowball extends Projectile {
      */
 
     public Shape getBounds(){
-        return new Circle(position.x + this.getWidth()/2, position.y + this.getHeight()/2, this.getWidth()/2);
+        return new Circle(position.x + this.getWidth() / 2f, position.y + this.getHeight() / 2f, this.getWidth()/2);
     }
 
     /**
