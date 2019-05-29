@@ -94,9 +94,9 @@ public class MainClass extends BasicGame
 
     @Override
     public void update(GameContainer gc, int i) {
-        this.player.update(i);
+        this.player.update();
         for(Monster enemy : this.enemies){
-            enemy.update(this.player, i);
+            enemy.update(this.player);
             if (enemy.collides(player)){
                 enemy.collidingAction(player);
                 if (this.player.isDead()){
@@ -158,7 +158,7 @@ public class MainClass extends BasicGame
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));
             appgc.setDisplayMode(WIDTH, HEIGHT, false);
-            appgc.setTargetFrameRate(30);
+            appgc.setTargetFrameRate(MAX_FPS);
             appgc.start();
         }
         catch (SlickException ex)

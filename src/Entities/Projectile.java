@@ -52,7 +52,7 @@ public abstract class Projectile extends Entity {
     }
 
     public void update(int i) {
-        this.updateSpeed(this.direction.normalise().scale(this.getAccelerationRate()), i);
+        this.updateSpeed(this.direction.normalise().scale(this.getAccelerationRate()));
         this.move();
 
         if(!SceneRenderer.inRoomLimits(this.getBounds())) {
