@@ -104,18 +104,18 @@ public class MainClass extends BasicGame
                 }
             }
         }
-        /*
-        this.player.update();
-        for(Projectile p: Ranged.enemyProjectiles){
-            p.update();
-        }
-        for (Projectile p: Player.playerProjectiles){
-            p.update();
-        }
-        for (Monster m: enemies) {
-            m.update(player);
-        }
-         */
+
+//        this.player.update(i);
+//        for(Projectile p: Ranged.enemyProjectiles){
+//            p.update(i);
+//        }
+//        for (Projectile p: Player.playerProjectiles){
+//            p.update(i);
+//        }
+//        for (Monster m: enemies) {
+//            m.update(this.player, i);
+//        }
+
         for (int j=0; j<this.enemies.size(); j++) {
             this.player.checkCollidesProjectile(this.enemies.get(j));
             if (this.enemies.get(j).isDead()) {
@@ -158,7 +158,7 @@ public class MainClass extends BasicGame
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));
             appgc.setDisplayMode(WIDTH, HEIGHT, false);
-            appgc.setTargetFrameRate(MAX_FPS);
+            appgc.setTargetFrameRate(30);
             appgc.start();
         }
         catch (SlickException ex)
