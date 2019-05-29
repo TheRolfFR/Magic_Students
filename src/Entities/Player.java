@@ -19,7 +19,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     private boolean keyLeft;
     private boolean keyRight;
 
-    private static ArrayList<Projectile> playerProjectiles;
+    public static ArrayList<Projectile> playerProjectiles;
 
     @Override
     public int getWidth() { return this.width; }
