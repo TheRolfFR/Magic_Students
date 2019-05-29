@@ -154,6 +154,10 @@ public abstract class Entity {
         }
     }
 
+    public Vector2f getCenter(){
+        return new Vector2f(position.copy().x+this.getWidth(),position.copy().y+getHeight());
+    }
+
     /**
      * In game rendering
      * @param g the graphics to draw on
@@ -189,6 +193,6 @@ public abstract class Entity {
      * @return whether it collides with another entity
      */
     public boolean collides(Entity other){
-        return (this.position.copy().sub(other.getPosition()).length() < this.radius+other.getRadius());
+        return (this.getCenter().sub(other.getCenter()).length() < this.radius+other.getRadius());
     }
 }

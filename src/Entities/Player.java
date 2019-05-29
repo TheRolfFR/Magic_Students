@@ -38,7 +38,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * @param accelerationRate max acceleration of the player
      */
     public Player(GameContainer gc, float x, float y, int width, int height, float maxSpeed, float accelerationRate, int radius) {
-        super(x, y, maxSpeed, accelerationRate, 100, 10, radius);
+        super(x, y, maxSpeed, accelerationRate, 100, 1000, radius);
         this.width = width;
         this.height = height;
 
@@ -83,18 +83,14 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         }
         this.move();
 
-        for (int i = 0; i < playerProjectiles.size(); i++) {
-            Projectile p = playerProjectiles.get(i);
-            p.update(i);
+        Projectile p;
+        for (int j = 0; j < playerProjectiles.size(); j++) {
+            p = playerProjectiles.get(j);
+            p.update(j);
 
-            for (int j = 0; j < playerProjectiles.size(); j++) {
-                p = playerProjectiles.get(j);
-                p.update(j);
-
-                if (p.isFadeOut()) {
-                    playerProjectiles.remove(j);
-                    j--;
-                }
+            if (p.isFadeOut()) {
+                playerProjectiles.remove(j);
+                j--;
             }
         }
     }
