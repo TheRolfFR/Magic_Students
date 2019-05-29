@@ -2,6 +2,7 @@ package Entities;
 
 import Main.MainClass;
 
+import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;

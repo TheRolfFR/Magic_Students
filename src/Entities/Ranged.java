@@ -10,7 +10,7 @@ public abstract class Ranged extends Monster implements RangedAttack {
     protected static ArrayList<Projectile> enemyProjectiles = new ArrayList<>();
 
     public Ranged(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
-        super(x,y,maxSpeed,accelerationRate,hpCount,armor, damage, radius);
+        super(x , y, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
         this.width=width;
         this.height=height;
     }

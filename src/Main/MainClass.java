@@ -35,6 +35,26 @@ public class MainClass extends BasicGame
         return instance.menu.isActive();
     }
 
+    public void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames){
+        for(int i=0; i<Math.round(Math.random()*10); i++){
+            switch((int) Math.round(Math.random()*1)){
+                case 0 :
+                    Bowman tmpb = new Bowman((int) Math.round(Math.random()*WIDTH), (int) Math.round(Math.random()*HEIGHT), (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
+                    tmpb.setRenderer(new SpriteRenderer(tmpb, tileSize, skin.getSubImage(0,
+                            (int) tileSize.getY()*3, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
+                    this.enemies.add(tmpb);
+                    break;
+                case 1 :
+                    Rusher tmpr = new Rusher((int) Math.round(Math.random()*WIDTH), (int) Math.round(Math.random()*HEIGHT), (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
+                    tmpr.setRenderer(new SpriteRenderer(tmpr, tileSize, skin.getSubImage(0,
+                            (int) tileSize.getY()*2, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
+                    this.enemies.add(tmpr);
+                    break;
+                default: break;
+            }
+        }
+    }
+
     public static void setGamePaused(boolean gamePaused) {
         getInGameTimeScale().setTimeScale((gamePaused) ? 0f : 1f);
         instance.menu.setActive(gamePaused);
@@ -76,12 +96,7 @@ public class MainClass extends BasicGame
                 (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.player.setShowDebugRect(true);
 
-        Rusher rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
-                150 / MAX_FPS, 60 / MAX_FPS, 100, 5f,
-                10, (int) round(0.4*tileSize.getY()));
-        rusher.setRenderer(new SpriteRenderer(rusher, tileSize, original.getSubImage(0,
-                (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
-        enemies.add(rusher);
+        generateEnemies(original, tileSize, viewFrames);
 
 
         this.healthBar = new HealthBar(this.player);
@@ -100,7 +115,7 @@ public class MainClass extends BasicGame
             if (enemy.collides(player)){
                 enemy.collidingAction(player);
                 if (this.player.isDead()){
-                    triggerGamePaused();
+                    //triggerGamePaused();
                 }
             }
         }

@@ -83,9 +83,8 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         }
         this.move();
 
-        Projectile p;
         for (int i = 0; i < playerProjectiles.size(); i++) {
-            p = playerProjectiles.get(i);
+            Projectile p = playerProjectiles.get(i);
             p.update();
 
             if (p.isFadeOut()) {
