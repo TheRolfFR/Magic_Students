@@ -19,7 +19,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     private boolean keyLeft;
     private boolean keyRight;
 
-    private ArrayList<Projectile> playerProjectiles;
+    public static ArrayList<Projectile> playerProjectiles;
 
     @Override
     public int getWidth() { return this.width; }
@@ -63,34 +63,34 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     /**
      * In game calculations
      */
-    public void update() {
+    public void update(int i) {
         if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
             if (this.keyUp) {
-                this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
+                this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()), i);
             }
             if (this.keyDown) {
-                this.updateSpeed(new Vector2f(0, 1).scale(this.getAccelerationRate()));
+                this.updateSpeed(new Vector2f(0, 1).scale(this.getAccelerationRate()), i);
             }
             if (this.keyLeft) {
-                this.updateSpeed(new Vector2f(-1, 0).scale(this.getAccelerationRate()));
+                this.updateSpeed(new Vector2f(-1, 0).scale(this.getAccelerationRate()), i);
             }
             if (this.keyRight) {
-                this.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()));
+                this.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()), i);
             }
         }
         else {
-            this.updateSpeed(this.getSpeed().negate().scale(0.2f));
+            this.updateSpeed(this.getSpeed().negate().scale(0.2f), i);
         }
         this.move();
 
         Projectile p;
-        for (int i = 0; i < playerProjectiles.size(); i++) {
-            p = playerProjectiles.get(i);
-            p.update();
+        for (int j = 0; j < playerProjectiles.size(); j++) {
+            p = playerProjectiles.get(j);
+            p.update(i);
 
             if (p.isFadeOut()) {
-                playerProjectiles.remove(i);
-                i--;
+                playerProjectiles.remove(j);
+                j--;
             }
         }
     }

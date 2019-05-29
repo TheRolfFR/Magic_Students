@@ -1,5 +1,6 @@
 package Entities;
 
+import Main.MainClass;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Arrow extends Projectile {
@@ -8,7 +9,7 @@ public class Arrow extends Projectile {
                  int hitBoxSize, int radius) {
         super(x, y, maxSpeed, accelerationRate, direction, imagePath, radius);
 
-        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
+        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()), 1 / MainClass.MAX_FPS);
         this.radius = hitBoxSize;
     }
 
