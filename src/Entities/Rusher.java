@@ -5,8 +5,8 @@ public class Rusher extends Melee {
         super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
     }
 
-    public void update(LivingBeing target){
-        this.updateSpeed(target.position.copy().sub(this.position).normalise().scale(this.getAccelerationRate()));
+    public void update(LivingBeing target, int i){
+        this.updateSpeed(target.position.copy().sub(this.position).normalise().scale(this.getAccelerationRate()), i);
 
         this.move();
         this.doDamage(target);
