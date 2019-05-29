@@ -100,7 +100,7 @@ public class MainClass extends BasicGame
             if (enemy.collides(player)){
                 enemy.collidingAction(player);
                 if (this.player.isDead()){
-                    triggerGamePaused();
+                    setGamePaused(true);
                 }
             }
         }

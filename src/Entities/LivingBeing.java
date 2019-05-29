@@ -76,7 +76,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void collidingAction(LivingBeing opponent) {
-        while (collides(opponent)){
+        if (collides(opponent)) {
             if (this.getMaxHealthPoints() < opponent.getMaxHealthPoints()){
                 tpOutside(opponent);
             }
