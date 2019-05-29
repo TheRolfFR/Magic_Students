@@ -7,7 +7,7 @@ public class Fireball extends Projectile {
     public Fireball(float x, float y, float maxSpeed, float accelerationRate, String imagePath, Vector2f direction, int radius) {
         super(x, y, maxSpeed, accelerationRate, direction, imagePath, radius);
 
-        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()), 1 / MainClass.MAX_FPS);
+        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
     }
 
 

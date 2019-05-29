@@ -47,7 +47,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.keyLeft = false;
         this.keyRight = false;
 
-        this.playerProjectiles = new ArrayList<>();
+        playerProjectiles = new ArrayList<>();
         gc.getInput().addKeyListener(this);
         gc.getInput().addMouseListener(this);
     }
@@ -57,36 +57,36 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      */
     private void doAttack() {
         Vector2f direction = new Vector2f( MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY() ).sub( this.getPosition() );
-        this.playerProjectiles.add(new Snowball(this.getPosition(), direction));
+        playerProjectiles.add(new Snowball(this.getPosition(), direction));
     }
 
     /**
      * In game calculations
      */
-    public void update(int i) {
+    public void update() {
         if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
             if (this.keyUp) {
-                this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()), i);
+                this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
             }
             if (this.keyDown) {
-                this.updateSpeed(new Vector2f(0, 1).scale(this.getAccelerationRate()), i);
+                this.updateSpeed(new Vector2f(0, 1).scale(this.getAccelerationRate()));
             }
             if (this.keyLeft) {
-                this.updateSpeed(new Vector2f(-1, 0).scale(this.getAccelerationRate()), i);
+                this.updateSpeed(new Vector2f(-1, 0).scale(this.getAccelerationRate()));
             }
             if (this.keyRight) {
-                this.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()), i);
+                this.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()));
             }
         }
         else {
-            this.updateSpeed(this.getSpeed().negate().scale(0.2f), i);
+            this.updateSpeed(this.getSpeed().negate().scale(0.2f));
         }
         this.move();
 
         Projectile p;
         for (int j = 0; j < playerProjectiles.size(); j++) {
             p = playerProjectiles.get(j);
-            p.update(i);
+            p.update(j);
 
             if (p.isFadeOut()) {
                 playerProjectiles.remove(j);
@@ -96,10 +96,10 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     }
 
     public void checkCollidesProjectile(LivingBeing opponent){
-        for(int i=0; i<this.playerProjectiles.size(); i++){
-            if(this.playerProjectiles.get(i).collides(opponent)){
-                this.playerProjectiles.get(i).collidingAction(opponent);
-                this.playerProjectiles.remove(this.playerProjectiles.get(i));
+        for(int i = 0; i< playerProjectiles.size(); i++){
+            if(playerProjectiles.get(i).collides(opponent)){
+                playerProjectiles.get(i).collidingAction(opponent);
+                playerProjectiles.remove(playerProjectiles.get(i));
             }
         }
     }

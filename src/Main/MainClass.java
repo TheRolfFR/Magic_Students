@@ -87,27 +87,54 @@ public class MainClass extends BasicGame
 
     @Override
     public void update(GameContainer gc, int i) {
-        this.player.update(i);
+        this.player.update();
         for(Monster enemy : this.enemies){
-            enemy.update(this.player, i);
+            enemy.update(this.player);
             if (enemy.collides(player)){
                 enemy.collidingAction(player);
                 if (this.player.isDead()){
-                    triggerGamePaused();
+                    setGamePaused(true);
                 }
             }
         }
 
-//        this.player.update(i);
+
+//        this.player.update();
 //        for(Projectile p: Ranged.enemyProjectiles){
-//            p.update(i);
+//            p.update();
 //        }
 //        for (Projectile p: Player.playerProjectiles){
-//            p.update(i);
+//            p.update();
 //        }
 //        for (Monster m: enemies) {
-//            m.update(this.player, i);
+//            m.update(player);
 //        }
+//
+//        for (int j = 0; j< Player.playerProjectiles.size(); j++){
+//            for (int h = 0; h < this.enemies.size(); h++){
+//                Monster enemy = enemies.get(h);
+//                Player.playerProjectiles.get(j).collidingAction(enemy);
+//                if (enemy.isDead()){
+//                    enemy.setRenderer(null);
+//                    this.enemies.remove(enemy);
+//                }
+//            }
+//            if (Player.playerProjectiles.get(j).isDead()){
+//                Player.playerProjectiles.get(j).setRenderer(null);
+//                Player.playerProjectiles.remove(Player.playerProjectiles.get(j));
+//            }
+//        }
+//        for (int j = 0; j < Ranged.enemyProjectiles.size(); j++){
+//            Ranged.enemyProjectiles.get(j).collidingAction(player);
+//            if (Ranged.enemyProjectiles.get(j).isDead()){
+//                Ranged.enemyProjectiles.get(j).setRenderer(null);
+//                Ranged.enemyProjectiles.remove(Ranged.enemyProjectiles.get(j));
+//            }
+//        }
+//        for (Monster m: this.enemies) {
+//            m.collidingAction(player);
+//        }
+
 
         for (int j=0; j<this.enemies.size(); j++) {
             this.player.checkCollidesProjectile(this.enemies.get(j));
@@ -151,7 +178,7 @@ public class MainClass extends BasicGame
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));
             appgc.setDisplayMode(WIDTH, HEIGHT, false);
-            appgc.setTargetFrameRate(30);
+            appgc.setTargetFrameRate(MAX_FPS);
             appgc.start();
         }
         catch (SlickException ex)

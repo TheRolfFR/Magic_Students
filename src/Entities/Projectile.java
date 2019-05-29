@@ -8,11 +8,14 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.security.KeyStore;
+
 public abstract class Projectile extends Entity {
     protected int damage;
     protected Image image;
     protected Vector2f direction;
     protected float opacity;
+    protected boolean isDead;
 
     public float getOpacity() {
         return opacity;
@@ -43,8 +46,12 @@ public abstract class Projectile extends Entity {
     public void collidingAction(LivingBeing opponent) {
         if (collides(opponent)){
             opponent.takeDamage(damage);
-            //kill();
+            this.isDead = true;
         }
+    }
+
+    public boolean isDead(){
+        return this.isDead;
     }
 
     public Shape getBounds(){
@@ -52,7 +59,7 @@ public abstract class Projectile extends Entity {
     }
 
     public void update(int i) {
-        this.updateSpeed(this.direction.normalise().scale(this.getAccelerationRate()), i);
+        this.updateSpeed(this.direction.normalise().scale(this.getAccelerationRate()));
         this.move();
 
         if(!SceneRenderer.inRoomLimits(this.getBounds())) {
