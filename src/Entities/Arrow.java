@@ -1,5 +1,6 @@
 package Entities;
 
+import Main.MainClass;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Arrow extends Projectile {

@@ -32,7 +32,7 @@ public class Bowman extends Ranged {
 
         for (int i = 0; i < monsterProjectiles.size(); i++) {
             Projectile p = monsterProjectiles.get(i);
-            p.update();
+            p.update(i);
 
             if (p.isFadeOut()) {
                 monsterProjectiles.remove(i);

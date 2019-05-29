@@ -159,8 +159,17 @@ public abstract class Entity {
      * @param g the graphics to draw on
      */
     public void render(Graphics g) {
+        this.render(g, this.getSpeed());
+    }
+
+    /**
+     * In game rendering
+     * @param g the graphics to draw on
+     * @param facedDirection the faced direction of the entity
+     */
+    public void render(Graphics g, Vector2f facedDirection) {
         if (this.renderer != null) {
-            this.renderer.render();
+            this.renderer.render(facedDirection);
         }
 
         if (this.showDebugRect) {

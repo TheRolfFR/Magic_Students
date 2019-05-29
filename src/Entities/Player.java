@@ -19,7 +19,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     private boolean keyLeft;
     private boolean keyRight;
 
-    private ArrayList<Projectile> playerProjectiles;
+    public static ArrayList<Projectile> playerProjectiles;
 
     @Override
     public int getWidth() { return this.width; }
@@ -47,7 +47,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         this.keyLeft = false;
         this.keyRight = false;
 
-        this.playerProjectiles = new ArrayList<>();
+        playerProjectiles = new ArrayList<>();
         gc.getInput().addKeyListener(this);
         gc.getInput().addMouseListener(this);
     }
@@ -57,7 +57,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      */
     private void doAttack() {
         Vector2f direction = new Vector2f( MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY() ).sub( this.getPosition() );
-        this.playerProjectiles.add(new Snowball(this.getPosition(), direction));
+        playerProjectiles.add(new Snowball(this.getPosition(), direction));
     }
 
     /**
@@ -85,20 +85,25 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
 
         for (int i = 0; i < playerProjectiles.size(); i++) {
             Projectile p = playerProjectiles.get(i);
-            p.update();
+            p.update(i);
 
-            if (p.isFadeOut()) {
-                playerProjectiles.remove(i);
-                i--;
+            for (int j = 0; j < playerProjectiles.size(); j++) {
+                p = playerProjectiles.get(j);
+                p.update(j);
+
+                if (p.isFadeOut()) {
+                    playerProjectiles.remove(j);
+                    j--;
+                }
             }
         }
     }
 
     public void checkCollidesProjectile(LivingBeing opponent){
-        for(int i=0; i<this.playerProjectiles.size(); i++){
-            if(this.playerProjectiles.get(i).collides(opponent)){
-                this.playerProjectiles.get(i).collidingAction(opponent);
-                this.playerProjectiles.remove(this.playerProjectiles.get(i));
+        for(int i = 0; i< playerProjectiles.size(); i++){
+            if(playerProjectiles.get(i).collides(opponent)){
+                playerProjectiles.get(i).collidingAction(opponent);
+                playerProjectiles.remove(playerProjectiles.get(i));
             }
         }
     }
@@ -108,7 +113,19 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * @param g the graphics to draw on
      */
     public void render(Graphics g) {
-        super.render(g);
+        Vector2f facedDirection = new Vector2f(0,0);
+        if(this.keyDown) {
+            facedDirection.y = 1;
+        } else if(this.keyUp) {
+            facedDirection.y = -1;
+        }
+        if(this.keyRight) {
+            facedDirection.x = 1;
+        } else if(this.keyLeft) {
+            facedDirection.x = -1;
+        }
+
+        super.render(g, facedDirection);
 
         for(Projectile p : playerProjectiles) {
             p.render(g);
