@@ -143,7 +143,6 @@ public class MainClass extends BasicGame
     }
 
     public static void main(String[] args) {
-        float arr[] = {2,3,5,6,6,0,7}; // ?
         try {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));
