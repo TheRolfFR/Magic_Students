@@ -109,7 +109,19 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * @param g the graphics to draw on
      */
     public void render(Graphics g) {
-        super.render(g);
+        Vector2f facedDirection = new Vector2f(0,0);
+        if(this.keyDown) {
+            facedDirection.y = 1;
+        } else if(this.keyUp) {
+            facedDirection.y = -1;
+        }
+        if(this.keyRight) {
+            facedDirection.x = 1;
+        } else if(this.keyLeft) {
+            facedDirection.x = -1;
+        }
+
+        super.render(g, facedDirection);
 
         for(Projectile p : playerProjectiles) {
             p.render(g);

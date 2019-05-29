@@ -3,22 +3,14 @@ package Main;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
 public class SceneRenderer {
     private static Image backgroundImage = null;
 
-    private static boolean roomShapeShowed = false;
-    private static Rectangle roomShape = null;
-
-    public static boolean isRoomShapeShowed() {
-        return roomShapeShowed;
-    }
-
-    public static void setRoomShapeShowed(boolean roomShapeShowed) {
-        SceneRenderer.roomShapeShowed = roomShapeShowed;
-    }
+    private static Vector2f roomDimension = null;
 
     static void generateBackground(String path, GameContainer gc) {
         if (backgroundImage == null) {
@@ -50,7 +42,7 @@ public class SceneRenderer {
 
                 backgroundImage.getGraphics().flush();
 
-                roomShape = new Rectangle(33,33,gc.getWidth()-66, gc.getHeight()-66);
+                roomDimension = new Vector2f(gc.getWidth(), gc.getHeight());
             } catch (SlickException e) {
                 e.printStackTrace();
             }
@@ -62,16 +54,9 @@ public class SceneRenderer {
             return;
 
         g.drawImage(backgroundImage, x, y);
-
-        if(isRoomShapeShowed()) {
-            Color c = g.getColor();
-            g.setColor(Color.green);
-            g.draw(roomShape);
-            g.setColor(c);
-        }
     }
 
     public static boolean inRoomLimits(Shape shape) {
-        return roomShape.intersects(shape);
+        return shape.getX() != 0 && Math.round(shape.getX()+shape.getWidth()) != roomDimension.getX() && shape.getY() != 0 && Math.round(shape.getY() + shape.getHeight()) != roomDimension.getY();
     }
 }

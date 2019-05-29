@@ -134,11 +134,10 @@ public class SpriteRenderer {
         return new Animation(sp,(int) this.speed);
     }
 
-    public void render() {
-        Vector2f speed = entity.getSpeed();
+    public void render(Vector2f facedDirection) {
         Vector2f position = entity.getPosition();
 
-        if (!speed.equals(SpriteRenderer.zero)) {
+        if (!facedDirection.equals(SpriteRenderer.zero)) {
             if (numberOfViews == 1) {
                 this.actualView = this.bottomView;
             }
@@ -146,16 +145,16 @@ public class SpriteRenderer {
                 // 2 views or more
 
                 // looking right
-                if (speed.getX() > 0f) {
+                if (facedDirection.getX() > 0f) {
                     if (this.numberOfViews == 2 || this.numberOfViews == 4) {
                         this.actualView = rightView;
                     }
                     else {
                         // 8 views
-                        if (speed.getY() > 0) {
+                        if (facedDirection.getY() > 0) {
                             // looking bottom right
                             this.actualView = bottomRightView;
-                        } else if (speed.getY() < 0) {
+                        } else if (facedDirection.getY() < 0) {
                             // looking top right
                             this.actualView = topRightView;
                         } else {
@@ -164,17 +163,17 @@ public class SpriteRenderer {
                         }
                     }
                 }
-                else if(speed.getX() < 0) {
+                else if(facedDirection.getX() < 0) {
                     // looking left
                     if (this.numberOfViews == 2 || this.numberOfViews == 4) {
                         this.actualView = leftView;
                     }
                     else {
                         // 8 views
-                        if (speed.getY() > 0) {
+                        if (facedDirection.getY() > 0) {
                             // looking bottom left
                             this.actualView = bottomLeftView;
-                        } else if (speed.getY() < 0) {
+                        } else if (facedDirection.getY() < 0) {
                             // looking top left
                             this.actualView = topLeftView;
                         } else {
@@ -185,7 +184,7 @@ public class SpriteRenderer {
                 }
                 else {
                     // looking top or bottom
-                    if (speed.getY() > 0) {
+                    if (facedDirection.getY() > 0) {
                         // looking bottom
                         this.actualView = bottomView;
                     } else {
