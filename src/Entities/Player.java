@@ -38,7 +38,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * @param accelerationRate max acceleration of the player
      */
     public Player(GameContainer gc, float x, float y, int width, int height, float maxSpeed, float accelerationRate, int radius) {
-        super(x, y, maxSpeed, accelerationRate, 100, 10, radius);
+        super(x, y, maxSpeed, accelerationRate, 100, 1000, radius);
         this.width = width;
         this.height = height;
 

@@ -1,9 +1,13 @@
 package Entities;
 
+import Main.MainClass;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Vector2f;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static java.lang.Math.ceil;
 import static java.lang.Math.round;
 
 public abstract class LivingBeing extends Entity implements Comparable {
@@ -72,17 +76,27 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     private void tpOutside(LivingBeing opponent){
-        position = position.add(position.copy().sub(opponent.position).normalise().scale(radius+opponent.radius-opponent.position.copy().sub(position).length()));
+        Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(radius+opponent.radius-opponent.getCenter().sub(getCenter()).length()));
+        System.out.println(diff);
+        position.add(diff);
+        if (position.x < 0){
+            position.x = 0;
+        }
+        if (position.x > MainClass.WIDTH-radius*2){
+            position.x = MainClass.WIDTH-radius*2;
+        }
+        if (position.y < 0){
+            position.y = 0;
+        }
+        if (position.y > MainClass.HEIGHT-radius*2){
+            position.y = MainClass.HEIGHT-radius*2;
+        }
     }
 
     public void collidingAction(LivingBeing opponent) {
         while (collides(opponent)){
-            if (this.getMaxHealthPoints() < opponent.getMaxHealthPoints()){
-                tpOutside(opponent);
-            }
-            else {
-                opponent.tpOutside(this);
-            }
+            this.tpOutside(opponent);
+            opponent.tpOutside(this);
         }
     }
 
