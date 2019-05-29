@@ -104,7 +104,18 @@ public class MainClass extends BasicGame
                 }
             }
         }
-
+        /*
+        this.player.update();
+        for(Projectile p: Ranged.enemyProjectiles){
+            p.update();
+        }
+        for (Projectile p: Player.playerProjectiles){
+            p.update();
+        }
+        for (Monster m: enemies) {
+            m.update(player);
+        }
+         */
         for (int j=0; j<this.enemies.size(); j++) {
             this.player.checkCollidesProjectile(this.enemies.get(j));
             if (this.enemies.get(j).isDead()) {
