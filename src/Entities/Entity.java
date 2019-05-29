@@ -117,11 +117,11 @@ public abstract class Entity {
      * Updates speed with an acceleration
      * @param acceleration the given acceleration
      */
-    void updateSpeed(Vector2f acceleration) {
-        this.speed.add(acceleration);
+    void updateSpeed(Vector2f acceleration, int i) {
+        this.speed.add(acceleration.scale((float) (i * 0.001 * MainClass.MAX_FPS)));
 
-        if (this.speed.length() > this.MAX_SPEED) {
-            this.speed.normalise().scale(this.MAX_SPEED * MainClass.getInGameTimeScale().getTimeScale());
+        if (this.speed.length() > this.MAX_SPEED * (float) (i * 0.001 * MainClass.MAX_FPS)) {
+            this.speed.normalise().scale(this.MAX_SPEED * MainClass.getInGameTimeScale().getTimeScale()).scale((float) (i * 0.001 * MainClass.MAX_FPS));
         }
 
         if (this.speed.getX() > -SPEED_THRESHOLD  && this.speed.getX() < SPEED_THRESHOLD) {
@@ -158,8 +158,17 @@ public abstract class Entity {
      * @param g the graphics to draw on
      */
     public void render(Graphics g) {
+        this.render(g, this.getSpeed());
+    }
+
+    /**
+     * In game rendering
+     * @param g the graphics to draw on
+     * @param facedDirection the faced direction of the entity
+     */
+    public void render(Graphics g, Vector2f facedDirection) {
         if (this.renderer != null) {
-            this.renderer.render();
+            this.renderer.render(facedDirection);
         }
 
         if (this.showDebugRect) {
