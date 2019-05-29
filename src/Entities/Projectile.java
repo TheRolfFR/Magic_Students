@@ -21,6 +21,17 @@ public abstract class Projectile extends Entity {
         return opacity;
     }
 
+    public Projectile(float x, float y, float maxSpeed, float accelerationRate, int radius, Vector2f direction) {
+        super(x, y, maxSpeed, accelerationRate, radius);
+        this.damage = 25;
+        this.direction = direction;
+        this.opacity = 1f;
+
+        this.image = null;
+
+        this.isDead = false;
+    }
+
     Projectile(float x, float y, float maxSpeed, float accelerationRate, Vector2f direction, String imagePath, int radius) {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.direction = direction;
@@ -30,6 +41,8 @@ public abstract class Projectile extends Entity {
         this.image = null;
 
         this.opacity = 1f;
+
+        this.isDead = false;
 
         try {
             this.image = new Image(imagePath);
@@ -74,7 +87,10 @@ public abstract class Projectile extends Entity {
 
     public void render(Graphics g) {
         super.render(g);
-        g.drawImage(image, this.getPosition().getX(), this.getPosition().getY());
+
+        if(this.image != null) {
+            g.drawImage(image, this.getPosition().getX(), this.getPosition().getY());
+        }
     }
 
     public abstract void fadeOut();

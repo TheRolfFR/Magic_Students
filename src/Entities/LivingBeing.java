@@ -77,7 +77,6 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     private void tpOutside(LivingBeing opponent) {
         Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(radius + opponent.radius - opponent.getCenter().sub(getCenter()).length()));
-        System.out.println(diff);
         position.add(diff);
         if (position.x < 0) {
             position.x = 0;

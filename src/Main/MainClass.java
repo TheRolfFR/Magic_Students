@@ -90,13 +90,24 @@ public class MainClass extends BasicGame
         Vector2f tileSize = new Vector2f(96, 96);
         int[] viewFrames =  {10, 10, 10, 10};
 
-        this.player = new Player(gc,100, 100, (int) tileSize.getX(), (int) tileSize.getY(),
-                450 / MAX_FPS, 135 / MAX_FPS, (int) Math.round(0.4*tileSize.getY()));
-        this.player.setRenderer(new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
-                (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
+        this.player = new Player(gc,100,
+                100,
+                (int) tileSize.getX(),
+                (int) tileSize.getY(),
+                450 / MAX_FPS,
+                135 / MAX_FPS,
+                (int) Math.round(0.4*tileSize.getY())
+        );
+        this.player.setRenderer(new SpriteRenderer(
+                this.player,
+                tileSize,
+                original,
+                viewFrames,
+                1000/12)
+        );
         //this.player.setShowDebugRect(true);
 
-        generateEnemies(original, tileSize, viewFrames);
+        generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
 
 
         this.healthBar = new HealthBar(this.player);
@@ -109,7 +120,10 @@ public class MainClass extends BasicGame
 
     @Override
     public void update(GameContainer gc, int i) {
+        inGameTimeScale.setDeltaTime(i);
+
         this.player.update();
+
         for(Monster enemy : this.enemies){
             enemy.update(this.player);
             if (enemy.collides(player)){

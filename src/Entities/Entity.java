@@ -65,6 +65,11 @@ public abstract class Entity {
         this.showDebugRect = showDebugRect;
     }
 
+    public void setRenderer(SpriteRenderer renderer, Color colorFilter) {
+        this.renderer = renderer;
+        this.renderer.setColorFilter(colorFilter);
+    }
+
     /**
      * Assigns a renderer to the entity
      * @param renderer renderer to apply
@@ -173,7 +178,7 @@ public abstract class Entity {
      */
     public void render(Graphics g, Vector2f facedDirection) {
         if (this.renderer != null) {
-            this.renderer.render(facedDirection);
+            this.renderer.render(facedDirection, g);
         }
 
         if (this.showDebugRect) {

@@ -60,6 +60,11 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
         playerProjectiles.add(new Snowball(this.getPosition(), direction));
     }
 
+    @Override
+    public void setRenderer(SpriteRenderer renderer) {
+        super.setRenderer(renderer, new Color(0x94FF));
+    }
+
     /**
      * In game calculations
      */

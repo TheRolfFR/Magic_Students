@@ -1,8 +1,6 @@
 package Entities;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public class SpriteRenderer {
@@ -21,8 +19,29 @@ public class SpriteRenderer {
     private Animation bottomLeftView;
     private Animation bottomRightView;
 
+    private Color colorFilter;
+    private float opacity;
+    private Color finalColorFilter;
+
     private int width;
     private int height;
+
+    private double angle;
+
+    public void setColorFilter(Color colorFilter) {
+        this.colorFilter = colorFilter;
+        setFinalColorFilter();
+    }
+
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
+        setFinalColorFilter();
+    }
+
+    private void setFinalColorFilter() {
+        this.finalColorFilter = colorFilter.scaleCopy(1f);
+        this.finalColorFilter.a = opacity;
+    }
 
     public int getWidth() {
         return width;
@@ -51,7 +70,14 @@ public class SpriteRenderer {
 
     private static final Vector2f zero = new Vector2f(0, 0);
 
+    public SpriteRenderer(Entity entity, Vector2f tileSize, Image image, int[] viewsFrames, float speed, double angle) {
+        init(entity, tileSize, image, viewsFrames, speed, angle);
+    }
     public SpriteRenderer(Entity entity, Vector2f tileSize, Image image, int[] viewsFrames, float speed) {
+        init(entity, tileSize, image, viewsFrames, speed, 0.0);
+    }
+
+    private void init(Entity entity, Vector2f tileSize, Image image, int[] viewsFrames, float speed, double angle) {
         // throws error if number of views incorrect
         if ( (viewsFrames.length <= 0 || viewsFrames.length >2) &&
                 (viewsFrames.length != 4 && viewsFrames.length != 8) ) {
@@ -65,6 +91,11 @@ public class SpriteRenderer {
         this.entity = entity;
         this.numberOfViews = viewsFrames.length;
         this.speed = speed;
+
+        this.colorFilter = Color.white.scaleCopy(1f);
+        this.setOpacity(1f);
+
+        this.angle = angle;
 
         // defines the offset
         Vector2f offset = SpriteRenderer.zero.copy();
@@ -134,7 +165,7 @@ public class SpriteRenderer {
         return new Animation(sp,(int) this.speed);
     }
 
-    public void render(Vector2f facedDirection) {
+    public void render(Vector2f facedDirection, Graphics g) {
         Vector2f position = entity.getPosition();
 
         if (!facedDirection.equals(SpriteRenderer.zero)) {
@@ -199,6 +230,14 @@ public class SpriteRenderer {
         }
 
         // draw sprite
-        this.actualView.draw((int) position.getX(), (int) position.getY());
+        if(this.angle == 0.0) {
+            this.actualView.draw(position.getX(), position.getY(), this.finalColorFilter);
+        } else {
+            this.actualView.draw(-10000, -10000);
+            Image im = this.actualView.getCurrentFrame();
+            im.rotate((float) angle);
+            g.drawImage(im, position.getX(), position.getY());
+            im.rotate(- (float) angle);
+        }
     }
 }
