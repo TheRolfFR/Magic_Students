@@ -59,7 +59,7 @@ public class Snowball extends Projectile {
     public Snowball(Vector2f position, Vector2f direction) {
         super(position.getX(), position.getY(), MAX_SPEED, ACCELERATION_RATE, direction, IMAGE_PATH, RADIUS);
 
-        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()), 1 / MainClass.MAX_FPS);
+        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
     }
 
     /**
@@ -71,7 +71,7 @@ public class Snowball extends Projectile {
     public Snowball(float x, float y, Vector2f direction) {
         super(x, y, MAX_SPEED, ACCELERATION_RATE, direction, IMAGE_PATH, RADIUS);
 
-        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()), 1 / MainClass.MAX_FPS);
+        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
     }
 
     /**
@@ -86,7 +86,7 @@ public class Snowball extends Projectile {
     public Snowball(float x, float y, float maxSpeed, float accelerationRate, String imagePath, Vector2f direction) {
         super(x, y, maxSpeed, accelerationRate, direction, imagePath, RADIUS);
 
-        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()), 1 / MainClass.MAX_FPS);
+        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
     }
 
     /**

@@ -94,9 +94,9 @@ public class MainClass extends BasicGame
 
     @Override
     public void update(GameContainer gc, int i) {
-        this.player.update(i);
+        this.player.update();
         for(Monster enemy : this.enemies){
-            enemy.update(this.player, i);
+            enemy.update(this.player);
             if (enemy.collides(player)){
                 enemy.collidingAction(player);
                 if (this.player.isDead()){
