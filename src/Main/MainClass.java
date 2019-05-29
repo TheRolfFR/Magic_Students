@@ -17,9 +17,9 @@ public class MainClass extends BasicGame
     private Player player;
     private ArrayList<Monster> enemies = new ArrayList<>();
 
-    public static int MAX_FPS = 60;
-    public static int WIDTH = 640;
-    public static int HEIGHT = 480;
+    public static final int MAX_FPS = 60;
+    public static final int WIDTH = 640;
+    public static final int HEIGHT = 480;
 
     private static TimeScale inGameTimeScale = new TimeScale(1f);
     private static TimeScale guiTimeScale = new TimeScale(1f);
@@ -65,23 +65,16 @@ public class MainClass extends BasicGame
         instance = this;
         menu = new PauseMenu(gc);
 
-        Image original = new Image("img/24x24.png", false, Image.FILTER_NEAREST);
-        original = original.getScaledCopy(2);
-        Vector2f tileSize = new Vector2f(48, 48);
-        int[] viewFrames =  {2, 2, 2, 2, 2, 2, 2, 2};
+        Image original = new Image("img/wizard_48x48.png", false, Image.FILTER_NEAREST, Color.red);
+        original = original.getScaledCopy(2f);
+        Vector2f tileSize = new Vector2f(96, 96);
+        int[] viewFrames =  {10, 10, 10, 10};
 
         this.player = new Player(gc,100, 100, (int) tileSize.getX(), (int) tileSize.getY(),
-                450 / MAX_FPS, 135 / MAX_FPS, (int) round(0.4*tileSize.getY()));
+                450 / MAX_FPS, 135 / MAX_FPS, (int) Math.round(0.4*tileSize.getY()));
         this.player.setRenderer(new SpriteRenderer(this.player, tileSize, original.getSubImage(0,
                 (int) tileSize.getY(), original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
         //this.player.setShowDebugRect(true);
-
-        Rusher rusher = new Rusher(400, 400, (int) tileSize.getX(), (int) tileSize.getY(),
-                150 / MAX_FPS, 60 / MAX_FPS, 100, 5f,
-                10, (int) round(0.4*tileSize.getY()));
-        rusher.setRenderer(new SpriteRenderer(rusher, tileSize, original.getSubImage(0,
-                (int) tileSize.getY()*2, original.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
-        enemies.add(rusher);
 
 
         this.healthBar = new HealthBar(this.player);
