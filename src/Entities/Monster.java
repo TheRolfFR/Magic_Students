@@ -29,5 +29,5 @@ public abstract class Monster extends LivingBeing {
      * method to update the monster during the game
      * @param opponent the opponent that the monster will react to
      */
-    public abstract void update(LivingBeing opponent);
+    public abstract void update(LivingBeing opponent, int i);
 }

@@ -94,9 +94,9 @@ public class MainClass extends BasicGame
 
     @Override
     public void update(GameContainer gc, int i) {
-        this.player.update();
+        this.player.update(i);
         for(Monster enemy : this.enemies){
-            enemy.update(this.player);
+            enemy.update(this.player, i);
             if (enemy.collides(player)){
                 enemy.collidingAction(player);
                 if (this.player.isDead()){
@@ -143,7 +143,6 @@ public class MainClass extends BasicGame
     }
 
     public static void main(String[] args) {
-        float arr[] = {2,3,5,6,6,0,7}; // ?
         try {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));

@@ -51,8 +51,8 @@ public abstract class Projectile extends Entity {
         return new Circle(position.x,position.y,radius);
     }
 
-    public void update() {
-        this.updateSpeed(this.direction.normalise().scale(this.getAccelerationRate()));
+    public void update(int i) {
+        this.updateSpeed(this.direction.normalise().scale(this.getAccelerationRate()), i);
         this.move();
 
         if(!SceneRenderer.inRoomLimits(this.getBounds())) {
