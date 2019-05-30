@@ -7,6 +7,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,16 +37,19 @@ public class MainClass extends BasicGame
     }
 
     public void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames){
-        for(int i=0; i<Math.round(Math.random()*10); i++){
-            switch((int) Math.round(Math.random()*1)){
+        Random random = new Random();
+        int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
+        int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+        for(int i = 0; i< random.nextInt(9)+1; i++){
+            switch((int) random.nextInt(1)){
                 case 0 :
-                    Bowman tmpb = new Bowman((int) Math.round(Math.random()*WIDTH), (int) Math.round(Math.random()*HEIGHT), (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
+                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setRenderer(new SpriteRenderer(tmpb, tileSize, skin.getSubImage(0,
                             (int) tileSize.getY()*3, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
                     this.enemies.add(tmpb);
                     break;
                 case 1 :
-                    Rusher tmpr = new Rusher((int) Math.round(Math.random()*WIDTH), (int) Math.round(Math.random()*HEIGHT), (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
+                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpr.setRenderer(new SpriteRenderer(tmpr, tileSize, skin.getSubImage(0,
                             (int) tileSize.getY()*2, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
                     this.enemies.add(tmpr);
