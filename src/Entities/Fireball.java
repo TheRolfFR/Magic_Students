@@ -19,7 +19,6 @@ public class Fireball extends Projectile {
             new Image("img/fireball_16x16.png", false, Image.FILTER_NEAREST).getScaledCopy( ((float) SIZE)/16f),
             new int[] {6},
             1000/6, direction.getTheta()- 90 ));
-            System.out.println(direction.getTheta());
 
             this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
         } catch (SlickException e) {

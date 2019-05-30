@@ -28,8 +28,26 @@ public class Bowman extends Ranged {
 
         this.delayCounter += MainClass.getInGameTimeScale().getDeltaTime();
         if(this.delayCounter > SHOT_DELAY) {
-            //try of foresight the player's movement : Vector2f direction = target.position.copy().add(target.speed.copy().scale(target.position.distance(this.position)/Snowball.MAX_SPEED).sub(this.position));
-            Vector2f direction = target.position.copy().sub(this.position);
+            Vector2f futureTargetPosition = target.position.copy().add(target.speed.copy().scale(target.position.distance(this.position)/Snowball.MAX_SPEED));
+
+            if(futureTargetPosition.getY() > MainClass.HEIGHT){
+                futureTargetPosition.set(futureTargetPosition.getX(), MainClass.HEIGHT - target.getRenderer().getHeight());
+            }
+            else if(futureTargetPosition.getY() < 0){
+                futureTargetPosition.set(futureTargetPosition.getX(), 0);
+            }
+            if(futureTargetPosition.getX() > MainClass.WIDTH){
+                futureTargetPosition.set(MainClass.WIDTH - target.getRenderer().getWidth(), futureTargetPosition.getY());
+            }
+            else if(futureTargetPosition.getX() < 0){
+                futureTargetPosition.set(0, futureTargetPosition.getY());
+            }
+
+            Vector2f direction = futureTargetPosition.sub(this.position);
+
+            //target the center of the opponent, not the top left corner
+            direction.set(direction.getX() + target.getRenderer().getHeight()/2, direction.getY() + target.getRenderer().getWidth()/2);
+
             //this.monsterProjectiles.add(new Snowball(this.getPosition(), direction));
             this.monsterProjectiles.add(new Fireball(this.getPosition().add(new Vector2f(this.getHeight()/2f, this.getWidth()/2f)), direction));
 
