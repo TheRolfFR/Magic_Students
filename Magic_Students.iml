@@ -11,5 +11,6 @@
     <orderEntry type="library" name="slick" level="project" />
     <orderEntry type="library" name="org-json" level="project" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="dyn4j-v3.3.0" level="project" />
   </component>
 </module>
