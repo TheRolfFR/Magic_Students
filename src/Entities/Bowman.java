@@ -46,10 +46,11 @@ public class Bowman extends Ranged {
             Vector2f direction = futureTargetPosition.sub(this.position);
 
             //target the center of the opponent, not the top left corner
-            direction.set(direction.getX() + target.getRenderer().getHeight()/2, direction.getY() + target.getRenderer().getWidth()/2);
+            direction.set(direction.getX() + target.getRenderer().getHeight()/4, direction.getY() + target.getRenderer().getWidth()/4);
 
             //this.monsterProjectiles.add(new Snowball(this.getPosition(), direction));
             this.monsterProjectiles.add(new Fireball(this.getPosition().add(new Vector2f(this.getHeight()/2f, this.getWidth()/2f)), direction));
+            this.monsterProjectiles.get(monsterProjectiles.size()-1).setShowDebugRect(true);
 
             this.delayCounter = 0f;
         }
@@ -62,7 +63,11 @@ public class Bowman extends Ranged {
             Projectile p = monsterProjectiles.get(i);
             p.update(i);
 
-            if (p.isFadeOut()) {
+            if(p.collides(target)){
+                p.collidingAction(target);
+            }
+
+            if (p.isFadeOut() || p.isDead()) {
                 monsterProjectiles.remove(i);
                 i--;
             }

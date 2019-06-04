@@ -109,7 +109,7 @@ public class MainClass extends BasicGame
                 viewFrames,
                 1000/12)
         );
-        //this.player.setShowDebugRect(true);
+        this.player.setShowDebugRect(true);
 
         generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
 

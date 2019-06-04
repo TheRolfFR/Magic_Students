@@ -160,7 +160,7 @@ public abstract class Entity {
     }
 
     public Vector2f getCenter(){
-        return new Vector2f(position.copy().x+this.getWidth(),position.copy().y+getHeight());
+        return new Vector2f(position.copy().x+this.getWidth()/2,position.copy().y+getHeight()/2);
     }
 
     /**
