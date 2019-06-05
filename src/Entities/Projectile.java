@@ -68,7 +68,7 @@ public abstract class Projectile extends Entity {
     }
 
     public Shape getBounds(){
-        return new Circle(position.x,position.y,radius);
+        return new Circle(position.x+radius,position.y+radius,radius);
     }
 
     public void update(int i) {
