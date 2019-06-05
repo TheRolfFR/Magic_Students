@@ -23,9 +23,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
     private static final Vector2f zero = new Vector2f(0f, 0f);
 
-    public void setTopView(SpriteView topView) {
-        this.topView = topView;
-    }
+    public void setTopView(SpriteView topView) { this.topView = topView; }
 
     public void setLeftView(SpriteView leftView) {
         this.leftView = leftView;
@@ -37,6 +35,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
     public void setBottomView(SpriteView bottomView) {
         this.bottomView = bottomView;
+        setLastView(this.bottomIdleView);
     }
 
     public void setLeftIdleView(SpriteView leftIdleView) {

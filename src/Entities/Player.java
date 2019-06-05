@@ -20,8 +20,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * @param gc game container
      * @param x initial x position of the player
      * @param y initial y position of the player
-     * @param maxSpeed max speed of the player
-     * @param accelerationRate max acceleration of the player
      */
     public Player(GameContainer gc, float x, float y) {
         super(x, y, 450 / MAX_FPS, 135 / MAX_FPS, 100, 1000, 19);
