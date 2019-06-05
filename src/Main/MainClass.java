@@ -16,7 +16,7 @@ import static java.lang.Math.round;
 
 public class MainClass extends BasicGame
 {
-    private Player player;
+    public Player player;
     public static ArrayList<Monster> enemies = new ArrayList<>();
 
     public static final int MAX_FPS = 60;
@@ -76,6 +76,10 @@ public class MainClass extends BasicGame
         return inGameTimeScale;
     }
 
+    public static MainClass getInstance() {
+        return instance;
+    }
+
     public static TimeScale getGuiTimeScale() {
         return guiTimeScale;
     }
@@ -130,16 +134,15 @@ public class MainClass extends BasicGame
         inGameTimeScale.setDeltaTime(i);
 
         this.player.update();
+        this.player.checkCollision();
         updateEnemyProjectile(player);
         updateAllyProjectiles();
 
         for(Monster enemy : this.enemies){
             enemy.update(this.player);
-            if (enemy.collidesWith(player)){
-                enemy.collidingAction(player);
-                if (this.player.isDead()){
-                    setGamePaused(true);
-                }
+            enemy.checkCollision();
+            if (this.player.isDead()){
+                setGamePaused(true);
             }
         }
 
