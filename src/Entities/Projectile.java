@@ -58,7 +58,7 @@ public abstract class Projectile extends Entity {
     }
 
     public void collidingAction(LivingBeing opponent) {
-        if (collides(opponent)){
+        if (collidesWith(opponent)){
             opponent.takeDamage(damage);
             this.isDead = true;
         }
@@ -72,13 +72,51 @@ public abstract class Projectile extends Entity {
         return new Circle(position.x+radius,position.y+radius,radius);
     }
 
-    public void update(int i) {
-        this.updateSpeed(this.direction.normalise().scale(this.getAccelerationRate()));
-        this.move();
+    public void update() {
+    }
 
-        if(isDead()) {
-            this.fadeOut();
-            this.opacity = Math.max(0f, this.opacity - 0.125f);
+    public static void updateEnemyProjectile(LivingBeing target){
+        for (int i = 0; i < Ranged.enemyProjectiles.size(); i++) {
+            Projectile p = Ranged.enemyProjectiles.get(i);
+
+            p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
+            p.move();
+
+            if(p.collidesWith(target)){
+                p.collidingAction(target);
+            }
+
+            if (p.isFadeOut() || p.isDead()) {
+                Ranged.enemyProjectiles.remove(i);
+                i--;
+            }
+        }
+    }
+
+    public static void updateAllyProjectiles(){
+        Projectile p;
+        for (int j = 0; j < Ranged.allyProjectiles.size(); j++) {
+            p = Ranged.allyProjectiles.get(j);
+            p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
+            p.move();
+
+            for(Monster enemy : MainClass.enemies){
+                checkCollidesProjectile(enemy);
+            }
+
+            if (p.isFadeOut()) {
+                Ranged.allyProjectiles.remove(j);
+                j--;
+            }
+        }
+    }
+
+    public static void checkCollidesProjectile(LivingBeing opponent){
+        for(int i = 0; i< Ranged.allyProjectiles.size(); i++){
+            if(Ranged.allyProjectiles.get(i).collidesWith(opponent)){
+                Ranged.allyProjectiles.get(i).collidingAction(opponent);
+                Ranged.allyProjectiles.remove(Ranged.allyProjectiles.get(i));
+            }
         }
     }
 

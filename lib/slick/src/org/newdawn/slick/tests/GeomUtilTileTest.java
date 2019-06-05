@@ -87,7 +87,7 @@ public class GeomUtilTileTest extends BasicGame implements GeomUtilListener {
 				for (int i=0;i<shapes.size();i++) {
 					Shape shape = (Shape) shapes.get(i);
 					
-					if (collides(shape, segmentPolygon)) {
+					if (collidesWith(shape, segmentPolygon)) {
 						quadSpace[x][y].add(shape);
 					}
 				}
@@ -122,7 +122,7 @@ public class GeomUtilTileTest extends BasicGame implements GeomUtilListener {
 		
 		for (int x=0;x<segments;x++) {
 			for (int y=0;y<segments;y++) {
-				if (collides(shape, quadSpaceShapes[x][y])) {
+				if (collidesWith(shape, quadSpaceShapes[x][y])) {
 					quadSpace[x][y].add(shape);
 				}
 			}
@@ -329,7 +329,7 @@ public class GeomUtilTileTest extends BasicGame implements GeomUtilListener {
 	 * @param shape2 The second shape
 	 * @return True if the shapes collide (i.e. intersection or overlap)
 	 */
-	public boolean collides(Shape shape1, Shape shape2) {
+	public boolean collidesWith(Shape shape1, Shape shape2) {
 		if (shape1.intersects(shape2)) {
 			return true;
 		}
