@@ -16,7 +16,7 @@ import static java.lang.Math.round;
 public class MainClass extends BasicGame
 {
     private Player player;
-    private ArrayList<Monster> enemies = new ArrayList<>();
+    public static ArrayList<Monster> enemies = new ArrayList<>();
 
     public static final int MAX_FPS = 60;
     public static final int WIDTH = 640;
@@ -38,10 +38,12 @@ public class MainClass extends BasicGame
 
     public void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames){
         Random random = new Random();
-        int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
-        int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+        int randomX;
+        int randomY;
         for(int i = 0; i< random.nextInt(9)+1; i++){
-            switch((int) random.nextInt(1)){
+            randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
+            randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+            switch(random.nextInt(2)){
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setRenderer(new SpriteRenderer(tmpb, tileSize, skin.getSubImage(0,

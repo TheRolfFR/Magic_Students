@@ -75,6 +75,30 @@ public abstract class LivingBeing extends Entity implements Comparable {
         return this.currentHealthPoints<=0;
     }
 
+    private LivingBeing getOneCollider(){
+        LivingBeing collider = null;
+        int size = MainClass.enemies.size(), i = 0;
+        while (collider == null && i < size){
+            if (MainClass.enemies.get(i).collidesWith(this)){
+                collider = MainClass.enemies.get(i);
+            }
+            else {
+                i = i+1;
+            }
+        }
+        return collider;
+    }
+
+    public void solveCollision(LivingBeing pusher, LivingBeing percuted, int level){
+        if (level <= MainClass.enemies.size()){
+            percuted.collidingAction(pusher);
+            LivingBeing pushedByPercuted = percuted.getOneCollider();
+            while (pushedByPercuted != null){
+                solveCollision(percuted,pushedByPercuted,level+1);
+            }
+        }
+    }
+
     private void tpOutOf(LivingBeing opponent) {
         Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(radius + opponent.radius - opponent.getCenter().sub(getCenter()).length()));
         position.add(diff);
@@ -93,7 +117,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void collidingAction(LivingBeing opponent) {
-        while (collidesWith(opponent)){
+        if (collidesWith(opponent)){
             this.tpOutOf(opponent);
             opponent.tpOutOf(this);
         }
