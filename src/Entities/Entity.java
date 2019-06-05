@@ -127,7 +127,7 @@ public abstract class Entity {
     public abstract void move();
 
     public Vector2f getCenter(){
-        return new Vector2f(position.copy().x+this.tileSize.getX()/2,position.copy().y+this.tileSize.getY()/2);
+        return new Vector2f(position.copy().x+this.tileSize.getX()/2 - getRadius(),position.copy().y+this.tileSize.getY()/2 - getRadius());
     }
 
     /**
