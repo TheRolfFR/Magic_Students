@@ -80,7 +80,6 @@ public abstract class Entity {
         this.radius = radius;
 
         this.showDebugRect = false;
-        this.renderer = null;
     }
 
     /**
