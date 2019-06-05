@@ -72,6 +72,16 @@ public abstract class Entity {
         this.tileSize = new Vector2f(0, 0);
     }
 
+    public Entity(float x, float y, int radius) {
+        this.position = new Vector2f(x, y);
+        this.speed = new Vector2f(0, 0);
+        this.MAX_SPEED = 0;
+        this.ACCELERATION_RATE = 0;
+        this.radius = radius;
+
+        this.showDebugRect = false;
+    }
+
     /**
      * Simple constructor with position, maximum speed and acceleration rate
      * @param x initial x position of the entity

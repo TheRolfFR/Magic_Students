@@ -1,9 +1,8 @@
 package Entities;
 
-import Entities.Attacks.RangedAttack;
 import java.util.ArrayList;
 
-public abstract class Ranged extends Monster implements RangedAttack {
+public abstract class Ranged extends Monster {
     protected int width;
     protected int height;
 

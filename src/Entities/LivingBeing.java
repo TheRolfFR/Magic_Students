@@ -16,13 +16,13 @@ public abstract class LivingBeing extends Entity implements Comparable {
     private int maxHealthPoints;
     private float armorPoints;
 
+    public static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
+
     protected LivingBeingRenderer renderer;
 
     public void setCurrentHealthPoints(int currentHealthPoints) {
         this.currentHealthPoints = currentHealthPoints;
     }
-
-    private static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
 
     /**
      * In game rendering of all Living beings
@@ -83,12 +83,12 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     private void solveCollision(LivingBeing pusher, LivingBeing percuted, int level){
-        if (level <= MainClass.getInstance().enemies.size()){
+        if (level <= MainClass.getInstance().getEnemies().size()){
             percuted.collidingAction(pusher);
-            if (percuted.collidesWith(MainClass.getInstance().player)){
-                solveCollision(percuted,MainClass.getInstance().player,level+1);
+            if (percuted.collidesWith(MainClass.getInstance().getPlayer())){
+                solveCollision(percuted,MainClass.getInstance().getPlayer(),level+1);
             }
-            for (Monster m: MainClass.getInstance().enemies) {
+            for (Monster m: MainClass.getInstance().getEnemies()) {
                 if (percuted.collidesWith(m)){
                     solveCollision(percuted,m,level+1);
                 }
@@ -97,10 +97,10 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void checkCollision(){
-        if (this.collidesWith(MainClass.getInstance().player)){
-            solveCollision(this,MainClass.getInstance().player,1);
+        if (this.collidesWith(MainClass.getInstance().getPlayer())){
+            solveCollision(this,MainClass.getInstance().getPlayer(),1);
         }
-        for (Monster m: MainClass.getInstance().enemies) {
+        for (Monster m: MainClass.getInstance().getEnemies()) {
             if (this.collidesWith(m)){
                 solveCollision(this,m,1);
             }

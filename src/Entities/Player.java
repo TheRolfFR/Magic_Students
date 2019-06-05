@@ -1,8 +1,5 @@
 package Entities;
 
-import Entities.Attacks.MeleeAttack;
-import Entities.Attacks.RangedAttack;
-
 import Main.MainClass;
 import Renderer.LivingBeingRenderer;
 import Renderer.SpriteRenderer;
@@ -10,7 +7,7 @@ import Renderer.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-public class Player extends LivingBeing implements MeleeAttack, RangedAttack, KeyListener, MouseListener{
+public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private boolean keyUp;
     private boolean keyDown;
@@ -55,8 +52,8 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
      * Do an attack
      */
     private void doAttack() {
-        Vector2f direction = new Vector2f( MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY() ).sub( this.getPosition() );
-        Ranged.allyProjectiles.add(new Snowball(this.getPosition(), direction));
+        Vector2f direction = new Vector2f( Math.round(MainClass.getInput().getMouseX()), Math.round(MainClass.getInput().getMouseY() )).sub(this.getCenter());
+        Ranged.allyProjectiles.add(new Snowball(this.getCenter(), direction));
     }
 
     /**
@@ -130,6 +127,8 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
             case Input.KEY_D:
                 this.keyRight = true;
                 break;
+            case Input.KEY_SPACE:
+                break;
         }
     }
 
@@ -156,6 +155,8 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
             case Input.KEY_RIGHT:
             case Input.KEY_D:
                 this.keyRight = false;
+                break;
+            case Input.KEY_SPACE:
                 break;
         }
     }

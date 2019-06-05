@@ -1,8 +1,6 @@
 package Entities;
 
-import Entities.Attacks.MeleeAttack;
-
-public abstract class Melee extends Monster implements MeleeAttack {
+public abstract class Melee extends Monster{
     protected int width;
     protected int height;
 
