@@ -16,8 +16,8 @@ import static java.lang.Math.round;
 
 public class MainClass extends BasicGame
 {
-    public Player player;
-    public static ArrayList<Monster> enemies = new ArrayList<>();
+    private Player player;
+    private static ArrayList<Monster> enemies = new ArrayList<>();
 
     public static final int MAX_FPS = 60;
     public static final int WIDTH = 640;
@@ -78,6 +78,14 @@ public class MainClass extends BasicGame
 
     public static MainClass getInstance() {
         return instance;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public static ArrayList<Monster> getEnemies() {
+        return enemies;
     }
 
     public static TimeScale getGuiTimeScale() {
