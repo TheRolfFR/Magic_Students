@@ -1,7 +1,6 @@
 package Entities;
 
 import Renderer.ProjectileRenderer;
-import Renderer.SpriteRenderer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -28,18 +27,16 @@ public class Fireball extends Projectile {
     }
 
 
-    @Override
     protected int getWidth() {
         return SIZE;
     }
 
-    @Override
     protected int getHeight() {
         return SIZE;
     }
 
     @Override
     public void fadeOut() {
-        this.getRenderer().setOpacity(0);
+        //this.getRenderer().setOpacity(0);
     }
 }

@@ -12,7 +12,7 @@ public class ProjectileRenderer extends SpriteRenderer {
     private double angle;
 
     public ProjectileRenderer(Entity entity, Image image, Vector2f tileSize, int duration) {
-        super(entity);
+        super(entity, tileSize);
         this.animation = new Animation(new SpriteSheet(image, (int) tileSize.getX(), (int) tileSize.getY()), duration);
         this.angle = entity.getSpeed().getTheta()- 90;
     }
