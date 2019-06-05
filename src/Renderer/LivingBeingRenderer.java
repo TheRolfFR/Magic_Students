@@ -8,6 +8,9 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
     private Color colorFilter;
 
+    private Vector2f lastFacedDirection;
+    private SpriteView lastView;
+
     private SpriteView topView;
     private SpriteView leftView;
     private SpriteView rightView;
@@ -64,61 +67,61 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
     private void init(Color colorFilter) {
         this.colorFilter = colorFilter;
+        this.lastView = null;
+        this.lastFacedDirection = zero.copy();
     }
 
-    private SpriteView setTmp(SpriteView tmp, SpriteView v) {
+    private void setLastView(SpriteView v) {
         if(v != null) {
-            return v;
+            this.lastView = v;
         }
-        return tmp;
     }
-
     public void render(Graphics g, Vector2f facedDirection) {
-        Vector2f position = entity.getPosition();
-
-        // default view null or bottom idle
-        SpriteView tmp = setTmp(null, bottomIdleView);
+        // update last faced direction
+        if(!facedDirection.equals(zero)) {
+            this.lastFacedDirection = facedDirection;
+        }
 
         // standing still
-        if(this.entity.getSpeed().length() < 0.5f) {
+        if(this.entity.getSpeed().length() == 0f) {
             // facing down
-            /* if(facedDirection.getY() > 0) {
-                // already done by default
-            } */
+            if(this.lastFacedDirection.getY() > 0) {
+                setLastView(this.bottomIdleView);
+            }
             // facing right
-            if(facedDirection.getX() > 0) {
-                tmp = setTmp(tmp, rightIdleView);
+            if(this.lastFacedDirection.getX() > 0) {
+                this.setLastView(rightIdleView);
             }
             // facing left
-            else if(facedDirection.getX() < 0) {
-                tmp = setTmp(tmp, leftIdleView);
+            else if(this.lastFacedDirection.getX() < 0) {
+                this.setLastView(leftIdleView);
             }
             // facing up
-            else if(facedDirection.getY() < 0) {
-                tmp = setTmp(tmp, topIdleView);
+            else if(this.lastFacedDirection.getY() < 0) {
+                this.setLastView(topIdleView);
             }
         } else {
             // moving
             // facing right
-            if(facedDirection.getX() > 0) {
-                tmp = setTmp(tmp, rightView);
+            if(this.lastFacedDirection.getX() > 0) {
+                this.setLastView(rightView);
             }
             // facing left
-            else if(facedDirection.getX() < 0) {
-                tmp = setTmp(tmp, leftView);
+            else if(this.lastFacedDirection.getX() < 0) {
+                this.setLastView(leftView);
             }
             // facing up
-            else if(facedDirection.getY() < 0) {
-                tmp = setTmp(tmp, topView);
+            else if(this.lastFacedDirection.getY() < 0) {
+                this.setLastView(topView);
             }
             // facing down
-            if(facedDirection.getY() > 0) {
-                tmp = setTmp(tmp, bottomView);
+            else if(this.lastFacedDirection.getY() > 0) {
+                this.setLastView(bottomView);
             }
         }
 
-        if(tmp != null) {
-            tmp.render((int) entity.getPosition().getX(), (int) entity.getPosition().getY(), colorFilter);
+        if(this.lastView != null) {
+            this.lastView.render((int) entity.getPosition().getX(), (int) entity.getPosition().getY(), colorFilter);
         }
     }
 }
