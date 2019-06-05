@@ -35,6 +35,8 @@ public class SpriteView {
     }
 
     public void render(int x, int y, Color filter) {
-        this.animation.draw(x, y, filter);
+        if(this.animation != null) {
+            this.animation.draw(x, y, filter);
+        }
     }
 }
