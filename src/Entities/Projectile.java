@@ -2,6 +2,7 @@ package Entities;
 
 import Main.MainClass;
 import Main.SceneRenderer;
+import Renderer.ProjectileRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -18,6 +19,8 @@ public abstract class Projectile extends Entity {
     protected float opacity;
     protected boolean isDead;
 
+    protected ProjectileRenderer renderer;
+
     public float getOpacity() {
         return opacity;
     }
@@ -31,6 +34,8 @@ public abstract class Projectile extends Entity {
         this.image = null;
 
         this.isDead = false;
+
+        this.renderer = null;
     }
 
     Projectile(float x, float y, float maxSpeed, float accelerationRate, Vector2f direction, String imagePath, int radius) {
@@ -137,7 +142,7 @@ public abstract class Projectile extends Entity {
     public void move() {
         this.position.add(this.speed.scale(MainClass.getInGameTimeScale().getTimeScale()));
 
-        if (this.position.x < 0 || (this.position.x + this.getWidth() >= MainClass.WIDTH) || this.position.y < 0 || (this.position.y + this.getHeight() >= MainClass.HEIGHT)) {
+        if (this.position.x < 0 || (this.position.x + this.tileSize.getX() >= MainClass.WIDTH) || this.position.y < 0 || (this.position.y + this.tileSize.getY() >= MainClass.HEIGHT)) {
            this.isDead=true;
         }
     }

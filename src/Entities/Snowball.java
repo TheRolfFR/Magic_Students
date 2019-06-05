@@ -19,25 +19,7 @@ public class Snowball extends Projectile {
      */
 
     public Shape getBounds(){
-        return new Circle(position.x + this.getWidth() / 2f, position.y + this.getHeight() / 2f, this.getWidth()/2);
-    }
-
-    /**
-     * Returns snowball width
-     * @return snowball width
-     */
-    @Override
-    protected int getWidth() {
-        return this.image.getWidth();
-    }
-
-    /**
-     * Returns snowball height
-     * @return snowball height
-     */
-    @Override
-    protected int getHeight() {
-        return this.image.getHeight();
+        return new Circle(position.x + this.tileSize.getX() / 2f, position.y + this.tileSize.getY() / 2f, this.tileSize.getY()/2);
     }
 
     /**

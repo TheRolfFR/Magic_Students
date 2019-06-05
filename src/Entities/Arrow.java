@@ -13,17 +13,6 @@ public class Arrow extends Projectile {
         this.radius = hitBoxSize;
     }
 
-
-    @Override
-    protected int getWidth() {
-        return this.image.getWidth();
-    }
-
-    @Override
-    protected int getHeight() {
-        return this.image.getHeight();
-    }
-
     @Override
     public void fadeOut() {
 

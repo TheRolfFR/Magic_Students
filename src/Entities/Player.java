@@ -4,7 +4,9 @@ import Entities.Attacks.MeleeAttack;
 import Entities.Attacks.RangedAttack;
 
 import Main.MainClass;
+import Renderer.LivingBeingRenderer;
 import Renderer.SpriteRenderer;
+import Renderer.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -33,6 +35,20 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
 
         gc.getInput().addKeyListener(this);
         gc.getInput().addMouseListener(this);
+
+        String prepath = "img/wizard/";
+
+        this.tileSize = new Vector2f(96, 96);
+        this.renderer = new LivingBeingRenderer(this, this.tileSize);
+        this.renderer.setTopIdleView(new SpriteView(prepath + "topIdle.png", this.tileSize));
+        this.renderer.setBottomIdleView(new SpriteView(prepath + "bottomIdle.png", this.tileSize));
+        this.renderer.setLeftIdleView(new SpriteView(prepath + "leftIdle.png", this.tileSize));
+        this.renderer.setRightIdleView(new SpriteView(prepath + "rightIdle.png", this.tileSize));
+
+        this.renderer.setTopView(new SpriteView(prepath + "top.png", this.tileSize));
+        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", this.tileSize));
+        this.renderer.setLeftView(new SpriteView(prepath + "left.png", this.tileSize));
+        this.renderer.setRightView(new SpriteView("right.png", this.tileSize));
     }
 
     /**
