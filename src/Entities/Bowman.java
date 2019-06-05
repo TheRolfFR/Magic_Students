@@ -33,19 +33,22 @@ public class Bowman extends Ranged {
             Vector2f futureTargetPosition = target.getCenter().copy().add(target.speed.copy().scale(target.getCenter().distance(this.getCenter())/Snowball.MAX_SPEED));
 
             if(futureTargetPosition.getY() > MainClass.HEIGHT){
-                futureTargetPosition.set(futureTargetPosition.getX(), MainClass.HEIGHT - target.getRenderer().getHeight()/4);
+                futureTargetPosition.set(futureTargetPosition.getX(), MainClass.HEIGHT - target.getRadius()/4);
             }
             else if(futureTargetPosition.getY() < 0){
                 futureTargetPosition.set(futureTargetPosition.getX(), 0);
             }
             if(futureTargetPosition.getX() > MainClass.WIDTH){
-                futureTargetPosition.set(MainClass.WIDTH - target.getRenderer().getWidth()/4, futureTargetPosition.getY());
+                futureTargetPosition.set(MainClass.WIDTH - target.getRadius()/4, futureTargetPosition.getY());
             }
             else if(futureTargetPosition.getX() < 0){
                 futureTargetPosition.set(0, futureTargetPosition.getY());
             }
 
-            Vector2f direction = futureTargetPosition.sub(this.getCenter());
+            Vector2f direction = futureTargetPosition.sub(this.position);
+
+            //target the center of the opponent, not the top left corner
+            direction.set(direction.getX() + target.getRadius()/4, direction.getY() + target.getRadius()/4);
 
             //this.monsterProjectiles.add(new Snowball(this.getPosition(), direction));
             enemyProjectiles.add(new Fireball(this.getCenter(), direction));

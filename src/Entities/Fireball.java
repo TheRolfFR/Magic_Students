@@ -1,6 +1,7 @@
 package Entities;
 
-import Main.MainClass;
+import Renderer.ProjectileRenderer;
+import Renderer.SpriteRenderer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -13,12 +14,11 @@ public class Fireball extends Projectile {
         super(position.getX(), position.getY(), Snowball.MAX_SPEED, Snowball.ACCELERATION_RATE, SIZE, direction);
 
         try {
-            this.setRenderer(new SpriteRenderer(
-            this,
-            new Vector2f(SIZE, SIZE),
-            new Image("img/fireball_16x16.png", false, Image.FILTER_NEAREST).getScaledCopy( ((float) SIZE)/16f),
-            new int[] {6},
-            1000/6, direction.getTheta()- 90 ));
+            this.setRenderer(new ProjectileRenderer(
+                    this,
+                    new Image("img/fireball_16x16.png").getScaledCopy( ((float) SIZE)/16f),
+                    new Vector2f(SIZE/16f, SIZE/16f), 1000/6)
+            );
 
             this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
         } catch (SlickException e) {

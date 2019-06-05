@@ -1,6 +1,7 @@
 package Entities;
 
 import Main.MainClass;
+import Renderer.LivingBeingRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -16,6 +17,12 @@ public abstract class LivingBeing extends Entity implements Comparable {
     private float armorPoints;
 
     public static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
+
+    protected LivingBeingRenderer renderer;
+
+    public void setCurrentHealthPoints(int currentHealthPoints) {
+        this.currentHealthPoints = currentHealthPoints;
+    }
 
     /**
      * In game rendering of all Living beings
@@ -130,17 +137,21 @@ public abstract class LivingBeing extends Entity implements Comparable {
         if (this.position.x < 0) {
             this.position.set(0, this.position.y);
         }
-        if (this.position.x + this.getWidth() >= MainClass.WIDTH) {
-            this.position.set(MainClass.WIDTH - this.getWidth(), this.position.y);
+        if (this.position.x + this.tileSize.getX() >= MainClass.WIDTH) {
+            this.position.set(MainClass.WIDTH - this.tileSize.getX(), this.position.y);
         }
         if (this.position.y < 0) {
             this.position.set(this.position.x, 0);
         }
-        if (this.position.y + this.getHeight() >= MainClass.HEIGHT) {
-            this.position.set(this.position.x, MainClass.HEIGHT - this.getHeight());
+        if (this.position.y + this.tileSize.getX() >= MainClass.HEIGHT) {
+            this.position.set(this.position.x, MainClass.HEIGHT - this.tileSize.getX());
         }
     }
 
+    public void render(Graphics g, Vector2f facedDirection) {
+        this.renderer.render(g, facedDirection);
+        super.render(g);
+    }
 
     @Override
     public int compareTo(Object o) {

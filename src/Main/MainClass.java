@@ -47,14 +47,9 @@ public class MainClass extends BasicGame
             switch(random.nextInt(2)){
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
-                    tmpb.setRenderer(new SpriteRenderer(tmpb, tileSize, skin.getSubImage(0,
-                            (int) tileSize.getY()*3, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
-                    this.enemies.add(tmpb);
                     break;
                 case 1 :
                     Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
-                    tmpr.setRenderer(new SpriteRenderer(tmpr, tileSize, skin.getSubImage(0,
-                            (int) tileSize.getY()*2, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
                     this.enemies.add(tmpr);
                     break;
                 default: break;
@@ -101,20 +96,13 @@ public class MainClass extends BasicGame
         Vector2f tileSize = new Vector2f(96, 96);
         int[] viewFrames =  {10, 10, 10, 10};
 
-        this.player = new Player(gc,100,
+        this.player = new Player(
+                gc,
                 100,
-                (int) tileSize.getX(),
-                (int) tileSize.getY(),
+                100,
                 450 / MAX_FPS,
                 135 / MAX_FPS,
                 (int) Math.round(0.4*tileSize.getY())
-        );
-        this.player.setRenderer(new SpriteRenderer(
-                this.player,
-                tileSize,
-                original,
-                viewFrames,
-                1000/12)
         );
         this.player.setShowDebugRect(true);
 
