@@ -182,7 +182,7 @@ public abstract class Entity {
      * @param other the other entity
      * @return whether it collides with another entity
      */
-    public boolean collides(Entity other){
+    public boolean collidesWith(Entity other){
         return (this.getCenter().sub(other.getCenter()).length() < this.radius+other.getRadius());
     }
 }

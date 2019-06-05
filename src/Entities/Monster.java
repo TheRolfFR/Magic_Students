@@ -12,7 +12,7 @@ public abstract class Monster extends LivingBeing {
     }
 
     void doDamage(LivingBeing opponent){
-        if (this.collides(opponent)){
+        if (this.collidesWith(opponent)){
             opponent.takeDamage(this.damage);
         }
     }

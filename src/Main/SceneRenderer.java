@@ -57,6 +57,6 @@ public class SceneRenderer {
     }
 
     public static boolean inRoomLimits(Shape shape) {
-        return shape.getX() != 0 && Math.round(shape.getX()+shape.getWidth()) != roomDimension.getX() && shape.getY() != 0 && Math.round(shape.getY() + shape.getHeight()) != roomDimension.getY();
+        return (shape.getX() != 0 && Math.round(shape.getX()+shape.getWidth()) != roomDimension.getX() && shape.getY() != 0 && Math.round(shape.getY() + shape.getHeight()) != roomDimension.getY());
     }
 }

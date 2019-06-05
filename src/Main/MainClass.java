@@ -130,7 +130,7 @@ public class MainClass extends BasicGame
 
         for(Monster enemy : this.enemies){
             enemy.update(this.player);
-            if (enemy.collides(player)){
+            if (enemy.collidesWith(player)){
                 enemy.collidingAction(player);
                 if (this.player.isDead()){
                     setGamePaused(true);

@@ -102,7 +102,7 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
 
     public void checkCollidesProjectile(LivingBeing opponent){
         for(int i = 0; i< playerProjectiles.size(); i++){
-            if(playerProjectiles.get(i).collides(opponent)){
+            if(playerProjectiles.get(i).collidesWith(opponent)){
                 playerProjectiles.get(i).collidingAction(opponent);
                 playerProjectiles.remove(playerProjectiles.get(i));
             }

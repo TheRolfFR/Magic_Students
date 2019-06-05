@@ -58,7 +58,7 @@ public abstract class Projectile extends Entity {
     }
 
     public void collidingAction(LivingBeing opponent) {
-        if (collides(opponent)){
+        if (collidesWith(opponent)){
             opponent.takeDamage(damage);
             this.isDead = true;
         }

@@ -59,7 +59,7 @@ public class Bowman extends Ranged {
             this.delayCounter = 0f;
         }
 
-        if(this.collides(target)){
+        if(this.collidesWith(target)){
             this.collidingAction(target);
         }
 
@@ -67,7 +67,7 @@ public class Bowman extends Ranged {
             Projectile p = monsterProjectiles.get(i);
             p.update(i);
 
-            if(p.collides(target)){
+            if(p.collidesWith(target)){
                 p.collidingAction(target);
             }
 
