@@ -15,8 +15,8 @@ import static java.lang.Math.round;
 
 public class MainClass extends BasicGame
 {
-    private Player player;
-    public static ArrayList<Monster> enemies = new ArrayList<>();
+    public Player player;
+    public  ArrayList<Monster> enemies = new ArrayList<>();
 
     public static final int MAX_FPS = 60;
     public static final int WIDTH = 640;
@@ -40,10 +40,10 @@ public class MainClass extends BasicGame
         Random random = new Random();
         int randomX;
         int randomY;
-        for(int i = 0; i< random.nextInt(9)+1; i++){
+        for(int i = 0; i<1; i++){
             randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-            switch(random.nextInt(2)){
+            switch(1){
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setRenderer(new SpriteRenderer(tmpb, tileSize, skin.getSubImage(0,
@@ -73,6 +73,10 @@ public class MainClass extends BasicGame
 
     public static TimeScale getInGameTimeScale() {
         return inGameTimeScale;
+    }
+
+    public static MainClass getInstance() {
+        return instance;
     }
 
     public static TimeScale getGuiTimeScale() {
@@ -129,54 +133,15 @@ public class MainClass extends BasicGame
         inGameTimeScale.setDeltaTime(i);
 
         this.player.update();
+        this.player.checkCollision();
 
         for(Monster enemy : this.enemies){
             enemy.update(this.player);
-            if (enemy.collidesWith(player)){
-                enemy.collidingAction(player);
-                if (this.player.isDead()){
-                    setGamePaused(true);
-                }
+            enemy.checkCollision();
+            if (this.player.isDead()){
+                setGamePaused(true);
             }
         }
-
-
-//        this.player.update();
-//        for(Projectile p: Ranged.enemyProjectiles){
-//            p.update();
-//        }
-//        for (Projectile p: Player.playerProjectiles){
-//            p.update();
-//        }
-//        for (Monster m: enemies) {
-//            m.update(player);
-//        }
-//
-//        for (int j = 0; j< Player.playerProjectiles.size(); j++){
-//            for (int h = 0; h < this.enemies.size(); h++){
-//                Monster enemy = enemies.get(h);
-//                Player.playerProjectiles.get(j).collidingAction(enemy);
-//                if (enemy.isDead()){
-//                    enemy.setRenderer(null);
-//                    this.enemies.remove(enemy);
-//                }
-//            }
-//            if (Player.playerProjectiles.get(j).isDead()){
-//                Player.playerProjectiles.get(j).setRenderer(null);
-//                Player.playerProjectiles.remove(Player.playerProjectiles.get(j));
-//            }
-//        }
-//        for (int j = 0; j < Ranged.enemyProjectiles.size(); j++){
-//            Ranged.enemyProjectiles.get(j).collidingAction(player);
-//            if (Ranged.enemyProjectiles.get(j).isDead()){
-//                Ranged.enemyProjectiles.get(j).setRenderer(null);
-//                Ranged.enemyProjectiles.remove(Ranged.enemyProjectiles.get(j));
-//            }
-//        }
-//        for (Monster m: this.enemies) {
-//            m.collidingAction(player);
-//        }
-
 
         for (int j=0; j<this.enemies.size(); j++) {
             this.player.checkCollidesProjectile(this.enemies.get(j));
@@ -220,7 +185,7 @@ public class MainClass extends BasicGame
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));
             appgc.setDisplayMode(WIDTH, HEIGHT, false);
-            appgc.setTargetFrameRate(MAX_FPS);
+            appgc.setTargetFrameRate(1000);
             appgc.start();
         }
         catch (SlickException ex)

@@ -75,26 +75,27 @@ public abstract class LivingBeing extends Entity implements Comparable {
         return this.currentHealthPoints<=0;
     }
 
-    private LivingBeing getOneCollider(){
-        LivingBeing collider = null;
-        int size = MainClass.enemies.size(), i = 0;
-        while (collider == null && i < size){
-            if (MainClass.enemies.get(i).collidesWith(this)){
-                collider = MainClass.enemies.get(i);
+    private void solveCollision(LivingBeing pusher, LivingBeing percuted, int level){
+        if (level <= MainClass.getInstance().enemies.size()){
+            percuted.collidingAction(pusher);
+            if (percuted.collidesWith(MainClass.getInstance().player)){
+                solveCollision(percuted,MainClass.getInstance().player,level+1);
             }
-            else {
-                i = i+1;
+            for (Monster m: MainClass.getInstance().enemies) {
+                if (percuted.collidesWith(m)){
+                    solveCollision(percuted,m,level+1);
+                }
             }
         }
-        return collider;
     }
 
-    public void solveCollision(LivingBeing pusher, LivingBeing percuted, int level){
-        if (level <= MainClass.enemies.size()){
-            percuted.collidingAction(pusher);
-            LivingBeing pushedByPercuted = percuted.getOneCollider();
-            while (pushedByPercuted != null){
-                solveCollision(percuted,pushedByPercuted,level+1);
+    public void checkCollision(){
+        if (this.collidesWith(MainClass.getInstance().player)){
+            solveCollision(this,MainClass.getInstance().player,1);
+        }
+        for (Monster m: MainClass.getInstance().enemies) {
+            if (this.collidesWith(m)){
+                solveCollision(this,m,1);
             }
         }
     }
