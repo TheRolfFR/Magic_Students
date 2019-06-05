@@ -21,23 +21,27 @@ public class Bowman extends Ranged {
 
     @Override
     public void update(LivingBeing target) {
-        if(target.position.distance(this.position)<100) {
+        if(target.position.distance(this.position)<150) {
             this.updateSpeed(target.position.copy().sub(this.position).normalise().negate().scale(this.getAccelerationRate()));
+            this.move();
+        }
+        else if(this.speed.length()!=0){
+            this.updateSpeed(this.speed.copy().normalise().negate().scale(getAccelerationRate()));
             this.move();
         }
 
         this.delayCounter += MainClass.getInGameTimeScale().getDeltaTime();
-        if(this.delayCounter > SHOT_DELAY) {
+        if(this.delayCounter > SHOT_DELAY && !MainClass.isGamePaused()) {
             Vector2f futureTargetPosition = target.position.copy().add(target.speed.copy().scale(target.position.distance(this.position)/Snowball.MAX_SPEED));
 
             if(futureTargetPosition.getY() > MainClass.HEIGHT){
-                futureTargetPosition.set(futureTargetPosition.getX(), MainClass.HEIGHT - target.getRenderer().getHeight());
+                futureTargetPosition.set(futureTargetPosition.getX(), MainClass.HEIGHT - target.getRenderer().getHeight()/4);
             }
             else if(futureTargetPosition.getY() < 0){
                 futureTargetPosition.set(futureTargetPosition.getX(), 0);
             }
             if(futureTargetPosition.getX() > MainClass.WIDTH){
-                futureTargetPosition.set(MainClass.WIDTH - target.getRenderer().getWidth(), futureTargetPosition.getY());
+                futureTargetPosition.set(MainClass.WIDTH - target.getRenderer().getWidth()/4, futureTargetPosition.getY());
             }
             else if(futureTargetPosition.getX() < 0){
                 futureTargetPosition.set(0, futureTargetPosition.getY());
@@ -49,7 +53,7 @@ public class Bowman extends Ranged {
             direction.set(direction.getX() + target.getRenderer().getHeight()/4, direction.getY() + target.getRenderer().getWidth()/4);
 
             //this.monsterProjectiles.add(new Snowball(this.getPosition(), direction));
-            this.monsterProjectiles.add(new Fireball(this.getPosition().add(new Vector2f(this.getHeight()/2f, this.getWidth()/2f)), direction));
+            this.monsterProjectiles.add(new Fireball(this.getPosition().copy().add(new Vector2f(this.getHeight()/2f, this.getWidth()/2f)), direction));
             this.monsterProjectiles.get(monsterProjectiles.size()-1).setShowDebugRect(true);
 
             this.delayCounter = 0f;

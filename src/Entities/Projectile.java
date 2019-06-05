@@ -1,5 +1,6 @@
 package Entities;
 
+import Main.MainClass;
 import Main.SceneRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -75,7 +76,7 @@ public abstract class Projectile extends Entity {
         this.updateSpeed(this.direction.normalise().scale(this.getAccelerationRate()));
         this.move();
 
-        if(!SceneRenderer.inRoomLimits(this.getBounds())) {
+        if(isDead()) {
             this.fadeOut();
             this.opacity = Math.max(0f, this.opacity - 0.125f);
         }
@@ -94,4 +95,12 @@ public abstract class Projectile extends Entity {
     }
 
     public abstract void fadeOut();
+
+    public void move() {
+        this.position.add(this.speed.scale(MainClass.getInGameTimeScale().getTimeScale()));
+
+        if (this.position.x < 0 || (this.position.x + this.getWidth() >= MainClass.WIDTH) || this.position.y < 0 || (this.position.y + this.getHeight() >= MainClass.HEIGHT)) {
+           this.isDead=true;
+        }
+    }
 }

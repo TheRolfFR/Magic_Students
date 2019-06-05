@@ -142,22 +142,7 @@ public abstract class Entity {
     /**
      * Moves the entity
      */
-    public void move() {
-        this.position.add(this.speed.scale(MainClass.getInGameTimeScale().getTimeScale()));
-
-        if (this.position.x < 0) {
-            this.position.set(0, this.position.y);
-        }
-        if (this.position.x + this.getWidth() >= MainClass.WIDTH) {
-            this.position.set(MainClass.WIDTH - this.getWidth(), this.position.y);
-        }
-        if (this.position.y < 0) {
-            this.position.set(this.position.x, 0);
-        }
-        if (this.position.y + this.getHeight() >= MainClass.HEIGHT) {
-            this.position.set(this.position.x, MainClass.HEIGHT - this.getHeight());
-        }
-    }
+    public abstract void move();
 
     public Vector2f getCenter(){
         return new Vector2f(position.copy().x+this.getWidth()/2,position.copy().y+getHeight()/2);

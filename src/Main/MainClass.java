@@ -32,7 +32,7 @@ public class MainClass extends BasicGame
 
     private PauseMenu menu;
 
-    private static boolean isGamePaused() {
+    public static boolean isGamePaused() {
         return instance.menu.isActive();
     }
 
