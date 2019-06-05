@@ -15,7 +15,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     private int maxHealthPoints;
     private float armorPoints;
 
-    private static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
+    public static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
 
     /**
      * In game rendering of all Living beings

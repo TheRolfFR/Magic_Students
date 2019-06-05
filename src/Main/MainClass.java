@@ -146,7 +146,7 @@ public class MainClass extends BasicGame
         for (int j=0; j<enemies.size(); j++) {
             if (enemies.get(j).isDead()) {
                 System.out.println("You killed an enemy");
-                enemies.get(j).setRenderer(null);
+                LivingBeing.livingBeings.remove(this.enemies.get(j));
                 this.enemies.remove(this.enemies.get(j));
             }
         }
