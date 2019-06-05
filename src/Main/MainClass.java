@@ -28,6 +28,7 @@ public class MainClass extends BasicGame
 
     private static GameContainer instanceGameContainer;
     private static MainClass instance = null;
+    private boolean portalSet = false;
 
     private HealthBar healthBar;
 
@@ -55,6 +56,12 @@ public class MainClass extends BasicGame
                 default: break;
             }
         }
+    }
+
+    private void generateRoom(GameContainer gc) throws SlickException {
+        generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
+        this.healthBar = new HealthBar(this.player);
+        SceneRenderer.generateBackground("img/ground.png", gc);
     }
 
     public static void setGamePaused(boolean gamePaused) {
@@ -102,23 +109,33 @@ public class MainClass extends BasicGame
                 100,
                 450 / MAX_FPS,
                 135 / MAX_FPS,
-                (int) Math.round(0.4*tileSize.getY())
+                (int) Math.round(0.20*tileSize.getY())
         );
         this.player.setShowDebugRect(true);
-
-        generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
-
-
-        this.healthBar = new HealthBar(this.player);
-        SceneRenderer.generateBackground("img/ground.png", gc);
-
         gc.getInput().addKeyListener(this.player);
+
+        generateRoom(gc);
+
+        Random random = new Random();
+        // portal size = 40x40
+        int[][] possible_positions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 20},
+                {40, HEIGHT / 2 - 20}, {WIDTH / 2 - 20, HEIGHT - 40 - 20}};
+        Portal portal;
+
+        for (int p = 0; p < 4; p++) {
+            portal = new Portal(possible_positions[p][0], possible_positions[p][1],
+                    40, 40, 20);
+            // temporary same sprite as player
+            portal.setRenderer(new SpriteRenderer(
+                    portal, tileSize, original, viewFrames, 1000/12));
+            Portal.portals.add(portal);
+        }
 
         System.out.println(Configuration.getConfigurationFile().getJSONObject("glossary").getString("title"));
     }
 
     @Override
-    public void update(GameContainer gc, int i) {
+    public void update(GameContainer gc, int i) throws SlickException {
         inGameTimeScale.setDeltaTime(i);
 
         this.player.update();
@@ -139,6 +156,31 @@ public class MainClass extends BasicGame
                 System.out.println("You killed an enemy");
                 LivingBeing.livingBeings.remove(this.enemies.get(j));
                 this.enemies.remove(this.enemies.get(j));
+            }
+        }
+
+        if (this.enemies.size() == 0) {
+            if (!portalSet) {
+                Random random = new Random();
+
+                for (Portal portal : Portal.portals) {
+                    if (random.nextBoolean()) {
+                        portal.setVisible(true);
+                    }
+                }
+                portalSet = true;
+            }
+
+            for (Portal portal : Portal.portals) {
+                if (this.player.collidesWith(portal)) {
+                    generateRoom(gc);
+
+                    for (Portal portal_bis : Portal.portals) {
+                        portal_bis.setVisible(false);
+                        portalSet = false;
+                    }
+                    break;
+                }
             }
         }
     }
@@ -166,6 +208,11 @@ public class MainClass extends BasicGame
         for (Monster enemy: enemies){
             enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
             enemy.getHealthBar().render(g);
+        }
+        for (Portal portal: Portal.portals) {
+            if (portal.isVisible()) {
+                portal.render(g);
+            }
         }
         this.menu.render(g);
     }

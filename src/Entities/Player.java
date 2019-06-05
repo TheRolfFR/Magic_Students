@@ -114,6 +114,8 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
             case Input.KEY_D:
                 this.keyRight = true;
                 break;
+            case Input.KEY_SPACE:
+                break;
         }
     }
 
@@ -140,6 +142,8 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
             case Input.KEY_RIGHT:
             case Input.KEY_D:
                 this.keyRight = false;
+                break;
+            case Input.KEY_SPACE:
                 break;
         }
     }
