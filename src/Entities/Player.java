@@ -1,14 +1,10 @@
 package Entities;
 
-import Entities.Attacks.MeleeAttack;
-import Entities.Attacks.RangedAttack;
-
 import Main.MainClass;
-import Renderer.SpriteRenderer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-public class Player extends LivingBeing implements MeleeAttack, RangedAttack, KeyListener, MouseListener{
+public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private boolean keyUp;
     private boolean keyDown;

@@ -130,14 +130,14 @@ public class MainClass extends BasicGame
                 {40, HEIGHT / 2 - 20}, {WIDTH / 2 - 20, HEIGHT - 40 - 20}};
         Portal portal;
 
-        for (int p = 0; p < 4; p++) {
+        /*for (int p = 0; p < 4; p++) {
             portal = new Portal(possible_positions[p][0], possible_positions[p][1],
                     40, 40, 20);
             // temporary same sprite as player
             portal.setRenderer(new SpriteRenderer(
                     portal, tileSize, original, viewFrames, 1000/12));
             Portal.portals.add(portal);
-        }
+        }*/
 
         System.out.println(Configuration.getConfigurationFile().getJSONObject("glossary").getString("title"));
     }
