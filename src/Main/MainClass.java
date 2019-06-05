@@ -27,6 +27,7 @@ public class MainClass extends BasicGame
 
     private static GameContainer instanceGameContainer;
     private static MainClass instance = null;
+    private boolean portalSet = false;
 
     private HealthBar healthBar;
 
@@ -40,16 +41,16 @@ public class MainClass extends BasicGame
         Random random = new Random();
         int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
         int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-        for(int i = 0; i< random.nextInt(9)+1; i++){
-            switch((int) random.nextInt(1)){
+        for(int i = 0; i< random.nextInt(2); i++){
+            switch(random.nextInt(1)){
                 case 0 :
-                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
+                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5, (int) Math.round(0.4*tileSize.getY()));
                     tmpb.setRenderer(new SpriteRenderer(tmpb, tileSize, skin.getSubImage(0,
                             (int) tileSize.getY()*3, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
                     this.enemies.add(tmpb);
                     break;
                 case 1 :
-                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
+                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5, (int) Math.round(0.4*tileSize.getY()));
                     tmpr.setRenderer(new SpriteRenderer(tmpr, tileSize, skin.getSubImage(0,
                             (int) tileSize.getY()*2, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
                     this.enemies.add(tmpr);
@@ -57,6 +58,12 @@ public class MainClass extends BasicGame
                 default: break;
             }
         }
+    }
+
+    private void generateRoom(GameContainer gc) throws SlickException {
+        generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
+        this.healthBar = new HealthBar(this.player);
+        SceneRenderer.generateBackground("img/ground.png", gc);
     }
 
     public static void setGamePaused(boolean gamePaused) {
@@ -100,7 +107,7 @@ public class MainClass extends BasicGame
                 (int) tileSize.getY(),
                 450 / MAX_FPS,
                 135 / MAX_FPS,
-                (int) Math.round(0.4*tileSize.getY())
+                (int) Math.round(0.20*tileSize.getY())
         );
         this.player.setRenderer(new SpriteRenderer(
                 this.player,
@@ -110,20 +117,30 @@ public class MainClass extends BasicGame
                 1000/12)
         );
         this.player.setShowDebugRect(true);
-
-        generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
-
-
-        this.healthBar = new HealthBar(this.player);
-        SceneRenderer.generateBackground("img/ground.png", gc);
-
         gc.getInput().addKeyListener(this.player);
+
+        generateRoom(gc);
+
+        Random random = new Random();
+        // portal size = 40x40
+        int[][] possible_positions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 20},
+                {40, HEIGHT / 2 - 20}, {WIDTH / 2 - 20, HEIGHT - 40 - 20}};
+        Portal portal;
+
+        for (int p = 0; p < 4; p++) {
+            portal = new Portal(possible_positions[p][0], possible_positions[p][1],
+                    40, 40, 20);
+            // temporary same sprite as player
+            portal.setRenderer(new SpriteRenderer(
+                    portal, tileSize, original, viewFrames, 1000/12));
+            Portal.portals.add(portal);
+        }
 
         System.out.println(Configuration.getConfigurationFile().getJSONObject("glossary").getString("title"));
     }
 
     @Override
-    public void update(GameContainer gc, int i) {
+    public void update(GameContainer gc, int i) throws SlickException {
         inGameTimeScale.setDeltaTime(i);
 
         this.player.update();
@@ -138,50 +155,37 @@ public class MainClass extends BasicGame
             }
         }
 
-
-//        this.player.update();
-//        for(Projectile p: Ranged.enemyProjectiles){
-//            p.update();
-//        }
-//        for (Projectile p: Player.playerProjectiles){
-//            p.update();
-//        }
-//        for (Monster m: enemies) {
-//            m.update(player);
-//        }
-//
-//        for (int j = 0; j< Player.playerProjectiles.size(); j++){
-//            for (int h = 0; h < this.enemies.size(); h++){
-//                Monster enemy = enemies.get(h);
-//                Player.playerProjectiles.get(j).collidingAction(enemy);
-//                if (enemy.isDead()){
-//                    enemy.setRenderer(null);
-//                    this.enemies.remove(enemy);
-//                }
-//            }
-//            if (Player.playerProjectiles.get(j).isDead()){
-//                Player.playerProjectiles.get(j).setRenderer(null);
-//                Player.playerProjectiles.remove(Player.playerProjectiles.get(j));
-//            }
-//        }
-//        for (int j = 0; j < Ranged.enemyProjectiles.size(); j++){
-//            Ranged.enemyProjectiles.get(j).collidingAction(player);
-//            if (Ranged.enemyProjectiles.get(j).isDead()){
-//                Ranged.enemyProjectiles.get(j).setRenderer(null);
-//                Ranged.enemyProjectiles.remove(Ranged.enemyProjectiles.get(j));
-//            }
-//        }
-//        for (Monster m: this.enemies) {
-//            m.collidingAction(player);
-//        }
-
-
         for (int j=0; j<this.enemies.size(); j++) {
             this.player.checkCollidesProjectile(this.enemies.get(j));
             if (this.enemies.get(j).isDead()) {
                 System.out.println("You killed an enemy");
                 this.enemies.get(j).setRenderer(null);
                 this.enemies.remove(this.enemies.get(j));
+            }
+        }
+
+        if (this.enemies.size() == 0) {
+            if (!portalSet) {
+                Random random = new Random();
+
+                for (Portal portal : Portal.portals) {
+                    if (random.nextBoolean()) {
+                        portal.setVisible(true);
+                    }
+                }
+                portalSet = true;
+            }
+
+            for (Portal portal : Portal.portals) {
+                if (this.player.collidesWith(portal)) {
+                    generateRoom(gc);
+
+                    for (Portal portal_bis : Portal.portals) {
+                        portal_bis.setVisible(false);
+                        portalSet = false;
+                    }
+                    break;
+                }
             }
         }
     }
@@ -209,6 +213,11 @@ public class MainClass extends BasicGame
         for (Monster enemy: enemies){
             enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
             enemy.getHealthBar().render(g);
+        }
+        for (Portal portal: Portal.portals) {
+            if (portal.isVisible()) {
+                portal.render(g);
+            }
         }
         this.menu.render(g);
     }
