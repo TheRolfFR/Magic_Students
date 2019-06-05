@@ -97,6 +97,8 @@ public abstract class Projectile extends Entity {
         Projectile p;
         for (int j = 0; j < Ranged.allyProjectiles.size(); j++) {
             p = Ranged.allyProjectiles.get(j);
+            p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
+            p.move();
 
             for(Monster enemy : MainClass.enemies){
                 checkCollidesProjectile(enemy);

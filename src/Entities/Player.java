@@ -7,8 +7,6 @@ import Main.MainClass;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.util.ArrayList;
-
 public class Player extends LivingBeing implements MeleeAttack, RangedAttack, KeyListener, MouseListener{
 
     protected int width;
