@@ -14,6 +14,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private boolean keyDown;
     private boolean keyLeft;
     private boolean keyRight;
+
     /**
      * Single contructor
      *
@@ -33,19 +34,21 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         gc.getInput().addMouseListener(this);
 
         String prepath = "img/wizard/";
-        int duration = 500;
+        int duration = 50;
+
+        Color capeColor = new Color(0x0094ff);
 
         this.tileSize = new Vector2f(96, 96);
-        this.renderer = new LivingBeingRenderer(this, this.tileSize);
-        this.renderer.setTopIdleView(new SpriteView(prepath + "topIdle.png", this.tileSize, duration));
-        this.renderer.setBottomIdleView(new SpriteView(prepath + "bottomIdle.png", this.tileSize, duration));
-        this.renderer.setLeftIdleView(new SpriteView(prepath + "leftIdle.png", this.tileSize, duration));
-        this.renderer.setRightIdleView(new SpriteView(prepath + "rightIdle.png", this.tileSize, duration));
+        this.renderer = new LivingBeingRenderer(this, this.tileSize, capeColor);
+        this.renderer.setTopIdleView(new SpriteView(prepath + "topIdle.png", this.tileSize, duration, Color.red));
+        this.renderer.setBottomIdleView(new SpriteView(prepath + "bottomIdle.png", this.tileSize, duration, Color.red));
+        this.renderer.setLeftIdleView(new SpriteView(prepath + "leftIdle.png", this.tileSize, duration, Color.red));
+        this.renderer.setRightIdleView(new SpriteView(prepath + "rightIdle.png", this.tileSize, duration, Color.red));
 
-        this.renderer.setTopView(new SpriteView(prepath + "top.png", this.tileSize, duration));
-        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", this.tileSize, duration));
-        this.renderer.setLeftView(new SpriteView(prepath + "left.png", this.tileSize, duration));
-        this.renderer.setRightView(new SpriteView(prepath + "right.png", this.tileSize, duration));
+        this.renderer.setTopView(new SpriteView(prepath + "top.png", this.tileSize, duration, Color.red));
+        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", this.tileSize, duration, Color.red));
+        this.renderer.setLeftView(new SpriteView(prepath + "left.png", this.tileSize, duration, Color.red));
+        this.renderer.setRightView(new SpriteView(prepath + "right.png", this.tileSize, duration, Color.red));
     }
 
     /**
