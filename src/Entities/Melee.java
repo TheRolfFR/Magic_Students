@@ -11,9 +11,4 @@ public abstract class Melee extends Monster implements MeleeAttack {
         this.width=width;
         this.height=height;
     }
-
-    @Override
-    public int getWidth() { return this.width; }
-    @Override
-    public int getHeight() { return this.height; }
 }

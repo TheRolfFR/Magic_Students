@@ -16,11 +16,6 @@ public class Portal extends Entity {
         this.visible = false;
     }
 
-    @Override
-    protected int getWidth() { return this.width; }
-    @Override
-    protected int getHeight() { return this.height; }
-
     public boolean isVisible() { return this.visible; }
     public void setVisible(boolean visible) { this.visible = visible; }
 

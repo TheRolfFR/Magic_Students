@@ -26,7 +26,6 @@ public class Snowball extends Projectile {
      * Returns snowball width
      * @return snowball width
      */
-    @Override
     protected int getWidth() {
         return this.image.getWidth();
     }
@@ -35,7 +34,6 @@ public class Snowball extends Projectile {
      * Returns snowball height
      * @return snowball height
      */
-    @Override
     protected int getHeight() {
         return this.image.getHeight();
     }

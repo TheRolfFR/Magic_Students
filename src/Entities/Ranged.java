@@ -15,9 +15,4 @@ public abstract class Ranged extends Monster implements RangedAttack {
         this.width=width;
         this.height=height;
     }
-
-    @Override
-    protected int getWidth() { return this.width; }
-    @Override
-    protected int getHeight() { return this.height; }
 }

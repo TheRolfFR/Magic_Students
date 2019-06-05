@@ -14,12 +14,10 @@ public class Arrow extends Projectile {
     }
 
 
-    @Override
     protected int getWidth() {
         return this.image.getWidth();
     }
 
-    @Override
     protected int getHeight() {
         return this.image.getHeight();
     }
