@@ -4,15 +4,13 @@ import Entities.Attacks.MeleeAttack;
 import Entities.Attacks.RangedAttack;
 
 import Main.MainClass;
+import Renderer.SpriteRenderer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
 
 public class Player extends LivingBeing implements MeleeAttack, RangedAttack, KeyListener, MouseListener{
-
-    protected int width;
-    protected int height;
 
     private boolean keyUp;
     private boolean keyDown;
@@ -21,26 +19,17 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
 
     public static ArrayList<Projectile> playerProjectiles;
 
-    @Override
-    public int getWidth() { return this.width; }
-    @Override
-    public int getHeight() { return this.height; }
-
     /**
      * Single contructor
      *
      * @param gc game container
      * @param x initial x position of the player
      * @param y initial y position of the player
-     * @param width hitbox width of the player
-     * @param height hitbox height of the player
      * @param maxSpeed max speed of the player
      * @param accelerationRate max acceleration of the player
      */
-    public Player(GameContainer gc, float x, float y, int width, int height, float maxSpeed, float accelerationRate, int radius) {
+    public Player(GameContainer gc, float x, float y, float maxSpeed, float accelerationRate, int radius) {
         super(x, y, maxSpeed, accelerationRate, 100, 1000, radius);
-        this.width = width;
-        this.height = height;
 
         this.keyUp = false;
         this.keyDown = false;
@@ -58,11 +47,6 @@ public class Player extends LivingBeing implements MeleeAttack, RangedAttack, Ke
     private void doAttack() {
         Vector2f direction = new Vector2f( MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY() ).sub( this.getPosition() );
         playerProjectiles.add(new Snowball(this.getPosition(), direction));
-    }
-
-    @Override
-    public void setRenderer(SpriteRenderer renderer) {
-        super.setRenderer(renderer, new Color(0x94FF));
     }
 
     /**
