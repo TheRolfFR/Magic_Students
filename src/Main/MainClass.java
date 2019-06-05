@@ -11,12 +11,13 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static Entities.Projectile.*;
 import static java.lang.Math.round;
 
 public class MainClass extends BasicGame
 {
     public Player player;
-    public  ArrayList<Monster> enemies = new ArrayList<>();
+    public static ArrayList<Monster> enemies = new ArrayList<>();
 
     public static final int MAX_FPS = 60;
     public static final int WIDTH = 640;
@@ -40,10 +41,10 @@ public class MainClass extends BasicGame
         Random random = new Random();
         int randomX;
         int randomY;
-        for(int i = 0; i<1; i++){
+        for(int i = 0; i< random.nextInt(9)+1; i++){
             randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-            switch(1){
+            switch(random.nextInt(2)){
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setRenderer(new SpriteRenderer(tmpb, tileSize, skin.getSubImage(0,
@@ -134,6 +135,8 @@ public class MainClass extends BasicGame
 
         this.player.update();
         this.player.checkCollision();
+        updateEnemyProjectile(player);
+        updateAllyProjectiles();
 
         for(Monster enemy : this.enemies){
             enemy.update(this.player);
@@ -143,11 +146,10 @@ public class MainClass extends BasicGame
             }
         }
 
-        for (int j=0; j<this.enemies.size(); j++) {
-            this.player.checkCollidesProjectile(this.enemies.get(j));
-            if (this.enemies.get(j).isDead()) {
+        for (int j=0; j<enemies.size(); j++) {
+            if (enemies.get(j).isDead()) {
                 System.out.println("You killed an enemy");
-                this.enemies.get(j).setRenderer(null);
+                enemies.get(j).setRenderer(null);
                 this.enemies.remove(this.enemies.get(j));
             }
         }
@@ -185,7 +187,7 @@ public class MainClass extends BasicGame
             AppGameContainer appgc;
             appgc = new AppGameContainer(new MainClass("Magic Students"));
             appgc.setDisplayMode(WIDTH, HEIGHT, false);
-            appgc.setTargetFrameRate(1000);
+            appgc.setTargetFrameRate(MAX_FPS);
             appgc.start();
         }
         catch (SlickException ex)
