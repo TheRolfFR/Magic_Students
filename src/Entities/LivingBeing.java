@@ -1,6 +1,7 @@
 package Entities;
 
 import Main.MainClass;
+import Renderer.LivingBeingRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -14,6 +15,12 @@ public abstract class LivingBeing extends Entity implements Comparable {
     private int currentHealthPoints;
     private int maxHealthPoints;
     private float armorPoints;
+
+    protected LivingBeingRenderer renderer;
+
+    public void setCurrentHealthPoints(int currentHealthPoints) {
+        this.currentHealthPoints = currentHealthPoints;
+    }
 
     private static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
 
@@ -75,6 +82,31 @@ public abstract class LivingBeing extends Entity implements Comparable {
         return this.currentHealthPoints<=0;
     }
 
+    private void solveCollision(LivingBeing pusher, LivingBeing percuted, int level){
+        if (level <= MainClass.getInstance().enemies.size()){
+            percuted.collidingAction(pusher);
+            if (percuted.collidesWith(MainClass.getInstance().player)){
+                solveCollision(percuted,MainClass.getInstance().player,level+1);
+            }
+            for (Monster m: MainClass.getInstance().enemies) {
+                if (percuted.collidesWith(m)){
+                    solveCollision(percuted,m,level+1);
+                }
+            }
+        }
+    }
+
+    public void checkCollision(){
+        if (this.collidesWith(MainClass.getInstance().player)){
+            solveCollision(this,MainClass.getInstance().player,1);
+        }
+        for (Monster m: MainClass.getInstance().enemies) {
+            if (this.collidesWith(m)){
+                solveCollision(this,m,1);
+            }
+        }
+    }
+
     private void tpOutOf(LivingBeing opponent) {
         Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(radius + opponent.radius - opponent.getCenter().sub(getCenter()).length()));
         position.add(diff);
@@ -93,7 +125,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void collidingAction(LivingBeing opponent) {
-        while (collidesWith(opponent)){
+        if (collidesWith(opponent)){
             this.tpOutOf(opponent);
             opponent.tpOutOf(this);
         }
@@ -105,17 +137,21 @@ public abstract class LivingBeing extends Entity implements Comparable {
         if (this.position.x < 0) {
             this.position.set(0, this.position.y);
         }
-        if (this.position.x + this.getWidth() >= MainClass.WIDTH) {
-            this.position.set(MainClass.WIDTH - this.getWidth(), this.position.y);
+        if (this.position.x + this.tileSize.getX() >= MainClass.WIDTH) {
+            this.position.set(MainClass.WIDTH - this.tileSize.getX(), this.position.y);
         }
         if (this.position.y < 0) {
             this.position.set(this.position.x, 0);
         }
-        if (this.position.y + this.getHeight() >= MainClass.HEIGHT) {
-            this.position.set(this.position.x, MainClass.HEIGHT - this.getHeight());
+        if (this.position.y + this.tileSize.getX() >= MainClass.HEIGHT) {
+            this.position.set(this.position.x, MainClass.HEIGHT - this.tileSize.getX());
         }
     }
 
+    public void render(Graphics g, Vector2f facedDirection) {
+        this.renderer.render(g, facedDirection);
+        super.render(g);
+    }
 
     @Override
     public int compareTo(Object o) {

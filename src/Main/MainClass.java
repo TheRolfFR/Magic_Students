@@ -11,12 +11,13 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static Entities.Projectile.*;
 import static java.lang.Math.round;
 
 public class MainClass extends BasicGame
 {
-    private Player player;
-    private ArrayList<Monster> enemies = new ArrayList<>();
+    public Player player;
+    public static ArrayList<Monster> enemies = new ArrayList<>();
 
     public static final int MAX_FPS = 60;
     public static final int WIDTH = 640;
@@ -39,20 +40,17 @@ public class MainClass extends BasicGame
 
     public void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames){
         Random random = new Random();
-        int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
-        int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-        for(int i = 0; i< random.nextInt(2); i++){
-            switch(random.nextInt(1)){
+        int randomX;
+        int randomY;
+        for(int i = 0; i< random.nextInt(9)+1; i++){
+            randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
+            randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+            switch(random.nextInt(2)){
                 case 0 :
-                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5, (int) Math.round(0.4*tileSize.getY()));
-                    tmpb.setRenderer(new SpriteRenderer(tmpb, tileSize, skin.getSubImage(0,
-                            (int) tileSize.getY()*3, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
-                    this.enemies.add(tmpb);
+                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
                     break;
                 case 1 :
-                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5, (int) Math.round(0.4*tileSize.getY()));
-                    tmpr.setRenderer(new SpriteRenderer(tmpr, tileSize, skin.getSubImage(0,
-                            (int) tileSize.getY()*2, skin.getWidth(), (int) tileSize.getY()), viewFrames, 1000/12));
+                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
                     this.enemies.add(tmpr);
                     break;
                 default: break;
@@ -80,6 +78,10 @@ public class MainClass extends BasicGame
         return inGameTimeScale;
     }
 
+    public static MainClass getInstance() {
+        return instance;
+    }
+
     public static TimeScale getGuiTimeScale() {
         return guiTimeScale;
     }
@@ -101,20 +103,13 @@ public class MainClass extends BasicGame
         Vector2f tileSize = new Vector2f(96, 96);
         int[] viewFrames =  {10, 10, 10, 10};
 
-        this.player = new Player(gc,100,
+        this.player = new Player(
+                gc,
                 100,
-                (int) tileSize.getX(),
-                (int) tileSize.getY(),
+                100,
                 450 / MAX_FPS,
                 135 / MAX_FPS,
                 (int) Math.round(0.20*tileSize.getY())
-        );
-        this.player.setRenderer(new SpriteRenderer(
-                this.player,
-                tileSize,
-                original,
-                viewFrames,
-                1000/12)
         );
         this.player.setShowDebugRect(true);
         gc.getInput().addKeyListener(this.player);
@@ -144,22 +139,21 @@ public class MainClass extends BasicGame
         inGameTimeScale.setDeltaTime(i);
 
         this.player.update();
+        this.player.checkCollision();
+        updateEnemyProjectile(player);
+        updateAllyProjectiles();
 
         for(Monster enemy : this.enemies){
             enemy.update(this.player);
-            if (enemy.collidesWith(player)){
-                enemy.collidingAction(player);
-                if (this.player.isDead()){
-                    setGamePaused(true);
-                }
+            enemy.checkCollision();
+            if (this.player.isDead()){
+                setGamePaused(true);
             }
         }
 
-        for (int j=0; j<this.enemies.size(); j++) {
-            this.player.checkCollidesProjectile(this.enemies.get(j));
-            if (this.enemies.get(j).isDead()) {
+        for (int j=0; j<enemies.size(); j++) {
+            if (enemies.get(j).isDead()) {
                 System.out.println("You killed an enemy");
-                this.enemies.get(j).setRenderer(null);
                 this.enemies.remove(this.enemies.get(j));
             }
         }

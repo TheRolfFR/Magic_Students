@@ -2,7 +2,7 @@ package Entities;
 
 import Main.MainClass;
 
-import org.lwjgl.Sys;
+import Renderer.SpriteRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -12,13 +12,18 @@ public abstract class Entity {
     protected Vector2f speed;
     protected int radius;
 
+    protected Vector2f tileSize;
+
     private float MAX_SPEED;
     private float ACCELERATION_RATE;
 
     private static final float SPEED_THRESHOLD = 0.5f;
 
     protected boolean showDebugRect;
-    private SpriteRenderer renderer;
+
+    public void setTileSize(Vector2f tileSize) {
+        this.tileSize = tileSize;
+    }
 
     /**
      * Returns hitbox top left corner
@@ -44,18 +49,6 @@ public abstract class Entity {
      */
     public float getAccelerationRate() { return this.ACCELERATION_RATE; }
 
-    /**
-     * Returns the hitbox width of the entity
-     * @return the hitbox width of the entity
-     */
-    protected abstract int getWidth();
-
-    /**
-     * Returns the hitbox height
-     * @return the hitbox height
-     */
-    protected abstract int getHeight();
-
 
     /**
      * Allows to show the debug rect shape
@@ -63,27 +56,6 @@ public abstract class Entity {
      */
     public void setShowDebugRect(boolean showDebugRect) {
         this.showDebugRect = showDebugRect;
-    }
-
-    public void setRenderer(SpriteRenderer renderer, Color colorFilter) {
-        this.renderer = renderer;
-        this.renderer.setColorFilter(colorFilter);
-    }
-
-    /**
-     * Assigns a renderer to the entity
-     * @param renderer renderer to apply
-     */
-    public void setRenderer(SpriteRenderer renderer) {
-        this.renderer = renderer;
-    }
-
-    /**
-     * Returns the entity sprite renderer
-     * @return the entity sprite renderer
-     */
-    public SpriteRenderer getRenderer() {
-        return renderer;
     }
 
     /**
@@ -97,7 +69,7 @@ public abstract class Entity {
         this.ACCELERATION_RATE = 0;
 
         this.showDebugRect = false;
-        this.renderer = null;
+        this.tileSize = new Vector2f(0, 0);
     }
 
     public Entity(float x, float y, int radius) {
@@ -127,7 +99,7 @@ public abstract class Entity {
         this.radius = radius;
 
         this.showDebugRect = false;
-        this.renderer = null;
+        this.tileSize = new Vector2f(0, 0);
     }
 
     /**
@@ -156,7 +128,7 @@ public abstract class Entity {
     public abstract void move();
 
     public Vector2f getCenter(){
-        return new Vector2f(position.copy().x+this.getWidth()/2,position.copy().y+getHeight()/2);
+        return new Vector2f(position.copy().x+this.tileSize.getX()/2,position.copy().y+this.tileSize.getY()/2);
     }
 
     /**
@@ -164,25 +136,12 @@ public abstract class Entity {
      * @param g the graphics to draw on
      */
     public void render(Graphics g) {
-        this.render(g, this.getSpeed());
-    }
-
-    /**
-     * In game rendering
-     * @param g the graphics to draw on
-     * @param facedDirection the faced direction of the entity
-     */
-    public void render(Graphics g, Vector2f facedDirection) {
-        if (this.renderer != null) {
-            this.renderer.render(facedDirection, g);
-        }
-
         if (this.showDebugRect) {
             Color c = g.getColor();
 
             g.setColor(Color.white);
-            g.drawRect(Math.round(this.getPosition().x), Math.round(this.getPosition().y),
-                    this.getWidth(), this.getHeight());
+            Vector2f center = this.getCenter();
+            g.drawOval(center.x, center.y, radius*2, radius*2);
 
             g.setColor(c);
         }
@@ -194,6 +153,11 @@ public abstract class Entity {
      * @return whether it collides with another entity
      */
     public boolean collidesWith(Entity other){
-        return (this.getCenter().sub(other.getCenter()).length() < this.radius+other.getRadius());
+        if (other != this){
+            return (this.getCenter().sub(other.getCenter()).length() < this.radius+other.getRadius());
+        }
+        else {
+            return false;
+        }
     }
 }
