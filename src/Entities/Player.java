@@ -2,10 +2,11 @@ package Entities;
 
 import Main.MainClass;
 import Renderer.LivingBeingRenderer;
-import Renderer.SpriteRenderer;
 import Renderer.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+
+import static Main.MainClass.MAX_FPS;
 
 public class Player extends LivingBeing implements KeyListener, MouseListener{
 
@@ -22,8 +23,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * @param maxSpeed max speed of the player
      * @param accelerationRate max acceleration of the player
      */
-    public Player(GameContainer gc, float x, float y, float maxSpeed, float accelerationRate, int radius) {
-        super(x, y, maxSpeed, accelerationRate, 100, 1000, radius);
+    public Player(GameContainer gc, float x, float y) {
+        super(x, y, 450 / MAX_FPS, 135 / MAX_FPS, 100, 1000, 19);
 
         this.keyUp = false;
         this.keyDown = false;

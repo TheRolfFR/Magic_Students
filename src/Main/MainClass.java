@@ -106,21 +106,8 @@ public class MainClass extends BasicGame
         instance = this;
         menu = new PauseMenu(gc);
 
-        Image original = new Image("img/wizard_48x48.png", false, Image.FILTER_NEAREST, Color.red);
-        original = original.getScaledCopy(2f);
-        Vector2f tileSize = new Vector2f(96, 96);
-        int[] viewFrames =  {10, 10, 10, 10};
-
-        this.player = new Player(
-                gc,
-                100,
-                100,
-                450 / MAX_FPS,
-                135 / MAX_FPS,
-                (int) Math.round(0.20*tileSize.getY())
-        );
+        this.player = new Player(gc,100,100);
         this.player.setShowDebugRect(true);
-        gc.getInput().addKeyListener(this.player);
 
         generateRoom(gc);
 
