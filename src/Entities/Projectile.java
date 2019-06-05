@@ -105,7 +105,7 @@ public abstract class Projectile extends Entity {
             p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
             p.move();
 
-            for(Monster enemy : MainClass.enemies){
+            for(Monster enemy : MainClass.getEnemies()){
                 checkCollidesProjectile(enemy);
             }
 
