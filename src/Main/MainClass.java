@@ -11,12 +11,13 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static Entities.Projectile.*;
 import static java.lang.Math.round;
 
 public class MainClass extends BasicGame
 {
     private Player player;
-    private ArrayList<Monster> enemies = new ArrayList<>();
+    public static ArrayList<Monster> enemies = new ArrayList<>();
 
     public static final int MAX_FPS = 60;
     public static final int WIDTH = 640;
@@ -38,10 +39,12 @@ public class MainClass extends BasicGame
 
     public void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames){
         Random random = new Random();
-        int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
-        int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+        int randomX;
+        int randomY;
         for(int i = 0; i< random.nextInt(9)+1; i++){
-            switch((int) random.nextInt(1)){
+            randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
+            randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+            switch(random.nextInt(2)){
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setRenderer(new SpriteRenderer(tmpb, tileSize, skin.getSubImage(0,
@@ -127,6 +130,8 @@ public class MainClass extends BasicGame
         inGameTimeScale.setDeltaTime(i);
 
         this.player.update();
+        updateEnemyProjectile(player);
+        updateAllyProjectiles();
 
         for(Monster enemy : this.enemies){
             enemy.update(this.player);
@@ -138,49 +143,10 @@ public class MainClass extends BasicGame
             }
         }
 
-
-//        this.player.update();
-//        for(Projectile p: Ranged.enemyProjectiles){
-//            p.update();
-//        }
-//        for (Projectile p: Player.playerProjectiles){
-//            p.update();
-//        }
-//        for (Monster m: enemies) {
-//            m.update(player);
-//        }
-//
-//        for (int j = 0; j< Player.playerProjectiles.size(); j++){
-//            for (int h = 0; h < this.enemies.size(); h++){
-//                Monster enemy = enemies.get(h);
-//                Player.playerProjectiles.get(j).collidingAction(enemy);
-//                if (enemy.isDead()){
-//                    enemy.setRenderer(null);
-//                    this.enemies.remove(enemy);
-//                }
-//            }
-//            if (Player.playerProjectiles.get(j).isDead()){
-//                Player.playerProjectiles.get(j).setRenderer(null);
-//                Player.playerProjectiles.remove(Player.playerProjectiles.get(j));
-//            }
-//        }
-//        for (int j = 0; j < Ranged.enemyProjectiles.size(); j++){
-//            Ranged.enemyProjectiles.get(j).collidingAction(player);
-//            if (Ranged.enemyProjectiles.get(j).isDead()){
-//                Ranged.enemyProjectiles.get(j).setRenderer(null);
-//                Ranged.enemyProjectiles.remove(Ranged.enemyProjectiles.get(j));
-//            }
-//        }
-//        for (Monster m: this.enemies) {
-//            m.collidingAction(player);
-//        }
-
-
-        for (int j=0; j<this.enemies.size(); j++) {
-            this.player.checkCollidesProjectile(this.enemies.get(j));
-            if (this.enemies.get(j).isDead()) {
+        for (int j=0; j<enemies.size(); j++) {
+            if (enemies.get(j).isDead()) {
                 System.out.println("You killed an enemy");
-                this.enemies.get(j).setRenderer(null);
+                enemies.get(j).setRenderer(null);
                 this.enemies.remove(this.enemies.get(j));
             }
         }
