@@ -17,7 +17,7 @@ import static java.lang.Math.round;
 public class MainClass extends BasicGame
 {
     private Player player;
-    private static ArrayList<Monster> enemies = new ArrayList<>();
+    private ArrayList<Monster> enemies = new ArrayList<>();
 
     public static final int MAX_FPS = 60;
     public static final int WIDTH = 640;
@@ -38,7 +38,7 @@ public class MainClass extends BasicGame
         return instance.menu.isActive();
     }
 
-    public void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames){
+    private void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames){
         Random random = new Random();
         int randomX;
         int randomY;
@@ -87,7 +87,7 @@ public class MainClass extends BasicGame
         return player;
     }
 
-    public static ArrayList<Monster> getEnemies() {
+    public ArrayList<Monster> getEnemies() {
         return enemies;
     }
 

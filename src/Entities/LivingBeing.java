@@ -110,18 +110,19 @@ public abstract class LivingBeing extends Entity implements Comparable {
     private void tpOutOf(LivingBeing opponent) {
         Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(radius + opponent.radius - opponent.getCenter().sub(getCenter()).length()));
         position.add(diff);
-        if (position.x < 0) {
-            position.x = 0;
-        }
-        if (position.x > MainClass.WIDTH - radius * 2) {
-            position.x = MainClass.WIDTH - radius * 2;
-        }
-        if (position.y < 0) {
-            position.y = 0;
-        }
-        if (position.y > MainClass.HEIGHT - radius * 2) {
-            position.y = MainClass.HEIGHT - radius * 2;
-        }
+        tpInBounds();
+//        if (position.x < 0) {
+//            position.x = 0;
+//        }
+//        if (position.x > MainClass.WIDTH - radius * 2) {
+//            position.x = MainClass.WIDTH - radius * 2;
+//        }
+//        if (position.y < 0) {
+//            position.y = 0;
+//        }
+//        if (position.y > MainClass.HEIGHT - radius * 2) {
+//            position.y = MainClass.HEIGHT - radius * 2;
+//        }
     }
 
     public void collidingAction(LivingBeing opponent) {
@@ -130,22 +131,24 @@ public abstract class LivingBeing extends Entity implements Comparable {
             opponent.tpOutOf(this);
         }
     }
+    private void tpInBounds(){
+        if (this.getCenter().x < radius) {
+            this.position.set(radius - this.tileSize.getX()/2 , this.position.y);
+        }
+        if (this.getCenter().x >= MainClass.WIDTH - radius) {
+            this.position.set(MainClass.WIDTH - radius - this.tileSize.getX()/2, this.position.y);
+        }
+        if (this.getCenter().y < radius) {
+            this.position.set(this.position.x, radius - this.tileSize.getY()/2);
+        }
+        if (this.getCenter().y >= MainClass.HEIGHT - radius) {
+            this.position.set(this.position.x, MainClass.HEIGHT - radius - this.tileSize.getY()/2);
+        }
+    }
 
     public void move() {
         this.position.add(this.speed.scale(MainClass.getInGameTimeScale().getTimeScale()));
-
-        if (this.position.x < 0) {
-            this.position.set(0, this.position.y);
-        }
-        if (this.position.x + this.tileSize.getX() >= MainClass.WIDTH) {
-            this.position.set(MainClass.WIDTH - this.tileSize.getX(), this.position.y);
-        }
-        if (this.position.y < 0) {
-            this.position.set(this.position.x, 0);
-        }
-        if (this.position.y + this.tileSize.getX() >= MainClass.HEIGHT) {
-            this.position.set(this.position.x, MainClass.HEIGHT - this.tileSize.getX());
-        }
+        this.tpInBounds();
     }
 
     public void render(Graphics g, Vector2f facedDirection) {

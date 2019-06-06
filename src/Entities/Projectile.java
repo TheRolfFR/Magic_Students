@@ -105,7 +105,7 @@ public abstract class Projectile extends Entity {
             p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
             p.move();
 
-            for(Monster enemy : MainClass.getEnemies()){
+            for(Monster enemy : MainClass.getInstance().getEnemies()){
                 checkCollidesProjectile(enemy);
             }
 
@@ -116,7 +116,7 @@ public abstract class Projectile extends Entity {
         }
     }
 
-    public static void checkCollidesProjectile(LivingBeing opponent){
+    private static void checkCollidesProjectile(LivingBeing opponent){
         for(int i = 0; i< Ranged.allyProjectiles.size(); i++){
             if(Ranged.allyProjectiles.get(i).collidesWith(opponent)){
                 Ranged.allyProjectiles.get(i).collidingAction(opponent);
