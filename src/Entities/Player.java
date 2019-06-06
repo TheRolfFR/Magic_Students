@@ -2,6 +2,7 @@ package Entities;
 
 import Main.MainClass;
 import Renderer.LivingBeingRenderer;
+import Renderer.PlayerMarkerRenderer;
 import Renderer.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -14,6 +15,10 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private boolean keyDown;
     private boolean keyLeft;
     private boolean keyRight;
+
+    private double angleFaced;
+
+    private PlayerMarkerRenderer playerMarkerRenderer;
 
     /**
      * Single contructor
@@ -49,6 +54,20 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", this.tileSize, duration, Color.red));
         this.renderer.setLeftView(new SpriteView(prepath + "left.png", this.tileSize, duration, Color.red));
         this.renderer.setRightView(new SpriteView(prepath + "right.png", this.tileSize, duration, Color.red));
+
+        this.playerMarkerRenderer = new PlayerMarkerRenderer(this, 2);
+
+        this.setAngleFaced(gc.getInput().getMouseX(), gc.getInput().getMouseY());
+    }
+
+    @Override
+    public void setShowDebugRect(boolean showDebugRect) {
+        super.setShowDebugRect(showDebugRect);
+        this.playerMarkerRenderer.setShowDebugRect(showDebugRect);
+    }
+
+    public void setAngleFaced(int x, int y) {
+        this.angleFaced = new Vector2f(x, y).sub(this.getPosition()).getTheta() + 90.0;
     }
 
     /**
@@ -99,6 +118,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         } else if(this.keyLeft) {
             facedDirection.x = -1;
         }
+
+        this.playerMarkerRenderer.Render(g, angleFaced);
 
         super.render(g, facedDirection);
 
@@ -203,7 +224,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-
+        this.setAngleFaced(newx, newy);
     }
 
     @Override
