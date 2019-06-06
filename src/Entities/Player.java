@@ -8,6 +8,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 import static Main.MainClass.MAX_FPS;
+import static Main.MainClass.getInGameTimeScale;
 
 public class Player extends LivingBeing implements KeyListener, MouseListener{
 
@@ -215,7 +216,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     @Override
     public void mousePressed(int button, int x, int y) {
-        this.doAttack();
+        if (getInGameTimeScale().getTimeScale() != 0f) {
+            this.doAttack();
+        }
     }
 
     @Override
