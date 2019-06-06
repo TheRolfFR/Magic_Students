@@ -13,11 +13,11 @@ import org.newdawn.slick.geom.Vector2f;
 import java.security.KeyStore;
 
 public abstract class Projectile extends Entity {
-    protected int damage;
+    private int damage;
     protected Image image;
     protected Vector2f direction;
     protected float opacity;
-    protected boolean isDead;
+    private boolean isDead;
 
     protected ProjectileRenderer renderer;
 
@@ -74,7 +74,7 @@ public abstract class Projectile extends Entity {
     }
 
     public Shape getBounds(){
-        return new Circle(position.x+radius,position.y+radius,radius);
+        return new Circle(position.x + getRadius(),position.y + getRadius(), getRadius());
     }
 
     public void update() {

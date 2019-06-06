@@ -20,8 +20,11 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     protected LivingBeingRenderer renderer;
 
-    public void setCurrentHealthPoints(int currentHealthPoints) {
-        this.currentHealthPoints = currentHealthPoints;
+    public void heal(int amountOfHealing) {
+        this.currentHealthPoints = this.currentHealthPoints + amountOfHealing;
+        if (currentHealthPoints > maxHealthPoints){
+            currentHealthPoints = maxHealthPoints;
+        }
     }
 
     /**
@@ -79,7 +82,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public boolean isDead(){
-        return this.currentHealthPoints<=0;
+        return this.currentHealthPoints <= 0;
     }
 
     private void solveCollision(LivingBeing pusher, LivingBeing percuted, int level){
@@ -108,21 +111,9 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     private void tpOutOf(LivingBeing opponent) {
-        Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(radius + opponent.radius - opponent.getCenter().sub(getCenter()).length()));
+        Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(getRadius() + opponent.getRadius() - opponent.getCenter().sub(getCenter()).length()));
         position.add(diff);
         tpInBounds();
-//        if (position.x < 0) {
-//            position.x = 0;
-//        }
-//        if (position.x > MainClass.WIDTH - radius * 2) {
-//            position.x = MainClass.WIDTH - radius * 2;
-//        }
-//        if (position.y < 0) {
-//            position.y = 0;
-//        }
-//        if (position.y > MainClass.HEIGHT - radius * 2) {
-//            position.y = MainClass.HEIGHT - radius * 2;
-//        }
     }
 
     public void collidingAction(LivingBeing opponent) {
@@ -132,17 +123,17 @@ public abstract class LivingBeing extends Entity implements Comparable {
         }
     }
     private void tpInBounds(){
-        if (this.getCenter().x < radius) {
-            this.position.set(radius - this.tileSize.getX()/2 , this.position.y);
+        if (this.getCenter().x < getRadius()) {
+            this.position.set(getRadius() - this.tileSize.getX()/2 , this.position.y);
         }
-        if (this.getCenter().x >= MainClass.WIDTH - radius) {
-            this.position.set(MainClass.WIDTH - radius - this.tileSize.getX()/2, this.position.y);
+        if (this.getCenter().x >= MainClass.WIDTH - getRadius()) {
+            this.position.set(MainClass.WIDTH - getRadius() - this.tileSize.getX()/2, this.position.y);
         }
-        if (this.getCenter().y < radius) {
-            this.position.set(this.position.x, radius - this.tileSize.getY()/2);
+        if (this.getCenter().y < getRadius()) {
+            this.position.set(this.position.x, getRadius() - this.tileSize.getY()/2);
         }
-        if (this.getCenter().y >= MainClass.HEIGHT - radius) {
-            this.position.set(this.position.x, MainClass.HEIGHT - radius - this.tileSize.getY()/2);
+        if (this.getCenter().y >= MainClass.HEIGHT - getRadius()) {
+            this.position.set(this.position.x, MainClass.HEIGHT - getRadius() - this.tileSize.getY()/2);
         }
     }
 

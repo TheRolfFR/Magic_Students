@@ -3,12 +3,12 @@ package Entities;
 import HUD.HealthBar;
 
 public abstract class Monster extends LivingBeing {
-    protected int damage;
+    private int damage;
     private HealthBar healthBar;
 
     Monster(float x, float y, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage, int radius){
         super(x, y, maxSpeed, accelerationRate, hpCount, armor, radius);
-        this.damage=damage;
+        this.damage = damage;
     }
 
     void doDamage(LivingBeing opponent){

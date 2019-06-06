@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Vector2f;
 public abstract class Entity {
     protected Vector2f position;
     protected Vector2f speed;
-    protected int radius;
+    private int radius;
 
     protected Vector2f tileSize;
 
