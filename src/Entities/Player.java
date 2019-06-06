@@ -23,7 +23,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * @param y initial y position of the player
      */
     public Player(GameContainer gc, float x, float y) {
-        super(x, y, 450 / MAX_FPS, 135 / MAX_FPS, 100, 1000, 19);
+        super(x, y,450 / MAX_FPS, 135 / MAX_FPS, 100, 1000, 19);
 
         this.keyUp = false;
         this.keyDown = false;

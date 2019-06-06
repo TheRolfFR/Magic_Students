@@ -1,5 +1,8 @@
 package Entities;
 
+import Renderer.ItemRenderer;
+import org.newdawn.slick.Graphics;
+
 import java.util.ArrayList;
 
 public class Portal extends Entity {
@@ -7,13 +10,17 @@ public class Portal extends Entity {
     private int height;
     private boolean visible;
 
+    private ItemRenderer renderer;
+
     public static ArrayList<Portal> portals = new ArrayList<>();
 
     public Portal(float x, float y, int width, int height, int radius) {
-        super(x, y, radius);
+        super(x, y, width, height, radius);
         this.width = width;
         this.height = height;
         this.visible = false;
+
+        this.renderer = null;
     }
 
     public boolean isVisible() { return this.visible; }
@@ -21,4 +28,12 @@ public class Portal extends Entity {
 
     @Override
     public void move() {}
+
+    @Override
+    public void render(Graphics g) {
+        if (this.renderer != null) {
+            this.renderer.render(g, (int) this.position.x, (int) this.position.y);
+        }
+        super.render(g);
+    }
 }

@@ -5,6 +5,8 @@ import Main.MainClass;
 import Renderer.SpriteRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Entity {
@@ -72,7 +74,7 @@ public abstract class Entity {
         this.tileSize = new Vector2f(0, 0);
     }
 
-    public Entity(float x, float y, int radius) {
+    public Entity(float x, float y, int width, int height, int radius) {
         this.position = new Vector2f(x, y);
         this.speed = new Vector2f(0, 0);
         this.MAX_SPEED = 0;
@@ -80,6 +82,18 @@ public abstract class Entity {
         this.radius = radius;
 
         this.showDebugRect = false;
+        this.tileSize = new Vector2f(width, height);
+    }
+
+    public Entity(float x, float y, float maxSpeed, float accelerationRate, int radius) {
+        this.position = new Vector2f(x, y);
+        this.speed = new Vector2f(0, 0);
+        this.MAX_SPEED = maxSpeed;
+        this.ACCELERATION_RATE = accelerationRate;
+        this.radius = radius;
+
+        this.showDebugRect = false;
+        this.tileSize = new Vector2f(radius*2, radius*2);
     }
 
     /**
@@ -90,7 +104,7 @@ public abstract class Entity {
      * @param accelerationRate acceleration factor of the entity
      * @param radius the hitbox radius
      */
-    public Entity(float x, float y, float maxSpeed, float accelerationRate, int radius) {
+    public Entity(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int radius) {
         this.position = new Vector2f(x, y);
         this.speed = new Vector2f(0, 0);
         this.MAX_SPEED = maxSpeed;
@@ -98,7 +112,7 @@ public abstract class Entity {
         this.radius = radius;
 
         this.showDebugRect = false;
-        this.tileSize = new Vector2f(0, 0);
+        this.tileSize = new Vector2f(width, height);
     }
 
     /**
@@ -127,7 +141,11 @@ public abstract class Entity {
     public abstract void move();
 
     public Vector2f getCenter(){
-        return new Vector2f(position.copy().x+this.tileSize.getX()/2,position.copy().y+this.tileSize.getY()/2);
+        return new Vector2f(position.copy().x + (this.tileSize.getX()/2),position.copy().y + (this.tileSize.getY()/2));
+    }
+
+    public Shape getBounds(){
+        return new Circle(getCenter().x,getCenter().y, getRadius());
     }
 
     /**
@@ -136,13 +154,7 @@ public abstract class Entity {
      */
     public void render(Graphics g) {
         if (this.showDebugRect) {
-            Color c = g.getColor();
-
-            g.setColor(Color.green);
-            Vector2f center = this.getCenter().copy().sub(new Vector2f(this.getRadius(), this.getRadius()));
-            g.drawOval(center.x, center.y, radius*2, radius*2);
-
-            g.setColor(c);
+            g.draw(this.getBounds());
         }
     }
 
@@ -153,7 +165,7 @@ public abstract class Entity {
      */
     public boolean collidesWith(Entity other){
         if (other != this){
-            return (this.getCenter().sub(other.getCenter()).length() < this.radius+other.getRadius());
+            return (this.getCenter().sub(other.getCenter()).length() < this.radius + other.getRadius());
         }
         else {
             return false;

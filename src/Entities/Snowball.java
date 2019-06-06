@@ -2,25 +2,13 @@ package Entities;
 
 import Main.MainClass;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Snowball extends Projectile {
-
     public static final float MAX_SPEED = 250/ MainClass.MAX_FPS;
     public static final float ACCELERATION_RATE = 135/ MainClass.MAX_FPS;
     private static final String IMAGE_PATH = "img/snowball.png";
     private static final int RADIUS = 10;
-
-    /**
-     * Returns the associated hitbox shape
-     * @return the associated hitbox shape
-     */
-
-    public Shape getBounds(){
-        return new Circle(position.x + this.tileSize.getX() / 2f, position.y + this.tileSize.getY() / 2f, this.tileSize.getY()/2);
-    }
 
     /**
      * In game rendering
@@ -28,7 +16,7 @@ public class Snowball extends Projectile {
      */
     public void render(Graphics g) {
         super.render(g);
-        if(showDebugRect) {
+        if (showDebugRect) {
             g.draw(this.getBounds());
         }
     }

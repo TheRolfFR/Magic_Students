@@ -14,8 +14,7 @@ import java.util.logging.Logger;
 import static Entities.Projectile.*;
 import static java.lang.Math.round;
 
-public class MainClass extends BasicGame
-{
+public class MainClass extends BasicGame {
     private Player player;
     private ArrayList<Monster> enemies = new ArrayList<>();
 
@@ -38,19 +37,21 @@ public class MainClass extends BasicGame
         return instance.menu.isActive();
     }
 
-    private void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames){
+    private void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames) {
         Random random = new Random();
         int randomX;
         int randomY;
-        for(int i = 0; i< 9; i++){
+        for(int i = 0; i< 2; i++){
             randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-            switch(1){
+            switch(random.nextInt(2)){
                 case 0 :
-                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
+                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
+                    tmpb.setShowDebugRect(true);
+                    this.enemies.add(tmpb);
                     break;
                 case 1 :
-                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
+                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpr.setShowDebugRect(true);
                     this.enemies.add(tmpr);
                     break;
@@ -61,8 +62,6 @@ public class MainClass extends BasicGame
 
     private void generateRoom(GameContainer gc) throws SlickException {
         generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
-        this.healthBar = new HealthBar(this.player);
-        SceneRenderer.generateBackground("img/ground.png", gc);
     }
 
     public static void setGamePaused(boolean gamePaused) {
@@ -109,23 +108,22 @@ public class MainClass extends BasicGame
 
         this.player = new Player(gc,100,100);
         this.player.setShowDebugRect(true);
+        this.healthBar = new HealthBar(this.player);
+
+        SceneRenderer.generateBackground("img/ground.png", gc);
 
         generateRoom(gc);
 
-        Random random = new Random();
-        // portal size = 40x40
-        int[][] possible_positions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 20},
-                {40, HEIGHT / 2 - 20}, {WIDTH / 2 - 20, HEIGHT - 40 - 20}};
+        int[][] possible_positions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 40},
+                {40, HEIGHT / 2 - 20}, {WIDTH - 40 - 40, HEIGHT / 2 - 20}};
         Portal portal;
 
-        /*for (int p = 0; p < 4; p++) {
+        for (int p = 0; p < 4; p++) {
             portal = new Portal(possible_positions[p][0], possible_positions[p][1],
                     40, 40, 20);
-            // temporary same sprite as player
-            portal.setRenderer(new SpriteRenderer(
-                    portal, tileSize, original, viewFrames, 1000/12));
+            portal.setShowDebugRect(true);
             Portal.portals.add(portal);
-        }*/
+        }
 
         System.out.println(Configuration.getConfigurationFile().getJSONObject("glossary").getString("title"));
     }
@@ -168,7 +166,7 @@ public class MainClass extends BasicGame
             }
 
             for (Portal portal : Portal.portals) {
-                if (this.player.collidesWith(portal)) {
+                if (portal.isVisible() && player.collidesWith(portal)) {
                     generateRoom(gc);
 
                     for (Portal portal_bis : Portal.portals) {
@@ -221,8 +219,7 @@ public class MainClass extends BasicGame
             appgc.setTargetFrameRate(MAX_FPS);
             appgc.start();
         }
-        catch (SlickException ex)
-        {
+        catch (SlickException ex) {
             Logger.getLogger(MainClass.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
