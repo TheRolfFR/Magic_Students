@@ -127,7 +127,7 @@ public abstract class Entity {
     public abstract void move();
 
     public Vector2f getCenter(){
-        return new Vector2f(position.copy().x+this.tileSize.getX()/2 - getRadius(),position.copy().y+this.tileSize.getY()/2 - getRadius());
+        return new Vector2f(position.copy().x+this.tileSize.getX()/2,position.copy().y+this.tileSize.getY()/2);
     }
 
     /**
@@ -138,8 +138,8 @@ public abstract class Entity {
         if (this.showDebugRect) {
             Color c = g.getColor();
 
-            g.setColor(Color.white);
-            Vector2f center = this.getCenter();
+            g.setColor(Color.green);
+            Vector2f center = this.getCenter().copy().sub(new Vector2f(this.getRadius(), this.getRadius()));
             g.drawOval(center.x, center.y, radius*2, radius*2);
 
             g.setColor(c);
