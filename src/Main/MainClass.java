@@ -164,11 +164,16 @@ public class MainClass extends BasicGame {
         if (this.enemies.size() == 0) {
             if (!portalSet) {
                 Random random = new Random();
+                int nbVisiblePortal = 0;
 
                 for (Portal portal : Portal.portals) {
-                    if (random.nextBoolean()) {
+                    if (random.nextInt(4) == 0) {
                         portal.setVisible(true);
+                        nbVisiblePortal++;
                     }
+                }
+                if (nbVisiblePortal == 0) {
+                    Portal.portals.get(random.nextInt(4)).setVisible(true);
                 }
                 portalSet = true;
             }
