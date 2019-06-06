@@ -28,6 +28,7 @@ public class MainClass extends BasicGame {
     private static GameContainer instanceGameContainer;
     private static MainClass instance = null;
     private boolean portalSet = false;
+    private boolean portalEngaged = false;
 
     private HealthBar healthBar;
 
@@ -124,6 +125,8 @@ public class MainClass extends BasicGame {
             portal.setShowDebugRect(true);
             Portal.portals.add(portal);
         }
+        this.portalSet = false;
+        this.portalEngaged = false;
 
         System.out.println(Configuration.getConfigurationFile().getJSONObject("glossary").getString("title"));
     }
@@ -165,15 +168,17 @@ public class MainClass extends BasicGame {
                 portalSet = true;
             }
 
-            for (Portal portal : Portal.portals) {
-                if (portal.isVisible() && player.collidesWith(portal)) {
-                    generateRoom(gc);
+            if (this.portalEngaged) {
+                for (Portal portal : Portal.portals) {
+                    if (portal.isVisible() && player.collidesWith(portal)) {
+                        generateRoom(gc);
 
-                    for (Portal portal_bis : Portal.portals) {
-                        portal_bis.setVisible(false);
-                        portalSet = false;
+                        for (Portal portal_bis : Portal.portals) {
+                            portal_bis.setVisible(false);
+                            portalSet = false;
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }
@@ -181,15 +186,21 @@ public class MainClass extends BasicGame {
 
     @Override
     public void keyPressed(int key, char c) {
-
         if (key == Input.KEY_ESCAPE) {
             triggerGamePaused();
+        }
+        if (key == Input.KEY_SPACE) {
+            this.portalEngaged = true;
         }
     }
 
     @Override
     public void keyReleased(int key, char c) {
         this.player.keyReleased(key, c);
+
+        if (key == Input.KEY_SPACE) {
+            this.portalEngaged = false;
+        }
     }
 
     @Override
