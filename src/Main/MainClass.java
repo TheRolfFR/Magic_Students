@@ -42,15 +42,16 @@ public class MainClass extends BasicGame
         Random random = new Random();
         int randomX;
         int randomY;
-        for(int i = 0; i< random.nextInt(9)+1; i++){
+        for(int i = 0; i< 9; i++){
             randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-            switch(random.nextInt(2)){
+            switch(1){
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
                     break;
                 case 1 :
                     Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,10,5,(int) Math.round(0.4*tileSize.getY()));
+                    tmpr.setShowDebugRect(true);
                     this.enemies.add(tmpr);
                     break;
                 default: break;
@@ -106,21 +107,8 @@ public class MainClass extends BasicGame
         instance = this;
         menu = new PauseMenu(gc);
 
-        Image original = new Image("img/wizard_48x48.png", false, Image.FILTER_NEAREST, Color.red);
-        original = original.getScaledCopy(2f);
-        Vector2f tileSize = new Vector2f(96, 96);
-        int[] viewFrames =  {10, 10, 10, 10};
-
-        this.player = new Player(
-                gc,
-                100,
-                100,
-                450 / MAX_FPS,
-                135 / MAX_FPS,
-                (int) Math.round(0.20*tileSize.getY())
-        );
+        this.player = new Player(gc,100,100);
         this.player.setShowDebugRect(true);
-        gc.getInput().addKeyListener(this.player);
 
         generateRoom(gc);
 

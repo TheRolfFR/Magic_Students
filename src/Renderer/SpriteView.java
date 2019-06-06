@@ -6,7 +6,12 @@ import org.newdawn.slick.geom.Vector2f;
 public class SpriteView {
     private Animation animation;
 
-    public SpriteView(String path, Vector2f tileSize) {
+    public SpriteView(String path, Vector2f tileSize, int duration) {
+        init(path, tileSize ,duration, null);
+    }
+
+    public SpriteView(String path, Vector2f tileSize, int duration, Color filter) {
+        init(path, tileSize, duration, filter);
     }
 
     private void init(String path ,Vector2f tileSize, int duration) {
@@ -15,7 +20,7 @@ public class SpriteView {
     private void init(String path, Vector2f tileSize, int duration, Color filter) {
         try {
             Image original;
-            if(filter.equals(null)) {
+            if(filter == null) {
                 original = new Image(path, false, Image.FILTER_NEAREST);
             } else {
                 original = new Image(path, false, Image.FILTER_NEAREST, filter);
@@ -35,6 +40,8 @@ public class SpriteView {
     }
 
     public void render(int x, int y, Color filter) {
-        this.animation.draw(x, y, filter);
+        if(this.animation != null) {
+            this.animation.draw(x, y, filter);
+        }
     }
 }

@@ -138,8 +138,8 @@ public abstract class Entity {
         if (this.showDebugRect) {
             Color c = g.getColor();
 
-            g.setColor(Color.white);
-            Vector2f center = this.getCenter();
+            g.setColor(Color.green);
+            Vector2f center = this.getCenter().copy().sub(new Vector2f(this.getRadius(), this.getRadius()));
             g.drawOval(center.x, center.y, radius*2, radius*2);
 
             g.setColor(c);

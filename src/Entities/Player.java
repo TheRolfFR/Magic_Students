@@ -2,10 +2,11 @@ package Entities;
 
 import Main.MainClass;
 import Renderer.LivingBeingRenderer;
-import Renderer.SpriteRenderer;
 import Renderer.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+
+import static Main.MainClass.MAX_FPS;
 
 public class Player extends LivingBeing implements KeyListener, MouseListener{
 
@@ -13,17 +14,16 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private boolean keyDown;
     private boolean keyLeft;
     private boolean keyRight;
+
     /**
      * Single contructor
      *
      * @param gc game container
      * @param x initial x position of the player
      * @param y initial y position of the player
-     * @param maxSpeed max speed of the player
-     * @param accelerationRate max acceleration of the player
      */
-    public Player(GameContainer gc, float x, float y, float maxSpeed, float accelerationRate, int radius) {
-        super(x, y, maxSpeed, accelerationRate, 100, 1000, radius);
+    public Player(GameContainer gc, float x, float y) {
+        super(x, y, 450 / MAX_FPS, 135 / MAX_FPS, 100, 1000, 19);
 
         this.keyUp = false;
         this.keyDown = false;
@@ -34,18 +34,21 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         gc.getInput().addMouseListener(this);
 
         String prepath = "img/wizard/";
+        int duration = 50;
+
+        Color capeColor = new Color(0x0094ff);
 
         this.tileSize = new Vector2f(96, 96);
-        this.renderer = new LivingBeingRenderer(this, this.tileSize);
-        this.renderer.setTopIdleView(new SpriteView(prepath + "topIdle.png", this.tileSize));
-        this.renderer.setBottomIdleView(new SpriteView(prepath + "bottomIdle.png", this.tileSize));
-        this.renderer.setLeftIdleView(new SpriteView(prepath + "leftIdle.png", this.tileSize));
-        this.renderer.setRightIdleView(new SpriteView(prepath + "rightIdle.png", this.tileSize));
+        this.renderer = new LivingBeingRenderer(this, this.tileSize, capeColor);
+        this.renderer.setTopIdleView(new SpriteView(prepath + "topIdle.png", this.tileSize, duration, Color.red));
+        this.renderer.setBottomIdleView(new SpriteView(prepath + "bottomIdle.png", this.tileSize, duration, Color.red));
+        this.renderer.setLeftIdleView(new SpriteView(prepath + "leftIdle.png", this.tileSize, duration, Color.red));
+        this.renderer.setRightIdleView(new SpriteView(prepath + "rightIdle.png", this.tileSize, duration, Color.red));
 
-        this.renderer.setTopView(new SpriteView(prepath + "top.png", this.tileSize));
-        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", this.tileSize));
-        this.renderer.setLeftView(new SpriteView(prepath + "left.png", this.tileSize));
-        this.renderer.setRightView(new SpriteView("right.png", this.tileSize));
+        this.renderer.setTopView(new SpriteView(prepath + "top.png", this.tileSize, duration, Color.red));
+        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", this.tileSize, duration, Color.red));
+        this.renderer.setLeftView(new SpriteView(prepath + "left.png", this.tileSize, duration, Color.red));
+        this.renderer.setRightView(new SpriteView(prepath + "right.png", this.tileSize, duration, Color.red));
     }
 
     /**
