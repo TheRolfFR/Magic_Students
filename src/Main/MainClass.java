@@ -1,6 +1,7 @@
 package Main;
 
 import Entities.*;
+import HUD.FadeToBlack;
 import HUD.HealthBar;
 import HUD.PauseMenu;
 import org.newdawn.slick.*;
@@ -33,6 +34,7 @@ public class MainClass extends BasicGame {
     private HealthBar healthBar;
 
     private PauseMenu menu;
+    private FadeToBlack fadeToBlack;
 
     public static boolean isGamePaused() {
         return instance.menu.isActive();
@@ -62,6 +64,8 @@ public class MainClass extends BasicGame {
     }
 
     private void generateRoom(GameContainer gc) throws SlickException {
+        Ranged.allyProjectiles = new ArrayList<>();
+        Ranged.enemyProjectiles = new ArrayList<>();
         generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
     }
 
@@ -106,6 +110,7 @@ public class MainClass extends BasicGame {
         instanceGameContainer = gc;
         instance = this;
         menu = new PauseMenu(gc);
+        this.fadeToBlack = new FadeToBlack(gc);
 
         this.player = new Player(gc,100,100);
         this.player.setShowDebugRect(true);
@@ -171,15 +176,27 @@ public class MainClass extends BasicGame {
             if (this.portalEngaged) {
                 for (Portal portal : Portal.portals) {
                     if (portal.isVisible() && player.collidesWith(portal)) {
-                        generateRoom(gc);
-
-                        for (Portal portal_bis : Portal.portals) {
-                            portal_bis.setVisible(false);
-                            portalSet = false;
-                        }
-                        break;
+                        getInGameTimeScale().setTimeScale(0f);
+                        fadeToBlack.setActive(true);
+                        this.portalEngaged = false;
                     }
                 }
+            }
+        }
+
+        if (fadeToBlack.isActive()) {
+            fadeToBlack.update(gc);
+
+            if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
+                generateRoom(gc);
+
+                for (Portal portal_bis : Portal.portals) {
+                    portal_bis.setVisible(false);
+                    portalSet = false;
+                }
+            }
+            else if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration()) {
+                getInGameTimeScale().setTimeScale(1f);
             }
         }
     }
@@ -220,6 +237,7 @@ public class MainClass extends BasicGame {
             }
         }
         this.menu.render(g);
+        this.fadeToBlack.render(g);
     }
 
     public static void main(String[] args) {
