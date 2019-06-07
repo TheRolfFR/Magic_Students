@@ -36,6 +36,8 @@ public abstract class Projectile extends Entity {
         this.isDead = false;
 
         this.renderer = null;
+        // for debugging purposes
+        this.showDebugRect = true;
     }
 
     Projectile(float x, float y, float maxSpeed, float accelerationRate, Vector2f direction, String imagePath, int radius) {
@@ -56,6 +58,9 @@ public abstract class Projectile extends Entity {
             e.printStackTrace();
             System.exit(1);
         }
+
+        // for debugging purposes
+        this.showDebugRect = true;
     }
 
     public int getDamage(){
@@ -71,10 +76,6 @@ public abstract class Projectile extends Entity {
 
     public boolean isDead(){
         return this.isDead;
-    }
-
-    public Shape getBounds(){
-        return new Circle(position.x + getRadius(),position.y + getRadius(), getRadius());
     }
 
     public void update() {

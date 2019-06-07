@@ -64,6 +64,15 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param maxHealthPoints maximum health points of the living being
      * @param armorPoints armor points of the living being
      */
+    LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius){
+        super(x, y, width, height, maxSpeed, accelerationRate, radius);
+        this.currentHealthPoints = maxHealthPoints;
+        this.maxHealthPoints = maxHealthPoints;
+        this.armorPoints = armorPoints;
+
+        livingBeings.add(this);
+    }
+
     LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius){
         super(x, y, maxSpeed, accelerationRate, radius);
         this.currentHealthPoints = maxHealthPoints;

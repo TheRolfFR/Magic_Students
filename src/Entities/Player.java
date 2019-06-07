@@ -7,6 +7,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 import static Main.MainClass.MAX_FPS;
+import static Main.MainClass.getInGameTimeScale;
 
 public class Player extends LivingBeing implements KeyListener, MouseListener{
 
@@ -23,7 +24,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * @param y initial y position of the player
      */
     public Player(GameContainer gc, float x, float y) {
-        super(x, y, 450 / MAX_FPS, 135 / MAX_FPS, 100, 1000, 19);
+        super(x, y,450 / MAX_FPS, 135 / MAX_FPS, 100, 1000, 19);
 
         this.keyUp = false;
         this.keyDown = false;
@@ -130,8 +131,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
             case Input.KEY_D:
                 this.keyRight = true;
                 break;
-            case Input.KEY_SPACE:
-                break;
         }
     }
 
@@ -158,8 +157,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
             case Input.KEY_RIGHT:
             case Input.KEY_D:
                 this.keyRight = false;
-                break;
-            case Input.KEY_SPACE:
                 break;
         }
     }
@@ -198,7 +195,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     @Override
     public void mousePressed(int button, int x, int y) {
-        this.doAttack();
+        if (getInGameTimeScale().getTimeScale() != 0f) {
+            this.doAttack();
+        }
     }
 
     @Override

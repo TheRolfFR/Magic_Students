@@ -1,12 +1,8 @@
 package Entities;
 
 public abstract class Melee extends Monster{
-    protected int width;
-    protected int height;
 
     Melee(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage, int radius){
-        super(x , y, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
-        this.width=width;
-        this.height=height;
+        super(x , y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
     }
 }
