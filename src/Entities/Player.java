@@ -102,10 +102,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         }
 
         super.render(g, facedDirection);
-
-        for(Projectile p : Ranged.allyProjectiles) {
-            p.render(g);
-        }
     }
 
     /**

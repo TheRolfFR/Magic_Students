@@ -64,9 +64,5 @@ public class Bowman extends Ranged {
 
     public void render(Graphics g) {
         super.render(g);
-
-        for(Projectile p : enemyProjectiles) {
-            p.render(g);
-        }
     }
 }
