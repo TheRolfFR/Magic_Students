@@ -8,15 +8,13 @@ public class MeleeAttack extends Projectile {
 
     public MeleeAttack(Vector2f position, Vector2f direction) {
         super(position.getX(), position.getY(), 0, 0, RADIUS, direction);
+        this.isDead=true;
     }
 
     static int getMeleeRadius(){return RADIUS;} //package private
 
-    public void update(){fadeOut();}
-
     @Override
     public void fadeOut() {
-        if(this.renderer != null)
-            this.renderer.setOpacity(0);
     }
 }
+

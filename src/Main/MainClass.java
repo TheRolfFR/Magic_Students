@@ -152,7 +152,7 @@ public class MainClass extends BasicGame {
             enemy.update(this.player);
             enemy.checkCollision();
             if (this.player.isDead()){
-                setGamePaused(true);
+                //setGamePaused(true);
             }
         }
 

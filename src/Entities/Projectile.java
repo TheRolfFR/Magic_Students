@@ -13,7 +13,7 @@ public abstract class Projectile extends Entity {
     protected Image image;
     protected Vector2f direction;
     protected float opacity;
-    private boolean isDead;
+    protected boolean isDead;
 
     protected ProjectileRenderer renderer;
 
@@ -74,8 +74,7 @@ public abstract class Projectile extends Entity {
         return this.isDead;
     }
 
-    public void update() {
-    }
+    public void update() {}
 
     public static void updateEnemyProjectile(LivingBeing target){
         for (int i = 0; i < Ranged.enemyProjectiles.size(); i++) {
@@ -102,11 +101,14 @@ public abstract class Projectile extends Entity {
             p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
             p.move();
 
+            p.update();
+
             for(Monster enemy : MainClass.getInstance().getEnemies()){
                 checkCollidesProjectile(p,enemy);
             }
 
-            if (p.isFadeOut()) {
+            if (p.isFadeOut() || p.isDead()) {
+                System.out.println("Deleted");
                 Ranged.allyProjectiles.remove(j);
                 j--;
             }
