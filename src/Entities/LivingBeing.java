@@ -34,7 +34,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     public static void sortAndRenderLivingBeings(Graphics g) {
         Collections.sort(livingBeings);
 
-        for(LivingBeing lb : livingBeings) {
+        for (LivingBeing lb : livingBeings) {
             lb.render(g);
         }
     }
@@ -64,7 +64,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param maxHealthPoints maximum health points of the living being
      * @param armorPoints armor points of the living being
      */
-    LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius){
+    LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius) {
         super(x, y, width, height, maxSpeed, accelerationRate, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
@@ -73,7 +73,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         livingBeings.add(this);
     }
 
-    LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius){
+    LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius) {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
@@ -86,7 +86,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * allows the living being to take damage
      * @param damage damage value inflicted
      */
-    void takeDamage(int damage){
+    void takeDamage(int damage) {
         currentHealthPoints = Math.max(0, currentHealthPoints - round(damage / armorPoints));
     }
 
@@ -94,22 +94,22 @@ public abstract class LivingBeing extends Entity implements Comparable {
         return this.currentHealthPoints <= 0;
     }
 
-    private void solveCollision(LivingBeing pusher, LivingBeing percuted, int level){
-        if (level <= MainClass.getInstance().getEnemies().size()){
+    private void solveCollision(LivingBeing pusher, LivingBeing percuted, int level) {
+        if (level <= MainClass.getInstance().getEnemies().size()) {
             percuted.collidingAction(pusher);
-            if (percuted.collidesWith(MainClass.getInstance().getPlayer())){
+            if (percuted.collidesWith(MainClass.getInstance().getPlayer())) {
                 solveCollision(percuted,MainClass.getInstance().getPlayer(),level+1);
             }
             for (Monster m: MainClass.getInstance().getEnemies()) {
-                if (percuted.collidesWith(m)){
+                if (percuted.collidesWith(m)) {
                     solveCollision(percuted,m,level+1);
                 }
             }
         }
     }
 
-    public void checkCollision(){
-        if (this.collidesWith(MainClass.getInstance().getPlayer())){
+    public void checkCollision() {
+        if (this.collidesWith(MainClass.getInstance().getPlayer())) {
             solveCollision(this,MainClass.getInstance().getPlayer(),1);
         }
         for (Monster m: MainClass.getInstance().getEnemies()) {
@@ -121,17 +121,18 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     private void tpOutOf(LivingBeing opponent) {
         Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(getRadius() + opponent.getRadius() - opponent.getCenter().sub(getCenter()).length()));
+
         position.add(diff);
         tpInBounds();
     }
 
     public void collidingAction(LivingBeing opponent) {
-        if (collidesWith(opponent)){
+        if (collidesWith(opponent)) {
             this.tpOutOf(opponent);
             opponent.tpOutOf(this);
         }
     }
-    private void tpInBounds(){
+    private void tpInBounds() {
         if (this.getCenter().x < getRadius()) {
             this.position.set(getRadius() - this.tileSize.getX()/2 , this.position.y);
         }

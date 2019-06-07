@@ -52,8 +52,7 @@ public class PlayerMarkerRenderer extends SpriteRenderer {
             Color tmp = g.getColor();
             g.setColor(Color.blue);
 
-            Vector2f debugRectLocation = entity.getCenter();
-            g.drawOval((int) debugRectLocation.getX(), (int) debugRectLocation.getY(), this.markerRadius*2, this.markerRadius*2);
+            g.drawOval((int) location.getX(), (int) location.getY(), this.markerRadius*2, this.markerRadius*2);
 
             g.setColor(tmp);
         }

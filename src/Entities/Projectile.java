@@ -1,23 +1,19 @@
 package Entities;
 
 import Main.MainClass;
-import Main.SceneRenderer;
 import Renderer.ProjectileRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.security.KeyStore;
 
 public abstract class Projectile extends Entity {
     private int damage;
     protected Image image;
     protected Vector2f direction;
     protected float opacity;
-    private boolean isDead;
+    protected boolean isDead;
 
     protected ProjectileRenderer renderer;
 
@@ -78,8 +74,7 @@ public abstract class Projectile extends Entity {
         return this.isDead;
     }
 
-    public void update() {
-    }
+    public void update() {}
 
     public static void updateEnemyProjectile(LivingBeing target){
         for (int i = 0; i < Ranged.enemyProjectiles.size(); i++) {
@@ -88,11 +83,11 @@ public abstract class Projectile extends Entity {
             p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
             p.move();
 
-            if(p.collidesWith(target)){
+            if (p.collidesWith(target)) {
                 p.collidingAction(target);
             }
 
-            if (p.isFadeOut() || p.isDead()) {
+            if (p.isFadeOut() || p.isDead) {
                 Ranged.enemyProjectiles.remove(i);
                 i--;
             }
@@ -106,23 +101,24 @@ public abstract class Projectile extends Entity {
             p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
             p.move();
 
+            p.update();
+
             for(Monster enemy : MainClass.getInstance().getEnemies()){
-                checkCollidesProjectile(enemy);
+                checkCollidesProjectile(p,enemy);
             }
 
-            if (p.isFadeOut()) {
+            if (p.isFadeOut() || p.isDead()) {
+                System.out.println("Deleted");
                 Ranged.allyProjectiles.remove(j);
                 j--;
             }
         }
     }
 
-    private static void checkCollidesProjectile(LivingBeing opponent){
-        for(int i = 0; i< Ranged.allyProjectiles.size(); i++){
-            if(Ranged.allyProjectiles.get(i).collidesWith(opponent)){
-                Ranged.allyProjectiles.get(i).collidingAction(opponent);
-                Ranged.allyProjectiles.remove(Ranged.allyProjectiles.get(i));
-            }
+    private static void checkCollidesProjectile(Projectile p, LivingBeing opponent){
+        if(p.collidesWith(opponent)){
+                p.collidingAction(opponent);
+                p.opacity=0;
         }
     }
 
@@ -133,8 +129,12 @@ public abstract class Projectile extends Entity {
     public void render(Graphics g) {
         super.render(g);
 
-        if(this.image != null) {
+        if (this.image != null) {
             g.drawImage(image, this.getPosition().getX(), this.getPosition().getY());
+        }
+
+        if (this.renderer != null) {
+            this.renderer.render(g, (int) this.position.getX(), (int) this.position.getY());
         }
     }
 

@@ -1,6 +1,7 @@
 package Renderer;
 
 import Entities.Entity;
+import Entities.Rusher;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -119,6 +120,9 @@ public class LivingBeingRenderer extends SpriteRenderer {
             }
         }
 
+        if(entity instanceof Rusher) {
+            System.out.println(this.lastView);
+        }
         if(this.lastView != null) {
             this.lastView.render((int) entity.getPosition().getX(), (int) entity.getPosition().getY(), colorFilter);
         }

@@ -15,6 +15,7 @@ public class ProjectileRenderer extends SpriteRenderer {
         super(entity, tileSize);
         this.animation = new Animation(new SpriteSheet(image, (int) tileSize.getX(), (int) tileSize.getY()), duration);
         this.angle = entity.getSpeed().getTheta()- 90;
+        animation.start();
     }
 
     public final void setOpacity(float opacity) {
@@ -22,6 +23,7 @@ public class ProjectileRenderer extends SpriteRenderer {
     }
 
     public void render(Graphics g, int x, int y) {
+        animation.draw(-10000, -10000);
         Image copy = animation.getCurrentFrame().copy();
         copy.rotate((float) this.angle);
         g.drawImage(copy, x, y);

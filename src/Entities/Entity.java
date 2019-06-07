@@ -29,7 +29,11 @@ public abstract class Entity {
      * Returns hitbox top left corner
      * @return hitbox top left corner
      */
-    public Vector2f getPosition() { return this.position; }
+    public Vector2f getPosition() { return this.position.copy(); }
+
+    protected void setPosition(Vector2f position) {
+        this.position = position;
+    }
 
     /**
      * Returns hitbox radius
@@ -41,7 +45,7 @@ public abstract class Entity {
      * Returns entity speed
      * @return entity speed
      */
-    public Vector2f getSpeed() { return this.speed; }
+    public Vector2f getSpeed() { return this.speed.copy(); }
 
     /**
      * Returns acceleration factor

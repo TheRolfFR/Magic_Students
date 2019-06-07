@@ -17,6 +17,10 @@ public abstract class Monster extends LivingBeing {
         }
     }
 
+    public int getDamage() {
+        return damage;
+    }
+
     public void setHealthBar(HealthBar healthBar){
         this.healthBar = healthBar;
     }

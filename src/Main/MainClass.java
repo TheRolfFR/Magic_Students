@@ -40,14 +40,14 @@ public class MainClass extends BasicGame {
         return instance.menu.isActive();
     }
 
-    private void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames) {
+    private void generateEnemies(Vector2f tileSize) {
         Random random = new Random();
         int randomX;
         int randomY;
-        for(int i = 0; i< 2; i++){
+        for(int i = 0; i< 6; i++){
             randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-            switch(random.nextInt(2)){
+            switch(random.nextInt(4)){
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setShowDebugRect(true);
@@ -58,15 +58,20 @@ public class MainClass extends BasicGame {
                     tmpr.setShowDebugRect(true);
                     this.enemies.add(tmpr);
                     break;
+                case 2 :
+                    Knight tmpk = new Knight(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
+                    tmpk.setShowDebugRect(true);
+                    this.enemies.add(tmpk);
                 default: break;
             }
         }
     }
 
-    private void generateRoom(GameContainer gc) throws SlickException {
+    private void generateRoom() throws SlickException {
+        System.out.println("new room");
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
-        generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
+        generateEnemies(new Vector2f(48,48));
     }
 
     public static void setGamePaused(boolean gamePaused) {
@@ -118,7 +123,7 @@ public class MainClass extends BasicGame {
 
         SceneRenderer.generateBackground("img/ground.png", gc);
 
-        generateRoom(gc);
+        generateRoom();
 
         int[][] possible_positions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 40},
                 {40, HEIGHT / 2 - 20}, {WIDTH - 40 - 40, HEIGHT / 2 - 20}};
@@ -132,8 +137,6 @@ public class MainClass extends BasicGame {
         }
         this.portalSet = false;
         this.portalEngaged = false;
-
-        System.out.println(Configuration.getConfigurationFile().getJSONObject("glossary").getString("title"));
     }
 
     @Override
@@ -149,7 +152,7 @@ public class MainClass extends BasicGame {
             enemy.update(this.player);
             enemy.checkCollision();
             if (this.player.isDead()){
-                setGamePaused(true);
+                //setGamePaused(true);
             }
         }
 
@@ -193,7 +196,7 @@ public class MainClass extends BasicGame {
             fadeToBlack.update(gc);
 
             if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
-                generateRoom(gc);
+                generateRoom();
 
                 for (Portal portal_bis : Portal.portals) {
                     portal_bis.setVisible(false);
@@ -235,6 +238,12 @@ public class MainClass extends BasicGame {
         for (Monster enemy: enemies){
             enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
             enemy.getHealthBar().render(g);
+        }
+        for (Projectile p : Ranged.enemyProjectiles) {
+            p.render(g);
+        }
+        for (Projectile p : Ranged.allyProjectiles) {
+            p.render(g);
         }
         for (Portal portal: Portal.portals) {
             if (portal.isVisible()) {
