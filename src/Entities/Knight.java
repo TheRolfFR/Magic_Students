@@ -76,7 +76,7 @@ public class Knight extends Melee {
 
     private void attack(LivingBeing target){
         if (isTargetInRange(target)){
-            this.doDamage(target);
+            target.takeDamage(this.getDamage());
         }
         this.attackDirection.set(0,0);
     }

@@ -47,7 +47,7 @@ public class MainClass extends BasicGame {
         for(int i = 0; i< 2; i++){
             randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-            switch(random.nextInt(2)){
+            switch(2){
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setShowDebugRect(true);
@@ -58,6 +58,10 @@ public class MainClass extends BasicGame {
                     tmpr.setShowDebugRect(true);
                     this.enemies.add(tmpr);
                     break;
+                case 2 :
+                    Knight tmpk = new Knight(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
+                    tmpk.setShowDebugRect(true);
+                    this.enemies.add(tmpk);
                 default: break;
             }
         }
