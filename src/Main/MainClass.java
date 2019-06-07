@@ -47,11 +47,7 @@ public class MainClass extends BasicGame {
         for(int i = 0; i< 6; i++){
             randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-<<<<<<< HEAD
-            switch(0){
-=======
             switch(random.nextInt(4)){
->>>>>>> cedaedbbbd2b610d3faef36dff61be5773e5074f
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setShowDebugRect(true);
