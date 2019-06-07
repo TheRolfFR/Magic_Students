@@ -108,14 +108,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
         }
     }
 
-<<<<<<< HEAD
-    public void checkCollision(){
-        //System.out.println("new check");
-        if (this.collidesWith(MainClass.getInstance().getPlayer())){
-=======
     public void checkCollision() {
         if (this.collidesWith(MainClass.getInstance().getPlayer())) {
->>>>>>> cedaedbbbd2b610d3faef36dff61be5773e5074f
             solveCollision(this,MainClass.getInstance().getPlayer(),1);
         }
         for (Monster m: MainClass.getInstance().getEnemies()) {
