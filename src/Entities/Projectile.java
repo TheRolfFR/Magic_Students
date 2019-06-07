@@ -1,16 +1,12 @@
 package Entities;
 
 import Main.MainClass;
-import Main.SceneRenderer;
 import Renderer.ProjectileRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.security.KeyStore;
 
 public abstract class Projectile extends Entity {
     private int damage;
@@ -107,7 +103,7 @@ public abstract class Projectile extends Entity {
             p.move();
 
             for(Monster enemy : MainClass.getInstance().getEnemies()){
-                checkCollidesProjectile(enemy);
+                checkCollidesProjectile(p,enemy);
             }
 
             if (p.isFadeOut()) {
@@ -117,12 +113,10 @@ public abstract class Projectile extends Entity {
         }
     }
 
-    private static void checkCollidesProjectile(LivingBeing opponent){
-        for(int i = 0; i< Ranged.allyProjectiles.size(); i++){
-            if(Ranged.allyProjectiles.get(i).collidesWith(opponent)){
-                Ranged.allyProjectiles.get(i).collidingAction(opponent);
-                Ranged.allyProjectiles.remove(Ranged.allyProjectiles.get(i));
-            }
+    private static void checkCollidesProjectile(Projectile p, LivingBeing opponent){
+        if(p.collidesWith(opponent)){
+                p.collidingAction(opponent);
+                p.opacity=0;
         }
     }
 

@@ -66,4 +66,6 @@ public class Snowball extends Projectile {
     public void fadeOut() {
         this.image.setAlpha(opacity);
     }
+
+    public static int getSnowballRadius(){return RADIUS;}
 }

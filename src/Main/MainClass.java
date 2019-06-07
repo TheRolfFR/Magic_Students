@@ -40,14 +40,14 @@ public class MainClass extends BasicGame {
         return instance.menu.isActive();
     }
 
-    private void generateEnemies(Image skin, Vector2f tileSize, int[] viewFrames) {
+    private void generateEnemies(Vector2f tileSize) {
         Random random = new Random();
         int randomX;
         int randomY;
         for(int i = 0; i< 2; i++){
             randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-            switch(2){
+            switch(0){
                 case 0 :
                     Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setShowDebugRect(true);
@@ -70,7 +70,7 @@ public class MainClass extends BasicGame {
     private void generateRoom(GameContainer gc) throws SlickException {
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
-        generateEnemies(new Image("img/24x24.png", false, Image.FILTER_NEAREST).getScaledCopy(2).getSubImage(48, 0, 384, 48), new Vector2f(48,48), new int[] {2, 2, 2, 2});
+        generateEnemies(new Vector2f(48,48));
     }
 
     public static void setGamePaused(boolean gamePaused) {

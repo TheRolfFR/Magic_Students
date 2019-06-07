@@ -16,6 +16,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private boolean keyLeft;
     private boolean keyRight;
 
+    private int framesLeftBeforeAttack=0;
+    private Vector2f attackDirection = new Vector2f(0,0);
+
     /**
      * Single contructor
      *
@@ -24,7 +27,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * @param y initial y position of the player
      */
     public Player(GameContainer gc, float x, float y) {
-        super(x, y,450 / MAX_FPS, 135 / MAX_FPS, 100, 5, 19);
+        super(x, y,450 / MAX_FPS, 135 / MAX_FPS, 100, 5, 50);
 
         this.keyUp = false;
         this.keyDown = false;
@@ -57,14 +60,22 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      */
     private void doAttack() {
         Vector2f direction = new Vector2f( Math.round(MainClass.getInput().getMouseX()), Math.round(MainClass.getInput().getMouseY() )).sub(this.getCenter());
-        Ranged.allyProjectiles.add(new Snowball(this.getCenter(), direction));
+        Ranged.allyProjectiles.add(new Snowball(direction.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), direction)); //décalage car bord haut gauche
     }
 
     /**
      * In game calculations
      */
     public void update() {
-        if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
+        if(isAttacking()){
+            if(isAttackReady()){
+                doMeleeAttack();
+            }
+            else{
+                prepareAttack();
+            }
+        }
+        else if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
             if (this.keyUp) {
                 this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
             }
@@ -78,10 +89,22 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
                 this.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()));
             }
         }
-        else {
+        else{
             this.updateSpeed(this.getSpeed().negate().scale(0.2f));
         }
         this.move();
+
+
+    }
+
+    private Boolean isAttacking(){return !this.attackDirection.equals(new Vector2f(0,0));}
+    private Boolean isAttackReady(){return this.framesLeftBeforeAttack==0;}
+
+    private void prepareAttack(){this.framesLeftBeforeAttack -= 1;}
+
+    private void doMeleeAttack(){
+        Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(this.getCenter().sub(this.attackDirection).normalise().scale(-this.getRadius())).add(new Vector2f(-MeleeAttack.getMeleeRadius(), -MeleeAttack.getMeleeRadius())), this.attackDirection));
+        this.attackDirection.set(0,0);
     }
 
      /**
@@ -185,7 +208,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
 
     @Override
-    public void mouseWheelMoved(int change) {
+    public void mouseWheelMoved(int change) {doAttack();
 
     }
 
@@ -196,7 +219,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     @Override
     public void mousePressed(int button, int x, int y) {
         if (getInGameTimeScale().getTimeScale() != 0f) {
-            this.doAttack();
+            //this.doAttack();
+            if(!isAttacking()){
+                this.attackDirection = new Vector2f(x,y).sub(this.getCenter()).normalise().scale(this.getRadius()).add(this.getCenter());
+                this.speed.set(0,0);
+                this.framesLeftBeforeAttack=60;
+            }
         }
     }
 
