@@ -84,11 +84,11 @@ public abstract class Projectile extends Entity {
             p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
             p.move();
 
-            if(p.collidesWith(target)){
+            if (p.collidesWith(target)) {
                 p.collidingAction(target);
             }
 
-            if (p.isFadeOut() || p.isDead()) {
+            if (p.isFadeOut() || p.isDead) {
                 Ranged.enemyProjectiles.remove(i);
                 i--;
             }
@@ -127,7 +127,7 @@ public abstract class Projectile extends Entity {
     public void render(Graphics g) {
         super.render(g);
 
-        if(this.image != null) {
+        if (this.image != null) {
             g.drawImage(image, this.getPosition().getX(), this.getPosition().getY());
         }
     }
