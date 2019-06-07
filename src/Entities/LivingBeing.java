@@ -87,6 +87,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     private void solveCollision(LivingBeing pusher, LivingBeing percuted, int level){
         if (level <= MainClass.getInstance().getEnemies().size()){
+            System.out.println(level);
             percuted.collidingAction(pusher);
             if (percuted.collidesWith(MainClass.getInstance().getPlayer())){
                 solveCollision(percuted,MainClass.getInstance().getPlayer(),level+1);
@@ -100,6 +101,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void checkCollision(){
+        System.out.println("new check");
         if (this.collidesWith(MainClass.getInstance().getPlayer())){
             solveCollision(this,MainClass.getInstance().getPlayer(),1);
         }
@@ -112,6 +114,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     private void tpOutOf(LivingBeing opponent) {
         Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(getRadius() + opponent.getRadius() - opponent.getCenter().sub(getCenter()).length()));
+
         position.add(diff);
         tpInBounds();
     }
