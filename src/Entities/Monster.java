@@ -1,6 +1,7 @@
 package Entities;
 
 import HUD.HealthBar;
+import org.newdawn.slick.Graphics;
 
 public abstract class Monster extends LivingBeing {
     private int damage;
@@ -34,4 +35,9 @@ public abstract class Monster extends LivingBeing {
      * @param opponent the opponent that the monster will react to
      */
     public abstract void update(LivingBeing opponent);
+
+    @Override
+    public void render(Graphics g) {
+        super.render(g, this.getSpeed());
+    }
 }

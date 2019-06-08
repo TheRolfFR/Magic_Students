@@ -167,7 +167,9 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void render(Graphics g, Vector2f facedDirection) {
-        this.renderer.render(g, facedDirection);
+        if(this.renderer != null) {
+            this.renderer.render(g, facedDirection);
+        }
         super.render(g);
     }
 

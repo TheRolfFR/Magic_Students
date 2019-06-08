@@ -5,6 +5,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class SpriteView {
     private Animation animation;
+    private Vector2f animationCenter;
 
     public SpriteView(String path, Vector2f tileSize, int duration) {
         init(path, tileSize ,duration, null);
@@ -32,6 +33,8 @@ public class SpriteView {
 
             SpriteSheet sp = new SpriteSheet(copy, (int) tileSize.getX(), (int) tileSize.getY());
 
+            animationCenter = new Vector2f(tileSize.getX()/2f, tileSize.getY()/2f);
+
             this.animation = new Animation(sp, duration);
         } catch (SlickException e) {
             e.printStackTrace();
@@ -39,9 +42,10 @@ public class SpriteView {
         }
     }
 
-    public void render(int x, int y, Color filter) {
+    public void render(Vector2f center, Color filter) {
         if(this.animation != null) {
-            this.animation.draw(x, y, filter);
+            Vector2f location = center.copy().sub(animationCenter);
+            this.animation.draw((int) location.getX(), (int) location.getY(), filter);
         }
     }
 }

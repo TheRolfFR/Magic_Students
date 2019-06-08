@@ -32,7 +32,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * @param y initial y position of the player
      */
     public Player(GameContainer gc, float x, float y) {
-        super(x, y,450 / MAX_FPS, 135 / MAX_FPS, 100, 5, 50);
+        super(x, y,450 / MAX_FPS, 135 / MAX_FPS, 100, 5, (int) (0.4*45));
 
         this.keyUp = false;
         this.keyDown = false;
@@ -67,7 +67,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     @Override
     public void setShowDebugRect(boolean showDebugRect) {
         super.setShowDebugRect(showDebugRect);
-        this.playerMarkerRenderer.setShowDebugRect(showDebugRect);
+    }
+    public void setShowPlayerMarkerDebugRect(boolean showPlayerMarkerDebugRect) {
+        this.playerMarkerRenderer.setShowDebugRect(showPlayerMarkerDebugRect);
     }
 
     public void setAngleFaced(int x, int y) {

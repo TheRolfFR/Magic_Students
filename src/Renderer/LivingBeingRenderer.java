@@ -120,11 +120,8 @@ public class LivingBeingRenderer extends SpriteRenderer {
             }
         }
 
-        if(entity instanceof Rusher) {
-            System.out.println(this.lastView);
-        }
         if(this.lastView != null) {
-            this.lastView.render((int) entity.getPosition().getX(), (int) entity.getPosition().getY(), colorFilter);
+            this.lastView.render(entity.getCenter(), colorFilter);
         }
     }
 }

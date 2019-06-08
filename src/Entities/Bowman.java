@@ -1,6 +1,8 @@
 package Entities;
 
 import Main.MainClass;
+import Renderer.LivingBeingRenderer;
+import Renderer.SpriteView;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -14,6 +16,18 @@ public class Bowman extends Ranged {
     public Bowman(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
         this.delayCounter = 0;
+
+        Vector2f tileSize = new Vector2f(48, 48);
+        this.renderer = new LivingBeingRenderer(this, tileSize);
+
+        final String prepath = "img/bowman/";
+
+        final int duration = 1000/8;
+
+        this.renderer.setTopView(new SpriteView(prepath + "top.png", tileSize, duration));
+        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", tileSize, duration));
+        this.renderer.setLeftView(new SpriteView(prepath + "left.png", tileSize, duration));
+        this.renderer.setRightView(new SpriteView(prepath + "right.png", tileSize, duration));
     }
 
     @Override

@@ -238,6 +238,7 @@ public class MainClass extends BasicGame {
         this.healthBar.render(g);
         for (Monster enemy: enemies){
             enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
+            enemy.render(g);
             enemy.getHealthBar().render(g);
         }
         for (Projectile p : Ranged.enemyProjectiles) {
