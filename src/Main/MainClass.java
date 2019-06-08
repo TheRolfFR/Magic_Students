@@ -198,6 +198,7 @@ public class MainClass extends BasicGame {
             if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
                 generateRoom();
 
+
                 for (Portal portal_bis : Portal.portals) {
                     portal_bis.setVisible(false);
                     portalSet = false;

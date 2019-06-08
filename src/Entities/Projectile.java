@@ -9,7 +9,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 
 public abstract class Projectile extends Entity {
-    private int damage;
+    public static int damage;
     protected Image image;
     protected Vector2f direction;
     protected float opacity;
@@ -23,7 +23,7 @@ public abstract class Projectile extends Entity {
 
     public Projectile(float x, float y, float maxSpeed, float accelerationRate, int radius, Vector2f direction) {
         super(x, y, maxSpeed, accelerationRate, radius);
-        this.damage = 25;
+        damage = 25;
         this.direction = direction;
         this.opacity = 1f;
 
@@ -40,7 +40,7 @@ public abstract class Projectile extends Entity {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.direction = direction;
 
-        this.damage = 25;
+        damage = 25;
 
         this.image = null;
 
@@ -108,7 +108,6 @@ public abstract class Projectile extends Entity {
             }
 
             if (p.isFadeOut() || p.isDead()) {
-                System.out.println("Deleted");
                 Ranged.allyProjectiles.remove(j);
                 j--;
             }

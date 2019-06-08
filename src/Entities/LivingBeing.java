@@ -27,6 +27,20 @@ public abstract class LivingBeing extends Entity implements Comparable {
         }
     }
 
+    public void buffHP(int buffAmount){
+        this.maxHealthPoints = this.maxHealthPoints + buffAmount;
+        this.heal(buffAmount);
+    }
+
+    public void buffArmor(float buffAmount){
+        this.armorPoints = this.armorPoints + buffAmount;
+    }
+
+    protected void buffSpeed(float buffAmount){
+        this.MAX_SPEED = this.MAX_SPEED + buffAmount;
+        this.ACCELERATION_RATE = this.ACCELERATION_RATE + buffAmount * 135/450;
+    }
+
     /**
      * In game rendering of all Living beings
      * @param g the graphics to draw on

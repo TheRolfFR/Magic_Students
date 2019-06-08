@@ -14,8 +14,8 @@ public abstract class Entity {
 
     protected Vector2f tileSize;
 
-    private float MAX_SPEED;
-    private float ACCELERATION_RATE;
+    protected float MAX_SPEED;
+    protected float ACCELERATION_RATE;
 
     private static final float SPEED_THRESHOLD = 0.5f;
 
