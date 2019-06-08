@@ -15,6 +15,7 @@ import HUD.PauseMenu;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
+import javax.sound.sampled.Port;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
@@ -155,8 +156,8 @@ public class MainClass extends BasicGame {
     }
 
     @Override
-    public void update(GameContainer gc, int i) throws SlickException {
-        inGameTimeScale.setDeltaTime(i);
+    public void update(GameContainer gc, int timeOfOneFrame) throws SlickException {
+        inGameTimeScale.setDeltaTime(timeOfOneFrame);
 
         this.player.update();
         if(!this.player.isDashing()){
@@ -207,6 +208,14 @@ public class MainClass extends BasicGame {
                         fadeToBlack.setActive(true);
                         this.portalEngaged = false;
                     }
+                }
+            }
+        }
+
+        if(portalSet){
+            for(Portal portal : Portal.portals){
+                if(portal.isVisible()){
+                    portal.update(timeOfOneFrame);
                 }
             }
         }

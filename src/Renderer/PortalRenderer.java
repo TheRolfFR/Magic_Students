@@ -57,9 +57,9 @@ public class PortalRenderer extends SpriteRenderer {
         Animation animationToShow;
 
         if(this.timeCounter < OPENING_DURATION) {
-            animationToShow = openingAnimation;
+            animationToShow = this.openingAnimation;
         } else {
-            animationToShow = openedAnimation;
+            animationToShow = this.openedAnimation;
         }
 
         animationToShow.draw((int) topLeftAngle.getX(), topLeftAngle.getY(), portalColor);
