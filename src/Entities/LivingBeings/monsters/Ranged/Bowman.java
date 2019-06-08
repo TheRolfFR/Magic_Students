@@ -48,10 +48,6 @@ public class Bowman extends Ranged {
         if(this.delayCounter > SHOT_DELAY && !MainClass.isGamePaused()) {
             attack(target);
         }
-
-        if(this.collidesWith(target)){
-            this.collidingAction(target);
-        }
     }
 
     public void attack(LivingBeing target){
