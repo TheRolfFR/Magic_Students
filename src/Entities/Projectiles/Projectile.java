@@ -2,6 +2,7 @@ package Entities.Projectiles;
 
 import Entities.Entity;
 import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Player;
 import Entities.LivingBeings.monsters.Monster;
 import Entities.LivingBeings.monsters.Ranged.Ranged;
 import Main.MainClass;
@@ -80,14 +81,14 @@ public abstract class Projectile extends Entity {
 
     public void update() {}
 
-    public static void updateEnemyProjectile(LivingBeing target){
+    public static void updateEnemyProjectile(Player target){
         for (int i = 0; i < Ranged.enemyProjectiles.size(); i++) {
             Projectile p = Ranged.enemyProjectiles.get(i);
 
             p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
             p.move();
 
-            if (p.collidesWith(target)) {
+            if (p.collidesWith(target) && !target.isDashing()) {
                 p.collidingAction(target);
             }
 

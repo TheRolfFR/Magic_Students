@@ -39,10 +39,17 @@ public class MainClass extends BasicGame {
     private boolean portalSet = false;
     private boolean portalEngaged = false;
 
+    public static final int portalBossCount = 40;
+    public static final int portalBossChance = 25;
+    public static final int portalItemCount = 25;
+    public static final int portalItemChance = 15;
+
+
     private HealthBar healthBar;
 
     private PauseMenu menu;
     private FadeToBlack fadeToBlack;
+
 
     public static boolean isGamePaused() {
         return instance.menu.isActive();
@@ -152,13 +159,17 @@ public class MainClass extends BasicGame {
         inGameTimeScale.setDeltaTime(i);
 
         this.player.update();
-        this.player.checkCollision();
+        if(!this.player.isDashing()){
+            this.player.checkCollision();
+        }
         updateEnemyProjectile(player);
         updateAllyProjectiles();
 
         for(Monster enemy : this.enemies){
             enemy.update(this.player);
-            enemy.checkCollision();
+            if(!this.player.isDashing()){
+                enemy.checkCollision();
+            }
             if (this.player.isDead()){
                 //setGamePaused(true);
             }
@@ -178,7 +189,7 @@ public class MainClass extends BasicGame {
                 int nbVisiblePortal = 0;
 
                 for (Portal portal : Portal.portals) {
-                    if (random.nextInt(4) == 0) {
+                    if (random.nextInt(3) == 0) {
                         portal.setVisible(true);
                         nbVisiblePortal++;
                     }

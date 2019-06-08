@@ -7,6 +7,7 @@ import Main.MainClass;
 import Renderer.LivingBeingRenderer;
 import Renderer.PlayerMarkerRenderer;
 import Renderer.SpriteView;
+import com.sun.tools.javac.Main;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -19,12 +20,14 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private boolean keyDown;
     private boolean keyLeft;
     private boolean keyRight;
+    private boolean keySpace;
 
     private double angleFaced;
 
     private PlayerMarkerRenderer playerMarkerRenderer;
 
     private int framesLeftBeforeAttack=0;
+    private int framesLeftAfterDash=0;
     private Vector2f attackDirection = new Vector2f(0,0);
 
     /**
@@ -41,6 +44,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         this.keyDown = false;
         this.keyLeft = false;
         this.keyRight = false;
+        this.keySpace = false;
 
         gc.getInput().addKeyListener(this);
         gc.getInput().addMouseListener(this);
@@ -71,20 +75,13 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     public void setShowDebugRect(boolean showDebugRect) {
         super.setShowDebugRect(showDebugRect);
     }
+
     public void setShowPlayerMarkerDebugRect(boolean showPlayerMarkerDebugRect) {
         this.playerMarkerRenderer.setShowDebugRect(showPlayerMarkerDebugRect);
     }
 
     public void setAngleFaced(int x, int y) {
         this.angleFaced = new Vector2f(x, y).sub(this.getPosition()).getTheta() + 90.0;
-    }
-
-    /**
-     * Do an attack
-     */
-    private void doAttack() {
-        Vector2f direction = new Vector2f( Math.round(MainClass.getInput().getMouseX()), Math.round(MainClass.getInput().getMouseY() )).sub(this.getCenter());
-        Ranged.allyProjectiles.add(new Snowball(direction.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), direction)); //décalage car bord haut gauche
     }
 
     /**
@@ -98,6 +95,14 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
             else{
                 prepareAttack();
             }
+        }
+        else if(this.keySpace){
+            if(!isDashing()){
+                startDash(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY());
+            }
+        }
+        else if(isDashing()){
+            framesLeftAfterDash-=1;
         }
         else if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
             if (this.keyUp) {
@@ -117,8 +122,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
             this.updateSpeed(this.getSpeed().negate().scale(0.2f));
         }
         this.move();
+    }
 
-
+    private void startMeleeAttack(int mouseX, int mouseY){
+        this.attackDirection = new Vector2f(mouseX,mouseY).sub(this.getCenter()).normalise().scale(this.getRadius()).add(this.getCenter());
+        this.speed.set(0,0);
+        this.framesLeftBeforeAttack=60;
     }
 
     private Boolean isAttacking(){return !this.attackDirection.equals(new Vector2f(0,0));}
@@ -126,12 +135,33 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private void prepareAttack(){this.framesLeftBeforeAttack -= 1;}
 
+    /**
+     * do a melee attack
+     */
     private void doMeleeAttack(){
         Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(this.getCenter().sub(this.attackDirection).normalise().scale(-this.getRadius())).add(new Vector2f(-MeleeAttack.getMeleeRadius(), -MeleeAttack.getMeleeRadius())), this.attackDirection));
         this.attackDirection.set(0,0);
     }
 
-     /**
+    /**
+     * Do a ranged attack
+     */
+    private void doRangedAttack() {
+        Vector2f direction = new Vector2f( Math.round(MainClass.getInput().getMouseX()), Math.round(MainClass.getInput().getMouseY() )).sub(this.getCenter());
+        Ranged.allyProjectiles.add(new Snowball(direction.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), direction)); //décalage car bord haut gauche
+    }
+
+    private void startDash(int mouseX, int mouseY){
+        attackDirection = new Vector2f(mouseX,mouseY);
+        framesLeftAfterDash = 15;
+        this.speed = attackDirection.copy().sub(this.getCenter()).normalise().scale(MAX_SPEED*1.42f);
+    }
+
+    public boolean isDashing(){
+        return framesLeftAfterDash!=0;
+    }
+
+    /**
      * In game rendering
      * @param g the graphics to draw on
      */
@@ -176,6 +206,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
             case Input.KEY_D:
                 this.keyRight = true;
                 break;
+            case Input.KEY_SPACE:
+                this.keySpace=true;
+                break;
         }
     }
 
@@ -202,6 +235,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
             case Input.KEY_RIGHT:
             case Input.KEY_D:
                 this.keyRight = false;
+                break;
+            case Input.KEY_SPACE:
+                this.keySpace = false;
                 break;
         }
     }
@@ -230,7 +266,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
 
     @Override
-    public void mouseWheelMoved(int change) {doAttack();
+    public void mouseWheelMoved(int change) {doRangedAttack();
 
     }
 
@@ -243,9 +279,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         if (getInGameTimeScale().getTimeScale() != 0f) {
             //this.doAttack();
             if(!isAttacking()){
-                this.attackDirection = new Vector2f(x,y).sub(this.getCenter()).normalise().scale(this.getRadius()).add(this.getCenter());
-                this.speed.set(0,0);
-                this.framesLeftBeforeAttack=60;
+                startMeleeAttack(x,y);
             }
         }
     }
