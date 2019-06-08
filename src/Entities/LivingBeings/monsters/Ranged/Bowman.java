@@ -2,6 +2,7 @@ package Entities.LivingBeings.monsters.Ranged;
 
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.monsters.Ranged.Ranged;
+import Entities.Projectiles.Arrow;
 import Entities.Projectiles.Fireball;
 import Entities.Projectiles.Snowball;
 import Main.MainClass;
@@ -75,7 +76,7 @@ public class Bowman extends Ranged {
         direction.set(direction.getX() + target.getRadius()/4, direction.getY() + target.getRadius()/4);
 
         //this.monsterProjectiles.add(new Snowball(this.getPosition(), direction));
-        enemyProjectiles.add(new Fireball(direction.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Fireball.getFireballRadius(), this.getCenter().y - Fireball.getFireballRadius())), direction));
+        enemyProjectiles.add(new Arrow(direction.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Fireball.getFireballRadius(), this.getCenter().y - Fireball.getFireballRadius())), direction));
         //enemyProjectiles.get(enemyProjectiles.size()-1).setShowDebugRect(true);
 
         this.delayCounter = 0;
