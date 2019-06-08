@@ -13,6 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import static Main.MainClass.MAX_FPS;
 import static Main.MainClass.getInGameTimeScale;
+import static java.lang.Math.round;
 
 public class Player extends LivingBeing implements KeyListener, MouseListener{
 
@@ -26,9 +27,17 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private PlayerMarkerRenderer playerMarkerRenderer;
 
-    private int framesLeftBeforeAttack=0;
+    private int framesLeftBeforeMeleeAttack=0;
+    private int framesLeftBeforeRangedAttack=0;
     private int framesLeftAfterDash=0;
-    private Vector2f attackDirection = new Vector2f(0,0);
+
+    private int dashCD = 0;
+    private int spellCD = 0;
+
+    private Vector2f meleeAttackDirection = new Vector2f(0,0);
+    private Vector2f rangedAttackDirection = new Vector2f(0,0);
+
+
 
     /**
      * Single contructor
@@ -88,21 +97,35 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * In game calculations
      */
     public void update() {
-        if(isAttacking()){
+        if(willDoSomething()){
+            this.updateSpeed(this.getSpeed().negate().scale(0.2f));
+        }
+        else if(this.keySpace && isDashReady()){
+            if(!isDashing()){
+                startDash(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY());
+            }
+            else{
+                this.framesLeftAfterDash-=1;
+            }
+        }
+        else if(isDashing()){
+            this.framesLeftAfterDash-=1;
+        }
+        else if(isCasting()){
+            if(isSpellReady()){
+                doRangedAttack();
+            }
+            else{
+                this.framesLeftBeforeRangedAttack-=1;
+            }
+        }
+        else if(isAttacking()){
             if(isAttackReady()){
                 doMeleeAttack();
             }
             else{
-                prepareAttack();
+                this.framesLeftBeforeMeleeAttack -= 1;
             }
-        }
-        else if(this.keySpace){
-            if(!isDashing()){
-                startDash(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY());
-            }
-        }
-        else if(isDashing()){
-            framesLeftAfterDash-=1;
         }
         else if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
             if (this.keyUp) {
@@ -122,43 +145,70 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
             this.updateSpeed(this.getSpeed().negate().scale(0.2f));
         }
         this.move();
+
+        if(!isDashReady() && !isDashing()){
+            dashCD-=1;
+        }
+        if(!isCastingUp() && !isCasting()){
+            spellCD-=1;
+        }
     }
+
+
 
     private void startMeleeAttack(int mouseX, int mouseY){
-        this.attackDirection = new Vector2f(mouseX,mouseY).sub(this.getCenter()).normalise().scale(this.getRadius()).add(this.getCenter());
-        this.speed.set(0,0);
-        this.framesLeftBeforeAttack=60;
+        this.meleeAttackDirection = new Vector2f(mouseX,mouseY).sub(this.getCenter()).normalise().scale(this.getRadius()).add(this.getCenter());
+        this.framesLeftBeforeMeleeAttack=5;
     }
 
-    private Boolean isAttacking(){return !this.attackDirection.equals(new Vector2f(0,0));}
-    private Boolean isAttackReady(){return this.framesLeftBeforeAttack==0;}
+    private Boolean isAttacking(){return !this.meleeAttackDirection.equals(new Vector2f(0,0));}
 
-    private void prepareAttack(){this.framesLeftBeforeAttack -= 1;}
+    private Boolean isAttackReady(){return this.framesLeftBeforeMeleeAttack==0;}
+
+    private Boolean willDoSomething(){return (isAttacking() || isCasting()) && !this.speed.equals(new Vector2f(0,0));}
 
     /**
      * do a melee attack
      */
     private void doMeleeAttack(){
-        Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(this.getCenter().sub(this.attackDirection).normalise().scale(-this.getRadius())).add(new Vector2f(-MeleeAttack.getMeleeRadius(), -MeleeAttack.getMeleeRadius())), this.attackDirection));
-        this.attackDirection.set(0,0);
+        Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(this.getCenter().sub(this.meleeAttackDirection).normalise().scale(-this.getRadius())).add(new Vector2f(-MeleeAttack.getMeleeRadius(), -MeleeAttack.getMeleeRadius())), this.meleeAttackDirection));
+        this.meleeAttackDirection.set(0,0);
     }
 
     /**
      * Do a ranged attack
      */
     private void doRangedAttack() {
-        Vector2f direction = new Vector2f( Math.round(MainClass.getInput().getMouseX()), Math.round(MainClass.getInput().getMouseY() )).sub(this.getCenter());
-        Ranged.allyProjectiles.add(new Snowball(direction.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), direction)); //décalage car bord haut gauche
+        Ranged.allyProjectiles.add(new Snowball(this.rangedAttackDirection.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), this.rangedAttackDirection)); //décalage car bord haut gauche
+        this.rangedAttackDirection.set(0,0);
     }
 
     private void startDash(int mouseX, int mouseY){
-        attackDirection = new Vector2f(mouseX,mouseY);
-        framesLeftAfterDash = 15;
-        this.speed = attackDirection.copy().sub(this.getCenter()).normalise().scale(MAX_SPEED*1.42f);
+        framesLeftAfterDash = 23;
+        this.speed = new Vector2f(mouseX,mouseY).copy().sub(this.getCenter()).normalise().scale(MAX_SPEED*1.42f);
+        dashCD = 15;
     }
 
-    public boolean isDashing(){
-        return framesLeftAfterDash!=0;
+    public boolean isDashing(){return this.framesLeftAfterDash!=0;}
+
+    private boolean isDashReady(){return dashCD == 0;}
+
+    private void startRangedAttack(){
+        this.rangedAttackDirection = new Vector2f( Math.round(MainClass.getInput().getMouseX()), Math.round(MainClass.getInput().getMouseY() )).sub(this.getCenter());
+        spellCD = 30;
+        framesLeftBeforeRangedAttack = 25;
+    }
+    private boolean isSpellReady(){return this.framesLeftBeforeRangedAttack == 0;}
+
+    private boolean isCasting(){return !this.rangedAttackDirection.equals(new Vector2f(0,0));}
+
+    private boolean isCastingUp(){return this.spellCD==0;}
+
+    @Override
+    public void takeDamage(int damage) {
+        if(!isDashing()){
+            this.currentHealthPoints = Math.max(0, this.currentHealthPoints - round(damage / this.armorPoints));
+        }
     }
 
     /**
@@ -266,8 +316,10 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
 
     @Override
-    public void mouseWheelMoved(int change) {doRangedAttack();
-
+    public void mouseWheelMoved(int change) {
+        if (getInGameTimeScale().getTimeScale() != 0f && !isCasting() && !isDashing() && isCastingUp()) {
+            startRangedAttack();
+        }
     }
 
     @Override
@@ -276,11 +328,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     @Override
     public void mousePressed(int button, int x, int y) {
-        if (getInGameTimeScale().getTimeScale() != 0f) {
-            //this.doAttack();
-            if(!isAttacking()){
+        if (getInGameTimeScale().getTimeScale() != 0f && !isAttacking() && !isDashing()) {
                 startMeleeAttack(x,y);
-            }
         }
     }
 

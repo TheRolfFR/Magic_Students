@@ -234,7 +234,7 @@ public class MainClass extends BasicGame {
         if (key == Input.KEY_ESCAPE) {
             triggerGamePaused();
         }
-        if (key == Input.KEY_SPACE) {
+        if (key == Input.KEY_F) {
             this.portalEngaged = true;
         }
     }
@@ -243,7 +243,7 @@ public class MainClass extends BasicGame {
     public void keyReleased(int key, char c) {
         this.player.keyReleased(key, c);
 
-        if (key == Input.KEY_SPACE) {
+        if (key == Input.KEY_F) {
             this.portalEngaged = false;
         }
     }

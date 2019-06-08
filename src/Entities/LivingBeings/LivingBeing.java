@@ -14,9 +14,9 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.round;
 
 public abstract class LivingBeing extends Entity implements Comparable {
-    private int currentHealthPoints;
+    int currentHealthPoints;
     private int maxHealthPoints;
-    private float armorPoints;
+    float armorPoints;
 
     public static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
 
