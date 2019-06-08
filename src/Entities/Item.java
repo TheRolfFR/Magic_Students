@@ -13,12 +13,12 @@ public class Item extends Entity {
     public static ArrayList<Item> items = new ArrayList<>();
 
     private int typeOfItem;
-    protected static int HEALBUFFAMOUNT = 50;
-    protected static int MAXHPBUFFAMOUNT = 10;
-    protected static int MELEEBUFFAMOUNT = 5;
-    protected  static int RANGEDBUFFAMOUNT = 5;
-    protected static float ARMORBUFFAMOUNT = 5;
-    protected static float SPEEDBUFFAMOUNT = Math.round(15/ MainClass.MAX_FPS);
+    private static int HEALBUFFAMOUNT = 50;
+    private static int MAXHPBUFFAMOUNT = 10;
+    private static int MELEEBUFFAMOUNT = 5;
+    private static int RANGEDBUFFAMOUNT = 5;
+    private static int ARMORBUFFAMOUNT = 5;
+    private static float SPEEDBUFFAMOUNT = Math.round(15/ MainClass.MAX_FPS);
 
     public Item(){
         super(MainClass.WIDTH/2, MainClass.HEIGHT/2, 25,25,13);

@@ -43,7 +43,7 @@ public class PlayerMarkerRenderer extends SpriteRenderer {
     }
 
     public void Render(Graphics g, double angleFaced) {
-        Vector2f location = entity.getCenter().copy().sub(playerMarkerImageCenter);
+        Vector2f location = entity.getCenter().sub(playerMarkerImageCenter);
         Image copy = playerMarkerImage.getScaledCopy(1);
         copy.rotate((float) angleFaced);
         g.drawImage(copy, (int) location.getX(), (int) location.getY());
@@ -52,7 +52,7 @@ public class PlayerMarkerRenderer extends SpriteRenderer {
             Color tmp = g.getColor();
             g.setColor(Color.blue);
 
-            location = entity.getCenter().copy().sub(playerMarkerDebugRectCenter);
+            location = entity.getCenter().sub(playerMarkerDebugRectCenter);
 
             g.drawOval((int) location.getX(), (int) location.getY(), this.markerRadius*2, this.markerRadius*2);
 

@@ -32,7 +32,7 @@ public class Portal extends Entity {
     @Override
     public void render(Graphics g) {
         if (this.renderer != null) {
-            this.renderer.render(g, (int) this.position.x, (int) this.position.y);
+            this.renderer.render(g, (int) this.getPosition().getX(), (int) this.getPosition().getY());
         }
         super.render(g);
     }

@@ -63,17 +63,17 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
         Color capeColor = new Color(0x0094ff);
 
-        this.tileSize = new Vector2f(96, 96);
-        this.renderer = new LivingBeingRenderer(this, this.tileSize, capeColor);
-        this.renderer.setTopIdleView(new SpriteView(prepath + "topIdle.png", this.tileSize, duration, Color.red));
-        this.renderer.setBottomIdleView(new SpriteView(prepath + "bottomIdle.png", this.tileSize, duration, Color.red));
-        this.renderer.setLeftIdleView(new SpriteView(prepath + "leftIdle.png", this.tileSize, duration, Color.red));
-        this.renderer.setRightIdleView(new SpriteView(prepath + "rightIdle.png", this.tileSize, duration, Color.red));
+        this.setTileSize(new Vector2f(96, 96));
+        this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
+        this.renderer.setTopIdleView(new SpriteView(prepath + "topIdle.png", this.getTileSize(), duration, Color.red));
+        this.renderer.setBottomIdleView(new SpriteView(prepath + "bottomIdle.png", this.getTileSize(), duration, Color.red));
+        this.renderer.setLeftIdleView(new SpriteView(prepath + "leftIdle.png", this.getTileSize(), duration, Color.red));
+        this.renderer.setRightIdleView(new SpriteView(prepath + "rightIdle.png", this.getTileSize(), duration, Color.red));
 
-        this.renderer.setTopView(new SpriteView(prepath + "top.png", this.tileSize, duration, Color.red));
-        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", this.tileSize, duration, Color.red));
-        this.renderer.setLeftView(new SpriteView(prepath + "left.png", this.tileSize, duration, Color.red));
-        this.renderer.setRightView(new SpriteView(prepath + "right.png", this.tileSize, duration, Color.red));
+        this.renderer.setTopView(new SpriteView(prepath + "top.png", this.getTileSize(), duration, Color.red));
+        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", this.getTileSize(), duration, Color.red));
+        this.renderer.setLeftView(new SpriteView(prepath + "left.png", this.getTileSize(), duration, Color.red));
+        this.renderer.setRightView(new SpriteView(prepath + "right.png", this.getTileSize(), duration, Color.red));
 
         this.playerMarkerRenderer = new PlayerMarkerRenderer(this, 2);
 
@@ -89,7 +89,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         this.playerMarkerRenderer.setShowDebugRect(showPlayerMarkerDebugRect);
     }
 
-    public void setAngleFaced(int x, int y) {
+    private void setAngleFaced(int x, int y) {
         this.angleFaced = new Vector2f(x, y).sub(this.getPosition()).getTheta() + 90.0;
     }
 
@@ -165,7 +165,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private Boolean isAttackReady(){return this.framesLeftBeforeMeleeAttack==0;}
 
-    private Boolean willDoSomething(){return (isAttacking() || isCasting()) && !this.speed.equals(new Vector2f(0,0));}
+    private Boolean willDoSomething(){return (isAttacking() || isCasting()) && !this.getSpeed().equals(new Vector2f(0,0));}
 
     /**
      * do a melee attack
@@ -185,7 +185,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private void startDash(int mouseX, int mouseY){
         framesLeftAfterDash = 23;
-        this.speed = new Vector2f(mouseX,mouseY).copy().sub(this.getCenter()).normalise().scale(MAX_SPEED*1.42f);
+        this.setSpeed(new Vector2f(mouseX,mouseY).sub(this.getCenter()).normalise().scale(MAX_SPEED*1.42f));
         dashCD = 15;
     }
 
@@ -207,7 +207,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     @Override
     public void takeDamage(int damage) {
         if(!isDashing()){
-            this.currentHealthPoints = Math.max(0, this.currentHealthPoints - round(damage / this.armorPoints));
+            super.takeDamage(damage);
+            //this.currentHealthPoints = Math.max(0, this.getCurrentHealthPoints() - round(damage / this.getArmorPoints()));
         }
     }
 

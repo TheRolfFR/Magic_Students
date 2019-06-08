@@ -35,13 +35,13 @@ public class Bowman extends Ranged {
 
     @Override
     public void update(LivingBeing target) {
-        this.delayCounter = Math.min(this.delayCounter+1, 121);
-        if(target.getPosition().distance(this.position)<150) {
-            this.updateSpeed(target.getPosition().copy().sub(this.position).normalise().negate().scale(this.getAccelerationRate()));
+        this.delayCounter = Math.min(this.delayCounter + 1, 121);
+        if(target.getPosition().distance(this.getPosition()) < 150) {
+            this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().negate().scale(this.getAccelerationRate()));
             this.move();
         }
-        else if(this.speed.length()!=0){
-            this.updateSpeed(this.speed.copy().normalise().negate().scale(getAccelerationRate()));
+        else if(this.getSpeed().length()!=0){
+            this.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
             this.move();
         }
 
@@ -50,8 +50,8 @@ public class Bowman extends Ranged {
         }
     }
 
-    public void attack(LivingBeing target){
-        Vector2f futureTargetPosition = target.getCenter().copy().add(target.getSpeed().copy().scale(target.getCenter().distance(this.getCenter())/ Snowball.MAX_SPEED));
+    private void attack(LivingBeing target){
+        Vector2f futureTargetPosition = target.getCenter().add(target.getSpeed().copy().scale(target.getCenter().distance(this.getCenter())/ Snowball.MAX_SPEED));
 
         if(futureTargetPosition.getY() > MainClass.HEIGHT){
             futureTargetPosition.set(futureTargetPosition.getX(), MainClass.HEIGHT - target.getRadius()/4);
@@ -66,7 +66,7 @@ public class Bowman extends Ranged {
             futureTargetPosition.set(0, futureTargetPosition.getY());
         }
 
-        Vector2f direction = futureTargetPosition.sub(this.position);
+        Vector2f direction = futureTargetPosition.sub(this.getPosition());
 
         //target the center of the opponent, not the top left corner
         direction.set(direction.getX() + target.getRadius()/2f, direction.getY() + target.getRadius()/2f);

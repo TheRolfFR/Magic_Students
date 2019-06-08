@@ -8,11 +8,11 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Entity {
-    protected Vector2f position;
-    protected Vector2f speed;
+    private Vector2f position;
+    private Vector2f speed;
     private int radius;
 
-    protected Vector2f tileSize;
+    private Vector2f tileSize;
 
     protected float MAX_SPEED;
     protected float ACCELERATION_RATE;
@@ -20,6 +20,12 @@ public abstract class Entity {
     private static final float SPEED_THRESHOLD = 0.5f;
 
     protected boolean showDebugRect;
+
+
+
+    public Vector2f getTileSize() {
+        return tileSize.copy();
+    }
 
     public void setTileSize(Vector2f tileSize) {
         this.tileSize = tileSize;
@@ -33,6 +39,10 @@ public abstract class Entity {
 
     protected void setPosition(Vector2f position) {
         this.position = position;
+    }
+
+    protected void setSpeed(Vector2f speed) {
+        this.speed = speed;
     }
 
     /**
@@ -143,7 +153,7 @@ public abstract class Entity {
     public abstract void move();
 
     public Vector2f getCenter(){
-        return new Vector2f(position.copy().x + (this.tileSize.getX()/2),position.copy().y + (this.tileSize.getY()/2));
+        return new Vector2f(this.getPosition().x + (this.getTileSize().getX()/2),this.getPosition().y + (this.getTileSize().getY()/2));
     }
 
     public Shape getBounds(){

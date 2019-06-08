@@ -138,16 +138,16 @@ public abstract class Projectile extends Entity {
         }
 
         if (this.renderer != null) {
-            this.renderer.render(g, (int) this.position.getX(), (int) this.position.getY());
+            this.renderer.render(g, (int) this.getPosition().getX(), (int) this.getPosition().getY());
         }
     }
 
     public abstract void fadeOut();
 
     public void move() {
-        this.position.add(this.speed.scale(MainClass.getInGameTimeScale().getTimeScale()));
+        this.setPosition(this.getPosition().add(this.getSpeed().scale(MainClass.getInGameTimeScale().getTimeScale())));
 
-        if (this.position.x < 0 || (this.position.x + this.tileSize.getX() >= MainClass.WIDTH) || this.position.y < 0 || (this.position.y + this.tileSize.getY() >= MainClass.HEIGHT)) {
+        if (this.getPosition().getX() < 0 || (this.getPosition().getX() + this.getTileSize().getX() >= MainClass.WIDTH) || this.getPosition().getY() < 0 || (this.getPosition().getY() + this.getTileSize().getY() >= MainClass.HEIGHT)) {
            this.isDead=true;
         }
     }
