@@ -10,13 +10,12 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static java.lang.Math.ceil;
-import static java.lang.Math.round;
+import static java.lang.Math.*;
 
 public abstract class LivingBeing extends Entity implements Comparable {
-    int currentHealthPoints;
+    private int currentHealthPoints;
     private int maxHealthPoints;
-    float armorPoints;
+    private int armorPoints;
 
     public static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
 
@@ -34,7 +33,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.heal(buffAmount);
     }
 
-    public void buffArmor(float buffAmount){
+    public void buffArmor(int buffAmount){
         this.armorPoints = this.armorPoints + buffAmount;
     }
 
@@ -53,6 +52,10 @@ public abstract class LivingBeing extends Entity implements Comparable {
         for (LivingBeing lb : livingBeings) {
             lb.render(g);
         }
+    }
+
+    public int getArmorPoints() {
+        return armorPoints;
     }
 
     /**
@@ -80,7 +83,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param maxHealthPoints maximum health points of the living being
      * @param armorPoints armor points of the living being
      */
-    public LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius) {
+    public LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, int armorPoints, int radius) {
         super(x, y, width, height, maxSpeed, accelerationRate, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
@@ -89,7 +92,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         livingBeings.add(this);
     }
 
-    public LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius) {
+    public LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, int armorPoints, int radius) {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
@@ -103,7 +106,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param damage damage value inflicted
      */
     public void takeDamage(int damage) {
-        currentHealthPoints = Math.max(0, currentHealthPoints - round(damage / armorPoints));
+        currentHealthPoints = Math.max(0, currentHealthPoints - Math.max(damage - armorPoints, 0));
     }
 
     public boolean isDead(){
@@ -137,8 +140,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     private void tpOutOf(LivingBeing opponent) {
         Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(getRadius() + opponent.getRadius() - opponent.getCenter().sub(getCenter()).length()));
-
-        position.add(diff);
+        setPosition(getPosition().add(diff));
         tpInBounds();
     }
 
@@ -150,21 +152,21 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
     private void tpInBounds() {
         if (this.getCenter().x < getRadius()) {
-            this.position.set(getRadius() - this.tileSize.getX()/2 , this.position.y);
+            this.setPosition(new Vector2f(getRadius() - this.getTileSize().getX()/2 , this.getPosition().getY()));
         }
         if (this.getCenter().x >= MainClass.WIDTH - getRadius()) {
-            this.position.set(MainClass.WIDTH - getRadius() - this.tileSize.getX()/2, this.position.y);
+            this.setPosition(new Vector2f(MainClass.WIDTH - getRadius() - this.getTileSize().getX()/2, this.getPosition().getY()));
         }
         if (this.getCenter().y < getRadius()) {
-            this.position.set(this.position.x, getRadius() - this.tileSize.getY()/2);
+            this.setPosition(new Vector2f(this.getPosition().getX(), getRadius() - this.getTileSize().getY()/2));
         }
         if (this.getCenter().y >= MainClass.HEIGHT - getRadius()) {
-            this.position.set(this.position.x, MainClass.HEIGHT - getRadius() - this.tileSize.getY()/2);
+            this.setPosition(new Vector2f(this.getPosition().getX(), MainClass.HEIGHT - getRadius() - this.getTileSize().getY()/2));
         }
     }
 
     public void move() {
-        this.position.add(this.speed.scale(MainClass.getInGameTimeScale().getTimeScale()));
+        this.setPosition(this.getPosition().add(this.getSpeed().scale(MainClass.getInGameTimeScale().getTimeScale())));
         this.tpInBounds();
     }
 

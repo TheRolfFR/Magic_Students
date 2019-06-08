@@ -13,7 +13,7 @@ public class Knight extends Melee {
 
 
 
-    public Knight(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage, int radius){
+    public Knight(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
 
         Vector2f tileSize = new Vector2f(48, 48);
@@ -39,7 +39,7 @@ public class Knight extends Melee {
             }
         }
         else {
-            this.updateSpeed(target.getPosition().copy().sub(this.position).normalise().scale(this.getAccelerationRate()));
+            this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().scale(this.getAccelerationRate()));
 
             this.move();
             if (isTargetInRange(target)){
@@ -53,7 +53,7 @@ public class Knight extends Melee {
     }
 
     private void startAttacking(LivingBeing target){
-        this.speed.set(0,0);
+        this.setSpeed(new Vector2f(0,0));
         this.attackDirection = getLocationOfTarget(target);
         this.framesLeftBeforeAttack = 30;
     }

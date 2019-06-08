@@ -8,7 +8,7 @@ public abstract class Monster extends LivingBeing {
     private int damage;
     private HealthBar healthBar;
 
-    public Monster(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage, int radius){
+    public Monster(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, radius);
         this.damage = damage;
     }

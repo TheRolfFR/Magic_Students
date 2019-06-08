@@ -22,7 +22,7 @@ public class Portal extends Entity {
         this.height = height;
         this.visible = false;
 
-        this.renderer = new PortalRenderer(this,x, y, Color.blue);
+        this.renderer = new PortalRenderer(this,this.getPosition().getX(), this.getPosition().getY(), Color.blue);
     }
 
     public boolean isVisible() { return this.visible; }
@@ -39,6 +39,7 @@ public class Portal extends Entity {
     public void render(Graphics g) {
         if (this.renderer != null) {
             this.renderer.Render();
+            //this.renderer.render(g, (int) this.getPosition().getX(), (int) this.getPosition().getY());
         }
         super.render(g);
     }
