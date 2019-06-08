@@ -1,5 +1,6 @@
-package Entities;
+package Entities.Projectiles;
 
+import Entities.Projectiles.Projectile;
 import org.newdawn.slick.geom.Vector2f;
 
 public class MeleeAttack extends Projectile {
@@ -11,7 +12,7 @@ public class MeleeAttack extends Projectile {
         this.isDead=true;
     }
 
-    static int getMeleeRadius(){return RADIUS;} //package private
+    public static int getMeleeRadius(){return RADIUS;} //package private
 
     @Override
     public void fadeOut() {

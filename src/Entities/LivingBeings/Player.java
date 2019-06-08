@@ -1,5 +1,8 @@
-package Entities;
+package Entities.LivingBeings;
 
+import Entities.Projectiles.MeleeAttack;
+import Entities.Projectiles.Snowball;
+import Entities.LivingBeings.monsters.Ranged.Ranged;
 import Main.MainClass;
 import Renderer.LivingBeingRenderer;
 import Renderer.PlayerMarkerRenderer;

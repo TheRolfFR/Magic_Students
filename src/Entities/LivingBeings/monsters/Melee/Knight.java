@@ -1,5 +1,7 @@
-package Entities;
+package Entities.LivingBeings.monsters.Melee;
 
+import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.monsters.Melee.Melee;
 import Renderer.LivingBeingRenderer;
 import Renderer.SpriteView;
 import org.newdawn.slick.geom.Vector2f;
@@ -37,7 +39,7 @@ public class Knight extends Melee {
             }
         }
         else {
-            this.updateSpeed(target.position.copy().sub(this.position).normalise().scale(this.getAccelerationRate()));
+            this.updateSpeed(target.getPosition().copy().sub(this.position).normalise().scale(this.getAccelerationRate()));
 
             this.move();
             if (isTargetInRange(target)){

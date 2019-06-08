@@ -1,4 +1,4 @@
-package Entities;
+package Entities.Projectiles;
 
 import org.newdawn.slick.geom.Vector2f;
 

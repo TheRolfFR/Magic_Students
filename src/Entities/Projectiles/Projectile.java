@@ -1,5 +1,9 @@
-package Entities;
+package Entities.Projectiles;
 
+import Entities.Entity;
+import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.monsters.Monster;
+import Entities.LivingBeings.monsters.Ranged.Ranged;
 import Main.MainClass;
 import Renderer.ProjectileRenderer;
 import org.newdawn.slick.Graphics;
@@ -36,7 +40,7 @@ public abstract class Projectile extends Entity {
         this.showDebugRect = true;
     }
 
-    Projectile(float x, float y, float maxSpeed, float accelerationRate, Vector2f direction, String imagePath, int radius) {
+    public Projectile(float x, float y, float maxSpeed, float accelerationRate, Vector2f direction, String imagePath, int radius) {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.direction = direction;
 

@@ -1,4 +1,7 @@
-package Entities;
+package Entities.LivingBeings.monsters.Ranged;
+
+import Entities.LivingBeings.monsters.Monster;
+import Entities.Projectiles.Projectile;
 
 import java.util.ArrayList;
 

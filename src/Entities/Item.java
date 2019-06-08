@@ -1,5 +1,8 @@
 package Entities;
 
+import Entities.LivingBeings.Player;
+import Entities.Projectiles.MeleeAttack;
+import Entities.Projectiles.Snowball;
 import Main.MainClass;
 
 import java.util.ArrayList;

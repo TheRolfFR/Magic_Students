@@ -1,6 +1,6 @@
 package HUD;
 
-import Entities.LivingBeing;
+import Entities.LivingBeings.LivingBeing;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 

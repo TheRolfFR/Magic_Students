@@ -121,7 +121,7 @@ public abstract class Entity {
      * Updates speed with an acceleration
      * @param acceleration the given acceleration
      */
-    void updateSpeed(Vector2f acceleration) {
+    protected void updateSpeed(Vector2f acceleration) {
         this.speed.add(acceleration);
 
         if (this.speed.length() > this.MAX_SPEED) {

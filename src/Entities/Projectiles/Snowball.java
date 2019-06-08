@@ -1,4 +1,4 @@
-package Entities;
+package Entities.Projectiles;
 
 import Main.MainClass;
 import org.newdawn.slick.Graphics;

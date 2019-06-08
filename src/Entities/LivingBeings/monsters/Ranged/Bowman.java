@@ -1,12 +1,14 @@
-package Entities;
+package Entities.LivingBeings.monsters.Ranged;
 
+import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.monsters.Ranged.Ranged;
+import Entities.Projectiles.Fireball;
+import Entities.Projectiles.Snowball;
 import Main.MainClass;
 import Renderer.LivingBeingRenderer;
 import Renderer.SpriteView;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
-
-import java.util.ArrayList;
 
 public class Bowman extends Ranged {
 
@@ -33,8 +35,8 @@ public class Bowman extends Ranged {
     @Override
     public void update(LivingBeing target) {
         this.delayCounter = Math.min(this.delayCounter+1, 121);
-        if(target.position.distance(this.position)<150) {
-            this.updateSpeed(target.position.copy().sub(this.position).normalise().negate().scale(this.getAccelerationRate()));
+        if(target.getPosition().distance(this.position)<150) {
+            this.updateSpeed(target.getPosition().copy().sub(this.position).normalise().negate().scale(this.getAccelerationRate()));
             this.move();
         }
         else if(this.speed.length()!=0){
@@ -52,7 +54,7 @@ public class Bowman extends Ranged {
     }
 
     public void attack(LivingBeing target){
-        Vector2f futureTargetPosition = target.getCenter().copy().add(target.speed.copy().scale(target.getCenter().distance(this.getCenter())/Snowball.MAX_SPEED));
+        Vector2f futureTargetPosition = target.getCenter().copy().add(target.getSpeed().copy().scale(target.getCenter().distance(this.getCenter())/ Snowball.MAX_SPEED));
 
         if(futureTargetPosition.getY() > MainClass.HEIGHT){
             futureTargetPosition.set(futureTargetPosition.getX(), MainClass.HEIGHT - target.getRadius()/4);

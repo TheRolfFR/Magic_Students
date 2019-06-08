@@ -1,5 +1,7 @@
-package Entities;
+package Entities.LivingBeings;
 
+import Entities.Entity;
+import Entities.LivingBeings.monsters.Monster;
 import Main.MainClass;
 import Renderer.LivingBeingRenderer;
 import org.newdawn.slick.Graphics;
@@ -36,7 +38,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.armorPoints = this.armorPoints + buffAmount;
     }
 
-    protected void buffSpeed(float buffAmount){
+    public void buffSpeed(float buffAmount){
         this.MAX_SPEED = this.MAX_SPEED + buffAmount;
         this.ACCELERATION_RATE = this.ACCELERATION_RATE + buffAmount * 135/450;
     }
@@ -78,7 +80,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param maxHealthPoints maximum health points of the living being
      * @param armorPoints armor points of the living being
      */
-    LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius) {
+    public LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius) {
         super(x, y, width, height, maxSpeed, accelerationRate, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
@@ -87,7 +89,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         livingBeings.add(this);
     }
 
-    LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius) {
+    public LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, float armorPoints, int radius) {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
@@ -100,7 +102,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * allows the living being to take damage
      * @param damage damage value inflicted
      */
-    void takeDamage(int damage) {
+    public void takeDamage(int damage) {
         currentHealthPoints = Math.max(0, currentHealthPoints - round(damage / armorPoints));
     }
 

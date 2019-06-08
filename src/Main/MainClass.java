@@ -1,6 +1,14 @@
 package Main;
 
 import Entities.*;
+import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Player;
+import Entities.LivingBeings.monsters.Melee.Knight;
+import Entities.LivingBeings.monsters.Melee.Rusher;
+import Entities.LivingBeings.monsters.Monster;
+import Entities.LivingBeings.monsters.Ranged.Bowman;
+import Entities.LivingBeings.monsters.Ranged.Ranged;
+import Entities.Projectiles.Projectile;
 import HUD.FadeToBlack;
 import HUD.HealthBar;
 import HUD.PauseMenu;
@@ -12,7 +20,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static Entities.Projectile.*;
+import static Entities.Projectiles.Projectile.*;
 import static java.lang.Math.round;
 
 public class MainClass extends BasicGame {

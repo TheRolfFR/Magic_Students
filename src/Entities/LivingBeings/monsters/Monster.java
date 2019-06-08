@@ -1,5 +1,6 @@
-package Entities;
+package Entities.LivingBeings.monsters;
 
+import Entities.LivingBeings.LivingBeing;
 import HUD.HealthBar;
 import org.newdawn.slick.Graphics;
 
@@ -7,12 +8,12 @@ public abstract class Monster extends LivingBeing {
     private int damage;
     private HealthBar healthBar;
 
-    Monster(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage, int radius){
+    public Monster(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, float armor, int damage, int radius){
         super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, radius);
         this.damage = damage;
     }
 
-    void doDamage(LivingBeing opponent){
+    protected void doDamage(LivingBeing opponent){
         if (this.collidesWith(opponent)){
             opponent.takeDamage(this.damage);
         }

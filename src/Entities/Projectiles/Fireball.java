@@ -1,4 +1,4 @@
-package Entities;
+package Entities.Projectiles;
 
 import Renderer.ProjectileRenderer;
 import org.newdawn.slick.Image;

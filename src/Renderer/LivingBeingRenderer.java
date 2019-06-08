@@ -1,7 +1,6 @@
 package Renderer;
 
 import Entities.Entity;
-import Entities.Rusher;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
