@@ -2,6 +2,8 @@ package Managers;
 
 import Entities.Portal;
 import Main.MainClass;
+import Renderer.PortalRenderer;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
@@ -21,10 +23,6 @@ public class PortalManager {
 
     protected static ArrayList<Portal> portals = new ArrayList<>();
 
-    public void setPortalSet(boolean portalSet) {
-        this.portalSet = portalSet;
-    }
-
     public void setPortalEngaged(boolean portalEngaged) {
         this.portalEngaged = portalEngaged;
     }
@@ -33,13 +31,20 @@ public class PortalManager {
         this.portalSet = false;
         this.portalEngaged = false;
 
-        int[][] possible_positions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 40},
+        int[][] possiblePositions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 40},
                 {40, HEIGHT / 2 - 20}, {WIDTH - 40 - 40, HEIGHT / 2 - 20}};
+
+        Color[] possibleColors = {
+                new Color(0x0094FF), // blue
+                new Color(0xf44336), // red
+                Color.yellow,
+                new Color(0x4CAF50) // green
+        };
         Portal portal;
 
         for (int p = 0; p < 4; p++) {
-            portal = new Portal(possible_positions[p][0], possible_positions[p][1],
-                    40, 40, 20);
+            portal = new Portal(possiblePositions[p][0], possiblePositions[p][1],
+                    (int) PortalRenderer.getTILESIZE().getX(), (int) PortalRenderer.getTILESIZE().getY(), 20, possibleColors[p]);
             portal.setShowDebugRect(true);
             portals.add(portal);
         }
@@ -86,8 +91,8 @@ public class PortalManager {
     }
 
     public void hidePortals() {
-        for (Portal portal_bis : portals) {
-            portal_bis.setVisible(false);
+        for (Portal portalBis : portals) {
+            portalBis.setVisible(false);
             portalSet = false;
         }
     }

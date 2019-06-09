@@ -14,13 +14,13 @@ public class Portal extends Entity {
 
     private PortalRenderer renderer;
 
-    public Portal(float x, float y, int width, int height, int radius) {
+    public Portal(float x, float y, int width, int height, int radius, Color colorPortal) {
         super(x, y, width, height, radius);
         this.width = width;
         this.height = height;
         this.visible = false;
 
-        this.renderer = new PortalRenderer(this,this.getCenter().getX(), this.getCenter().getY(), Color.blue);
+        this.renderer = new PortalRenderer(this,this.getCenter().getX(), this.getCenter().getY(), colorPortal);
     }
 
     public boolean isVisible() { return this.visible; }

@@ -28,6 +28,10 @@ public class PortalRenderer extends SpriteRenderer {
     private static final int OPENED_DURATION = 750;
     private static final String PORTAL_OPENED_PATH = PREPATH + "portalOpened_32x32.png";
 
+    public static Vector2f getTILESIZE() {
+        return TILESIZE.copy();
+    }
+
     public PortalRenderer(Entity entity, float x, float y, Color portalColor) {
         super(entity, TILESIZE);
 
@@ -43,6 +47,10 @@ public class PortalRenderer extends SpriteRenderer {
             this.portalColor = portalColor;
 
             this.timeCounter = 0;
+
+            System.out.println(x);
+            System.out.println(y);
+            System.out.println(topLeftAngle);
         } catch (SlickException e) {
             e.printStackTrace();
             System.exit(1);
