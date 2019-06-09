@@ -1,6 +1,7 @@
 package Renderer;
 
 import Entities.Entity;
+import Main.MainClass;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -22,7 +23,7 @@ public class PortalRenderer extends SpriteRenderer {
     private static final int OPENING_DURATION = 1200;
     private static final String PORTAL_OPENING_PATH = PREPATH + "portalOpening_32x32.png";
 
-    private static final int OPENED_DURATION = 500;
+    private static final int OPENED_DURATION = 100;
     private static final String PORTAL_OPENED_PATH = PREPATH + "portalOpened_32x32.png";
 
     public PortalRenderer(Entity entity, float x, float y, Color portalColor) {
@@ -60,6 +61,13 @@ public class PortalRenderer extends SpriteRenderer {
             animationToShow = this.openingAnimation;
         } else {
             animationToShow = this.openedAnimation;
+        }
+
+        // if game not paused
+        if (MainClass.getInGameTimeScale().getTimeScale() != 0f) {
+            animationToShow.start();
+        } else {
+            animationToShow.stop();
         }
 
         animationToShow.draw((int) topLeftAngle.getX(), topLeftAngle.getY(), portalColor);

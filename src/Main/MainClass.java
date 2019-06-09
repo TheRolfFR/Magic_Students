@@ -1,6 +1,5 @@
 package Main;
 
-import Entities.*;
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.monsters.Melee.Knight;
@@ -12,10 +11,10 @@ import Entities.Projectiles.Projectile;
 import HUD.FadeToBlack;
 import HUD.HealthBar;
 import HUD.PauseMenu;
+import Managers.PortalManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-import javax.sound.sampled.Port;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
@@ -37,20 +36,17 @@ public class MainClass extends BasicGame {
 
     private static GameContainer instanceGameContainer;
     private static MainClass instance = null;
-    private boolean portalSet = false;
-    private boolean portalEngaged = false;
 
-    public static final int portalBossCount = 40;
-    public static final int portalBossChance = 25;
-    public static final int portalItemCount = 25;
-    public static final int portalItemChance = 15;
-
+    private PortalManager portalManager;
 
     private HealthBar healthBar;
 
     private PauseMenu menu;
     private FadeToBlack fadeToBlack;
 
+    public FadeToBlack getFadeToBlack() {
+        return fadeToBlack;
+    }
 
     public static boolean isGamePaused() {
         return instance.menu.isActive();
@@ -139,20 +135,9 @@ public class MainClass extends BasicGame {
 
         SceneRenderer.generateBackground("img/ground.png", gc);
 
+        this.portalManager = new PortalManager();
+
         generateRoom();
-
-        int[][] possible_positions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 40},
-                {40, HEIGHT / 2 - 20}, {WIDTH - 40 - 40, HEIGHT / 2 - 20}};
-        Portal portal;
-
-        for (int p = 0; p < 4; p++) {
-            portal = new Portal(possible_positions[p][0], possible_positions[p][1],
-                    40, 40, 20);
-            portal.setShowDebugRect(true);
-            Portal.portals.add(portal);
-        }
-        this.portalSet = false;
-        this.portalEngaged = false;
     }
 
     @Override
@@ -185,40 +170,10 @@ public class MainClass extends BasicGame {
         }
 
         if (this.enemies.size() == 0) {
-            if (!portalSet) {
-                Random random = new Random();
-                int nbVisiblePortal = 0;
-
-                for (Portal portal : Portal.portals) {
-                    if (random.nextInt(3) == 0) {
-                        portal.setVisible(true);
-                        nbVisiblePortal++;
-                    }
-                }
-                if (nbVisiblePortal == 0) {
-                    Portal.portals.get(random.nextInt(4)).setVisible(true);
-                }
-                portalSet = true;
-            }
-
-            if (this.portalEngaged) {
-                for (Portal portal : Portal.portals) {
-                    if (portal.isVisible() && player.collidesWith(portal)) {
-                        getInGameTimeScale().setTimeScale(0f);
-                        fadeToBlack.setActive(true);
-                        this.portalEngaged = false;
-                    }
-                }
-            }
+            portalManager.setPortals();
         }
 
-        if(portalSet){
-            for(Portal portal : Portal.portals){
-                if(portal.isVisible()){
-                    portal.update(timeOfOneFrame);
-                }
-            }
-        }
+        portalManager.update(timeOfOneFrame);
 
         if (fadeToBlack.isActive()) {
             fadeToBlack.update(gc);
@@ -226,11 +181,7 @@ public class MainClass extends BasicGame {
             if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
                 generateRoom();
 
-
-                for (Portal portal_bis : Portal.portals) {
-                    portal_bis.setVisible(false);
-                    portalSet = false;
-                }
+                portalManager.hidePortals();
             }
             else if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration()) {
                 getInGameTimeScale().setTimeScale(1f);
@@ -244,7 +195,7 @@ public class MainClass extends BasicGame {
             triggerGamePaused();
         }
         if (key == Input.KEY_F) {
-            this.portalEngaged = true;
+            portalManager.setPortalEngaged(true);
         }
     }
 
@@ -253,7 +204,7 @@ public class MainClass extends BasicGame {
         this.player.keyReleased(key, c);
 
         if (key == Input.KEY_F) {
-            this.portalEngaged = false;
+            portalManager.setPortalEngaged(false);
         }
     }
 
@@ -275,11 +226,9 @@ public class MainClass extends BasicGame {
         for (Projectile p : Ranged.allyProjectiles) {
             p.render(g);
         }
-        for (Portal portal: Portal.portals) {
-            if (portal.isVisible()) {
-                portal.render(g);
-            }
-        }
+
+        portalManager.render(g);
+
         this.menu.render(g);
         this.fadeToBlack.render(g);
     }

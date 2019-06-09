@@ -4,8 +4,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public class SpriteView {
-    private Animation animation;
-    private Vector2f animationCenter;
+    protected Animation animation;
+    protected Vector2f animationCenter;
 
     public SpriteView(String path, Vector2f tileSize, int duration) {
         init(path, tileSize ,duration, null);
@@ -40,6 +40,14 @@ public class SpriteView {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public void stop() {
+        this.animation.stop();
+    }
+
+    public void start() {
+        this.animation.start();
     }
 
     public void render(Vector2f center, Color filter) {

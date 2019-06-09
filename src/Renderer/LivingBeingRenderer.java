@@ -1,6 +1,7 @@
 package Renderer;
 
 import Entities.Entity;
+import Main.MainClass;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -76,50 +77,61 @@ public class LivingBeingRenderer extends SpriteRenderer {
         }
     }
     public void render(Graphics g, Vector2f facedDirection) {
-        // update last faced direction
-        if(!facedDirection.equals(zero)) {
-            this.lastFacedDirection = facedDirection;
-        }
+        // update render if not paused
+        if(MainClass.getInGameTimeScale().getTimeScale() != 0f) {
+            // update last faced direction
+            if(!facedDirection.equals(zero)) {
+                this.lastFacedDirection = facedDirection;
+            }
 
-        // standing still
-        if(this.entity.getSpeed().length() == 0f) {
-            // facing down
-            if(this.lastFacedDirection.getY() > 0) {
-                setLastView(this.bottomIdleView);
-            }
-            // facing right
-            if(this.lastFacedDirection.getX() > 0) {
-                this.setLastView(rightIdleView);
-            }
-            // facing left
-            else if(this.lastFacedDirection.getX() < 0) {
-                this.setLastView(leftIdleView);
-            }
-            // facing up
-            else if(this.lastFacedDirection.getY() < 0) {
-                this.setLastView(topIdleView);
-            }
-        } else {
-            // moving
-            // facing right
-            if(this.lastFacedDirection.getX() > 0) {
-                this.setLastView(rightView);
-            }
-            // facing left
-            else if(this.lastFacedDirection.getX() < 0) {
-                this.setLastView(leftView);
-            }
-            // facing up
-            else if(this.lastFacedDirection.getY() < 0) {
-                this.setLastView(topView);
-            }
-            // facing down
-            else if(this.lastFacedDirection.getY() > 0) {
-                this.setLastView(bottomView);
+            // standing still
+            if(this.entity.getSpeed().length() == 0f) {
+                // facing down
+                if(this.lastFacedDirection.getY() > 0) {
+                    setLastView(this.bottomIdleView);
+                }
+                // facing right
+                if(this.lastFacedDirection.getX() > 0) {
+                    this.setLastView(rightIdleView);
+                }
+                // facing left
+                else if(this.lastFacedDirection.getX() < 0) {
+                    this.setLastView(leftIdleView);
+                }
+                // facing up
+                else if(this.lastFacedDirection.getY() < 0) {
+                    this.setLastView(topIdleView);
+                }
+            } else {
+                // moving
+                // facing right
+                if(this.lastFacedDirection.getX() > 0) {
+                    this.setLastView(rightView);
+                }
+                // facing left
+                else if(this.lastFacedDirection.getX() < 0) {
+                    this.setLastView(leftView);
+                }
+                // facing up
+                else if(this.lastFacedDirection.getY() < 0) {
+                    this.setLastView(topView);
+                }
+                // facing down
+                else if(this.lastFacedDirection.getY() > 0) {
+                    this.setLastView(bottomView);
+                }
             }
         }
 
         if(this.lastView != null) {
+
+            // if game is not paused
+            if(MainClass.getInGameTimeScale().getTimeScale() != 0f) {
+                this.lastView.start();
+            } else {
+                this.lastView.stop();
+            }
+
             this.lastView.render(entity.getCenter(), colorFilter);
         }
     }

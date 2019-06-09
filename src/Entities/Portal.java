@@ -14,8 +14,6 @@ public class Portal extends Entity {
 
     private PortalRenderer renderer;
 
-    public static ArrayList<Portal> portals = new ArrayList<>();
-
     public Portal(float x, float y, int width, int height, int radius) {
         super(x, y, width, height, radius);
         this.width = width;

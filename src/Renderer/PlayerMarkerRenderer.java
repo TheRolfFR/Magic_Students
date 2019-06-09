@@ -1,6 +1,7 @@
 package Renderer;
 
 import Entities.Entity;
+import Main.MainClass;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -12,6 +13,8 @@ public class PlayerMarkerRenderer extends SpriteRenderer {
     private Image playerMarkerImage;
     private Vector2f playerMarkerImageCenter;
     private Vector2f playerMarkerDebugRectCenter;
+
+    private Image lastImage;
 
     private float angle;
 
@@ -43,12 +46,18 @@ public class PlayerMarkerRenderer extends SpriteRenderer {
     }
 
     public void Render(Graphics g, double angleFaced) {
-        Vector2f location = entity.getCenter().sub(playerMarkerImageCenter);
-        Image copy = playerMarkerImage.getScaledCopy(1);
-        copy.rotate((float) angleFaced);
-        g.drawImage(copy, (int) location.getX(), (int) location.getY());
+        if (MainClass.getInGameTimeScale().getTimeScale() != 0f) {
+            this.lastImage = playerMarkerImage.getScaledCopy(1);
+            this.lastImage.rotate((float) angleFaced);
+        }
 
-        if(showDebugRect) {
+        Vector2f location = entity.getCenter().sub(playerMarkerImageCenter);
+
+        if(this.lastImage != null) {
+            g.drawImage(this.lastImage, (int) location.getX(), (int) location.getY());
+        }
+
+        if (showDebugRect) {
             Color tmp = g.getColor();
             g.setColor(Color.blue);
 
