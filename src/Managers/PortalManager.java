@@ -48,8 +48,6 @@ public class PortalManager {
             portal.setShowDebugRect(true);
             portals.add(portal);
         }
-
-        this.setPortals();
     }
 
     public void setPortals() {
