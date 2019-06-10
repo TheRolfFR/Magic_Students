@@ -156,7 +156,7 @@ public class EmitterList extends JPanel {
 	}
 	
 	/**
-	 * Renderer for the emitter list, shows check boxes
+	 * Renderers for the emitter list, shows check boxes
 	 *
 	 * @author kevin
 	 */

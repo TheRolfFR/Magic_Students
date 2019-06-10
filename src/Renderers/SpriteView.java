@@ -1,4 +1,4 @@
-package Renderer;
+package Renderers;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;

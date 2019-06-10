@@ -1,6 +1,6 @@
-package Entities.LivingBeings.monsters.Melee;
+package Entities.LivingBeings.Monsters.Melee;
 
-import Entities.LivingBeings.monsters.Monster;
+import Entities.LivingBeings.Monsters.Monster;
 
 public abstract class Melee extends Monster {
 

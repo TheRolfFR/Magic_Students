@@ -1,11 +1,8 @@
 package Entities;
 
-import Renderer.ItemRenderer;
-import Renderer.PortalRenderer;
+import Renderers.PortalRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-
-import java.util.ArrayList;
 
 public class Portal extends Entity {
     private int width;

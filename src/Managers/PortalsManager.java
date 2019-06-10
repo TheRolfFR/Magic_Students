@@ -3,7 +3,7 @@ package Managers;
 import Entities.Portal;
 import Main.MainClass;
 import Main.TimeScale;
-import Renderer.PortalRenderer;
+import Renderers.PortalRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 

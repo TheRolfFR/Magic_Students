@@ -2,12 +2,12 @@ package Entities.LivingBeings;
 
 import Entities.Projectiles.MeleeAttack;
 import Entities.Projectiles.Snowball;
-import Entities.LivingBeings.monsters.Ranged.Ranged;
+import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Main.MainClass;
 import Main.TimeScale;
-import Renderer.LivingBeingRenderer;
-import Renderer.PlayerMarkerRenderer;
-import Renderer.SpriteView;
+import Renderers.LivingBeingRenderer;
+import Renderers.PlayerMarkerRenderer;
+import Renderers.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 

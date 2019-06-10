@@ -1,9 +1,8 @@
-package Entities.LivingBeings.monsters.Melee;
+package Entities.LivingBeings.Monsters.Melee;
 
 import Entities.LivingBeings.LivingBeing;
-import Entities.LivingBeings.monsters.Melee.Melee;
-import Renderer.LivingBeingRenderer;
-import Renderer.SpriteView;
+import Renderers.LivingBeingRenderer;
+import Renderers.SpriteView;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Knight extends Melee {

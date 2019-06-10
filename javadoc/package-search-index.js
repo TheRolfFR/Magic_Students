@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"Entities"},{"l":"Entities.Attacks"},{"l":"HUD"},{"l":"Main"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"Entities"},{"l":"Entities.LivingBeings"},{"l":"Entities.LivingBeings.Monsters"},{"l":"Entities.LivingBeings.Monsters.Melee"},{"l":"Entities.LivingBeings.Monsters.Ranged"},{"l":"Entities.Projectiles"},{"l":"HUD"},{"l":"Main"},{"l":"Managers"},{"l":"Renderers"}]

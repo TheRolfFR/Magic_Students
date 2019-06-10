@@ -20,7 +20,7 @@ public class TileMapTest extends BasicGame {
 	/** the name of the map, read from map properties, specified by TilED */
 	private String mapName;
 	
-	/** how hard are the monsters, read from layer properties, specified by TilED */
+	/** how hard are the Monsters, read from layer properties, specified by TilED */
 	private String monsterDifficulty;
 	
 	/** we try to read a property from the map which doesn't exist so we expect the default value */
@@ -52,7 +52,7 @@ public class TileMapTest extends BasicGame {
 		map = new TiledMap("testdata/testmap.tmx","testdata");
 		// read some properties from map and layer
 		mapName = map.getMapProperty("name", "Unknown map name");
-		monsterDifficulty = map.getLayerProperty(0, "monsters", "easy peasy");
+		monsterDifficulty = map.getLayerProperty(0, "Monsters", "easy peasy");
 		nonExistingMapProperty = map.getMapProperty("zaphod", "Undefined map property");
 		nonExistingLayerProperty = map.getLayerProperty(1, "beeblebrox", "Undefined layer property");
 		

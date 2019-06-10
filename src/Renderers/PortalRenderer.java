@@ -1,7 +1,6 @@
-package Renderer;
+package Renderers;
 
 import Entities.Entity;
-import Main.MainClass;
 import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;

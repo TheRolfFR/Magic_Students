@@ -113,6 +113,8 @@ public abstract class Entity {
      * Simple constructor with position, maximum speed and acceleration rate
      * @param x initial x position of the entity
      * @param y initial y position of the entity
+     * @param height the height of the entity
+     * @param width the width of the entity
      * @param maxSpeed maximum speed of the entity
      * @param accelerationRate acceleration factor of the entity
      * @param radius the hitbox radius

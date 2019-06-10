@@ -2,14 +2,14 @@ package Main;
 
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
-import Entities.LivingBeings.monsters.Monster;
-import Entities.LivingBeings.monsters.Ranged.Ranged;
+import Entities.LivingBeings.Monsters.Monster;
+import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import HUD.FadeToBlack;
 import HUD.HealthBar;
 import HUD.PauseMenu;
 import Managers.EnemiesManager;
 import Managers.PortalsManager;
-import Renderer.FontRenderer;
+import Renderers.FontRenderer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 

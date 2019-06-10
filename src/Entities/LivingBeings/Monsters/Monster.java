@@ -1,4 +1,4 @@
-package Entities.LivingBeings.monsters;
+package Entities.LivingBeings.Monsters;
 
 import Entities.LivingBeings.LivingBeing;
 import HUD.HealthBar;

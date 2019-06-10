@@ -1,13 +1,12 @@
-package Entities.LivingBeings.monsters.Ranged;
+package Entities.LivingBeings.Monsters.Ranged;
 
 import Entities.LivingBeings.LivingBeing;
-import Entities.LivingBeings.monsters.Ranged.Ranged;
 import Entities.Projectiles.Arrow;
 import Entities.Projectiles.Fireball;
 import Entities.Projectiles.Snowball;
 import Main.MainClass;
-import Renderer.LivingBeingRenderer;
-import Renderer.SpriteView;
+import Renderers.LivingBeingRenderer;
+import Renderers.SpriteView;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 

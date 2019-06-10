@@ -1,7 +1,6 @@
-package Renderer;
+package Renderers;
 
 import Entities.Entity;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class SpriteRenderer {

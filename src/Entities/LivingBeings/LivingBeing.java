@@ -1,10 +1,10 @@
 package Entities.LivingBeings;
 
 import Entities.Entity;
-import Entities.LivingBeings.monsters.Monster;
+import Entities.LivingBeings.Monsters.Monster;
 import Main.MainClass;
 import Main.TimeScale;
-import Renderer.LivingBeingRenderer;
+import Renderers.LivingBeingRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -79,10 +79,13 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * Single constructor
      * @param x x initial position of the living being
      * @param y y initial position of the living being
+     * @param height the height of the living being
+     * @param width the width of the living being
      * @param maxSpeed max speed of the living being
      * @param accelerationRate acceleration factor of the living being
      * @param maxHealthPoints maximum health points of the living being
      * @param armorPoints armor points of the living being
+     * @param radius the collision radius
      */
     public LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, int armorPoints, int radius) {
         super(x, y, width, height, maxSpeed, accelerationRate, radius);

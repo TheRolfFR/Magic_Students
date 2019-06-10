@@ -2,11 +2,11 @@ package Managers;
 
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
-import Entities.LivingBeings.monsters.Melee.Knight;
-import Entities.LivingBeings.monsters.Melee.Rusher;
-import Entities.LivingBeings.monsters.Monster;
-import Entities.LivingBeings.monsters.Ranged.Bowman;
-import Entities.LivingBeings.monsters.Ranged.Ranged;
+import Entities.LivingBeings.Monsters.Melee.Knight;
+import Entities.LivingBeings.Monsters.Melee.Rusher;
+import Entities.LivingBeings.Monsters.Monster;
+import Entities.LivingBeings.Monsters.Ranged.Bowman;
+import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.Projectiles.Projectile;
 import HUD.HealthBar;
 import org.newdawn.slick.Graphics;

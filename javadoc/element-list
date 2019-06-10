@@ -1,4 +1,10 @@
 Entities
-Entities.Attacks
+Entities.LivingBeings
+Entities.LivingBeings.Monsters
+Entities.LivingBeings.Monsters.Melee
+Entities.LivingBeings.Monsters.Ranged
+Entities.Projectiles
 HUD
 Main
+Managers
+Renderers
