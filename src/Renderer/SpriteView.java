@@ -19,27 +19,27 @@ public class SpriteView {
         init(path, tileSize, duration,null);
     }
     private void init(String path, Vector2f tileSize, int duration, Color filter) {
+        Image original = null;
+
         try {
-            Image original;
             if(filter == null) {
                 original = new Image(path, false, Image.FILTER_NEAREST);
             } else {
                 original = new Image(path, false, Image.FILTER_NEAREST, filter);
             }
-
-            float scale = tileSize.getY()/ ((float) original.getHeight());
-
-            Image copy = original.getScaledCopy(scale);
-
-            SpriteSheet sp = new SpriteSheet(copy, (int) tileSize.getX(), (int) tileSize.getY());
-
-            animationCenter = new Vector2f(tileSize.getX()/2f, tileSize.getY()/2f);
-
-            this.animation = new Animation(sp, duration);
         } catch (SlickException e) {
-            e.printStackTrace();
             System.exit(1);
         }
+
+        float scale = tileSize.getY()/ ((float) original.getHeight());
+
+        Image copy = original.getScaledCopy(scale);
+
+        SpriteSheet sp = new SpriteSheet(copy, (int) tileSize.getX(), (int) tileSize.getY());
+
+        animationCenter = new Vector2f(tileSize.getX()/2f, tileSize.getY()/2f);
+
+        this.animation = new Animation(sp, duration);
     }
 
     public void stop() {

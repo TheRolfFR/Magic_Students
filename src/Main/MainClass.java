@@ -2,27 +2,22 @@ package Main;
 
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
-import Entities.LivingBeings.monsters.Melee.Knight;
-import Entities.LivingBeings.monsters.Melee.Rusher;
 import Entities.LivingBeings.monsters.Monster;
-import Entities.LivingBeings.monsters.Ranged.Bowman;
 import Entities.LivingBeings.monsters.Ranged.Ranged;
-import Entities.Projectiles.Projectile;
 import HUD.FadeToBlack;
 import HUD.HealthBar;
 import HUD.PauseMenu;
 import Managers.EnemiesManager;
 import Managers.PortalsManager;
+import Renderer.FontRenderer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static Entities.Projectiles.Projectile.*;
-import static java.lang.Math.round;
 
 public class MainClass extends BasicGame {
     public static final int MAX_FPS = 60;
@@ -100,7 +95,7 @@ public class MainClass extends BasicGame {
 
         this.portalsManager = new PortalsManager();
 
-        enemiesManager = new EnemiesManager(this.player, this.portalsManager);
+        this.enemiesManager = new EnemiesManager(this.player, this.portalsManager);
 
         generateRoom();
     }
@@ -166,6 +161,9 @@ public class MainClass extends BasicGame {
 
         this.menu.render(g);
         this.fadeToBlack.render(g);
+
+        g.setFont(FontRenderer.getPixelFont());
+        g.drawString("coucou", 0, 200);
     }
 
     public static void main(String[] args) {
