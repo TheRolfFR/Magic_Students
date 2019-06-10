@@ -7,8 +7,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="slick" level="project" />
     <orderEntry type="library" exported="" name="libs" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-2.9(1)" level="project" />
+    <orderEntry type="library" name="slick" level="project" />
+    <orderEntry type="library" name="slick1" level="project" />
+    <orderEntry type="library" name="org-json" level="project" />
   </component>
 </module>

@@ -4,8 +4,8 @@ public class TimeScale {
     private float timeScale;
     private float deltaTime;
 
-    public static final TimeScale inGameTimeScale = new TimeScale(1f);
-    public static final TimeScale guiTimeScale = new TimeScale(1f);
+    private static final TimeScale inGameTimeScale = new TimeScale(1f);
+    private static final TimeScale guiTimeScale = new TimeScale(1f);
 
     public static TimeScale getInGameTimeScale() {
         return inGameTimeScale;
