@@ -107,7 +107,7 @@ public class MainClass extends BasicGame {
 
     @Override
     public void update(GameContainer gc, int timeOfOneFrame) throws SlickException {
-        TimeScale.inGameTimeScale.setDeltaTime(timeOfOneFrame);
+        TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
 
         this.player.update();
         if(!this.player.isDashing()){

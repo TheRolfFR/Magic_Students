@@ -42,12 +42,12 @@ public class EnemiesManager {
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
             switch(random.nextInt(4)){
                 case 0 :
-                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
+                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
                     tmpb.setShowDebugRect(true);
                     this.enemies.add(tmpb);
                     break;
                 case 1 :
-                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
+                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
                     tmpr.setShowDebugRect(true);
                     this.enemies.add(tmpr);
                     break;
