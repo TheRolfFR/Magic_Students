@@ -4,16 +4,14 @@ import Entities.Projectiles.MeleeAttack;
 import Entities.Projectiles.Snowball;
 import Entities.LivingBeings.monsters.Ranged.Ranged;
 import Main.MainClass;
+import Main.TimeScale;
 import Renderer.LivingBeingRenderer;
 import Renderer.PlayerMarkerRenderer;
 import Renderer.SpriteView;
-import com.sun.tools.javac.Main;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 import static Main.MainClass.MAX_FPS;
-import static Main.MainClass.getInGameTimeScale;
-import static java.lang.Math.round;
 
 public class Player extends LivingBeing implements KeyListener, MouseListener{
 
@@ -318,7 +316,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     @Override
     public void mouseWheelMoved(int change) {
-        if (getInGameTimeScale().getTimeScale() != 0f && !isCasting() && !isDashing() && isCastingUp()) {
+        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f && !isCasting() && !isDashing() && isCastingUp()) {
             startRangedAttack();
         }
     }
@@ -329,7 +327,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     @Override
     public void mousePressed(int button, int x, int y) {
-        if (getInGameTimeScale().getTimeScale() != 0f && !isAttacking() && !isDashing()) {
+        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f && !isAttacking() && !isDashing()) {
                 startMeleeAttack(x,y);
         }
     }

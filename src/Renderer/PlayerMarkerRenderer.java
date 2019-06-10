@@ -2,6 +2,7 @@ package Renderer;
 
 import Entities.Entity;
 import Main.MainClass;
+import Main.TimeScale;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -46,7 +47,7 @@ public class PlayerMarkerRenderer extends SpriteRenderer {
     }
 
     public void Render(Graphics g, double angleFaced) {
-        if (MainClass.getInGameTimeScale().getTimeScale() != 0f) {
+        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
             this.lastImage = playerMarkerImage.getScaledCopy(1);
             this.lastImage.rotate((float) angleFaced);
         }

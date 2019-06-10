@@ -2,6 +2,7 @@ package Renderer;
 
 import Entities.Entity;
 import Main.MainClass;
+import Main.TimeScale;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -28,7 +29,7 @@ public class ProjectileRenderer extends SpriteRenderer {
 
     public void render(Graphics g, int x, int y) {
         // if game not paused
-        if (MainClass.getInGameTimeScale().getTimeScale() != 0f) {
+        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
             animation.draw(-10000, -10000);
             this.lastImage = animation.getCurrentFrame().copy();
             this.lastImage.rotate((float) this.angle);

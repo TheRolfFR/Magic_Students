@@ -3,6 +3,7 @@ package Entities.LivingBeings;
 import Entities.Entity;
 import Entities.LivingBeings.monsters.Monster;
 import Main.MainClass;
+import Main.TimeScale;
 import Renderer.LivingBeingRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -166,7 +167,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void move() {
-        this.setPosition(this.getPosition().add(this.getSpeed().scale(MainClass.getInGameTimeScale().getTimeScale())));
+        this.setPosition(this.getPosition().add(this.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
         this.tpInBounds();
     }
 

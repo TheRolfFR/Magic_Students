@@ -2,6 +2,7 @@ package Renderer;
 
 import Entities.Entity;
 import Main.MainClass;
+import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -74,7 +75,7 @@ public class PortalRenderer extends SpriteRenderer {
         }
 
         // if game not paused
-        if (MainClass.getInGameTimeScale().getTimeScale() != 0f) {
+        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
             animationToShow.start();
         } else {
             animationToShow.stop();

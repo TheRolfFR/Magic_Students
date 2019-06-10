@@ -2,6 +2,7 @@ package Managers;
 
 import Entities.Portal;
 import Main.MainClass;
+import Main.TimeScale;
 import Renderer.PortalRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -12,7 +13,7 @@ import java.util.Random;
 import static Main.MainClass.WIDTH;
 import static Main.MainClass.HEIGHT;
 
-public class PortalManager {
+public class PortalsManager {
     protected boolean portalSet = false;
     protected boolean portalEngaged = false;
 
@@ -27,7 +28,7 @@ public class PortalManager {
         this.portalEngaged = portalEngaged;
     }
 
-    public PortalManager() {
+    public PortalsManager() {
         this.portalSet = false;
         this.portalEngaged = false;
 
@@ -70,7 +71,7 @@ public class PortalManager {
         if (this.portalEngaged) {
             for (Portal portal : portals) {
                 if (portal.isVisible() && MainClass.getInstance().getPlayer().collidesWith(portal)) {
-                    MainClass.getInGameTimeScale().setTimeScale(0f);
+                    TimeScale.getInGameTimeScale().setTimeScale(0f);
                     MainClass.getInstance().getFadeToBlack().setActive(true);
                     this.portalEngaged = false;
                 }

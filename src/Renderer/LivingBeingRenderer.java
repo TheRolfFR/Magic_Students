@@ -2,6 +2,7 @@ package Renderer;
 
 import Entities.Entity;
 import Main.MainClass;
+import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -78,7 +79,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
     }
     public void render(Graphics g, Vector2f facedDirection) {
         // update render if not paused
-        if(MainClass.getInGameTimeScale().getTimeScale() != 0f) {
+        if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
             // update last faced direction
             if(!facedDirection.equals(zero)) {
                 this.lastFacedDirection = facedDirection;
@@ -126,7 +127,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
         if(this.lastView != null) {
 
             // if game is not paused
-            if(MainClass.getInGameTimeScale().getTimeScale() != 0f) {
+            if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
                 this.lastView.start();
             } else {
                 this.lastView.stop();

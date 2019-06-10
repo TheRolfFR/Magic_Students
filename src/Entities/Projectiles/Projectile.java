@@ -6,6 +6,7 @@ import Entities.LivingBeings.Player;
 import Entities.LivingBeings.monsters.Monster;
 import Entities.LivingBeings.monsters.Ranged.Ranged;
 import Main.MainClass;
+import Main.TimeScale;
 import Renderer.ProjectileRenderer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -145,7 +146,7 @@ public abstract class Projectile extends Entity {
     public abstract void fadeOut();
 
     public void move() {
-        this.setPosition(this.getPosition().add(this.getSpeed().scale(MainClass.getInGameTimeScale().getTimeScale())));
+        this.setPosition(this.getPosition().add(this.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
 
         if (this.getPosition().getX() < 0 || (this.getPosition().getX() + this.getTileSize().getX() >= MainClass.WIDTH) || this.getPosition().getY() < 0 || (this.getPosition().getY() + this.getTileSize().getY() >= MainClass.HEIGHT)) {
            this.isDead=true;

@@ -11,7 +11,8 @@ import Entities.Projectiles.Projectile;
 import HUD.FadeToBlack;
 import HUD.HealthBar;
 import HUD.PauseMenu;
-import Managers.PortalManager;
+import Managers.EnemiesManager;
+import Managers.PortalsManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -24,20 +25,17 @@ import static Entities.Projectiles.Projectile.*;
 import static java.lang.Math.round;
 
 public class MainClass extends BasicGame {
-    private Player player;
-    private ArrayList<Monster> enemies = new ArrayList<>();
-
     public static final int MAX_FPS = 60;
     public static final int WIDTH = 640;
     public static final int HEIGHT = 480;
 
-    private static TimeScale inGameTimeScale = new TimeScale(1f);
-    private static TimeScale guiTimeScale = new TimeScale(1f);
-
     private static GameContainer instanceGameContainer;
     private static MainClass instance = null;
 
-    private PortalManager portalManager;
+    private PortalsManager portalsManager;
+    private EnemiesManager enemiesManager;
+
+    private Player player;
 
     private HealthBar healthBar;
 
@@ -52,52 +50,21 @@ public class MainClass extends BasicGame {
         return instance.menu.isActive();
     }
 
-    private void generateEnemies(Vector2f tileSize) {
-        Random random = new Random();
-        int randomX;
-        int randomY;
-        for(int i = 0; i< 6; i++){
-            randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
-            randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-            switch(random.nextInt(4)){
-                case 0 :
-                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
-                    tmpb.setShowDebugRect(true);
-                    this.enemies.add(tmpb);
-                    break;
-                case 1 :
-                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
-                    tmpr.setShowDebugRect(true);
-                    this.enemies.add(tmpr);
-                    break;
-                case 2 :
-                    Knight tmpk = new Knight(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
-                    tmpk.setShowDebugRect(true);
-                    this.enemies.add(tmpk);
-                default: break;
-            }
-        }
-    }
-
-    private void generateRoom() throws SlickException {
+    private void generateRoom() {
         System.out.println("new room");
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
-        generateEnemies(new Vector2f(48,48));
+        enemiesManager.generateEnemies(new Vector2f(48,48));
     }
 
     public static void setGamePaused(boolean gamePaused) {
-        getInGameTimeScale().setTimeScale((gamePaused) ? 0f : 1f);
+        TimeScale.getInGameTimeScale().setTimeScale((gamePaused) ? 0f : 1f);
         instance.menu.setActive(gamePaused);
     }
 
     private static void triggerGamePaused() {
-        getInGameTimeScale().setTimeScale((isGamePaused()) ? 1f : 0f);
+        TimeScale.getInGameTimeScale().setTimeScale((isGamePaused()) ? 1f : 0f);
         instance.menu.setActive(!isGamePaused());
-    }
-
-    public static TimeScale getInGameTimeScale() {
-        return inGameTimeScale;
     }
 
     public static MainClass getInstance() {
@@ -109,11 +76,7 @@ public class MainClass extends BasicGame {
     }
 
     public ArrayList<Monster> getEnemies() {
-        return enemies;
-    }
-
-    public static TimeScale getGuiTimeScale() {
-        return guiTimeScale;
+        return enemiesManager.getEnemies();
     }
 
     public static Input getInput() {
@@ -126,7 +89,7 @@ public class MainClass extends BasicGame {
     public void init(GameContainer gc) throws SlickException {
         instanceGameContainer = gc;
         instance = this;
-        menu = new PauseMenu(gc);
+        this.menu = new PauseMenu(gc);
         this.fadeToBlack = new FadeToBlack(gc);
 
         this.player = new Player(gc,100,100);
@@ -135,14 +98,16 @@ public class MainClass extends BasicGame {
 
         SceneRenderer.generateBackground("img/ground.png", gc);
 
-        this.portalManager = new PortalManager();
+        this.portalsManager = new PortalsManager();
+
+        enemiesManager = new EnemiesManager(this.player, this.portalsManager);
 
         generateRoom();
     }
 
     @Override
     public void update(GameContainer gc, int timeOfOneFrame) throws SlickException {
-        inGameTimeScale.setDeltaTime(timeOfOneFrame);
+        TimeScale.inGameTimeScale.setDeltaTime(timeOfOneFrame);
 
         this.player.update();
         if(!this.player.isDashing()){
@@ -151,29 +116,8 @@ public class MainClass extends BasicGame {
         updateEnemyProjectile(player);
         updateAllyProjectiles();
 
-        for(Monster enemy : this.enemies){
-            enemy.update(this.player);
-            if(!this.player.isDashing()){
-                enemy.checkCollision();
-            }
-            if (this.player.isDead()){
-                //setGamePaused(true);
-            }
-        }
-
-        for (int j=0; j<enemies.size(); j++) {
-            if (enemies.get(j).isDead()) {
-                System.out.println("You killed an enemy");
-                LivingBeing.livingBeings.remove(this.enemies.get(j));
-                this.enemies.remove(this.enemies.get(j));
-            }
-        }
-
-        if (this.enemies.size() == 0) {
-            portalManager.setPortals();
-        }
-
-        portalManager.update(timeOfOneFrame);
+        enemiesManager.update();
+        portalsManager.update(timeOfOneFrame);
 
         if (fadeToBlack.isActive()) {
             fadeToBlack.update(gc);
@@ -181,10 +125,10 @@ public class MainClass extends BasicGame {
             if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
                 generateRoom();
 
-                portalManager.hidePortals();
+                portalsManager.hidePortals();
             }
             else if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration()) {
-                getInGameTimeScale().setTimeScale(1f);
+                TimeScale.getInGameTimeScale().setTimeScale(1f);
             }
         }
     }
@@ -195,7 +139,7 @@ public class MainClass extends BasicGame {
             triggerGamePaused();
         }
         if (key == Input.KEY_F) {
-            portalManager.setPortalEngaged(true);
+            portalsManager.setPortalEngaged(true);
         }
     }
 
@@ -204,7 +148,7 @@ public class MainClass extends BasicGame {
         this.player.keyReleased(key, c);
 
         if (key == Input.KEY_F) {
-            portalManager.setPortalEngaged(false);
+            portalsManager.setPortalEngaged(false);
         }
     }
 
@@ -215,19 +159,10 @@ public class MainClass extends BasicGame {
         LivingBeing.sortAndRenderLivingBeings(g);
 
         this.healthBar.render(g);
-        for (Monster enemy: enemies){
-            enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
-            enemy.render(g);
-            enemy.getHealthBar().render(g);
-        }
-        for (Projectile p : Ranged.enemyProjectiles) {
-            p.render(g);
-        }
-        for (Projectile p : Ranged.allyProjectiles) {
-            p.render(g);
-        }
 
-        portalManager.render(g);
+        this.enemiesManager.render(g);
+
+        portalsManager.render(g);
 
         this.menu.render(g);
         this.fadeToBlack.render(g);

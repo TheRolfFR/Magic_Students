@@ -7,7 +7,6 @@
       <element id="library" level="project" name="lib" />
       <element id="library" level="project" name="lwjgl-2.9" />
       <element id="library" level="project" name="slick" />
-      <element id="library" level="project" name="dyn4j-v3.3.0" />
     </root>
   </artifact>
 </component>
