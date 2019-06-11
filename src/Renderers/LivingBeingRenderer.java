@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class LivingBeingRenderer extends SpriteRenderer {
 
-    protected static final String ACCEPTED_ACTIVITIES[] = {"Move", "Idle", "Dashing"};
+    protected static final String ACCEPTED_ACTIVITIES[] = {"Move", "Idle", "Dash", "Attack"};
     protected static final String ACCEPTED_VISION_DIRECTIONS[] = {"left", "right", "top", "bottom"};
 
     protected static boolean acceptedActivitiesContains(String activity) {
@@ -50,9 +50,10 @@ public class LivingBeingRenderer extends SpriteRenderer {
     protected boolean hasCorrectName(String viewName) {
         String[] arr = viewName.split("(?=\\p{Lu})");
 
-        if(arr.length == 2 && acceptedActivitiesContains(arr[0]) && acceptedDirectionsContains(arr[1]))
+        if(arr.length == 2 && acceptedDirectionsContains(arr[0]) && acceptedActivitiesContains(arr[1]))
             return true;
 
+        System.err.println("not correct view name : " + viewName);
         return false;
     }
 
@@ -69,6 +70,11 @@ public class LivingBeingRenderer extends SpriteRenderer {
             // finally put it in the list
             this.views.put(viewName, view);
         }
+    }
+
+    public LivingBeingRenderer(Entity entity, Vector2f tileSize) {
+        super(entity, tileSize);
+        init(Color.white);
     }
 
     public LivingBeingRenderer(Entity entity, Vector2f tileSize, Color colorFilter) {
@@ -99,8 +105,8 @@ public class LivingBeingRenderer extends SpriteRenderer {
         if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
             // Identify the activity of the living being (moving or not)
             String activity = "";
-            if(this.entity.getSpeed().length() == 0f) activity = "Move";
-            else activity = "Idle";
+                if(this.entity.getSpeed().length() == 0f) activity = "Idle";
+            else activity = "Move";
 
             render(g, facedDirection, activity);
         }
@@ -116,7 +122,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
             // Identify the direction of his vision
             String visionDirection = "";
-            if (this.lastFacedDirection.getX() > 0) visionDirection = "bottom";
+            if (this.lastFacedDirection.getY() > 0) visionDirection = "bottom";
             else if (this.lastFacedDirection.getX() > 0) visionDirection = "right";
             else if (this.lastFacedDirection.getX() < 0) visionDirection = "left";
             else visionDirection = "top";
