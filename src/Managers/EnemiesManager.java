@@ -7,7 +7,7 @@ import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.Projectiles.Projectile;
-import HUD.HealthBars.HealthBar;
+import HUD.HealthBars.WorldHealthBar;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -97,9 +97,9 @@ public class EnemiesManager {
 
     public void render(Graphics g) {
         for (Monster enemy: enemies){
-            enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
+            enemy.setWorldHealthBar(new WorldHealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
             enemy.render(g);
-            enemy.getHealthBar().render(g);
+            enemy.getWorldHealthBar().render(g);
         }
         for (Projectile p : Ranged.enemyProjectiles) {
             p.render(g);

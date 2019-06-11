@@ -5,7 +5,6 @@ import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import HUD.FadeToBlack;
-import HUD.HealthBars.HealthBar;
 import HUD.PauseMenu;
 import Managers.EnemiesManager;
 import Managers.HUDManager;
@@ -32,7 +31,6 @@ public class MainClass extends BasicGame {
 
     private Player player;
 
-    private HealthBar healthBar;
     private HUDManager hudManager;
 
     private PauseMenu menu;
@@ -94,7 +92,6 @@ public class MainClass extends BasicGame {
 
         this.player = new Player(gc,100,100);
         this.player.setShowDebugRect(true);
-        this.healthBar = new HealthBar(this.player);
 
         SceneRenderer.generateBackground("img/ground.png", gc);
 
@@ -162,7 +159,6 @@ public class MainClass extends BasicGame {
         LivingBeing.sortAndRenderLivingBeings(g);
         this.enemiesManager.render(g);
 
-        this.healthBar.render(g);
         this.hudManager.render(g);
         this.menu.render(g);
         this.fadeToBlack.render(g);

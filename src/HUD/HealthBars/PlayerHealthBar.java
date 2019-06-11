@@ -6,7 +6,7 @@ import Renderers.FontRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-public class PlayerHealthBar extends NewHealthBar {
+public class PlayerHealthBar extends UIHealthBar {
 
     protected static final int PLAYER_HEALTHBAR_WIDTH = 100;
     protected static final int PLAYER_HEALTHBAR_CONTENT_HEIGHT = PLAYER_HEALTHBAR_WIDTH/10;

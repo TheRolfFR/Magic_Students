@@ -6,7 +6,7 @@ import org.newdawn.slick.Graphics;
 
 import static java.lang.Math.round;
 
-public class HealthBar {
+public class WorldHealthBar {
     private int x;
     private int y;
     private static final int width = 50;
@@ -14,13 +14,13 @@ public class HealthBar {
 
     private LivingBeing being;
 
-    public HealthBar(LivingBeing being) {
+    public WorldHealthBar(LivingBeing being) {
         this.being = being;
         this.x = 80;
         this.y = 10;
     }
 
-    public HealthBar(LivingBeing being, int x, int y){
+    public WorldHealthBar(LivingBeing being, int x, int y){
         this.being = being;
         this.x = x;
         this.y = y;

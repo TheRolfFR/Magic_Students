@@ -1,12 +1,12 @@
 package Entities.LivingBeings.Monsters;
 
 import Entities.LivingBeings.LivingBeing;
-import HUD.HealthBars.HealthBar;
+import HUD.HealthBars.WorldHealthBar;
 import org.newdawn.slick.Graphics;
 
 public abstract class Monster extends LivingBeing {
     private int damage;
-    private HealthBar healthBar;
+    private WorldHealthBar worldHealthBar;
 
     public Monster(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, radius);
@@ -23,12 +23,12 @@ public abstract class Monster extends LivingBeing {
         return damage;
     }
 
-    public void setHealthBar(HealthBar healthBar){
-        this.healthBar = healthBar;
+    public void setWorldHealthBar(WorldHealthBar worldHealthBar){
+        this.worldHealthBar = worldHealthBar;
     }
 
-    public HealthBar getHealthBar(){
-        return this.healthBar;
+    public WorldHealthBar getWorldHealthBar(){
+        return this.worldHealthBar;
     }
 
     /**
