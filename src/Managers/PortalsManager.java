@@ -15,8 +15,8 @@ import static Main.MainClass.WIDTH;
 import static Main.MainClass.HEIGHT;
 
 public class PortalsManager {
-    protected boolean portalSet;
-    protected boolean portalEngaged;
+    private boolean portalSet;
+    private boolean portalEngaged;
 
     private static String[] types = {"classic", "item", "boss"};
     public static Map<String, Color> roomColor = Map.of(
@@ -24,13 +24,13 @@ public class PortalsManager {
             "item", Color.yellow,                     // yellow
             "boss", new Color(0xf44336)         // red
     );
-    protected static Map<String, Float> roomProbability = Map.of(
-            "classic", 0.50f,
-            "item", 0.30f,
+    private static Map<String, Float> cumulativeRoomProbability = Map.of(
+            "classic", 0.20f,
+            "item", 0.25f,
             "boss", 0.30f
     );
 
-    protected static ArrayList<Portal> portals = new ArrayList<>();
+    private static ArrayList<Portal> portals = new ArrayList<>();
 
     public void setPortalEngaged(boolean portalEngaged) {
         this.portalEngaged = portalEngaged;
@@ -53,26 +53,27 @@ public class PortalsManager {
         }
     }
 
-    public void setPortals() {
+    void setPortals() {
         if (!portalSet) {
             Random random = new Random();
-            int nbClassicRoom = 0;
 
-            for (Portal portal : portals) {
-                String type = types[random.nextInt(types.length)];
-                if (random.nextFloat() < roomProbability.get(type)) {
-                    portal.setVisible(true);
-                    portal.setType(type);
+            Portal p = portals.get(random.nextInt(portals.size()));
+            p.setVisible(true);
+            p.setType("classic");
 
-                    if (type.equals("classic")) {
-                        nbClassicRoom++;
+            float chance;
+            for (Portal portal: portals) {
+                if (!portal.isVisible()) {
+                    chance = random.nextFloat();
+
+                    for (String type: cumulativeRoomProbability.keySet()) {
+                        if (chance < cumulativeRoomProbability.get(type)) {
+                            portal.setVisible(true);
+                            portal.setType(type);
+                            break;
+                        }
                     }
                 }
-            }
-            if (nbClassicRoom == 0) {
-                Portal portal = portals.get(random.nextInt(portals.size()));
-                portal.setVisible(true);
-                portal.setType("classic");
             }
             portalSet = true;
         }
