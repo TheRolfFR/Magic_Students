@@ -1,9 +1,11 @@
 package Main;
 
+import Entities.Item;
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
+import Entities.Portal;
 import HUD.FadeToBlack;
 import HUD.HealthBars.HealthBar;
 import HUD.PauseMenu;
@@ -38,6 +40,9 @@ public class MainClass extends BasicGame {
     private PauseMenu menu;
     private FadeToBlack fadeToBlack;
 
+    private Portal actualPortal;
+    private Item item;
+
     public FadeToBlack getFadeToBlack() {
         return fadeToBlack;
     }
@@ -50,7 +55,15 @@ public class MainClass extends BasicGame {
         System.out.println("new room");
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
-        enemiesManager.generateEnemies(new Vector2f(48,48));
+        if(actualPortal.getType().equals("classic")){
+            enemiesManager.generateEnemies(new Vector2f(48,48));
+        }
+        else if(actualPortal.getType().equals("item")){
+            item = new Item();
+        }
+        else{
+
+        }
     }
 
     public static void setGamePaused(boolean gamePaused) {
@@ -123,6 +136,10 @@ public class MainClass extends BasicGame {
 
         if (fadeToBlack.isActive()) {
             fadeToBlack.update(gc);
+
+            if(actualPortal==null){
+                actualPortal= portalsManager.getActualPortal(player);
+            }
 
             if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
                 generateRoom();

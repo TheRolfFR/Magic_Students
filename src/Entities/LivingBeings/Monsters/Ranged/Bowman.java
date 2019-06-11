@@ -34,7 +34,7 @@ public class Bowman extends Ranged {
 
     @Override
     public void update(LivingBeing target) {
-        this.delayCounter = Math.min(this.delayCounter + 1, 121);
+
         if(target.getPosition().distance(this.getPosition()) < 150) {
             this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().negate().scale(this.getAccelerationRate()));
             this.move();
@@ -45,6 +45,9 @@ public class Bowman extends Ranged {
         }
         else if(this.delayCounter > SHOT_DELAY && !MainClass.isGamePaused()) {
             attack(target);
+        }
+        else{
+            this.delayCounter = Math.min(this.delayCounter + 1, 121);
         }
     }
 

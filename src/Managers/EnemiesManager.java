@@ -1,6 +1,7 @@
 package Managers;
 
 import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Monsters.Melee.KnightBoss;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Melee.Knight;
 import Entities.LivingBeings.Monsters.Monster;
@@ -8,6 +9,7 @@ import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.Projectiles.Projectile;
 import HUD.HealthBars.HealthBar;
+import Main.MainClass;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -69,6 +71,25 @@ public class EnemiesManager {
         Knight tmpk = new Knight(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
         tmpk.setShowDebugRect(true);
         this.enemies.add(tmpk);
+    }
+
+    public void generateBoss(Vector2f tileSize) {
+        Random random = new Random();
+        switch(random.nextInt(2)){
+            case 0 :
+                addBowman(tileSize);
+                break;
+            case 1 :
+                addBossKnight(tileSize);
+                 break;
+            default: break;
+        }
+    }
+
+    public void addBossKnight(Vector2f tileSize){
+        KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2, (int) tileSize.getX(), (int) tileSize.getY(),200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*tileSize.getY()));
+        knightBoss.setShowDebugRect(true);
+        this.enemies.add(knightBoss);
     }
 
     public void update() {

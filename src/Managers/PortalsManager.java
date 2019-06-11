@@ -1,5 +1,6 @@
 package Managers;
 
+import Entities.LivingBeings.Player;
 import Entities.Portal;
 import Main.MainClass;
 import Main.TimeScale;
@@ -51,6 +52,15 @@ public class PortalsManager {
             portal.setShowDebugRect(true);
             portals.add(portal);
         }
+    }
+
+    public Portal getActualPortal(Player player){
+        for(Portal portal : portals){
+            if(portal.collidesWith(player)){
+                return portal;
+            }
+        }
+        return null;
     }
 
     void setPortals() {
