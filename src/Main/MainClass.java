@@ -55,14 +55,19 @@ public class MainClass extends BasicGame {
         System.out.println("new room");
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
-        if(actualPortal.getType().equals("classic")){
-            enemiesManager.generateEnemies(new Vector2f(48,48));
-        }
-        else if(actualPortal.getType().equals("item")){
-            item = new Item();
+        if(actualPortal!=null){
+            if(actualPortal.getType().equals("boss")){
+                enemiesManager.generateBoss(new Vector2f(96,96));
+            }
+            else if(actualPortal.getType().equals("item")){
+                item = new Item();
+            }
+            else if(actualPortal.getType().equals("classic")){
+                enemiesManager.generateEnemies(new Vector2f(48,48));
+            }
         }
         else{
-
+            enemiesManager.generateEnemies(new Vector2f(48,48));
         }
     }
 

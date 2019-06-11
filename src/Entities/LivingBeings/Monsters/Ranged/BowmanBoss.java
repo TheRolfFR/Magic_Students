@@ -2,6 +2,9 @@ package Entities.LivingBeings.Monsters.Ranged;
 
 import Entities.LivingBeings.LivingBeing;
 import Main.MainClass;
+import org.newdawn.slick.geom.Vector2f;
+
+import java.util.Random;
 
 public class BowmanBoss extends Bowman{
     private int recoverTime = 0;
@@ -13,8 +16,7 @@ public class BowmanBoss extends Bowman{
 
     @Override
     public void update(LivingBeing target) {
-        this.delayCounter = Math.min(this.delayCounter + 1, 121);
-        if(target.getPosition().distance(this.getPosition()) < 150) {
+        if(target.getPosition().distance(this.getPosition()) < 250) {
             this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().negate().scale(this.getAccelerationRate()));
             this.move();
         }
@@ -25,5 +27,27 @@ public class BowmanBoss extends Bowman{
         else if(this.delayCounter > SHOT_DELAY && !MainClass.isGamePaused()) {
             attack(target);
         }
+        else{
+            this.delayCounter = Math.min(this.delayCounter + 1, 121);
+        }
+        if(decideToSummon()){
+            summon();
+        }
+    }
+
+    private void updateCouldown() {
+        if (summonCouldown != 0){
+            summonCouldown = summonCouldown - 1;
+        }
+    }
+
+    private void summon() {
+        this.setSpeed(new Vector2f(0,0));
+        MainClass.getInstance().getEnemiesManager().addBowman(new Vector2f(48,48));
+    }
+
+    private boolean decideToSummon(){
+        Random random = new Random();
+        return (random.nextFloat()%1 < 1f/(60f*3f));
     }
 }
