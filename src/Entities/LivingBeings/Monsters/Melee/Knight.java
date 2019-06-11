@@ -47,25 +47,25 @@ public class Knight extends Melee {
         }
     }
 
-    private boolean isTargetInRange(LivingBeing target){
+    protected boolean isTargetInRange(LivingBeing target){
         return (this.getCenter().add(getLocationOfTarget(target).scale(this.getRadius())).sub(target.getCenter()).length() < target.getRadius() + this.getRadius());
     }
 
-    private void startAttacking(LivingBeing target){
+    protected void startAttacking(LivingBeing target){
         this.setSpeed(new Vector2f(0,0));
         this.attackDirection = getLocationOfTarget(target);
         this.framesLeftBeforeAttack = 30;
     }
 
-    private void gettingReady(){
+    protected void gettingReady(){
         this.framesLeftBeforeAttack = this.framesLeftBeforeAttack - 1;
     }
 
-    private boolean isAttackReady(){
+    protected boolean isAttackReady(){
         return (this.framesLeftBeforeAttack == 0);
     }
 
-    private boolean isAttacking(){
+    protected boolean isAttacking(){
         return (!this.attackDirection.equals(new Vector2f(0,0)));
     }
 
@@ -89,7 +89,7 @@ public class Knight extends Melee {
         }
     }
 
-    private void attack(LivingBeing target){
+    protected void attack(LivingBeing target){
         System.out.println("attack!");
         if (isTargetInRange(target)){
             System.out.println("damage");

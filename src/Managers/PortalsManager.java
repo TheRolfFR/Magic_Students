@@ -8,19 +8,27 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 import static Main.MainClass.WIDTH;
 import static Main.MainClass.HEIGHT;
 
 public class PortalsManager {
-    protected boolean portalSet = false;
-    protected boolean portalEngaged = false;
+    protected boolean portalSet;
+    protected boolean portalEngaged;
 
-    public static final int PORTAL_BOSS_COUNT = 40;
-    public static final int PORTAL_BOSS_CHANCE = 25;
-    public static final int PORTAL_ITEM_COUNT = 25;
-    public static final int PORTAL_ITEM_CHANCE = 15;
+    private static String[] types = {"classic", "item", "boss"};
+    public static Map<String, Color> roomColor = Map.of(
+            "classic", new Color(0x0094FF),     // blue
+            "item", Color.yellow,                     // yellow
+            "boss", new Color(0xf44336)         // red
+    );
+    protected static Map<String, Float> roomProbability = Map.of(
+            "classic", 0.50f,
+            "item", 0.30f,
+            "boss", 0.30f
+    );
 
     protected static ArrayList<Portal> portals = new ArrayList<>();
 
@@ -35,17 +43,11 @@ public class PortalsManager {
         int[][] possiblePositions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 40},
                 {40, HEIGHT / 2 - 20}, {WIDTH - 40 - 40, HEIGHT / 2 - 20}};
 
-        Color[] possibleColors = {
-                new Color(0x0094FF), // blue
-                new Color(0xf44336), // red
-                Color.yellow,
-                new Color(0x4CAF50) // green
-        };
         Portal portal;
 
         for (int p = 0; p < 4; p++) {
             portal = new Portal(possiblePositions[p][0], possiblePositions[p][1],
-                    (int) PortalRenderer.getTILESIZE().getX(), (int) PortalRenderer.getTILESIZE().getY(), 20, possibleColors[p]);
+                    (int) PortalRenderer.getTILESIZE().getX(), (int) PortalRenderer.getTILESIZE().getY(), 20);
             portal.setShowDebugRect(true);
             portals.add(portal);
         }
@@ -54,16 +56,23 @@ public class PortalsManager {
     public void setPortals() {
         if (!portalSet) {
             Random random = new Random();
-            int nbVisiblePortal = 0;
+            int nbClassicRoom = 0;
 
             for (Portal portal : portals) {
-                if (random.nextInt(3) == 0) {
+                String type = types[random.nextInt(types.length)];
+                if (random.nextFloat() < roomProbability.get(type)) {
                     portal.setVisible(true);
-                    nbVisiblePortal++;
+                    portal.setType(type);
+
+                    if (type.equals("classic")) {
+                        nbClassicRoom++;
+                    }
                 }
             }
-            if (nbVisiblePortal == 0) {
-                portals.get(random.nextInt(4)).setVisible(true);
+            if (nbClassicRoom == 0) {
+                Portal portal = portals.get(random.nextInt(portals.size()));
+                portal.setVisible(true);
+                portal.setType("classic");
             }
             portalSet = true;
         }

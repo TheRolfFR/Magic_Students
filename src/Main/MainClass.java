@@ -62,6 +62,10 @@ public class MainClass extends BasicGame {
         instance.menu.setActive(!isGamePaused());
     }
 
+    public EnemiesManager getEnemiesManager() {
+        return enemiesManager;
+    }
+
     public static MainClass getInstance() {
         return instance;
     }
@@ -151,14 +155,11 @@ public class MainClass extends BasicGame {
     public void render(GameContainer gc, Graphics g) {
         SceneRenderer.renderBackground(g, 0, 0);
 
+        portalsManager.render(g);
         LivingBeing.sortAndRenderLivingBeings(g);
-
-        this.healthBar.render(g);
-
         this.enemiesManager.render(g);
 
-        portalsManager.render(g);
-
+        this.healthBar.render(g);
         this.menu.render(g);
         this.fadeToBlack.render(g);
     }
