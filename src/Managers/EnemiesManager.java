@@ -35,29 +35,41 @@ public class EnemiesManager {
 
     public void generateEnemies(Vector2f tileSize) {
         Random random = new Random();
-        int randomX;
-        int randomY;
-        for(int i = 1; i< 2; i++){
-            randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
-            randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
-            switch(random.nextInt(4)){
+        for(int i = 0; i< 6; i++){
+            switch(random.nextInt(2)){
                 case 0 :
-                    Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
-                    tmpb.setShowDebugRect(true);
-                    this.enemies.add(tmpb);
+                    addBowman(tileSize);
                     break;
                 case 1 :
-                    Rusher tmpr = new Rusher(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
-                    tmpr.setShowDebugRect(true);
-                    this.enemies.add(tmpr);
+                    addKnight(tileSize);
                     break;
-                case 2 :
-                    Knight tmpk = new Knight(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,5,(int) Math.round(0.4*tileSize.getY()));
-                    tmpk.setShowDebugRect(true);
-                    this.enemies.add(tmpk);
                 default: break;
             }
         }
+    }
+
+    private void addBowman(Vector2f tileSize){
+
+        Random random = new Random();
+
+        int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
+        int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+
+        Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
+        tmpb.setShowDebugRect(true);
+        this.enemies.add(tmpb);
+    }
+
+    public void addKnight(Vector2f tileSize){
+
+        Random random = new Random();
+
+        int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
+        int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+
+        Knight tmpk = new Knight(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
+        tmpk.setShowDebugRect(true);
+        this.enemies.add(tmpk);
     }
 
     public void update() {

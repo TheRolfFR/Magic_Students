@@ -13,16 +13,18 @@ import java.io.IOException;
 public class FontRenderer {
     private static final String FONT_PREPATH = "font/";
     private static final String PIXEL_FONT_PATH = FONT_PREPATH + "ThaleahFat.ttf";
-    private static final FontRenderer pixelFont = new FontRenderer(PIXEL_FONT_PATH);
+    private static final FontRenderer pixelFont = new FontRenderer(PIXEL_FONT_PATH, 20.f);
 
     /**
      * Allows to have a pixel font
      * @return the pixel TrueTypeFont font of our game
      */
+    public static FontRenderer getPixelFontRenderer() { return pixelFont; }
     public static TrueTypeFont getPixelFont() {
         return pixelFont.getFont();
     }
 
+    private Font orginalAwtFont;
     private TrueTypeFont font;
 
     /**
@@ -38,13 +40,30 @@ public class FontRenderer {
      * @param path the file path to the ttf file
      */
     public FontRenderer(String path) {
+        init(path,12.f);
+    }
+
+    /**
+     * Complex constructor
+     * @param path the file path to the ttf file
+     * @param size the point size of the font
+     */
+    public FontRenderer(String path, float size) {
+        init(path, size);
+    }
+
+    private void init(String path, float size) {
         try {
-            Font UIFont1 = Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream(path));
-            UIFont1 = UIFont1.deriveFont(java.awt.Font.PLAIN, 30.f);
-            this.font = new TrueTypeFont(UIFont1, false);
+            this.orginalAwtFont = Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream(path));
+            this.setPtSize(size);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public void setPtSize(float ptSize) {
+        Font f = this.orginalAwtFont.deriveFont(Font.PLAIN, ptSize);
+        this.font = new TrueTypeFont(f, false);
     }
 }
