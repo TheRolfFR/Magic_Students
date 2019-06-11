@@ -86,7 +86,7 @@ public abstract class Projectile extends Entity {
         for (int i = 0; i < Ranged.enemyProjectiles.size(); i++) {
             Projectile p = Ranged.enemyProjectiles.get(i);
 
-            p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
+            p.updateSpeed(p.direction.copy().normalise().scale(p.getAccelerationRate()));
             p.move();
 
             if (p.collidesWith(target) && !target.isDashing()) {
@@ -104,7 +104,7 @@ public abstract class Projectile extends Entity {
         Projectile p;
         for (int j = 0; j < Ranged.allyProjectiles.size(); j++) {
             p = Ranged.allyProjectiles.get(j);
-            p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
+            p.updateSpeed(p.direction.copy().normalise().scale(p.getAccelerationRate()));
             p.move();
 
             p.update();
