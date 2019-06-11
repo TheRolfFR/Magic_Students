@@ -177,7 +177,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * Do a ranged attack
      */
     private void doRangedAttack() {
-        Ranged.allyProjectiles.add(new Snowball(this.rangedAttackDirection.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), this.rangedAttackDirection)); //décalage car bord haut gauche
+        Ranged.allyProjectiles.add(new Snowball(this.rangedAttackDirection.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), this.rangedAttackDirection.copy())); //décalage car bord haut gauche
         this.rangedAttackDirection.set(0,0);
     }
 

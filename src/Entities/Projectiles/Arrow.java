@@ -10,9 +10,9 @@ public class Arrow extends Projectile {
     private static final int SIZE = 1;
 
     public Arrow(Vector2f position, Vector2f direction) {
-        super(position.getX(), position.getY(), Snowball.MAX_SPEED*4, Snowball.ACCELERATION_RATE*4, SIZE, direction);
+        super(position.getX(), position.getY(), Snowball.MAX_SPEED*3, Snowball.ACCELERATION_RATE, SIZE, direction);
 
-        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
+        this.updateSpeed(direction.copy().normalise().scale(this.getAccelerationRate()));
 
         try {
             this.renderer = new ProjectileRenderer(this, new Image("img/arrow_32x32.png", false, Image.FILTER_NEAREST).getScaledCopy(2), new Vector2f(64, 64), 1000);
