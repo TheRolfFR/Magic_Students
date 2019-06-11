@@ -24,6 +24,7 @@ public class Item extends Entity {
         super(MainClass.WIDTH/2, MainClass.HEIGHT/2, 25,25,13);
         Random random = new Random();
         this.typeOfItem = random.nextInt(6);
+        this.setShowDebugRect(true);
         //loadImage();
     }
 
