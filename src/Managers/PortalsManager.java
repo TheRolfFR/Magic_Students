@@ -18,6 +18,7 @@ import static Main.MainClass.HEIGHT;
 public class PortalsManager {
     private boolean portalSet;
     private boolean portalEngaged;
+    private Portal actualPortal;
 
     private static String[] types = {"classic", "item", "boss"};
     public static Map<String, Color> roomColor = Map.of(
@@ -54,14 +55,7 @@ public class PortalsManager {
         }
     }
 
-    public Portal getActualPortal(Player player){
-        for(Portal portal : portals){
-            if(portal.collidesWith(player)){
-                return portal;
-            }
-        }
-        return null;
-    }
+    public Portal getActualPortal() { return this.actualPortal; }
 
     void setPortals() {
         if (!portalSet) {
@@ -91,6 +85,7 @@ public class PortalsManager {
         if (this.portalEngaged) {
             for (Portal portal : portals) {
                 if (portal.isVisible() && MainClass.getInstance().getPlayer().collidesWith(portal)) {
+                    this.actualPortal = portal;
                     TimeScale.getInGameTimeScale().setTimeScale(0f);
                     MainClass.getInstance().getFadeToBlack().setActive(true);
                     this.portalEngaged = false;

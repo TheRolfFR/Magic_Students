@@ -40,7 +40,6 @@ public class MainClass extends BasicGame {
     private PauseMenu menu;
     private FadeToBlack fadeToBlack;
 
-    private Portal actualPortal;
     private Item item;
 
     public FadeToBlack getFadeToBlack() {
@@ -55,14 +54,15 @@ public class MainClass extends BasicGame {
         System.out.println("new room");
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
-        if(actualPortal.getType().equals("classic")){
-            enemiesManager.generateEnemies(new Vector2f(48,48));
-        }
-        else if(actualPortal.getType().equals("item")){
-            item = new Item();
-        }
-        else{
 
+        if (portalsManager.getActualPortal() != null) {
+            if (portalsManager.getActualPortal().getType().equals("classic")) {
+                enemiesManager.generateEnemies(new Vector2f(48, 48));
+            } else if (portalsManager.getActualPortal().getType().equals("item")) {
+                item = new Item();
+            } else {
+
+            }
         }
     }
 
@@ -136,10 +136,6 @@ public class MainClass extends BasicGame {
 
         if (fadeToBlack.isActive()) {
             fadeToBlack.update(gc);
-
-            if(actualPortal==null){
-                actualPortal= portalsManager.getActualPortal(player);
-            }
 
             if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
                 generateRoom();
