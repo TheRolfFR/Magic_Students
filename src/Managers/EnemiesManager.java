@@ -60,7 +60,7 @@ public class EnemiesManager {
         this.enemies.add(tmpb);
     }
 
-    private void addKnight(Vector2f tileSize){
+    public void addKnight(Vector2f tileSize){
 
         Random random = new Random();
 
