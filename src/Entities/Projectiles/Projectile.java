@@ -148,7 +148,7 @@ public abstract class Projectile extends Entity {
     public void move() {
         this.setPosition(this.getPosition().add(this.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
 
-        if (this.getPosition().getX() < 0 || (this.getPosition().getX() + this.getTileSize().getX() >= MainClass.WIDTH) || this.getPosition().getY() < 0 || (this.getPosition().getY() + this.getTileSize().getY() >= MainClass.HEIGHT)) {
+        if (this.getPosition().getX() < 0 || (this.getPosition().getX()>= MainClass.WIDTH) || this.getPosition().getY() < 0 || (this.getPosition().getY()>= MainClass.HEIGHT)) {
            this.isDead=true;
         }
     }
