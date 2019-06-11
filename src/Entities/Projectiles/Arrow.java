@@ -22,6 +22,8 @@ public class Arrow extends Projectile {
         }
     }
 
+    public static int getArrowRadius(){return SIZE;}
+
     @Override
     public void fadeOut() {
 
