@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class LivingBeingRenderer extends SpriteRenderer {
 
-    protected static final String ACCEPTED_ACTIVITIES[] = {"Move", "Idle", "Dash", "Attack"};
+    protected static final String ACCEPTED_ACTIVITIES[] = {"Idle", "Move", "Dash", "Attack"};
     protected static final String ACCEPTED_VISION_DIRECTIONS[] = {"left", "right", "top", "bottom"};
 
     protected static boolean acceptedActivitiesContains(String activity) {
@@ -89,10 +89,34 @@ public class LivingBeingRenderer extends SpriteRenderer {
         this.views = new HashMap<>();
     }
 
+    /**
+     * Sets a non null last view
+     * @param v the view wanted
+     */
     private void setLastView(SpriteView v) {
         if(v != null) {
             this.lastView = v;
         }
+    }
+
+    /**
+     * Method made to get the wanted view or one of the other activities if not included
+     * @param visionDirection vision direction string
+     * @param activity activity string
+     * @return the view wanted or almost or null
+     */
+    private SpriteView getView(String visionDirection, String activity) {
+        SpriteView v;
+        v = this.views.get(visionDirection + activity);
+        int i = 0;
+        while(i < ACCEPTED_ACTIVITIES.length && v == null) {
+            if(!ACCEPTED_ACTIVITIES[i].equals(activity)) {
+                v = this.views.get(visionDirection + ACCEPTED_ACTIVITIES[i]);
+            }
+            i++;
+        }
+
+        return v;
     }
 
     /**
@@ -112,6 +136,12 @@ public class LivingBeingRenderer extends SpriteRenderer {
         }
     }
 
+    /**
+     * Method used by the developer when the developers knows what view he wants
+     * @param g the graphics to draw on
+     * @param facedDirection the direction faced by the living being
+     * @param activity the living being activity he wants to show
+     */
     public void render(Graphics g, Vector2f facedDirection, String activity) {
         // update render if not paused
         if(TimeScale.getInGameTimeScale().getTimeScale() != 0f && acceptedActivitiesContains(activity)) {
@@ -127,7 +157,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
             else if (this.lastFacedDirection.getX() < 0) visionDirection = "left";
             else visionDirection = "top";
 
-            this.setLastView(this.views.get(visionDirection + activity));
+            this.setLastView(this.getView(visionDirection, activity));
         }
 
         if(this.lastView != null) {
