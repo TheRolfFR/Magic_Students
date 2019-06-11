@@ -29,8 +29,8 @@ public class SceneRenderer {
                 Random randomReference = new Random();
                 int spriteX;
 
-                for (int a = 0; a < gc.getWidth()/scaledHeight; a++) {
-                    for (int b = 0; b < gc.getHeight()/scaledHeight; b++) {
+                for (int a = 0; a < gc.getWidth()/scaledHeight+1; a++) {
+                    for (int b = 0; b < gc.getHeight()/scaledHeight+1; b++) {
                         if (randomReference.nextInt(4) < 3) {
                             spriteX = 0;
                         } else {

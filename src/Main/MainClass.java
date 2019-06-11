@@ -5,7 +5,6 @@ import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
-import Entities.Portal;
 import HUD.FadeToBlack;
 import HUD.PauseMenu;
 import Managers.EnemiesManager;
@@ -22,8 +21,8 @@ import static Entities.Projectiles.Projectile.*;
 
 public class MainClass extends BasicGame {
     public static final int MAX_FPS = 60;
-    public static final int WIDTH = 640;
-    public static final int HEIGHT = 480;
+    public static final int WIDTH = 1280;
+    public static final int HEIGHT = 720;
 
     private static GameContainer instanceGameContainer;
     private static MainClass instance = null;
@@ -97,7 +96,7 @@ public class MainClass extends BasicGame {
     public MainClass(String name) { super(name); }
 
     @Override
-    public void init(GameContainer gc) throws SlickException {
+    public void init(GameContainer gc) {
         instanceGameContainer = gc;
         instance = this;
         this.menu = new PauseMenu(gc);
@@ -118,7 +117,7 @@ public class MainClass extends BasicGame {
     }
 
     @Override
-    public void update(GameContainer gc, int timeOfOneFrame) throws SlickException {
+    public void update(GameContainer gc, int timeOfOneFrame) {
         TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
 
         this.player.update();
