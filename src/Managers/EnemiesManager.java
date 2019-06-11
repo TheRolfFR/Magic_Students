@@ -9,7 +9,7 @@ import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.Projectiles.Projectile;
-import HUD.HealthBars.HealthBar;
+import HUD.HealthBars.WorldHealthBar;
 import Main.MainClass;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -57,7 +57,7 @@ public class EnemiesManager {
         int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
         int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
 
-        Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
+        Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 150/MAX_FPS, 60/MAX_FPS, 75,2,1,(int) Math.round(0.4*tileSize.getY()));
         tmpb.setShowDebugRect(true);
         this.enemies.add(tmpb);
     }
@@ -125,9 +125,9 @@ public class EnemiesManager {
 
     public void render(Graphics g) {
         for (Monster enemy: enemies){
-            enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
+            enemy.setWorldHealthBar(new WorldHealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
             enemy.render(g);
-            enemy.getHealthBar().render(g);
+            enemy.getWorldHealthBar().render(g);
         }
         for (Projectile p : Ranged.enemyProjectiles) {
             p.render(g);

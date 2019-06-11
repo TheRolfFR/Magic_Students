@@ -1,6 +1,5 @@
 package Managers;
 
-import Entities.LivingBeings.Player;
 import Entities.Portal;
 import Main.MainClass;
 import Main.TimeScale;
@@ -18,6 +17,8 @@ import static Main.MainClass.HEIGHT;
 public class PortalsManager {
     private boolean portalSet;
     private boolean portalEngaged;
+    private Portal actualPortal;
+
 
     private static String[] types = {"classic", "item", "boss"};
     public static Map<String, Color> roomColor = Map.of(
@@ -27,8 +28,8 @@ public class PortalsManager {
     );
     private static Map<String, Float> cumulativeRoomProbability = Map.of(
             "classic", 0.20f,
-            "item", 0.25f,
-            "boss", 0.30f
+            "item", 0.23f,
+            "boss", 0.26f
     );
 
     private static ArrayList<Portal> portals = new ArrayList<>();
@@ -54,14 +55,8 @@ public class PortalsManager {
         }
     }
 
-    public Portal getActualPortal(Player player){
-        for(Portal portal : portals){
-            if(portal.collidesWith(player)){
-                return portal;
-            }
-        }
-        return null;
-    }
+    public Portal getActualPortal() { return this.actualPortal; }
+
 
     void setPortals() {
         if (!portalSet) {
@@ -91,6 +86,7 @@ public class PortalsManager {
         if (this.portalEngaged) {
             for (Portal portal : portals) {
                 if (portal.isVisible() && MainClass.getInstance().getPlayer().collidesWith(portal)) {
+                    this.actualPortal = portal;
                     TimeScale.getInGameTimeScale().setTimeScale(0f);
                     MainClass.getInstance().getFadeToBlack().setActive(true);
                     this.portalEngaged = false;
