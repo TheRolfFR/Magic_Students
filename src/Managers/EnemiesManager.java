@@ -37,7 +37,7 @@ public class EnemiesManager {
         Random random = new Random();
         int randomX;
         int randomY;
-        for(int i = 0; i< 6; i++){
+        for(int i = 1; i< 2; i++){
             randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
             randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
             switch(random.nextInt(4)){

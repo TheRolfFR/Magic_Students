@@ -11,8 +11,6 @@ public class PortalRenderer extends SpriteRenderer {
 
     Vector2f topLeftAngle;
 
-    Color portalColor;
-
     private int timeCounter;
 
     private static final float PORTAL_SCALE = 2f;
@@ -32,7 +30,7 @@ public class PortalRenderer extends SpriteRenderer {
         return TILESIZE.copy();
     }
 
-    public PortalRenderer(Entity entity, float x, float y, Color portalColor) {
+    public PortalRenderer(Entity entity, float x, float y) {
         super(entity, TILESIZE);
 
         try {
@@ -43,8 +41,6 @@ public class PortalRenderer extends SpriteRenderer {
             this.openedAnimation = new Animation(openedSpriteSheet, OPENED_DURATION/openedSpriteSheet.getVerticalCount()/openedSpriteSheet.getHorizontalCount());
 
             this.topLeftAngle = new Vector2f(x, y).sub(TILESIZE_OFFSET);
-
-            this.portalColor = portalColor;
 
             this.timeCounter = 0;
 
@@ -64,7 +60,7 @@ public class PortalRenderer extends SpriteRenderer {
         }
     }
 
-    public void Render() {
+    public void Render(Color color) {
         Animation animationToShow;
 
         if(this.timeCounter < OPENING_DURATION) {
@@ -80,6 +76,6 @@ public class PortalRenderer extends SpriteRenderer {
             animationToShow.stop();
         }
 
-        animationToShow.draw(topLeftAngle.getX(), topLeftAngle.getY(), portalColor);
+        animationToShow.draw(topLeftAngle.getX(), topLeftAngle.getY(), color);
     }
 }
