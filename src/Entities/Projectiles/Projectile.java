@@ -86,7 +86,7 @@ public abstract class Projectile extends Entity {
         for (int i = 0; i < Ranged.enemyProjectiles.size(); i++) {
             Projectile p = Ranged.enemyProjectiles.get(i);
 
-            p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
+            p.updateSpeed(p.direction.copy().normalise().scale(p.getAccelerationRate()));
             p.move();
 
             if (p.collidesWith(target) && !target.isDashing()) {
@@ -104,7 +104,7 @@ public abstract class Projectile extends Entity {
         Projectile p;
         for (int j = 0; j < Ranged.allyProjectiles.size(); j++) {
             p = Ranged.allyProjectiles.get(j);
-            p.updateSpeed(p.direction.normalise().scale(p.getAccelerationRate()));
+            p.updateSpeed(p.direction.copy().normalise().scale(p.getAccelerationRate()));
             p.move();
 
             p.update();
@@ -148,7 +148,7 @@ public abstract class Projectile extends Entity {
     public void move() {
         this.setPosition(this.getPosition().add(this.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
 
-        if (this.getPosition().getX() < 0 || (this.getPosition().getX() + this.getTileSize().getX() >= MainClass.WIDTH) || this.getPosition().getY() < 0 || (this.getPosition().getY() + this.getTileSize().getY() >= MainClass.HEIGHT)) {
+        if (this.getPosition().getX() < 0 || (this.getPosition().getX()>= MainClass.WIDTH) || this.getPosition().getY() < 0 || (this.getPosition().getY()>= MainClass.HEIGHT)) {
            this.isDead=true;
         }
     }

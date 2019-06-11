@@ -177,7 +177,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * Do a ranged attack
      */
     private void doRangedAttack() {
-        Ranged.allyProjectiles.add(new Snowball(this.rangedAttackDirection.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), this.rangedAttackDirection)); //décalage car bord haut gauche
+        Ranged.allyProjectiles.add(new Snowball(this.rangedAttackDirection.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), this.rangedAttackDirection.copy())); //décalage car bord haut gauche
         this.rangedAttackDirection.set(0,0);
     }
 
@@ -318,9 +318,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     @Override
     public void mouseWheelMoved(int change) {
-        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f && !isCasting() && !isDashing() && isCastingUp()) {
-            startRangedAttack();
-        }
     }
 
     @Override
@@ -329,8 +326,15 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     @Override
     public void mousePressed(int button, int x, int y) {
-        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f && !isAttacking() && !isDashing()) {
-                startMeleeAttack(x,y);
+        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f && !isCasting() && !isDashing() && isCastingUp()) {
+            switch (button) {
+                case 0:
+                    startMeleeAttack(x, y);
+                    break;
+                case 1:
+                    startRangedAttack();
+                    break;
+            }
         }
     }
 
