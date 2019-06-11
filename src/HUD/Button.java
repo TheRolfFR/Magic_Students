@@ -1,5 +1,6 @@
 package HUD;
 
+import Renderers.FontRenderer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
@@ -61,8 +62,9 @@ public class Button {
      */
     public Button(GameContainer gc, String text, MouseListener listener) {
         try {
-            this.width = gc.getGraphics().getFont().getWidth(text);
-            this.height = gc.getGraphics().getFont().getHeight(text);
+            FontRenderer.getPixelFontRenderer().setPtSize(30.f);
+            this.width = FontRenderer.getPixelFont().getWidth(text);
+            this.height = FontRenderer.getPixelFont().getHeight(text);
 
             this.listener = listener;
 
@@ -71,6 +73,7 @@ public class Button {
             this.image = new Image(this.width, this.height);
             Graphics imageG = this.image.getGraphics();
             imageG.clear();
+            imageG.setFont(FontRenderer.getPixelFont());
             imageG.setColor(Color.white);
             imageG.drawString(text, 0, 0);
             imageG.flush();
