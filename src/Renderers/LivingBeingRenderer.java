@@ -22,18 +22,20 @@ public class LivingBeingRenderer extends SpriteRenderer {
     private SpriteView rightIdleView;
     private SpriteView bottomIdleView;
 
+    private SpriteView topDashView;
+    private SpriteView leftDashView;
+    private SpriteView rightDashView;
+    private SpriteView bottomDashView;
+
     private static final Vector2f zero = new Vector2f(0f, 0f);
 
     public void setTopView(SpriteView topView) { this.topView = topView; }
-
     public void setLeftView(SpriteView leftView) {
         this.leftView = leftView;
     }
-
     public void setRightView(SpriteView rightView) {
         this.rightView = rightView;
     }
-
     public void setBottomView(SpriteView bottomView) {
         this.bottomView = bottomView;
         setLastView(this.bottomIdleView);
@@ -42,23 +44,24 @@ public class LivingBeingRenderer extends SpriteRenderer {
     public void setLeftIdleView(SpriteView leftIdleView) {
         this.leftIdleView = leftIdleView;
     }
-
     public void setTopIdleView(SpriteView topIdleView) {
         this.topIdleView = topIdleView;
     }
-
     public void setRightIdleView(SpriteView rightIdleView) {
         this.rightIdleView = rightIdleView;
     }
-
     public void setBottomIdleView(SpriteView bottomIdleView) {
         this.bottomIdleView = bottomIdleView;
     }
-
     public LivingBeingRenderer(Entity entity, Vector2f tileSize) {
         super(entity, tileSize);
         init(Color.white);
     }
+
+    public void setTopDashView(SpriteView topDashView) { this.topDashView = topDashView; }
+    public void setLeftDashView(SpriteView leftDashView) { this.leftDashView = leftDashView; }
+    public void setRightDashView(SpriteView rightDashView) { this.rightDashView = rightDashView; }
+    public void setBottomDashView(SpriteView bottomDashView) { this.bottomDashView = bottomDashView; }
 
     public LivingBeingRenderer(Entity entity, Vector2f tileSize, Color colorFilter) {
         super(entity, tileSize);

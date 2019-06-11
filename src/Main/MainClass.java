@@ -161,9 +161,6 @@ public class MainClass extends BasicGame {
 
         this.menu.render(g);
         this.fadeToBlack.render(g);
-
-        g.setFont(FontRenderer.getPixelFont());
-        g.drawString("coucou", 0, 200);
     }
 
     public static void main(String[] args) {
