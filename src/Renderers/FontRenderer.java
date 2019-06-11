@@ -5,6 +5,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Simple TrueTypeFont renderer
@@ -24,8 +25,10 @@ public class FontRenderer {
         return pixelFont.getFont();
     }
 
-    private Font orginalAwtFont;
+    private Font originalAwtFont;
     private TrueTypeFont font;
+
+    private HashMap<Float, TrueTypeFont> fontSizesList;
 
     /**
      * Font getter
@@ -54,7 +57,9 @@ public class FontRenderer {
 
     private void init(String path, float size) {
         try {
-            this.orginalAwtFont = Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream(path));
+            this.fontSizesList = new HashMap<>();
+
+            this.originalAwtFont = Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream(path));
             this.setPtSize(size);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
@@ -63,7 +68,25 @@ public class FontRenderer {
     }
 
     public void setPtSize(float ptSize) {
-        Font f = this.orginalAwtFont.deriveFont(Font.PLAIN, ptSize);
-        this.font = new TrueTypeFont(f, false);
+        if(!this.fontSizesList.containsKey(ptSize)) {
+            Font awtFont = this.originalAwtFont.deriveFont(Font.PLAIN, ptSize);
+            TrueTypeFont ttfFont = new TrueTypeFont(awtFont, false);
+
+            this.fontSizesList.put(ptSize, ttfFont);
+
+            this.font = ttfFont;
+        } else {
+            this.font = this.fontSizesList.get(ptSize);
+        }
+    }
+
+    public void setPxSize(int pxSize) {
+        this.setPtSize(50.f);
+
+        int textHeight = this.font.getHeight("ABCDEFGHIJKLMNOPQRSTUVWQYZ");
+
+        float scale = ((float) pxSize) / ((float) textHeight);
+
+        this.setPtSize(50.f*scale);
     }
 }

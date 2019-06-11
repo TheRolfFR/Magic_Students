@@ -3,12 +3,11 @@ package Managers;
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Melee.Knight;
-import Entities.LivingBeings.Monsters.Melee.Rusher;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.Projectiles.Projectile;
-import HUD.HealthBar;
+import HUD.HealthBars.HealthBar;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 

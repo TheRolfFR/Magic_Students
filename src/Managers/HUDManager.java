@@ -1,10 +1,9 @@
 package Managers;
 
-import HUD.HealthBar;
-import HUD.PlayerHealthBar;
+import Entities.LivingBeings.Player;
+import HUD.HealthBars.BossHealthBar;
+import HUD.HealthBars.PlayerHealthBar;
 import org.newdawn.slick.Graphics;
-
-import java.util.List;
 
 public class HUDManager {
 
@@ -19,11 +18,20 @@ public class HUDManager {
         return bossHealthBar;
     }
 
-    public HUDManager() {
-        this.playerHealthBar = new PlayerHealthBar(1);
+    public void setBossHealthBar(BossHealthBar bossHealthBar) {
+        this.bossHealthBar = bossHealthBar;
+    }
+
+    public HUDManager(Player player) {
+        this.playerHealthBar = new PlayerHealthBar(player);
+        this.bossHealthBar = null;
     }
 
     public void render(Graphics g) {
         this.playerHealthBar.render(g);
+
+        if(this.bossHealthBar != null) {
+            this.bossHealthBar.render(g);
+        }
     }
 }

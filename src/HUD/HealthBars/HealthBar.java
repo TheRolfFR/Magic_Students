@@ -1,4 +1,4 @@
-package HUD;
+package HUD.HealthBars;
 
 import Entities.LivingBeings.LivingBeing;
 import org.newdawn.slick.Color;

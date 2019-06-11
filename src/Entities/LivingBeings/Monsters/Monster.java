@@ -1,7 +1,7 @@
 package Entities.LivingBeings.Monsters;
 
 import Entities.LivingBeings.LivingBeing;
-import HUD.HealthBar;
+import HUD.HealthBars.HealthBar;
 import org.newdawn.slick.Graphics;
 
 public abstract class Monster extends LivingBeing {
