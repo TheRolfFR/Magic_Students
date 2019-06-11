@@ -56,7 +56,7 @@ public class EnemiesManager {
         int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
         int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
 
-        Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
+        Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 150/MAX_FPS, 60/MAX_FPS, 75,2,1,(int) Math.round(0.4*tileSize.getY()));
         tmpb.setShowDebugRect(true);
         this.enemies.add(tmpb);
     }

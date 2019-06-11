@@ -1,6 +1,5 @@
 package Managers;
 
-import Entities.LivingBeings.Player;
 import Entities.Portal;
 import Main.MainClass;
 import Main.TimeScale;
@@ -28,8 +27,8 @@ public class PortalsManager {
     );
     private static Map<String, Float> cumulativeRoomProbability = Map.of(
             "classic", 0.20f,
-            "item", 0.25f,
-            "boss", 0.30f
+            "item", 0.23f,
+            "boss", 0.26f
     );
 
     private static ArrayList<Portal> portals = new ArrayList<>();
