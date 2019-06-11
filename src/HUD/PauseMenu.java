@@ -65,7 +65,7 @@ public class PauseMenu implements MouseListener {
             imageG.fillRect(0, 0, gc.getWidth(), gc.getHeight());
 
             // set the font size to 30px pixel font
-            FontRenderer.getPixelFontRenderer().setPxSize(30);
+            FontRenderer.getPixelFontRenderer().setPxSize(20);
             imageG.setFont(FontRenderer.getPixelFont());
 
             // write in black the pause message
@@ -77,9 +77,9 @@ public class PauseMenu implements MouseListener {
 
             // add some buttons
             this.buttons = new LinkedList<Button>();
-            this.buttons.add(new Button(gc, "resume", (ButtonListener) (i, i1, i2, i3) -> MainClass.setGamePaused(false)));
-            this.buttons.add(new Button(gc, "settings", (ButtonListener) (i, i1, i2, i3) -> System.out.println("go to settings menu")));
-            this.buttons.add(new Button(gc, "exit", (ButtonListener) (i, i1, i2, i3) -> System.exit(0)));
+            this.buttons.add(new Button(gc, "Resume", (ButtonListener) (i, i1, i2, i3) -> MainClass.setGamePaused(false)));
+            this.buttons.add(new Button(gc, "Settings", (ButtonListener) (i, i1, i2, i3) -> System.out.println("go to settings menu")));
+            this.buttons.add(new Button(gc, "Exit", (ButtonListener) (i, i1, i2, i3) -> System.exit(0)));
 
             // calculate spacing
             this.totalButtonsHeight = (this.buttons.size() - 1) * SPACING;

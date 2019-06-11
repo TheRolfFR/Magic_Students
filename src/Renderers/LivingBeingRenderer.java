@@ -5,63 +5,71 @@ import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.HashMap;
+
 public class LivingBeingRenderer extends SpriteRenderer {
 
-    private Color colorFilter;
+    protected static final String ACCEPTED_ACTIVITIES[] = {"Move", "Idle", "Dashing"};
+    protected static final String ACCEPTED_VISION_DIRECTIONS[] = {"left", "right", "top", "bottom"};
 
-    private Vector2f lastFacedDirection;
-    private SpriteView lastView;
+    protected static boolean acceptedActivitiesContains(String activity) {
+        boolean found = false;
 
-    private SpriteView topView;
-    private SpriteView leftView;
-    private SpriteView rightView;
-    private SpriteView bottomView;
+        int i = 0;
+        while (i < ACCEPTED_ACTIVITIES.length && !found) {
+            found = ACCEPTED_ACTIVITIES[i].equals(activity);
 
-    private SpriteView leftIdleView;
-    private SpriteView topIdleView;
-    private SpriteView rightIdleView;
-    private SpriteView bottomIdleView;
+            i++;
+        }
 
-    private SpriteView topDashView;
-    private SpriteView leftDashView;
-    private SpriteView rightDashView;
-    private SpriteView bottomDashView;
-
-    private static final Vector2f zero = new Vector2f(0f, 0f);
-
-    public void setTopView(SpriteView topView) { this.topView = topView; }
-    public void setLeftView(SpriteView leftView) {
-        this.leftView = leftView;
-    }
-    public void setRightView(SpriteView rightView) {
-        this.rightView = rightView;
-    }
-    public void setBottomView(SpriteView bottomView) {
-        this.bottomView = bottomView;
-        setLastView(this.bottomIdleView);
+        return found;
     }
 
-    public void setLeftIdleView(SpriteView leftIdleView) {
-        this.leftIdleView = leftIdleView;
-    }
-    public void setTopIdleView(SpriteView topIdleView) {
-        this.topIdleView = topIdleView;
-    }
-    public void setRightIdleView(SpriteView rightIdleView) {
-        this.rightIdleView = rightIdleView;
-    }
-    public void setBottomIdleView(SpriteView bottomIdleView) {
-        this.bottomIdleView = bottomIdleView;
-    }
-    public LivingBeingRenderer(Entity entity, Vector2f tileSize) {
-        super(entity, tileSize);
-        init(Color.white);
+    protected static boolean acceptedDirectionsContains(String direction) {
+        boolean found = false;
+
+        int i = 0;
+        while (i < ACCEPTED_VISION_DIRECTIONS.length && !found) {
+            found = ACCEPTED_VISION_DIRECTIONS[i].equals(direction);
+
+            i++;
+        }
+
+        return found;
     }
 
-    public void setTopDashView(SpriteView topDashView) { this.topDashView = topDashView; }
-    public void setLeftDashView(SpriteView leftDashView) { this.leftDashView = leftDashView; }
-    public void setRightDashView(SpriteView rightDashView) { this.rightDashView = rightDashView; }
-    public void setBottomDashView(SpriteView bottomDashView) { this.bottomDashView = bottomDashView; }
+    protected Color colorFilter;
+
+    protected Vector2f lastFacedDirection;
+    protected SpriteView lastView;
+
+    protected HashMap<String, SpriteView> views;
+
+    protected static final Vector2f zero = new Vector2f(0f, 0f);
+
+    protected boolean hasCorrectName(String viewName) {
+        String[] arr = viewName.split("(?=\\p{Lu})");
+
+        if(arr.length == 2 && acceptedActivitiesContains(arr[0]) && acceptedDirectionsContains(arr[1]))
+            return true;
+
+        return false;
+    }
+
+    public void addView(String viewName, SpriteView view) {
+        // if this view as a correct name and doesn't exists yet
+        if (hasCorrectName(viewName) && !views.containsKey(viewName)) {
+            // if there is no default view set it
+            if (lastView == null) {
+                lastView = view;
+            } else if (viewName.equals("bottomIdle")) { // else if this is the bottom idle view set it
+                this.lastView = view;
+            }
+
+            // finally put it in the list
+            this.views.put(viewName, view);
+        }
+    }
 
     public LivingBeingRenderer(Entity entity, Vector2f tileSize, Color colorFilter) {
         super(entity, tileSize);
@@ -72,6 +80,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
         this.colorFilter = colorFilter;
         this.lastView = null;
         this.lastFacedDirection = zero.copy();
+        this.views = new HashMap<>();
     }
 
     private void setLastView(SpriteView v) {
@@ -79,51 +88,40 @@ public class LivingBeingRenderer extends SpriteRenderer {
             this.lastView = v;
         }
     }
+
+    /**
+     * Method used when the developer wants an automatic choice of the view
+     * @param g the graphics to draw on
+     * @param facedDirection the direction faced by the living being
+     */
     public void render(Graphics g, Vector2f facedDirection) {
         // update render if not paused
         if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
+            // Identify the activity of the living being (moving or not)
+            String activity = "";
+            if(this.entity.getSpeed().length() == 0f) activity = "Move";
+            else activity = "Idle";
+
+            render(g, facedDirection, activity);
+        }
+    }
+
+    public void render(Graphics g, Vector2f facedDirection, String activity) {
+        // update render if not paused
+        if(TimeScale.getInGameTimeScale().getTimeScale() != 0f && acceptedActivitiesContains(activity)) {
             // update last faced direction
-            if(!facedDirection.equals(zero)) {
+            if (!facedDirection.equals(zero)) {
                 this.lastFacedDirection = facedDirection;
             }
 
-            // standing still
-            if(this.entity.getSpeed().length() == 0f) {
-                // facing down
-                if(this.lastFacedDirection.getY() > 0) {
-                    setLastView(this.bottomIdleView);
-                }
-                // facing right
-                if(this.lastFacedDirection.getX() > 0) {
-                    this.setLastView(rightIdleView);
-                }
-                // facing left
-                else if(this.lastFacedDirection.getX() < 0) {
-                    this.setLastView(leftIdleView);
-                }
-                // facing up
-                else if(this.lastFacedDirection.getY() < 0) {
-                    this.setLastView(topIdleView);
-                }
-            } else {
-                // moving
-                // facing right
-                if(this.lastFacedDirection.getX() > 0) {
-                    this.setLastView(rightView);
-                }
-                // facing left
-                else if(this.lastFacedDirection.getX() < 0) {
-                    this.setLastView(leftView);
-                }
-                // facing up
-                else if(this.lastFacedDirection.getY() < 0) {
-                    this.setLastView(topView);
-                }
-                // facing down
-                else if(this.lastFacedDirection.getY() > 0) {
-                    this.setLastView(bottomView);
-                }
-            }
+            // Identify the direction of his vision
+            String visionDirection = "";
+            if (this.lastFacedDirection.getX() > 0) visionDirection = "bottom";
+            else if (this.lastFacedDirection.getX() > 0) visionDirection = "right";
+            else if (this.lastFacedDirection.getX() < 0) visionDirection = "left";
+            else visionDirection = "top";
+
+            this.setLastView(this.views.get(visionDirection + activity));
         }
 
         if(this.lastView != null) {
