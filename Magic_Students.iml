@@ -14,5 +14,6 @@
     <orderEntry type="library" name="org-json" level="project" />
     <orderEntry type="library" name="lwjgl-2.9" level="project" />
     <orderEntry type="library" name="lwjgl" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

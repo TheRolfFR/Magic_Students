@@ -100,7 +100,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         }
         else if(this.keySpace && isDashReady()){
             if(!isDashing()){
-                startDash(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY());
+                startDash();
             }
             else{
                 this.framesLeftAfterDash-=1;
@@ -181,10 +181,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         this.rangedAttackDirection.set(0,0);
     }
 
-    private void startDash(int mouseX, int mouseY){
-        framesLeftAfterDash = 23;
-        this.setSpeed(new Vector2f(mouseX,mouseY).sub(this.getCenter()).normalise().scale(MAX_SPEED*1.42f));
-        dashCD = 15;
+    private void startDash(){
+        if(this.getSpeed()!=null){
+            framesLeftAfterDash = 12;
+            this.setSpeed(this.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
+            dashCD = 15;
+        }
     }
 
     public boolean isDashing(){return this.framesLeftAfterDash!=0;}
