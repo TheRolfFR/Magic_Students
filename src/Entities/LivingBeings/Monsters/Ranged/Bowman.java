@@ -43,8 +43,7 @@ public class Bowman extends Ranged {
             this.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
             this.move();
         }
-
-        if(this.delayCounter > SHOT_DELAY && !MainClass.isGamePaused()) {
+        else if(this.delayCounter > SHOT_DELAY && !MainClass.isGamePaused()) {
             attack(target);
         }
     }
