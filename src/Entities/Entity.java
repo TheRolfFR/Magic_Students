@@ -1,7 +1,5 @@
 package Entities;
 
-import Main.MainClass;
-
 import Main.TimeScale;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
@@ -135,9 +133,9 @@ public abstract class Entity {
      * @param acceleration the given acceleration
      */
     protected void updateSpeed(Vector2f acceleration) {
-        this.speed.add(acceleration);
+        this.speed.add(acceleration.scale(TimeScale.getInGameTimeScale().getTimeScale()));
 
-        if (this.speed.length() > this.MAX_SPEED) {
+        if (this.speed.length() > this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
             this.speed.normalise().scale(this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale());
         }
 
