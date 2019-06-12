@@ -127,14 +127,14 @@ public class MainClass extends BasicGame {
 
     @Override
     public void update(GameContainer gc, int timeOfOneFrame) {
-        if(!MainClass.isGamePaused()){
+        if (!MainClass.isGamePaused()) {
             TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
 
             this.player.update();
-            if(!this.player.isDashing()){
+            if (!this.player.isDashing()) {
                 this.player.checkCollision();
             }
-            if(item!=null){
+            if( item!=null) {
                 item = item.update(this.player);
             }
             updateEnemyProjectile(player);
@@ -146,12 +146,12 @@ public class MainClass extends BasicGame {
             if (fadeToBlack.isActive()) {
                 fadeToBlack.update(gc);
 
-                if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
+                if (fadeToBlack.atHalfDuration()) {
                     generateRoom();
 
                     portalsManager.hidePortals();
                 }
-                else if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration()) {
+                else if (fadeToBlack.isDone()) {
                     TimeScale.getInGameTimeScale().setTimeScale(1f);
                 }
             }
