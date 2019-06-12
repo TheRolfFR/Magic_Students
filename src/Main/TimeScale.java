@@ -31,6 +31,8 @@ public class TimeScale {
         this.timeScale = Math.max(0f, Math.min(1f, timeScale));
     }
 
+    public static void resume() { inGameTimeScale.timeScale = 1f; }
+
     public TimeScale(float timeScale) {
         this.timeScale = timeScale;
     }

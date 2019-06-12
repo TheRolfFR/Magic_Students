@@ -143,17 +143,13 @@ public class MainClass extends BasicGame {
             enemiesManager.update();
             portalsManager.update(timeOfOneFrame);
 
-            if (fadeToBlack.isActive()) {
-                fadeToBlack.update(gc);
-
-                if (fadeToBlack.atHalfDuration()) {
-                    generateRoom();
-
-                    portalsManager.hidePortals();
-                }
-                else if (fadeToBlack.isDone()) {
-                    TimeScale.getInGameTimeScale().setTimeScale(1f);
-                }
+            fadeToBlack.update(gc);
+            if (fadeToBlack.atHalfDuration()) {
+                generateRoom();
+                portalsManager.hidePortals();
+            }
+            else if (fadeToBlack.isDone()) {
+                TimeScale.resume();
             }
         }
     }
