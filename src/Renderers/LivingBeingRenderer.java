@@ -9,8 +9,8 @@ import java.util.HashMap;
 
 public class LivingBeingRenderer extends SpriteRenderer {
 
-    protected static final String ACCEPTED_ACTIVITIES[] = {"Idle", "Move", "Dash", "Attack"};
-    protected static final String ACCEPTED_VISION_DIRECTIONS[] = {"left", "right", "top", "bottom"};
+    public static final String ACCEPTED_ACTIVITIES[] = {"Idle", "Move", "Dash", "Attack"};
+    public static final String ACCEPTED_VISION_DIRECTIONS[] = {"left", "right", "top", "bottom"};
 
     protected static boolean acceptedActivitiesContains(String activity) {
         boolean found = false;
