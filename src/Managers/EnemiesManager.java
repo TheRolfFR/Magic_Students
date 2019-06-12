@@ -2,6 +2,7 @@ package Managers;
 
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Monsters.Melee.KnightBoss;
+import Entities.LivingBeings.Monsters.Ranged.BowmanBoss;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Melee.Knight;
 import Entities.LivingBeings.Monsters.Monster;
@@ -49,7 +50,7 @@ public class EnemiesManager {
         }
     }
 
-    private void addBowman(Vector2f tileSize){
+    public void addBowman(Vector2f tileSize){
 
         Random random = new Random();
 
@@ -77,7 +78,7 @@ public class EnemiesManager {
         Random random = new Random();
         switch(random.nextInt(2)){
             case 0 :
-                addBowman(tileSize);
+                addBossBowman(tileSize);
                 break;
             case 1 :
                 addBossKnight(tileSize);
@@ -86,10 +87,16 @@ public class EnemiesManager {
         }
     }
 
-    public void addBossKnight(Vector2f tileSize){
+    private void addBossKnight(Vector2f tileSize){
         KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2, (int) tileSize.getX(), (int) tileSize.getY(),200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*tileSize.getY()));
         knightBoss.setShowDebugRect(true);
         this.enemies.add(knightBoss);
+    }
+
+    private void addBossBowman(Vector2f tileSize){
+        BowmanBoss bowmanBoss = new BowmanBoss(WIDTH/2, HEIGHT/2, (int) tileSize.getX(), (int) tileSize.getY(),200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*tileSize.getY()));
+        bowmanBoss.setShowDebugRect(true);
+        this.enemies.add(bowmanBoss);
     }
 
     public void update() {

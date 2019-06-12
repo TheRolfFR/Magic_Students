@@ -26,11 +26,9 @@ public abstract class Monster extends LivingBeing {
     public void setWorldHealthBar(WorldHealthBar worldHealthBar){
         this.worldHealthBar = worldHealthBar;
     }
-
     public WorldHealthBar getWorldHealthBar(){
         return this.worldHealthBar;
     }
-
     /**
      * method to update the monster during the game
      * @param opponent the opponent that the monster will react to

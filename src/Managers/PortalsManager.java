@@ -19,6 +19,7 @@ public class PortalsManager {
     private boolean portalEngaged;
     private Portal actualPortal;
 
+
     private static String[] types = {"classic", "item", "boss"};
     public static Map<String, Color> roomColor = Map.of(
             "classic", new Color(0x0094FF),     // blue
@@ -55,6 +56,7 @@ public class PortalsManager {
     }
 
     public Portal getActualPortal() { return this.actualPortal; }
+
 
     void setPortals() {
         if (!portalSet) {

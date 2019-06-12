@@ -52,7 +52,7 @@ public class PlayerHealthBar extends UIHealthBar {
 
         String pointsString = "" + this.getCurrentValue() + '/' + this.getMaxValue();
 
-        FontRenderer.getPixelFontRenderer().setPxSize((int) (this.healthBarHeight*1.25f));
+        FontRenderer.getPixelFontRenderer().setPxSize(this.healthBarHeight *2);
         g.setFont(FontRenderer.getPixelFont());
 
         int yPoints = y - FontRenderer.getPixelFont().getHeight(pointsString);

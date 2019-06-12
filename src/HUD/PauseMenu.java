@@ -115,7 +115,7 @@ public class PauseMenu implements MouseListener {
      */
     public void render(Graphics g) {
         if(this.isActive()) {
-            // render th background
+            // render the background
             g.drawImage(this.background, 0, 0);
 
             // render all the buttons

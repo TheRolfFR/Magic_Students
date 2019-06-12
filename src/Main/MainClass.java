@@ -22,8 +22,8 @@ import static Entities.Projectiles.Projectile.*;
 
 public class MainClass extends BasicGame {
     public static final int MAX_FPS = 60;
-    public static final int WIDTH = 640;
-    public static final int HEIGHT = 480;
+    public static final int WIDTH = 1280;
+    public static final int HEIGHT = 720;
 
     private static GameContainer instanceGameContainer;
     private static MainClass instance = null;
@@ -52,15 +52,19 @@ public class MainClass extends BasicGame {
         System.out.println("new room");
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
-
-        if (portalsManager.getActualPortal() != null) {
-            if (portalsManager.getActualPortal().getType().equals("classic")) {
-                enemiesManager.generateEnemies(new Vector2f(48, 48));
-            } else if (portalsManager.getActualPortal().getType().equals("item")) {
-                item = new Item();
-            } else {
-
+        if(portalsManager.getActualPortal()!=null){
+            if(portalsManager.getActualPortal().getType().equals("boss")){
+                enemiesManager.generateBoss(new Vector2f(96,96));
             }
+            else if(portalsManager.getActualPortal().getType().equals("item")){
+                item = new Item();
+            }
+            else if(portalsManager.getActualPortal().getType().equals("classic")){
+                enemiesManager.generateEnemies(new Vector2f(48,48));
+            }
+        }
+        else{
+            enemiesManager.generateEnemies(new Vector2f(48,48));
         }
     }
 
@@ -97,7 +101,7 @@ public class MainClass extends BasicGame {
     public MainClass(String name) { super(name); }
 
     @Override
-    public void init(GameContainer gc) throws SlickException {
+    public void init(GameContainer gc) {
         instanceGameContainer = gc;
         instance = this;
         this.menu = new PauseMenu(gc);
@@ -118,7 +122,7 @@ public class MainClass extends BasicGame {
     }
 
     @Override
-    public void update(GameContainer gc, int timeOfOneFrame) throws SlickException {
+    public void update(GameContainer gc, int timeOfOneFrame) {
         TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
 
         this.player.update();
