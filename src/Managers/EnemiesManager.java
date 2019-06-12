@@ -1,13 +1,16 @@
 package Managers;
 
 import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Monsters.Melee.KnightBoss;
+import Entities.LivingBeings.Monsters.Ranged.BowmanBoss;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Melee.Knight;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.Projectiles.Projectile;
-import HUD.HealthBars.HealthBar;
+import HUD.HealthBars.WorldHealthBar;
+import Main.MainClass;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -47,14 +50,14 @@ public class EnemiesManager {
         }
     }
 
-    private void addBowman(Vector2f tileSize){
+    public void addBowman(Vector2f tileSize){
 
         Random random = new Random();
 
         int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
         int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
 
-        Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
+        Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 150/MAX_FPS, 60/MAX_FPS, 75,2,1,(int) Math.round(0.4*tileSize.getY()));
         tmpb.setShowDebugRect(true);
         this.enemies.add(tmpb);
     }
@@ -69,6 +72,31 @@ public class EnemiesManager {
         Knight tmpk = new Knight(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
         tmpk.setShowDebugRect(true);
         this.enemies.add(tmpk);
+    }
+
+    public void generateBoss(Vector2f tileSize) {
+        Random random = new Random();
+        switch(random.nextInt(2)){
+            case 0 :
+                addBossBowman(tileSize);
+                break;
+            case 1 :
+                addBossKnight(tileSize);
+                 break;
+            default: break;
+        }
+    }
+
+    private void addBossKnight(Vector2f tileSize){
+        KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2, (int) tileSize.getX(), (int) tileSize.getY(),200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*tileSize.getY()));
+        knightBoss.setShowDebugRect(true);
+        this.enemies.add(knightBoss);
+    }
+
+    private void addBossBowman(Vector2f tileSize){
+        BowmanBoss bowmanBoss = new BowmanBoss(WIDTH/2, HEIGHT/2, (int) tileSize.getX(), (int) tileSize.getY(),200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*tileSize.getY()));
+        bowmanBoss.setShowDebugRect(true);
+        this.enemies.add(bowmanBoss);
     }
 
     public void update() {
@@ -97,9 +125,9 @@ public class EnemiesManager {
 
     public void render(Graphics g) {
         for (Monster enemy: enemies){
-            enemy.setHealthBar(new HealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
+            enemy.setWorldHealthBar(new WorldHealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
             enemy.render(g);
-            enemy.getHealthBar().render(g);
+            enemy.getWorldHealthBar().render(g);
         }
         for (Projectile p : Ranged.enemyProjectiles) {
             p.render(g);

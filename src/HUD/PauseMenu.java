@@ -1,6 +1,8 @@
 package HUD;
 
+import HUD.HealthBars.ButtonListener;
 import Main.MainClass;
+import Renderers.FontRenderer;
 import org.newdawn.slick.*;
 
 import java.util.LinkedList;
@@ -47,179 +49,51 @@ public class PauseMenu implements MouseListener {
             this.windowHeight = gc.getHeight();
             this.windowWidth = gc.getWidth();
 
+            // create a new image of the size of the game
             this.background = new Image(gc.getWidth(), gc.getHeight());
 
+            // make menu not active
             this.isActive = false;
 
+            // get graphics of the background
             Graphics imageG = this.background.getGraphics();
+            // clear the graphics (precaution)
             imageG.clear();
+
+            // set the color to a semi-transparent black and fill the graphics with
             imageG.setColor(new Color(0, 0, 0, 128));
             imageG.fillRect(0, 0, gc.getWidth(), gc.getHeight());
+
+            // set the font size to 30px pixel font
+            FontRenderer.getPixelFontRenderer().setPxSize(30);
+            imageG.setFont(FontRenderer.getPixelFont());
+
+            // write in black the pause message
+            imageG.setColor(Color.black);
+            imageG.drawString("|| Pause", 10, 10);
+
+            // update the image with the new graphics
             imageG.flush();
 
+            // add some buttons
             this.buttons = new LinkedList<Button>();
-            this.buttons.add(new Button(gc, "resume", new MouseListener() {
-                @Override
-                public void mouseWheelMoved(int i) {
+            this.buttons.add(new Button(gc, "resume", (ButtonListener) (i, i1, i2, i3) -> MainClass.setGamePaused(false)));
+            this.buttons.add(new Button(gc, "settings", (ButtonListener) (i, i1, i2, i3) -> System.out.println("go to settings menu")));
+            this.buttons.add(new Button(gc, "exit", (ButtonListener) (i, i1, i2, i3) -> System.exit(0)));
 
-                }
-
-                @Override
-                public void mouseClicked(int button, int x, int y, int clickCount) {
-                    MainClass.setGamePaused(false);
-                }
-
-                @Override
-                public void mousePressed(int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void mouseReleased(int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void mouseMoved(int i, int i1, int i2, int i3) {
-
-                }
-
-                @Override
-                public void mouseDragged(int i, int i1, int i2, int i3) {
-
-                }
-
-                @Override
-                public void setInput(Input input) {
-
-                }
-
-                @Override
-                public boolean isAcceptingInput() {
-                    return false;
-                }
-
-                @Override
-                public void inputEnded() {
-
-                }
-
-                @Override
-                public void inputStarted() {
-
-                }
-            }));
-            this.buttons.add(new Button(gc, "settings", new MouseListener() {
-                @Override
-                public void mouseWheelMoved(int i) {
-
-                }
-
-                @Override
-                public void mouseClicked(int i, int i1, int i2, int i3) {
-                    System.out.println("go to settings menu");
-                }
-
-                @Override
-                public void mousePressed(int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void mouseReleased(int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void mouseMoved(int i, int i1, int i2, int i3) {
-
-                }
-
-                @Override
-                public void mouseDragged(int i, int i1, int i2, int i3) {
-
-                }
-
-                @Override
-                public void setInput(Input input) {
-
-                }
-
-                @Override
-                public boolean isAcceptingInput() {
-                    return false;
-                }
-
-                @Override
-                public void inputEnded() {
-
-                }
-
-                @Override
-                public void inputStarted() {
-
-                }
-            }));
-            this.buttons.add(new Button(gc, "exit", new MouseListener() {
-                @Override
-                public void mouseWheelMoved(int i) {
-
-                }
-
-                @Override
-                public void mouseClicked(int i, int i1, int i2, int i3) {
-                    System.exit(0);
-                }
-
-                @Override
-                public void mousePressed(int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void mouseReleased(int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void mouseMoved(int i, int i1, int i2, int i3) {
-
-                }
-
-                @Override
-                public void mouseDragged(int i, int i1, int i2, int i3) {
-
-                }
-
-                @Override
-                public void setInput(Input input) {
-
-                }
-
-                @Override
-                public boolean isAcceptingInput() {
-                    return true;
-                }
-
-                @Override
-                public void inputEnded() {
-
-                }
-
-                @Override
-                public void inputStarted() {
-
-                }
-            }));
-
+            // calculate spacing
             this.totalButtonsHeight = (this.buttons.size() - 1) * SPACING;
             for(Button btn : this.buttons) {
                 this.totalButtonsHeight += btn.getHeight();
             }
+
             this.totalButtonsWidth = 0;
 
+            // initialize horizontal offset
             int offsetY = (this.windowHeight - this.totalButtonsHeight) / 2;
             for(Button btn : this.buttons) {
+
+                // locate all the buttons
                 this.totalButtonsWidth = Math.max(totalButtonsWidth, btn.getWidth());
 
                 btn.setLocation((this.windowWidth - btn.getWidth())/2, offsetY);
@@ -227,10 +101,9 @@ public class PauseMenu implements MouseListener {
                 offsetY += btn.getHeight() + SPACING;
             }
 
+            // add the pause menu mouse listener to the game
             gc.getInput().addMouseListener(this);
         } catch (SlickException e) {
-            e.printStackTrace();
-            System.err.println(e.getMessage());
             System.exit(1);
         }
 
@@ -242,8 +115,10 @@ public class PauseMenu implements MouseListener {
      */
     public void render(Graphics g) {
         if(this.isActive()) {
+            // render the background
             g.drawImage(this.background, 0, 0);
 
+            // render all the buttons
             for(Button btn : this.buttons) {
                 btn.render(g);
             }

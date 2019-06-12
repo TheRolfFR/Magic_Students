@@ -1,11 +1,12 @@
 package Main;
 
+import Entities.Item;
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
+import Entities.Portal;
 import HUD.FadeToBlack;
-import HUD.HealthBars.HealthBar;
 import HUD.PauseMenu;
 import Managers.EnemiesManager;
 import Managers.HUDManager;
@@ -21,8 +22,8 @@ import static Entities.Projectiles.Projectile.*;
 
 public class MainClass extends BasicGame {
     public static final int MAX_FPS = 60;
-    public static final int WIDTH = 640;
-    public static final int HEIGHT = 480;
+    public static final int WIDTH = 1280;
+    public static final int HEIGHT = 720;
 
     private static GameContainer instanceGameContainer;
     private static MainClass instance = null;
@@ -32,11 +33,12 @@ public class MainClass extends BasicGame {
 
     private Player player;
 
-    private HealthBar healthBar;
     private HUDManager hudManager;
 
     private PauseMenu menu;
     private FadeToBlack fadeToBlack;
+
+    private Item item;
 
     public FadeToBlack getFadeToBlack() {
         return fadeToBlack;
@@ -50,7 +52,20 @@ public class MainClass extends BasicGame {
         System.out.println("new room");
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
-        enemiesManager.generateEnemies(new Vector2f(48,48));
+        if(portalsManager.getActualPortal()!=null){
+            if(portalsManager.getActualPortal().getType().equals("boss")){
+                enemiesManager.generateBoss(new Vector2f(96,96));
+            }
+            else if(portalsManager.getActualPortal().getType().equals("item")){
+                item = new Item();
+            }
+            else if(portalsManager.getActualPortal().getType().equals("classic")){
+                enemiesManager.generateEnemies(new Vector2f(48,48));
+            }
+        }
+        else{
+            enemiesManager.generateEnemies(new Vector2f(48,48));
+        }
     }
 
     public static void setGamePaused(boolean gamePaused) {
@@ -86,7 +101,7 @@ public class MainClass extends BasicGame {
     public MainClass(String name) { super(name); }
 
     @Override
-    public void init(GameContainer gc) throws SlickException {
+    public void init(GameContainer gc) {
         instanceGameContainer = gc;
         instance = this;
         this.menu = new PauseMenu(gc);
@@ -94,7 +109,6 @@ public class MainClass extends BasicGame {
 
         this.player = new Player(gc,100,100);
         this.player.setShowDebugRect(true);
-        this.healthBar = new HealthBar(this.player);
 
         SceneRenderer.generateBackground("img/ground.png", gc);
 
@@ -108,7 +122,7 @@ public class MainClass extends BasicGame {
     }
 
     @Override
-    public void update(GameContainer gc, int timeOfOneFrame) throws SlickException {
+    public void update(GameContainer gc, int timeOfOneFrame) {
         TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
 
         this.player.update();
@@ -162,7 +176,6 @@ public class MainClass extends BasicGame {
         LivingBeing.sortAndRenderLivingBeings(g);
         this.enemiesManager.render(g);
 
-        this.healthBar.render(g);
         this.hudManager.render(g);
         this.menu.render(g);
         this.fadeToBlack.render(g);

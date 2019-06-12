@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public class FontRenderer {
     private static final String FONT_PREPATH = "font/";
-    private static final String PIXEL_FONT_PATH = FONT_PREPATH + "ThaleahFat.ttf";
+    private static final String PIXEL_FONT_PATH = FONT_PREPATH + "Pixel Square Bold10.ttf";
     private static final FontRenderer pixelFont = new FontRenderer(PIXEL_FONT_PATH, 20.f);
 
     /**
