@@ -69,7 +69,8 @@ public class LivingBeingRenderer extends SpriteRenderer {
                 this.lastView = view;
             }
 
-            // finally put it in the list
+            // finally put data in the list
+            this.activities.add(activity);
             this.views.put(viewName, view);
         }
     }
