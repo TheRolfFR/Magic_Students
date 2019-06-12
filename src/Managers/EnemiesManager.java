@@ -35,72 +35,73 @@ public class EnemiesManager {
         this.portalsManager = portalsManager;
     }
 
-    public void generateEnemies(Vector2f tileSize) {
+    public void generateEnemies() {
         Random random = new Random();
         for(int i = 0; i< 6; i++){
             switch(random.nextInt(2)){
                 case 0 :
-                    addBowman(tileSize);
+                    addBowman();
                     break;
                 case 1 :
-                    addKnight(tileSize);
+                    addKnight();
                     break;
                 default: break;
             }
         }
     }
 
-    public void addBowman(Vector2f tileSize){
+    public void addBowman(){
 
         Random random = new Random();
 
-        int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
-        int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+        int randomX = random.nextInt(Math.round(WIDTH-2*Bowman.BOWMAN_TILESIZE.getX())) + (int) Bowman.BOWMAN_TILESIZE.getX();
+        int randomY = random.nextInt(Math.round(HEIGHT-2*Bowman.BOWMAN_TILESIZE.getY())) + (int) Bowman.BOWMAN_TILESIZE.getY();
 
-        Bowman tmpb = new Bowman(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 150/MAX_FPS, 60/MAX_FPS, 75,2,1,(int) Math.round(0.4*tileSize.getY()));
+        Bowman tmpb = new Bowman(randomX, randomY,150/MAX_FPS, 60/MAX_FPS, 75,2,1,(int) Math.round(0.4*Bowman.BOWMAN_TILESIZE.getY()));
         tmpb.setShowDebugRect(true);
         this.enemies.add(tmpb);
     }
 
-    public void addKnight(Vector2f tileSize){
+    public void addKnight(){
 
         Random random = new Random();
 
-        int randomX = random.nextInt(Math.round(WIDTH-2*tileSize.getX())) + (int) tileSize.getX();
-        int randomY = random.nextInt(Math.round(HEIGHT-2*tileSize.getY())) + (int) tileSize.getY();
+        int randomX = random.nextInt(Math.round(WIDTH-2*Knight.KNIGHT_TILESIZE.getX())) + (int) Knight.KNIGHT_TILESIZE.getX();
+        int randomY = random.nextInt(Math.round(HEIGHT-2*Knight.KNIGHT_TILESIZE.getY())) + (int) Knight.KNIGHT_TILESIZE.getY();
 
-        Knight tmpk = new Knight(randomX, randomY, (int) tileSize.getX(), (int) tileSize.getY(), 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*tileSize.getY()));
+        Knight tmpk = new Knight(randomX, randomY, 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*Knight.KNIGHT_TILESIZE.getY()));
         tmpk.setShowDebugRect(true);
         this.enemies.add(tmpk);
     }
 
-    public void generateBoss(Vector2f tileSize) {
+    public void generateBoss() {
         Random random = new Random();
         switch(random.nextInt(2)){
             case 0 :
-                addBossBowman(tileSize);
+                addBossBowman();
                 break;
             case 1 :
-                addBossKnight(tileSize);
+                addBossKnight();
                  break;
             default: break;
         }
     }
 
-    private void addBossKnight(Vector2f tileSize){
-        KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2, (int) tileSize.getX(), (int) tileSize.getY(),200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*tileSize.getY()));
+    private void addBossKnight(){
+        KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*KnightBoss.KNIGHTBOSS_TILESIZE.getY()));
         knightBoss.setShowDebugRect(true);
         this.enemies.add(knightBoss);
     }
 
-    private void addBossBowman(Vector2f tileSize){
-        BowmanBoss bowmanBoss = new BowmanBoss(WIDTH/2, HEIGHT/2, (int) tileSize.getX(), (int) tileSize.getY(),200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*tileSize.getY()));
+    private void addBossBowman(){
+        BowmanBoss bowmanBoss = new BowmanBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*BowmanBoss.BOWMANBOSS_TILESIZE.getY()));
         bowmanBoss.setShowDebugRect(true);
         this.enemies.add(bowmanBoss);
     }
 
     public void update() {
-        for(Monster enemy : this.enemies){
+        for(int i=0; i<this.enemies.size(); i++){
+            Monster enemy = enemies.get(i);
             enemy.update(this.player);
             if(!this.player.isDashing()){
                 enemy.checkCollision();
@@ -108,16 +109,12 @@ public class EnemiesManager {
             if (this.player.isDead()){
                 //setGamePaused(true);
             }
-        }
-
-        for (int j=0; j<enemies.size(); j++) {
-            if (enemies.get(j).isDead()) {
+            if (enemy.isDead()) {
                 System.out.println("You killed an enemy");
-                LivingBeing.livingBeings.remove(this.enemies.get(j));
-                this.enemies.remove(this.enemies.get(j));
+                LivingBeing.livingBeings.remove(enemy);
+                this.enemies.remove(enemy);
             }
         }
-
         if (this.enemies.size() == 0) {
             portalsManager.setPortals();
         }

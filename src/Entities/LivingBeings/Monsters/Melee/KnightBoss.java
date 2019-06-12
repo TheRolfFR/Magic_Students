@@ -10,11 +10,12 @@ import java.sql.Time;
 import java.util.Random;
 
 public class KnightBoss extends Knight {
+    public static final Vector2f KNIGHTBOSS_TILESIZE = new Vector2f(96,96);
     private int recoverTime = 0;
     private int summonCooldown = 30*60;
 
-    public KnightBoss(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
-        super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+    public KnightBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
+        super(x, y, KNIGHTBOSS_TILESIZE, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class KnightBoss extends Knight {
         }
         else {
             if (isSummonReady()){
-                if (decideToSummon()){
+                if (decideToSummon() || true){
                     summon();
                 }
             }
@@ -63,7 +64,7 @@ public class KnightBoss extends Knight {
 
     private void summon() {
         this.setSpeed(new Vector2f(0,0));
-        MainClass.getInstance().getEnemiesManager().addKnight(new Vector2f(48,48));
+        MainClass.getInstance().getEnemiesManager().addKnight();
     }
 
     private boolean decideToSummon(){

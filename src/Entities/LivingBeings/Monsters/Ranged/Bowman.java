@@ -12,14 +12,29 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Bowman extends Ranged {
 
+    public static final Vector2f BOWMAN_TILESIZE = new Vector2f(48,48);
     protected static final int SHOT_DELAY = 120;
     protected int delayCounter;
 
-    public Bowman(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
-        super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+    public Bowman(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
+        super(x, y, (int) BOWMAN_TILESIZE.getX(), (int) BOWMAN_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
         this.delayCounter = 0;
 
-        Vector2f tileSize = new Vector2f(48, 48);
+        this.renderer = new LivingBeingRenderer(this, BOWMAN_TILESIZE);
+
+        final String prepath = "img/bowman/";
+
+        final int duration = 1000/8;
+
+        for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
+            this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", BOWMAN_TILESIZE, duration));
+        }
+    }
+
+    public Bowman(float x, float y, Vector2f tileSize, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
+        super(x, y, (int) tileSize.getX(), (int) tileSize.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+        this.delayCounter = 0;
+
         this.renderer = new LivingBeingRenderer(this, tileSize);
 
         final String prepath = "img/bowman/";
@@ -42,7 +57,7 @@ public class Bowman extends Ranged {
             this.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
             this.move();
         }
-        else if(this.delayCounter > SHOT_DELAY && !MainClass.isGamePaused()) {
+        else if(this.delayCounter > SHOT_DELAY) {
             attack(target);
         }
         else{

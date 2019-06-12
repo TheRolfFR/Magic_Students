@@ -5,14 +5,12 @@ import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
-import Entities.Portal;
 import HUD.FadeToBlack;
 import HUD.PauseMenu;
 import Managers.EnemiesManager;
 import Managers.HUDManager;
 import Managers.PortalsManager;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -54,17 +52,17 @@ public class MainClass extends BasicGame {
         Ranged.enemyProjectiles = new ArrayList<>();
         if(portalsManager.getActualPortal()!=null){
             if(portalsManager.getActualPortal().getType().equals("boss")){
-                enemiesManager.generateBoss(new Vector2f(96,96));
+                enemiesManager.generateBoss();
             }
             else if(portalsManager.getActualPortal().getType().equals("item")){
                 item = new Item();
             }
             else if(portalsManager.getActualPortal().getType().equals("classic")){
-                enemiesManager.generateEnemies(new Vector2f(48,48));
+                enemiesManager.generateEnemies();
             }
         }
         else{
-            enemiesManager.generateEnemies(new Vector2f(48,48));
+            enemiesManager.generateEnemies();
         }
     }
 
@@ -123,30 +121,33 @@ public class MainClass extends BasicGame {
 
     @Override
     public void update(GameContainer gc, int timeOfOneFrame) {
-        TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
+        if(!MainClass.isGamePaused()){
+            TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
 
-        this.player.update();
-        if(!this.player.isDashing()){
-            this.player.checkCollision();
-        }
-        updateEnemyProjectile(player);
-        updateAllyProjectiles();
-
-        enemiesManager.update();
-        portalsManager.update(timeOfOneFrame);
-
-        if (fadeToBlack.isActive()) {
-            fadeToBlack.update(gc);
-
-            if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
-                generateRoom();
-
-                portalsManager.hidePortals();
+            this.player.update();
+            if(!this.player.isDashing()){
+                this.player.checkCollision();
             }
-            else if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration()) {
-                TimeScale.getInGameTimeScale().setTimeScale(1f);
+            updateEnemyProjectile(player);
+            updateAllyProjectiles();
+
+            enemiesManager.update();
+            portalsManager.update(timeOfOneFrame);
+
+            if (fadeToBlack.isActive()) {
+                fadeToBlack.update(gc);
+
+                if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
+                    generateRoom();
+
+                    portalsManager.hidePortals();
+                }
+                else if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration()) {
+                    TimeScale.getInGameTimeScale().setTimeScale(1f);
+                }
             }
         }
+
     }
 
     @Override
