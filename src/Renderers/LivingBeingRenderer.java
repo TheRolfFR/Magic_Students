@@ -40,6 +40,8 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
     protected Color colorFilter;
 
+    protected String lastActivity;
+    protected String lastVisionDirection;
     protected Vector2f lastFacedDirection;
     protected SpriteView lastView;
 
@@ -128,12 +130,11 @@ public class LivingBeingRenderer extends SpriteRenderer {
         // update render if not paused
         if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
             // Identify the activity of the living being (moving or not)
-            String activity = "";
-                if(this.entity.getSpeed().length() == 0f) activity = "Idle";
-            else activity = "Move";
-
-            render(g, facedDirection, activity);
+            if(this.entity.getSpeed().length() == 0f) this.lastActivity = "Idle";
+            else this.lastActivity = "Move";
         }
+
+        render(g, facedDirection, this.lastActivity);
     }
 
     /**
@@ -151,13 +152,12 @@ public class LivingBeingRenderer extends SpriteRenderer {
             }
 
             // Identify the direction of his vision
-            String visionDirection = "";
-            if (this.lastFacedDirection.getY() > 0) visionDirection = "bottom";
-            else if (this.lastFacedDirection.getX() > 0) visionDirection = "right";
-            else if (this.lastFacedDirection.getX() < 0) visionDirection = "left";
-            else visionDirection = "top";
+            if (this.lastFacedDirection.getY() > 0) this.lastVisionDirection = "bottom";
+            else if (this.lastFacedDirection.getX() > 0) this.lastVisionDirection = "right";
+            else if (this.lastFacedDirection.getX() < 0) this.lastVisionDirection = "left";
+            else this.lastVisionDirection = "top";
 
-            this.setLastView(this.getView(visionDirection, activity));
+            this.setLastView(this.getView(this.lastVisionDirection, activity));
         }
 
         if(this.lastView != null) {

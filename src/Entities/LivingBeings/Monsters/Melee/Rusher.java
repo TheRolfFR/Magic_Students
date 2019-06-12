@@ -17,7 +17,7 @@ public class Rusher extends Melee {
         final int duration = 1000/8;
 
         for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
-            this.renderer.addView(vision + "move", new SpriteView(prepath + vision + ".png", tileSize, duration));
+            this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", tileSize, duration));
         }
     }
 
