@@ -7,15 +7,28 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Knight extends Melee {
 
+    public static final Vector2f KNIGHT_TILESIZE = new Vector2f(48,48);
     private int framesLeftBeforeAttack;
     private Vector2f attackDirection = new Vector2f(0,0);
 
+    public Knight(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
+        super(x, y, (int) KNIGHT_TILESIZE.getX(), (int) KNIGHT_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
 
+        this.renderer = new LivingBeingRenderer(this, KNIGHT_TILESIZE);
 
-    public Knight(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
-        super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+        final String prepath = "img/knight/";
 
-        Vector2f tileSize = new Vector2f(48, 48);
+        final int duration = 1000/8;
+
+        this.renderer.setTopView(new SpriteView(prepath + "top.png", KNIGHT_TILESIZE, duration));
+        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", KNIGHT_TILESIZE, duration));
+        this.renderer.setLeftView(new SpriteView(prepath + "left.png", KNIGHT_TILESIZE, duration));
+        this.renderer.setRightView(new SpriteView(prepath + "right.png", KNIGHT_TILESIZE, duration));
+    }
+
+    public Knight(float x, float y, Vector2f tileSize, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
+        super(x, y, (int) tileSize.getX(), (int) tileSize.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+
         this.renderer = new LivingBeingRenderer(this, tileSize);
 
         final String prepath = "img/knight/";

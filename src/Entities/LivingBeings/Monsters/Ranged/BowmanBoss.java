@@ -7,11 +7,11 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.Random;
 
 public class BowmanBoss extends Bowman{
-    private int recoverTime = 0;
+    public static final Vector2f BOWMANBOSS_TILESIZE = new Vector2f(96,96);
     private int summonCooldown = 30*60;
 
-    public BowmanBoss(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
-        super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+    public BowmanBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
+        super(x, y,BOWMANBOSS_TILESIZE, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
     }
 
     @Override
@@ -24,12 +24,11 @@ public class BowmanBoss extends Bowman{
             this.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
             this.move();
         }
-        else if(this.delayCounter > SHOT_DELAY && !MainClass.isGamePaused()) {
+        else if(this.delayCounter > SHOT_DELAY) {
             attack(target);
         }
-        else{
-            this.delayCounter = Math.min(this.delayCounter + 1, 121);
-        }
+        this.delayCounter = Math.min(this.delayCounter + 1, 121);
+        updateCooldown();
         if(decideToSummon()){
             summon();
         }
@@ -43,7 +42,7 @@ public class BowmanBoss extends Bowman{
 
     private void summon() {
         this.setSpeed(new Vector2f(0,0));
-        MainClass.getInstance().getEnemiesManager().addBowman(new Vector2f(48,48));
+        MainClass.getInstance().getEnemiesManager().addBowman();
     }
 
     private boolean decideToSummon(){
