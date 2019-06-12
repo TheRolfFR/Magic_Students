@@ -63,15 +63,22 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
         this.setTileSize(new Vector2f(96, 96));
         this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
-        this.renderer.setTopIdleView(new SpriteView(prepath + "topIdle.png", this.getTileSize(), duration, Color.red));
-        this.renderer.setBottomIdleView(new SpriteView(prepath + "bottomIdle.png", this.getTileSize(), duration, Color.red));
-        this.renderer.setLeftIdleView(new SpriteView(prepath + "leftIdle.png", this.getTileSize(), duration, Color.red));
-        this.renderer.setRightIdleView(new SpriteView(prepath + "rightIdle.png", this.getTileSize(), duration, Color.red));
 
-        this.renderer.setTopView(new SpriteView(prepath + "top.png", this.getTileSize(), duration, Color.red));
-        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", this.getTileSize(), duration, Color.red));
-        this.renderer.setLeftView(new SpriteView(prepath + "left.png", this.getTileSize(), duration, Color.red));
-        this.renderer.setRightView(new SpriteView(prepath + "right.png", this.getTileSize(), duration, Color.red));
+        String visions[] = {"top", "left", "right", "bottom"};
+        String activities[] = {"Move", "Idle"};
+
+        String fileName;
+        for(String vision : visions) {
+            for(String activity : activities) {
+                // Determine filename
+                fileName = vision;
+                if(!activity.equals("Move"))
+                    fileName += activity;
+
+                // setting the view
+                this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", this.getTileSize(), duration, Color.red));
+            }
+        }
 
         this.playerMarkerRenderer = new PlayerMarkerRenderer(this, 2);
 

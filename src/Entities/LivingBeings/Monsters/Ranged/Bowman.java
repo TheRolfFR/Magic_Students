@@ -42,10 +42,9 @@ public class Bowman extends Ranged {
 
         final int duration = 1000/8;
 
-        this.renderer.setTopView(new SpriteView(prepath + "top.png", tileSize, duration));
-        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", tileSize, duration));
-        this.renderer.setLeftView(new SpriteView(prepath + "left.png", tileSize, duration));
-        this.renderer.setRightView(new SpriteView(prepath + "right.png", tileSize, duration));
+        for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
+            this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", tileSize, duration));
+        }
     }
 
     @Override
