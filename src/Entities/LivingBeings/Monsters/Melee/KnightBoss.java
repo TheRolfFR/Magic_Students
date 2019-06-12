@@ -29,8 +29,10 @@ public class KnightBoss extends Knight {
             }
         }
         else {
-            if (decideToSummon()){
-                summon();
+            if (isSummonReady()){
+                if (decideToSummon()){
+                    summon();
+                }
             }
             if (isAbleToMove()){
                 this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().scale(this.getAccelerationRate()));
@@ -67,6 +69,10 @@ public class KnightBoss extends Knight {
     private boolean decideToSummon(){
         Random random = new Random();
         return (random.nextFloat()%1 < 1f/(60f*3f));
+    }
+
+    private boolean isSummonReady() {
+        return summonCouldown == 0;
     }
 }
 
