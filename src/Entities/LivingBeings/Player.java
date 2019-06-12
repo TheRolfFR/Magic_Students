@@ -1,7 +1,7 @@
 package Entities.LivingBeings;
 
+import Entities.Projectiles.Fireball;
 import Entities.Projectiles.MeleeAttack;
-import Entities.Projectiles.Snowball;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Main.MainClass;
 import Main.TimeScale;
@@ -184,7 +184,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * Do a ranged attack
      */
     private void doRangedAttack() {
-        Ranged.allyProjectiles.add(new Snowball(this.rangedAttackDirection.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Snowball.getSnowballRadius(), this.getCenter().y - Snowball.getSnowballRadius())), this.rangedAttackDirection.copy())); //décalage car bord haut gauche
+        Ranged.allyProjectiles.add(new Fireball(this.rangedAttackDirection.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Fireball.getFireballRadius(), this.getCenter().y - Fireball.getFireballRadius())), this.rangedAttackDirection.copy())); //décalage car bord haut gauche
         this.rangedAttackDirection.set(0,0);
     }
 

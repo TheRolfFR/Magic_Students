@@ -28,8 +28,8 @@ public class PortalsManager {
     );
     private static Map<String, Float> cumulativeRoomProbability = Map.of(
             "classic", 0.20f,
-            "item", 0.23f,
-            "boss", 0.26f
+            "item", 0.24f,
+            "boss", 0.28f
     );
 
     private static ArrayList<Portal> portals = new ArrayList<>();
@@ -72,7 +72,7 @@ public class PortalsManager {
                     chance = random.nextFloat();
 
                     for (String type: cumulativeRoomProbability.keySet()) {
-                        if (chance < cumulativeRoomProbability.get(type)) {
+                        if (chance <= cumulativeRoomProbability.get(type)) {
                             portal.setVisible(true);
                             portal.setType(type);
                             break;
