@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class BowmanBoss extends Bowman{
     private int recoverTime = 0;
-    private int summonCouldown = 30*60;
+    private int summonCooldown = 30*60;
 
     public BowmanBoss(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
         super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -35,9 +35,9 @@ public class BowmanBoss extends Bowman{
         }
     }
 
-    private void updateCouldown() {
-        if (summonCouldown != 0){
-            summonCouldown = summonCouldown - 1;
+    private void updateCooldown() {
+        if (summonCooldown != 0){
+            summonCooldown = summonCooldown - 1;
         }
     }
 
