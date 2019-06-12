@@ -26,10 +26,9 @@ public class Bowman extends Ranged {
 
         final int duration = 1000/8;
 
-        this.renderer.setTopView(new SpriteView(prepath + "top.png", BOWMAN_TILESIZE, duration));
-        this.renderer.setBottomView(new SpriteView(prepath + "bottom.png", BOWMAN_TILESIZE, duration));
-        this.renderer.setLeftView(new SpriteView(prepath + "left.png", BOWMAN_TILESIZE, duration));
-        this.renderer.setRightView(new SpriteView(prepath + "right.png", BOWMAN_TILESIZE, duration));
+        for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
+            this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", BOWMAN_TILESIZE, duration));
+        }
     }
 
     public Bowman(float x, float y, Vector2f tileSize, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
