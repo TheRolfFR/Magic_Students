@@ -105,6 +105,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
         this.lastView = null;
         this.lastFacedDirection = zero.copy();
         this.views = new HashMap<>();
+        this.activities = new ArrayList<>();
     }
 
     /**
