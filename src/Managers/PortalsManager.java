@@ -41,6 +41,8 @@ public class PortalsManager {
     public PortalsManager() {
         this.portalSet = false;
         this.portalEngaged = false;
+        this.actualPortal = new Portal(0,0,1,1,1);
+        this.actualPortal.setType("classic");
 
         int[][] possiblePositions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 40},
                 {40, HEIGHT / 2 - 20}, {WIDTH - 40 - 40, HEIGHT / 2 - 20}};
@@ -64,7 +66,7 @@ public class PortalsManager {
 
             Portal p = portals.get(random.nextInt(portals.size()));
             p.setVisible(true);
-            p.setType("classic");
+            p.setType("item");
 
             float chance;
             for (Portal portal: portals) {
@@ -86,6 +88,9 @@ public class PortalsManager {
         if (this.portalEngaged) {
             for (Portal portal : portals) {
                 if (portal.isVisible() && MainClass.getInstance().getPlayer().collidesWith(portal)) {
+                    if(this.actualPortal.getType().equals("boss")){
+                        MainClass.nextDifficulty();
+                    }
                     this.actualPortal = portal;
                     TimeScale.getInGameTimeScale().setTimeScale(0f);
                     MainClass.getInstance().getFadeToBlack().setActive(true);

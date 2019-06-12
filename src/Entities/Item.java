@@ -48,26 +48,40 @@ public class Item extends Entity {
     @Override
     public void move() {}
 
-    public void update(Player player){
+    public Item update(Player player){
         if(collidesWith(player)){
             collidingType(player);
+            return null;
         }
+        return this;
     }
 
     private void collidingType(Player player){
+        System.out.println("acc" + player.getAccelerationRate());
+        System.out.println("armor" + player.getArmorPoints());
+        System.out.println("chp" + player.getCurrentHealthPoints());
+        System.out.println("mHP" + player.getMaxHealthPoints());
+        System.out.println("Melee" + MeleeAttack.damage);
+        System.out.println("ranged" + Snowball.damage);
         switch (this.typeOfItem){
-            case 0 : player.heal(HEALBUFFAMOUNT);
+            case 0 : player.heal((int) Math.round(HEALBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
-            case 1 : player.buffHP(MAXHPBUFFAMOUNT);
+            case 1 : player.buffHP((int) Math.round(MAXHPBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
-            case 2 : MeleeAttack.damage = MeleeAttack.damage + MELEEBUFFAMOUNT;
+            case 2 : MeleeAttack.damage = MeleeAttack.damage + (int) Math.round(MELEEBUFFAMOUNT*MainClass.getDifficulty());
                 break;
-            case 3 : Snowball.damage = Snowball.damage + RANGEDBUFFAMOUNT;
+            case 3 : Snowball.damage = Snowball.damage + (int) Math.round(RANGEDBUFFAMOUNT*MainClass.getDifficulty());
                 break;
-            case 4 : player.buffArmor(ARMORBUFFAMOUNT);
+            case 4 : player.buffArmor((int) Math.round(ARMORBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
-            case 5 : player.buffSpeed(SPEEDBUFFAMOUNT);
+            case 5 : player.buffSpeed((int) Math.round(SPEEDBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
         }
+        System.out.println("acc" + player.ACCELERATION_RATE);
+        System.out.println("armor" + player.getArmorPoints());
+        System.out.println("chp" + player.getCurrentHealthPoints());
+        System.out.println("mHP" + player.getMaxHealthPoints());
+        System.out.println("Melee" + MeleeAttack.damage);
+        System.out.println("ranged" + Snowball.damage);
     }
 }

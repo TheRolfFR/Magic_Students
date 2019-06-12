@@ -26,6 +26,8 @@ public class MainClass extends BasicGame {
     private static GameContainer instanceGameContainer;
     private static MainClass instance = null;
 
+    private static double difficulty = 1;
+
     private PortalsManager portalsManager;
     private EnemiesManager enemiesManager;
 
@@ -37,6 +39,10 @@ public class MainClass extends BasicGame {
     private FadeToBlack fadeToBlack;
 
     private Item item;
+
+    public static double getDifficulty(){return difficulty;}
+
+    public static void nextDifficulty(){difficulty = difficulty+1;}
 
     public FadeToBlack getFadeToBlack() {
         return fadeToBlack;
@@ -50,19 +56,19 @@ public class MainClass extends BasicGame {
         System.out.println("new room");
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
+
         if(portalsManager.getActualPortal()!=null){
-            if(portalsManager.getActualPortal().getType().equals("boss")){
-                enemiesManager.generateBoss();
+            switch (portalsManager.getActualPortal().getType()) {
+                case "boss":
+                    enemiesManager.generateBoss();
+                    break;
+                case "item":
+                    item = new Item();
+                    break;
+                case "classic":
+                    enemiesManager.generateEnemies();
+                    break;
             }
-            else if(portalsManager.getActualPortal().getType().equals("item")){
-                item = new Item();
-            }
-            else if(portalsManager.getActualPortal().getType().equals("classic")){
-                enemiesManager.generateEnemies();
-            }
-        }
-        else{
-            enemiesManager.generateEnemies();
         }
     }
 
@@ -128,6 +134,9 @@ public class MainClass extends BasicGame {
             if(!this.player.isDashing()){
                 this.player.checkCollision();
             }
+            if(item!=null){
+                item = item.update(this.player);
+            }
             updateEnemyProjectile(player);
             updateAllyProjectiles();
 
@@ -147,7 +156,6 @@ public class MainClass extends BasicGame {
                 }
             }
         }
-
     }
 
     @Override
@@ -172,6 +180,10 @@ public class MainClass extends BasicGame {
     @Override
     public void render(GameContainer gc, Graphics g) {
         SceneRenderer.renderBackground(g, 0, 0);
+
+        if(item!=null){
+            item.render(g);
+        }
 
         portalsManager.render(g);
         LivingBeing.sortAndRenderLivingBeings(g);

@@ -15,7 +15,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 
 public abstract class Projectile extends Entity {
-    public static int damage;
+    public static int damage = 25;
     protected Image image;
     protected Vector2f direction;
     protected float opacity;
@@ -29,7 +29,6 @@ public abstract class Projectile extends Entity {
 
     public Projectile(float x, float y, float maxSpeed, float accelerationRate, int radius, Vector2f direction) {
         super(x, y, maxSpeed, accelerationRate, radius);
-        damage = 25;
         this.direction = direction;
         this.opacity = 1f;
 
@@ -45,8 +44,6 @@ public abstract class Projectile extends Entity {
     public Projectile(float x, float y, float maxSpeed, float accelerationRate, Vector2f direction, String imagePath, int radius) {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.direction = direction;
-
-        damage = 25;
 
         this.image = null;
 

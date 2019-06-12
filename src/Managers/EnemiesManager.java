@@ -37,7 +37,7 @@ public class EnemiesManager {
 
     public void generateEnemies() {
         Random random = new Random();
-        for(int i = 0; i< 6; i++){
+        for(int i = 0; i< 4+(int) Math.round(MainClass.getDifficulty()/4); i++){
             switch(random.nextInt(2)){
                 case 0 :
                     addBowman();
@@ -57,7 +57,7 @@ public class EnemiesManager {
         int randomX = random.nextInt(Math.round(WIDTH-2*Bowman.BOWMAN_TILESIZE.getX())) + (int) Bowman.BOWMAN_TILESIZE.getX();
         int randomY = random.nextInt(Math.round(HEIGHT-2*Bowman.BOWMAN_TILESIZE.getY())) + (int) Bowman.BOWMAN_TILESIZE.getY();
 
-        Bowman tmpb = new Bowman(randomX, randomY,150/MAX_FPS, 60/MAX_FPS, 75,2,1,(int) Math.round(0.4*Bowman.BOWMAN_TILESIZE.getY()));
+        Bowman tmpb = new Bowman(randomX, randomY,150/MAX_FPS, 60/MAX_FPS, (int) Math.round(75*MainClass.getDifficulty()),(int) Math.round(2*MainClass.getDifficulty()),(int) Math.round(1*MainClass.getDifficulty()),(int) Math.round(0.4*Bowman.BOWMAN_TILESIZE.getY()));
         tmpb.setShowDebugRect(true);
         this.enemies.add(tmpb);
     }
@@ -69,7 +69,7 @@ public class EnemiesManager {
         int randomX = random.nextInt(Math.round(WIDTH-2*Knight.KNIGHT_TILESIZE.getX())) + (int) Knight.KNIGHT_TILESIZE.getX();
         int randomY = random.nextInt(Math.round(HEIGHT-2*Knight.KNIGHT_TILESIZE.getY())) + (int) Knight.KNIGHT_TILESIZE.getY();
 
-        Knight tmpk = new Knight(randomX, randomY, 250/MAX_FPS, 60/MAX_FPS, 100,2,1,(int) Math.round(0.4*Knight.KNIGHT_TILESIZE.getY()));
+        Knight tmpk = new Knight(randomX, randomY, 250/MAX_FPS, 60/MAX_FPS, (int) Math.round(100*MainClass.getDifficulty()),(int) Math.round(2*MainClass.getDifficulty()),(int) Math.round(1*MainClass.getDifficulty()),(int) Math.round(0.4*Knight.KNIGHT_TILESIZE.getY()));
         tmpk.setShowDebugRect(true);
         this.enemies.add(tmpk);
     }
@@ -88,13 +88,13 @@ public class EnemiesManager {
     }
 
     private void addBossKnight(){
-        KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*KnightBoss.KNIGHTBOSS_TILESIZE.getY()));
+        KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, (int) Math.round(1000*MainClass.getDifficulty()), (int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(0.4*KnightBoss.KNIGHTBOSS_TILESIZE.getY()));
         knightBoss.setShowDebugRect(true);
         this.enemies.add(knightBoss);
     }
 
     private void addBossBowman(){
-        BowmanBoss bowmanBoss = new BowmanBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, 1000, 10,10,(int) Math.round(0.4*BowmanBoss.BOWMANBOSS_TILESIZE.getY()));
+        BowmanBoss bowmanBoss = new BowmanBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, (int) Math.round(1000*MainClass.getDifficulty()), (int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(0.4*BowmanBoss.BOWMANBOSS_TILESIZE.getY()));
         bowmanBoss.setShowDebugRect(true);
         this.enemies.add(bowmanBoss);
     }
