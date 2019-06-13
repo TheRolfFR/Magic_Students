@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
-public class SceneRenderer {
+public class BackgroundRenderer {
     private static Image backgroundImage = null;
 
     private static Vector2f roomDimension = null;
