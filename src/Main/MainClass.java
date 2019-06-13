@@ -27,6 +27,7 @@ public class MainClass extends BasicGame {
     private static MainClass instance = null;
 
     private static double difficulty = 1;
+    private static int numberOfFramePerSecond = 60;
 
     private PortalsManager portalsManager;
     private EnemiesManager enemiesManager;
@@ -41,6 +42,8 @@ public class MainClass extends BasicGame {
     private Item item;
 
     public static double getDifficulty(){return difficulty;}
+
+    public static int getNumberOfFramePerSecond() { return numberOfFramePerSecond; }
 
     public static void nextDifficulty(){difficulty = difficulty+1;}
 
@@ -127,14 +130,16 @@ public class MainClass extends BasicGame {
 
     @Override
     public void update(GameContainer gc, int timeOfOneFrame) {
-        if(!MainClass.isGamePaused()){
+        numberOfFramePerSecond = gc.getFPS();
+
+        if (!MainClass.isGamePaused()) {
             TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
 
             this.player.update();
-            if(!this.player.isDashing()){
+            if (!this.player.isDashing()) {
                 this.player.checkCollision();
             }
-            if(item!=null){
+            if( item!=null) {
                 item = item.update(this.player);
             }
             updateEnemyProjectile(player);
@@ -143,17 +148,13 @@ public class MainClass extends BasicGame {
             enemiesManager.update();
             portalsManager.update(timeOfOneFrame);
 
-            if (fadeToBlack.isActive()) {
-                fadeToBlack.update(gc);
-
-                if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration() / 2) {
-                    generateRoom();
-
-                    portalsManager.hidePortals();
-                }
-                else if (fadeToBlack.getCurrentCount() == fadeToBlack.getDuration()) {
-                    TimeScale.getInGameTimeScale().setTimeScale(1f);
-                }
+            fadeToBlack.update(gc);
+            if (fadeToBlack.atHalfDuration()) {
+                generateRoom();
+                portalsManager.hidePortals();
+            }
+            else if (fadeToBlack.isDone()) {
+                TimeScale.resume();
             }
         }
     }

@@ -37,6 +37,15 @@ public class LivingBeingRenderer extends SpriteRenderer {
     protected HashMap<String, SpriteView> views;
 
     protected static final Vector2f zero = new Vector2f(0f, 0f);
+    /**
+     * Sets last activity if the value exists
+     * @param lastActivity the wanted activity
+     */
+    public void setLastActivity(String lastActivity) {
+        if(this.activities.contains(lastActivity)) {
+            this.lastActivity = lastActivity;
+        }
+    }
 
     /**
      * Checks if the name of the view is correct and returns the activity
@@ -70,7 +79,8 @@ public class LivingBeingRenderer extends SpriteRenderer {
             }
 
             // finally put data in the list
-            this.activities.add(activity);
+            if(!this.activities.contains(activity))
+                this.activities.add(activity);
             this.views.put(viewName, view);
         }
     }
@@ -139,48 +149,35 @@ public class LivingBeingRenderer extends SpriteRenderer {
         return v;
     }
 
+    /** supposed update **/
+    public void update(Vector2f facedDirection) {
+        // update last faced direction
+        if (!facedDirection.equals(zero)) {
+            this.lastFacedDirection = facedDirection;
+        }
+
+        // Identify the direction of his vision
+        if (this.lastFacedDirection.getY() > 0) this.lastVisionDirection = "bottom";
+        else if (this.lastFacedDirection.getX() > 0) this.lastVisionDirection = "right";
+        else if (this.lastFacedDirection.getX() < 0) this.lastVisionDirection = "left";
+        else this.lastVisionDirection = "top";
+
+        this.setLastView(this.getView(this.lastVisionDirection, this.lastActivity));
+    }
+
     /**
-     * Method used when the developer wants an automatic choice of the view
+     * Method used when the developer wants an automatic choice of the vision direction
      * @param g the graphics to draw on
      * @param facedDirection the direction faced by the living being
      */
     public void render(Graphics g, Vector2f facedDirection) {
         // update render if not paused
         if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
-            // Identify the activity of the living being (moving or not)
-            if(this.entity.getSpeed().length() == 0f) this.lastActivity = "Idle";
-            else this.lastActivity = "Move";
-        }
-
-        render(g, facedDirection, this.lastActivity);
-    }
-
-    /**
-     * Method used by the developer when the developers knows what view he wants
-     * @param g the graphics to draw on
-     * @param facedDirection the direction faced by the living being
-     * @param activity the living being activity he wants to show
-     */
-    public void render(Graphics g, Vector2f facedDirection, String activity) {
-        // update render if not paused
-        if(TimeScale.getInGameTimeScale().getTimeScale() != 0f && activities.contains(activity)) {
-            // update last faced direction
-            if (!facedDirection.equals(zero)) {
-                this.lastFacedDirection = facedDirection;
-            }
-
-            // Identify the direction of his vision
-            if (this.lastFacedDirection.getY() > 0) this.lastVisionDirection = "bottom";
-            else if (this.lastFacedDirection.getX() > 0) this.lastVisionDirection = "right";
-            else if (this.lastFacedDirection.getX() < 0) this.lastVisionDirection = "left";
-            else this.lastVisionDirection = "top";
-
-            this.setLastView(this.getView(this.lastVisionDirection, activity));
+            update(facedDirection);
         }
 
         if(this.lastView != null) {
-
-            // if game is not paused
+            // if game is not paused (OBLIGATORY because I need to pause the animations)
             if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
                 this.lastView.start();
             } else {

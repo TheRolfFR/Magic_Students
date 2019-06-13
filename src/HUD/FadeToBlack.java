@@ -48,6 +48,8 @@ public class FadeToBlack {
 
     public int getCurrentCount() { return this.currentCount; }
     public int getDuration() { return this.DURATION; }
+    public boolean atHalfDuration() { return this.getCurrentCount() == this.getDuration() / 2; }
+    public boolean isDone() { return this.getCurrentCount() == this.getDuration(); }
 
     public void update(GameContainer gc) {
         if (this.isActive()) {
