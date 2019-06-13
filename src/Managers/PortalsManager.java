@@ -66,7 +66,7 @@ public class PortalsManager {
 
             Portal p = portals.get(random.nextInt(portals.size()));
             p.setVisible(true);
-            p.setType("item");
+            p.setType("classic");
 
             float chance;
             for (Portal portal: portals) {
