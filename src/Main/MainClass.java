@@ -10,6 +10,7 @@ import HUD.PauseMenu;
 import Managers.EnemiesManager;
 import Managers.HUDManager;
 import Managers.PortalsManager;
+import Renderers.SceneRenderer;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;

@@ -5,6 +5,7 @@ Entities.LivingBeings.Monsters.Melee
 Entities.LivingBeings.Monsters.Ranged
 Entities.Projectiles
 HUD
+HUD.HealthBars
 Main
 Managers
 Renderers

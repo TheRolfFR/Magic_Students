@@ -4,6 +4,7 @@ import Entities.Entity;
 import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.PNGImageData;
 
 public class PortalRenderer extends SpriteRenderer {
     Animation openingAnimation;
@@ -43,10 +44,6 @@ public class PortalRenderer extends SpriteRenderer {
             this.topLeftAngle = new Vector2f(x, y).sub(TILESIZE_OFFSET);
 
             this.timeCounter = 0;
-
-            System.out.println(x);
-            System.out.println(y);
-            System.out.println(topLeftAngle);
         } catch (SlickException e) {
             e.printStackTrace();
             System.exit(1);

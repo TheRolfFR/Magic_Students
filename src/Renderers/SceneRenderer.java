@@ -1,4 +1,4 @@
-package Main;
+package Renderers;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
