@@ -12,7 +12,7 @@ public class BackgroundRenderer {
 
     private static Vector2f roomDimension = null;
 
-    static void generateBackground(String path, GameContainer gc) {
+    public static void generateBackground(String path, GameContainer gc) {
         if (backgroundImage == null) {
             try {
                 float scale = 2;
@@ -49,7 +49,7 @@ public class BackgroundRenderer {
         }
     }
 
-    static void renderBackground(Graphics g, int x, int y) {
+    public static void renderBackground(Graphics g, int x, int y) {
         if (backgroundImage == null)
             return;
 
