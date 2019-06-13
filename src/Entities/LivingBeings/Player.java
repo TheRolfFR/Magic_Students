@@ -10,6 +10,8 @@ import Renderers.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.Random;
+
 import static Main.MainClass.MAX_FPS;
 
 public class Player extends LivingBeing implements KeyListener, MouseListener{
@@ -62,16 +64,21 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         this.setTileSize(new Vector2f(96, 96));
         this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
 
-        String visions[] = {"top", "left", "right", "bottom"};
-        String activities[] = {"Move", "Idle","Dash","Attack","Cast"};
+        String[] visions = {"top", "left", "right", "bottom"};
+        String[] activities = {"Move", "Idle", "Dash", "Attack", "Cast"};
 
         String fileName;
         for(String vision : visions) {
             for(String activity : activities) {
                 // Determine filename
                 fileName = vision;
-                if(!activity.equals("Move"))
-                    fileName += activity;
+                if (!activity.equals("Move"))
+                    if (activity.equals("Cast") /*|| activity.equals("Dash")*/) {
+                        fileName = activity;
+                    }
+                    else if (!activity.equals("Dash")) /* temporary*/ {
+                        fileName += activity;
+                    }
 
                 // setting the view
                 this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", this.getTileSize(), duration, Color.red));
@@ -122,11 +129,10 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
                             this.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()));
                         }
                     }
-                    else{
-                        if(this.getSpeed().equals(new Vector2f(0,0))){
+                    else {
+                        if (this.getSpeed().equals(new Vector2f(0, 0))) {
                             this.renderer.setLastActivity("Idle");
-                        }
-                        else{
+                        } else {
                             this.updateSpeed(this.getSpeed().negate().scale(0.2f));
                         }
                     }
@@ -142,24 +148,23 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private void updateCooldown() {
         if (!isDashReady()){
-            dashCD = dashCD - 1;
+            dashCD--;
         }
         if (!isSpellReady()){
-            spellCD = spellCD - 1;
+            spellCD--;
         }
         if (!isAbleToMove()){
-            framesLeftBeforeEnablingMovement = framesLeftBeforeEnablingMovement - 1;
+            framesLeftBeforeEnablingMovement--;
         }
         if (isDashing()){
-            framesLeftWhileDashing = framesLeftWhileDashing - 1;
+            framesLeftWhileDashing--;
         }
     }
-
 
     private void meleeAttack() {
         Vector2f attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(this.getCenter()).normalise();
         this.setSpeed(new Vector2f(0, 0));
-        this.framesLeftBeforeEnablingMovement = 6;
+        this.framesLeftBeforeEnablingMovement = 15;
         Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(attackDirection.scale(this.getRadius()))));
         this.renderer.setLastActivity("Attack");
         this.renderer.update(this.meleeAttackDirection);
@@ -181,7 +186,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private void shootFireball(){
         Vector2f fireballDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getCenter()).normalise();
         spellCD = 30;
-        framesLeftBeforeEnablingMovement = 6;
+        framesLeftBeforeEnablingMovement = 15;
         this.setSpeed(new Vector2f(0,0));
         Ranged.allyProjectiles.add(new Fireball(this.getPosition(), fireballDirection)); //décalage car bord haut gauche
         this.renderer.setLastActivity("Cast");
