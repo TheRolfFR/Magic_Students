@@ -57,6 +57,7 @@ public class MainClass extends BasicGame {
 
     private void generateRoom() {
         System.out.println("new room");
+        this.item = null;
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
 
