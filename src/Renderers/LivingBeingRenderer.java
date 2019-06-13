@@ -21,7 +21,6 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
             i++;
         }
-
         return found;
     }
 
@@ -29,12 +28,12 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
     protected ArrayList<String> activities;
 
-    protected String lastActivity;
-    protected String lastVisionDirection;
-    protected Vector2f lastFacedDirection;
-    protected SpriteView lastView;
+    private String lastActivity;
+    private String lastVisionDirection;
+    private Vector2f lastFacedDirection;
+    private SpriteView lastView;
 
-    protected HashMap<String, SpriteView> views;
+    private HashMap<String, SpriteView> views;
 
     protected static final Vector2f zero = new Vector2f(0f, 0f);
     /**
@@ -52,7 +51,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
      * @param viewName the view name to check
      * @return String - the corresponding activity or null
      */
-    protected String hasCorrectName(String viewName) {
+    private String hasCorrectName(String viewName) {
         String[] arr = viewName.split("(?=\\p{Lu})");
 
         if(arr.length == 2 && acceptedDirectionsContains(arr[0]))
@@ -154,13 +153,13 @@ public class LivingBeingRenderer extends SpriteRenderer {
         // update last faced direction
         if (!facedDirection.equals(zero)) {
             this.lastFacedDirection = facedDirection;
-        }
 
-        // Identify the direction of his vision
-        if (this.lastFacedDirection.getY() > 0) this.lastVisionDirection = "bottom";
-        else if (this.lastFacedDirection.getX() > 0) this.lastVisionDirection = "right";
-        else if (this.lastFacedDirection.getX() < 0) this.lastVisionDirection = "left";
-        else this.lastVisionDirection = "top";
+            // Identify the direction of his vision
+            if (this.lastFacedDirection.getY() > 0) this.lastVisionDirection = "bottom";
+            else if (this.lastFacedDirection.getX() > 0) this.lastVisionDirection = "right";
+            else if (this.lastFacedDirection.getX() < 0) this.lastVisionDirection = "left";
+            else this.lastVisionDirection = "top";
+        }
 
         this.setLastView(this.getView(this.lastVisionDirection, this.lastActivity));
     }

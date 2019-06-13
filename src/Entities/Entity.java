@@ -133,7 +133,7 @@ public abstract class Entity {
      * @param acceleration the given acceleration
      */
     protected void updateSpeed(Vector2f acceleration) {
-        this.speed.add(acceleration.scale(TimeScale.getInGameTimeScale().getTimeScale()));
+        this.speed.add(acceleration);
 
         if (this.speed.length() > this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
             this.speed.normalise().scale(this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale());

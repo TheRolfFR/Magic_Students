@@ -10,6 +10,7 @@ import HUD.PauseMenu;
 import Managers.EnemiesManager;
 import Managers.HUDManager;
 import Managers.PortalsManager;
+import Renderers.BackgroundRenderer;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class MainClass extends BasicGame {
 
     private void generateRoom() {
         System.out.println("new room");
+        this.item = null;
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
 
@@ -117,15 +119,15 @@ public class MainClass extends BasicGame {
         this.player = new Player(gc,100,100);
         this.player.setShowDebugRect(true);
 
-        SceneRenderer.generateBackground("img/ground.png", gc);
+        BackgroundRenderer.generateBackground("img/ground.png", gc);
 
         this.portalsManager = new PortalsManager();
 
         this.enemiesManager = new EnemiesManager(this.player, this.portalsManager);
 
-        this.hudManager = new HUDManager(this.player);
+        this.hudManager = new HUDManager(this.player, this.enemiesManager);
 
-        generateRoom();
+        //generateRoom();
     }
 
     @Override
@@ -180,7 +182,7 @@ public class MainClass extends BasicGame {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        SceneRenderer.renderBackground(g, 0, 0);
+        BackgroundRenderer.renderBackground(g, 0, 0);
 
         if(item!=null){
             item.render(g);

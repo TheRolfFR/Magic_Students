@@ -7,24 +7,12 @@ import org.newdawn.slick.Graphics;
 
 public class HUDManager {
 
-    protected PlayerHealthBar playerHealthBar;
-    protected BossHealthBar bossHealthBar;
+    private PlayerHealthBar playerHealthBar;
+    private BossHealthBar bossHealthBar;
 
-    public PlayerHealthBar getPlayerHealthBar() {
-        return playerHealthBar;
-    }
-
-    public BossHealthBar getBossHealthBar() {
-        return bossHealthBar;
-    }
-
-    public void setBossHealthBar(BossHealthBar bossHealthBar) {
-        this.bossHealthBar = bossHealthBar;
-    }
-
-    public HUDManager(Player player) {
+    public HUDManager(Player player, EnemiesManager enemiesManager) {
         this.playerHealthBar = new PlayerHealthBar(player);
-        this.bossHealthBar = null;
+        this.bossHealthBar = new BossHealthBar(enemiesManager);
     }
 
     public void render(Graphics g) {

@@ -57,12 +57,6 @@ public class Item extends Entity {
     }
 
     private void collidingType(Player player){
-        System.out.println("acc" + player.getAccelerationRate());
-        System.out.println("armor" + player.getArmorPoints());
-        System.out.println("chp" + player.getCurrentHealthPoints());
-        System.out.println("mHP" + player.getMaxHealthPoints());
-        System.out.println("Melee" + MeleeAttack.damage);
-        System.out.println("ranged" + Snowball.damage);
         switch (this.typeOfItem){
             case 0 : player.heal((int) Math.round(HEALBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
@@ -77,11 +71,5 @@ public class Item extends Entity {
             case 5 : player.buffSpeed((int) Math.round(SPEEDBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
         }
-        System.out.println("acc" + player.ACCELERATION_RATE);
-        System.out.println("armor" + player.getArmorPoints());
-        System.out.println("chp" + player.getCurrentHealthPoints());
-        System.out.println("mHP" + player.getMaxHealthPoints());
-        System.out.println("Melee" + MeleeAttack.damage);
-        System.out.println("ranged" + Snowball.damage);
     }
 }

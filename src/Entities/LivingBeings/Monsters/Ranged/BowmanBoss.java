@@ -1,12 +1,13 @@
 package Entities.LivingBeings.Monsters.Ranged;
 
 import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Monsters.IBoss;
 import Main.MainClass;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
-public class BowmanBoss extends Bowman{
+public class BowmanBoss extends Bowman implements IBoss {
     public static final Vector2f BOWMANBOSS_TILESIZE = new Vector2f(96,96);
     private int summonCooldown = 30*60;
 

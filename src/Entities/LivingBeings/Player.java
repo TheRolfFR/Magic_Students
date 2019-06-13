@@ -63,7 +63,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
 
         String visions[] = {"top", "left", "right", "bottom"};
-        String activities[] = {"Move", "Idle"};
+        String activities[] = {"Move", "Idle","Dash","Attack","Cast"};
 
         String fileName;
         for(String vision : visions) {
@@ -108,6 +108,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
             else {
                 if (isAbleToMove()){
                     if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
+                        this.renderer.setLastActivity("Move");
                         if (this.keyUp) {
                             this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
                         }
@@ -122,7 +123,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
                         }
                     }
                     else{
-                        this.updateSpeed(this.getSpeed().negate().scale(0.2f));
+                        if(this.getSpeed().equals(new Vector2f(0,0))){
+                            this.renderer.setLastActivity("Idle");
+                        }
+                        else{
+                            this.updateSpeed(this.getSpeed().negate().scale(0.2f));
+                        }
                     }
                 }
             }
@@ -155,10 +161,13 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         this.setSpeed(new Vector2f(0, 0));
         this.framesLeftBeforeEnablingMovement = 6;
         Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(attackDirection.scale(this.getRadius()))));
+        this.renderer.setLastActivity("Attack");
+        this.renderer.update(this.meleeAttackDirection);
     }
-    
+
     private void startDash(){
-        if(this.getSpeed() != null){
+        if(this.getSpeed()!=null){
+            this.renderer.setLastActivity("Dash");
             framesLeftWhileDashing = 12;
             this.setSpeed(this.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
             dashCD = 18;
@@ -175,6 +184,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         framesLeftBeforeEnablingMovement = 6;
         this.setSpeed(new Vector2f(0,0));
         Ranged.allyProjectiles.add(new Fireball(this.getPosition(), fireballDirection)); //décalage car bord haut gauche
+        this.renderer.setLastActivity("Cast");
+        this.renderer.update(this.rangedAttackDirection);
     }
 
     private boolean isSpellReady(){return this.spellCD == 0;}
