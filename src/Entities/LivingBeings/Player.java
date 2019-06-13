@@ -158,7 +158,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private void startMeleeAttack(int mouseX, int mouseY){
         if(isAbleToMove()){
-            this.meleeAttackDirection = (new Vector2f(mouseX,mouseY).sub(this.getCenter())).normalise().scale(this.getRadius()).add(this.getCenter());
+            this.meleeAttackDirection = new Vector2f(mouseX,mouseY).sub(this.getCenter().normalise().scale(this.getRadius()).add(this.getCenter()));
             this.framesLeftBeforeEnablingMovement = 50;
             this.setSpeed(new Vector2f(0,0));
             this.renderer.setLastActivity("Attack");
