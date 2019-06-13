@@ -1,6 +1,7 @@
 package Managers;
 
 import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Monsters.IBoss;
 import Entities.LivingBeings.Monsters.Melee.KnightBoss;
 import Entities.LivingBeings.Monsters.Ranged.BowmanBoss;
 import Entities.LivingBeings.Player;
@@ -26,8 +27,14 @@ public class EnemiesManager {
     private Player player;
     private PortalsManager portalsManager;
 
+    private IBoss boss;
+
     public ArrayList<Monster> getEnemies() {
         return enemies;
+    }
+
+    public IBoss getBoss() {
+        return boss;
     }
 
     public EnemiesManager(Player player, PortalsManager portalsManager) {
@@ -76,27 +83,32 @@ public class EnemiesManager {
 
     public void generateBoss() {
         Random random = new Random();
+
         switch(random.nextInt(2)){
             case 0 :
-                addBossBowman();
+                this.boss = addBossBowman();
                 break;
             case 1 :
-                addBossKnight();
-                 break;
+                this.boss = addBossKnight();
+                break;
             default: break;
         }
     }
 
-    private void addBossKnight(){
+    private IBoss addBossKnight(){
         KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, (int) Math.round(1000*MainClass.getDifficulty()), (int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(0.4*KnightBoss.KNIGHTBOSS_TILESIZE.getY()));
         knightBoss.setShowDebugRect(true);
         this.enemies.add(knightBoss);
+
+        return knightBoss;
     }
 
-    private void addBossBowman(){
+    private IBoss addBossBowman(){
         BowmanBoss bowmanBoss = new BowmanBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, (int) Math.round(1000*MainClass.getDifficulty()), (int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(0.4*BowmanBoss.BOWMANBOSS_TILESIZE.getY()));
         bowmanBoss.setShowDebugRect(true);
         this.enemies.add(bowmanBoss);
+
+        return bowmanBoss;
     }
 
     public void update() {
@@ -113,6 +125,11 @@ public class EnemiesManager {
                 System.out.println("You killed an enemy");
                 LivingBeing.livingBeings.remove(enemy);
                 this.enemies.remove(enemy);
+
+
+                if(enemy instanceof IBoss) {
+                    this.boss = null;
+                }
             }
         }
         if (this.enemies.size() == 0) {
@@ -122,9 +139,12 @@ public class EnemiesManager {
 
     public void render(Graphics g) {
         for (Monster enemy: enemies){
-            enemy.setWorldHealthBar(new WorldHealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
             enemy.render(g);
-            enemy.getWorldHealthBar().render(g);
+
+            if(!(enemy instanceof IBoss)) {
+                enemy.setWorldHealthBar(new WorldHealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
+                enemy.getWorldHealthBar().render(g);
+            }
         }
         for (Projectile p : Ranged.enemyProjectiles) {
             p.render(g);

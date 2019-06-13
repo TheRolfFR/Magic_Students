@@ -1,6 +1,7 @@
 package Entities.LivingBeings.Monsters.Melee;
 
 import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Monsters.IBoss;
 import Main.MainClass;
 import Main.TimeScale;
 import Managers.EnemiesManager;
@@ -9,7 +10,7 @@ import org.newdawn.slick.geom.Vector2f;
 import java.sql.Time;
 import java.util.Random;
 
-public class KnightBoss extends Knight {
+public class KnightBoss extends Knight implements IBoss {
     public static final Vector2f KNIGHTBOSS_TILESIZE = new Vector2f(96,96);
     private int recoverTime = 0;
     private int summonCooldown = 30*60;

@@ -8,11 +8,14 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.Random;
 
 public class BackgroundRenderer {
+
+    private static final Color GROUND_COLOR = new Color(0x4CAF50);
+
     private static Image backgroundImage = null;
 
     private static Vector2f roomDimension = null;
 
-    static void generateBackground(String path, GameContainer gc) {
+    public static void generateBackground(String path, GameContainer gc) {
         if (backgroundImage == null) {
             try {
                 float scale = 2;
@@ -29,6 +32,7 @@ public class BackgroundRenderer {
                 Random randomReference = new Random();
                 int spriteX;
 
+                Graphics backgroundImageG = backgroundImage.getGraphics();
                 for (int a = 0; a < gc.getWidth()/scaledHeight+1; a++) {
                     for (int b = 0; b < gc.getHeight()/scaledHeight+1; b++) {
                         if (randomReference.nextInt(4) < 3) {
@@ -36,11 +40,15 @@ public class BackgroundRenderer {
                         } else {
                             spriteX = 1+ randomReference.nextInt(backgrounds.getHorizontalCount() - 1);
                         }
-                        backgroundImage.getGraphics().drawImage(backgrounds.getSprite(spriteX, 0), a*scaledHeight, b*scaledHeight);
+                        backgroundImageG.drawImage(backgrounds.getSprite(spriteX, 0), a*scaledHeight, b*scaledHeight);
                     }
                 }
 
-                backgroundImage.getGraphics().flush();
+                backgroundImageG.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
+                backgroundImageG.setColor(GROUND_COLOR);
+                backgroundImageG.fillRect(0, 0, gc.getWidth(), gc.getHeight());
+
+                backgroundImageG.flush();
 
                 roomDimension = new Vector2f(gc.getWidth(), gc.getHeight());
             } catch (SlickException e) {
@@ -49,7 +57,7 @@ public class BackgroundRenderer {
         }
     }
 
-    static void renderBackground(Graphics g, int x, int y) {
+    public static void renderBackground(Graphics g, int x, int y) {
         if (backgroundImage == null)
             return;
 

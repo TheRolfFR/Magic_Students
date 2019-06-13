@@ -4,7 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 public abstract class UIHealthBar {
-    protected static final int HEALTHBAR_BG_OPACITY = (int) (.3f*255);
+    protected static final int HEALTHBAR_BG_OPACITY = (int) (.4f*255);
     protected static final Color HEALTHBAR_BG_COLOR = new Color(0,0,0,HEALTHBAR_BG_OPACITY);
 
     protected int healthBarWidth;
