@@ -153,13 +153,13 @@ public class LivingBeingRenderer extends SpriteRenderer {
         // update last faced direction
         if (!facedDirection.equals(zero)) {
             this.lastFacedDirection = facedDirection;
-        }
 
-        // Identify the direction of his vision
-        if (this.lastFacedDirection.getY() > 0) this.lastVisionDirection = "bottom";
-        else if (this.lastFacedDirection.getX() > 0) this.lastVisionDirection = "right";
-        else if (this.lastFacedDirection.getX() < 0) this.lastVisionDirection = "left";
-        else this.lastVisionDirection = "top";
+            // Identify the direction of his vision
+            if (this.lastFacedDirection.getY() > 0) this.lastVisionDirection = "bottom";
+            else if (this.lastFacedDirection.getX() > 0) this.lastVisionDirection = "right";
+            else if (this.lastFacedDirection.getX() < 0) this.lastVisionDirection = "left";
+            else this.lastVisionDirection = "top";
+        }
 
         this.setLastView(this.getView(this.lastVisionDirection, this.lastActivity));
     }
