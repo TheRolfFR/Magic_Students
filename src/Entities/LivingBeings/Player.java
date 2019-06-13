@@ -101,11 +101,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      */
     public void update() {
         updateCooldown();
-        if (!isDashing()) {
-            if (this.keySpace && isDashReady()) {
+        if (!isDashing()){
+            if (this.keySpace && isDashReady()){
                 startDash();
-            } else {
-                if (isAbleToMove()) {
+            }
+            else {
+                if (isAbleToMove()){
                     if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
                         if (this.keyUp) {
                             this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
@@ -119,7 +120,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
                         if (this.keyRight) {
                             this.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()));
                         }
-                    } else {
+                    }
+                    else{
                         this.updateSpeed(this.getSpeed().negate().scale(0.2f));
                     }
                 }
@@ -156,7 +158,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         this.renderer.update(this.meleeAttackDirection);
         doMeleeAttack();
     }
-
 
     /**
      * do a melee attack
