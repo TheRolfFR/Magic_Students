@@ -59,7 +59,7 @@ public class Knight extends Melee {
     }
 
     protected boolean isTargetInRange(LivingBeing target){
-        return (this.getCenter().add(getLocationOfTarget(target).scale(this.getRadius())).sub(target.getCenter()).length() < target.getRadius() + this.getRadius());
+        return (this.getCenter().add(getLocationOfTarget(target).scale(this.getRadius()*2)).sub(target.getCenter()).length() < target.getRadius() + this.getRadius());
     }
 
     protected void startAttacking(LivingBeing target){
