@@ -73,10 +73,10 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
                 // Determine filename
                 fileName = vision;
                 if (!activity.equals("Move"))
-                    if (activity.equals("Cast") /*|| activity.equals("Dash")*/) {
+                    if (activity.equals("Cast")) {
                         fileName = activity;
                     }
-                    else if (!activity.equals("Dash")) /* temporary*/ {
+                    else {
                         fileName += activity;
                     }
 
@@ -173,7 +173,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private void startDash(){
         if(this.getSpeed()!=null){
             this.renderer.setLastActivity("Dash");
-            framesLeftWhileDashing = 12;
+            framesLeftWhileDashing = 25;
             this.setSpeed(this.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
             dashCD = 18;
         }
