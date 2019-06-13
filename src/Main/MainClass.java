@@ -27,6 +27,7 @@ public class MainClass extends BasicGame {
     private static MainClass instance = null;
 
     private static double difficulty = 1;
+    private static int numberOfFramePerSecond = 60;
 
     private PortalsManager portalsManager;
     private EnemiesManager enemiesManager;
@@ -41,6 +42,8 @@ public class MainClass extends BasicGame {
     private Item item;
 
     public static double getDifficulty(){return difficulty;}
+
+    public static int getNumberOfFramePerSecond() { return numberOfFramePerSecond; }
 
     public static void nextDifficulty(){difficulty = difficulty+1;}
 
@@ -127,6 +130,8 @@ public class MainClass extends BasicGame {
 
     @Override
     public void update(GameContainer gc, int timeOfOneFrame) {
+        numberOfFramePerSecond = gc.getFPS();
+
         if (!MainClass.isGamePaused()) {
             TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
 
