@@ -25,7 +25,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private PlayerMarkerRenderer playerMarkerRenderer;
 
     private int framesLeftBeforeEnablingMovement = 0;
-    private int framesLeftWhileDashing=0;
+    private int framesLeftWhileDashing = 0;
 
     private int dashCD = 0;
     private int spellCD = 0;
@@ -138,7 +138,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         if (!isDashReady()){
             dashCD = dashCD - 1;
         }
-        if (!isCastingUp()){
+        if (!isSpellReady()){
             spellCD = spellCD - 1;
         }
         if (!isAbleToMove()){
@@ -150,31 +150,15 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     }
 
 
-    private void startMeleeAttack(int mouseX, int mouseY){
-        this.meleeAttackDirection = new Vector2f(mouseX,mouseY).sub(this.getCenter()).normalise().scale(this.getRadius()).add(this.getCenter());
+    private void meleeAttack() {
+        Vector2f attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(this.getCenter()).normalise();
+        this.setSpeed(new Vector2f(0, 0));
         this.framesLeftBeforeEnablingMovement = 6;
-        this.setSpeed(new Vector2f(0,0));
-        doMeleeAttack();
+        Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(attackDirection.scale(this.getRadius()))));
     }
-
-    /**
-     * do a melee attack
-     */
-    private void doMeleeAttack(){
-        Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(this.getCenter().sub(this.meleeAttackDirection).normalise().scale(-this.getRadius())).add(new Vector2f(-MeleeAttack.getMeleeRadius(), -MeleeAttack.getMeleeRadius())), this.meleeAttackDirection));
-        this.meleeAttackDirection.set(0,0);
-    }
-
-    /**
-     * Do a ranged attack
-     */
-    private void doRangedAttack() {
-        Ranged.allyProjectiles.add(new Fireball(this.rangedAttackDirection.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Fireball.getFireballRadius(), this.getCenter().y - Fireball.getFireballRadius())), this.rangedAttackDirection.copy())); //décalage car bord haut gauche
-        this.rangedAttackDirection.set(0,0);
-    }
-
+    
     private void startDash(){
-        if(this.getSpeed()!=null){
+        if(this.getSpeed() != null){
             framesLeftWhileDashing = 12;
             this.setSpeed(this.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
             dashCD = 18;
@@ -185,15 +169,15 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private boolean isDashReady(){return dashCD == 0;}
 
-    private void startRangedAttack(){
-        this.rangedAttackDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getCenter());
+    private void shootFireball(){
+        Vector2f fireballDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getCenter()).normalise();
         spellCD = 30;
         framesLeftBeforeEnablingMovement = 6;
         this.setSpeed(new Vector2f(0,0));
-        doRangedAttack();
+        Ranged.allyProjectiles.add(new Fireball(this.getPosition(), fireballDirection)); //décalage car bord haut gauche
     }
 
-    private boolean isCastingUp(){return this.spellCD == 0;}
+    private boolean isSpellReady(){return this.spellCD == 0;}
 
     @Override
     public void takeDamage(int damage) {
@@ -317,10 +301,13 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         if (!MainClass.isGamePaused() && !isDashing()) {
             switch (button) {
                 case 0:
-                    startMeleeAttack(x, y);
+                    meleeAttack();
                     break;
                 case 1:
-                    startRangedAttack();
+                    shootFireball();
+//                    if (isSpellReady()){
+//                        shootFireball();
+//                    }
                     break;
             }
         }

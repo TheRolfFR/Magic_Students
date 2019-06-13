@@ -154,7 +154,7 @@ public abstract class Entity {
     public abstract void move();
 
     public Vector2f getCenter(){
-        return new Vector2f(this.getPosition().x + (this.getTileSize().getX()/2),this.getPosition().y + (this.getTileSize().getY()/2));
+        return new Vector2f(this.getPosition().x + (this.getTileSize().getX()/2f),this.getPosition().y + (this.getTileSize().getY()/2f));
     }
 
     public Shape getBounds(){
