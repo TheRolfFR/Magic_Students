@@ -1,4 +1,4 @@
-package Main;
+package Renderers;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
@@ -7,12 +7,12 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
-public class SceneRenderer {
+public class BackgroundRenderer {
     private static Image backgroundImage = null;
 
     private static Vector2f roomDimension = null;
 
-    static void generateBackground(String path, GameContainer gc) {
+    public static void generateBackground(String path, GameContainer gc) {
         if (backgroundImage == null) {
             try {
                 float scale = 2;
@@ -49,7 +49,7 @@ public class SceneRenderer {
         }
     }
 
-    static void renderBackground(Graphics g, int x, int y) {
+    public static void renderBackground(Graphics g, int x, int y) {
         if (backgroundImage == null)
             return;
 
