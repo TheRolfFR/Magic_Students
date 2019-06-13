@@ -162,10 +162,10 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     }
 
     private void meleeAttack() {
-        Vector2f attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(this.getCenter()).normalise();
+        Vector2f attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(this.getPosition()).normalise();
         this.setSpeed(new Vector2f(0, 0));
-        this.framesLeftBeforeEnablingMovement = 15;
-        Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(attackDirection.scale(this.getRadius()))));
+        this.framesLeftBeforeEnablingMovement = MainClass.getNumberOfFramePerSecond()/10;
+        Ranged.allyProjectiles.add(new MeleeAttack(this.getPosition().add(attackDirection.scale(this.getRadius()))));
         this.renderer.setLastActivity("Attack");
         this.renderer.update(this.meleeAttackDirection);
     }
@@ -173,9 +173,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private void startDash(){
         if(this.getSpeed()!=null){
             this.renderer.setLastActivity("Dash");
-            framesLeftWhileDashing = 25;
+            framesLeftWhileDashing = MainClass.getNumberOfFramePerSecond()/3;
             this.setSpeed(this.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
-            dashCD = 18;
+            dashCD = MainClass.getNumberOfFramePerSecond()/2;
         }
     }
 
@@ -184,9 +184,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private boolean isDashReady(){return dashCD == 0;}
 
     private void shootFireball(){
-        Vector2f fireballDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getCenter()).normalise();
-        spellCD = 30;
-        framesLeftBeforeEnablingMovement = 15;
+        Vector2f fireballDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getPosition()).normalise();
+        spellCD = MainClass.getNumberOfFramePerSecond()*4;
+        framesLeftBeforeEnablingMovement = MainClass.getNumberOfFramePerSecond()/10;
         this.setSpeed(new Vector2f(0,0));
         Ranged.allyProjectiles.add(new Fireball(this.getPosition(), fireballDirection)); //décalage car bord haut gauche
         this.renderer.setLastActivity("Cast");

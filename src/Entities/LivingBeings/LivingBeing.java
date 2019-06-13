@@ -143,7 +143,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     private void tpOutOf(LivingBeing opponent) {
-        Vector2f diff = this.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(getRadius() + opponent.getRadius() - opponent.getCenter().sub(getCenter()).length()));
+        Vector2f diff = this.getPosition().sub(opponent.getPosition()).normalise().scale((float) ceil(getRadius() + opponent.getRadius() - opponent.getPosition().sub(getPosition()).length()));
         setPosition(getPosition().add(diff));
         tpInBounds();
     }
@@ -155,17 +155,17 @@ public abstract class LivingBeing extends Entity implements Comparable {
         }
     }
     private void tpInBounds() {
-        if (this.getCenter().x < getRadius()) {
-            this.setPosition(new Vector2f(getRadius() - this.getTileSize().getX()/2 , this.getPosition().getY()));
+        if (this.getPosition().x < getRadius()) {
+            this.setPosition(new Vector2f(getRadius(), this.getPosition().getY()));
         }
-        if (this.getCenter().x >= MainClass.WIDTH - getRadius()) {
-            this.setPosition(new Vector2f(MainClass.WIDTH - getRadius() - this.getTileSize().getX()/2, this.getPosition().getY()));
+        if (this.getPosition().x >= MainClass.WIDTH - getRadius()) {
+            this.setPosition(new Vector2f(MainClass.WIDTH - getRadius(), this.getPosition().getY()));
         }
-        if (this.getCenter().y < getRadius()) {
-            this.setPosition(new Vector2f(this.getPosition().getX(), getRadius() - this.getTileSize().getY()/2));
+        if (this.getPosition().y < getRadius()) {
+            this.setPosition(new Vector2f(this.getPosition().getX(), getRadius()));
         }
-        if (this.getCenter().y >= MainClass.HEIGHT - getRadius()) {
-            this.setPosition(new Vector2f(this.getPosition().getX(), MainClass.HEIGHT - getRadius() - this.getTileSize().getY()/2));
+        if (this.getPosition().y >= MainClass.HEIGHT - getRadius()) {
+            this.setPosition(new Vector2f(this.getPosition().getX(), MainClass.HEIGHT - getRadius()));
         }
     }
 

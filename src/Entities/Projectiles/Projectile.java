@@ -79,6 +79,15 @@ public abstract class Projectile extends Entity {
 
     public void update() {}
 
+    @Override
+    protected void updateSpeed(Vector2f acceleration) {
+        this.setSpeed(this.getSpeed().add(acceleration));
+
+        if (this.getSpeed().length() > this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
+            this.setSpeed(this.getSpeed().normalise().scale(this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()));
+        }
+    }
+
     public static void updateEnemyProjectile(Player target){
         for (int i = 0; i < Ranged.enemyProjectiles.size(); i++) {
             Projectile p = Ranged.enemyProjectiles.get(i);
@@ -145,7 +154,7 @@ public abstract class Projectile extends Entity {
     public void move() {
         this.setPosition(this.getPosition().add(this.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
 
-        if (this.getCenter().getX() < 0 || (this.getCenter().getX() + this.getRadius()>= MainClass.WIDTH) || this.getCenter().getY() < 0 || (this.getCenter().getY() + this.getRadius()>= MainClass.HEIGHT)) {
+        if (this.getPosition().getX() < 0 || (this.getPosition().getX() + this.getRadius()>= MainClass.WIDTH) || this.getPosition().getY() < 0 || (this.getPosition().getY() + this.getRadius()>= MainClass.HEIGHT)) {
            this.isDead=true;
         }
     }

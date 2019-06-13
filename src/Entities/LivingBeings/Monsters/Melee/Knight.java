@@ -1,6 +1,7 @@
 package Entities.LivingBeings.Monsters.Melee;
 
 import Entities.LivingBeings.LivingBeing;
+import Main.MainClass;
 import Renderers.LivingBeingRenderer;
 import Renderers.SpriteView;
 import org.newdawn.slick.geom.Vector2f;
@@ -58,30 +59,30 @@ public class Knight extends Melee {
         }
     }
 
-    protected boolean isTargetInRange(LivingBeing target){
-        return (this.getCenter().add(getLocationOfTarget(target).scale(this.getRadius()*2)).sub(target.getCenter()).length() < target.getRadius() + this.getRadius());
+    boolean isTargetInRange(LivingBeing target){
+        return (this.getPosition().add(getLocationOfTarget(target).scale(this.getRadius()*2)).sub(target.getPosition()).length() < target.getRadius() + this.getRadius());
     }
 
-    protected void startAttacking(LivingBeing target){
+    void startAttacking(LivingBeing target){
         this.setSpeed(new Vector2f(0,0));
         this.attackDirection = getLocationOfTarget(target);
-        this.framesLeftBeforeAttack = 30;
+        this.framesLeftBeforeAttack = MainClass.getNumberOfFramePerSecond()/2;
     }
 
-    protected void gettingReady(){
+    void gettingReady(){
         this.framesLeftBeforeAttack = this.framesLeftBeforeAttack - 1;
     }
 
-    protected boolean isAttackReady(){
+    boolean isAttackReady(){
         return (this.framesLeftBeforeAttack == 0);
     }
 
-    protected boolean isAttacking(){
+    boolean isAttacking(){
         return (!this.attackDirection.equals(new Vector2f(0,0)));
     }
 
     private Vector2f getLocationOfTarget(LivingBeing target){
-        Vector2f directionOfTarget = new Vector2f(target.getCenter().sub(this.getCenter()));
+        Vector2f directionOfTarget = new Vector2f(target.getPosition().sub(this.getPosition()));
         if (directionOfTarget.getX() < directionOfTarget.getY()){
             if (directionOfTarget.getY() < 0){
                 return new Vector2f(0,-1);

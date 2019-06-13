@@ -13,8 +13,8 @@ import org.newdawn.slick.geom.Vector2f;
 public class Bowman extends Ranged {
 
     public static final Vector2f BOWMAN_TILESIZE = new Vector2f(48,48);
-    protected static final int SHOT_DELAY = 120;
-    protected int delayCounter;
+    static final int SHOT_DELAY = 120;
+    int delayCounter;
 
     public Bowman(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, (int) BOWMAN_TILESIZE.getX(), (int) BOWMAN_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -67,11 +67,10 @@ public class Bowman extends Ranged {
 
     protected void attack(LivingBeing target){
 
-        Vector2f direction = target.getCenter().sub(this.getCenter());
-        //enemyProjectiles.add(new Arrow(this.getCenter().add(direction.normalise().scale(this.getRadius()+25)), direction));
-        enemyProjectiles.add(new Arrow(direction.copy().normalise().scale(this.getRadius()).add(this.getPosition().sub(direction.copy().normalise().scale(Arrow.getArrowRadius()))), direction));
+        Vector2f direction = target.getPosition().sub(this.getPosition()).normalise();
+        enemyProjectiles.add(new Arrow(this.getPosition().add(direction.copy().scale(this.getRadius())), direction));
         enemyProjectiles.get(enemyProjectiles.size()-1).setShowDebugRect(true);
-
+        this.setSpeed(new Vector2f(0,0));
         this.delayCounter = 0;
     }
 

@@ -154,11 +154,11 @@ public abstract class Entity {
     public abstract void move();
 
     public Vector2f getCenter(){
-        return new Vector2f(this.getPosition().x + (this.getTileSize().getX()/2f),this.getPosition().y + (this.getTileSize().getY()/2f));
-    }
+        return this.position.copy();
+     }
 
     public Shape getBounds(){
-        return new Circle(getCenter().x,getCenter().y, getRadius());
+        return new Circle(getPosition().x,getPosition().y, getRadius());
     }
 
     /**
@@ -178,7 +178,7 @@ public abstract class Entity {
      */
     public boolean collidesWith(Entity other){
         if (other != this){
-            return (this.getCenter().sub(other.getCenter()).length() < this.radius + other.getRadius());
+            return (this.getPosition().sub(other.getPosition()).length() < this.radius + other.getRadius());
         }
         else {
             return false;

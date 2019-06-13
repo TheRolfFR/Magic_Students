@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class BowmanBoss extends Bowman implements IBoss {
     public static final Vector2f BOWMANBOSS_TILESIZE = new Vector2f(96,96);
-    private int summonCooldown = 30*60;
+    private int summonCooldown = 30*MainClass.getNumberOfFramePerSecond();
 
     public BowmanBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
         super(x, y,BOWMANBOSS_TILESIZE, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -44,6 +44,7 @@ public class BowmanBoss extends Bowman implements IBoss {
     private void summon() {
         this.setSpeed(new Vector2f(0,0));
         MainClass.getInstance().getEnemiesManager().addBowman();
+        summonCooldown = 30*MainClass.getNumberOfFramePerSecond();
     }
 
     private boolean decideToSummon(){
