@@ -108,6 +108,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
             else {
                 if (isAbleToMove()){
                     if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
+                        this.renderer.setLastActivity("Move");
                         if (this.keyUp) {
                             this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
                         }
@@ -122,7 +123,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
                         }
                     }
                     else{
-                        this.updateSpeed(this.getSpeed().negate().scale(0.2f));
+                        if(this.getSpeed().equals(new Vector2f(0,0))){
+                            this.renderer.setLastActivity("Idle");
+                        }
+                        else{
+                            this.updateSpeed(this.getSpeed().negate().scale(0.2f));
+                        }
                     }
                 }
             }
@@ -151,12 +157,14 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
 
     private void startMeleeAttack(int mouseX, int mouseY){
-        this.meleeAttackDirection = new Vector2f(mouseX,mouseY).sub(this.getCenter()).normalise().scale(this.getRadius()).add(this.getCenter());
-        this.framesLeftBeforeEnablingMovement = 6;
-        this.setSpeed(new Vector2f(0,0));
-        this.renderer.setLastActivity("Attack");
-        this.renderer.update(this.meleeAttackDirection);
-        doMeleeAttack();
+        if(isAbleToMove()){
+            this.meleeAttackDirection = new Vector2f(mouseX,mouseY).sub(this.getCenter()).normalise().scale(this.getRadius()).add(this.getCenter());
+            this.framesLeftBeforeEnablingMovement = 6;
+            this.setSpeed(new Vector2f(0,0));
+            this.renderer.setLastActivity("Attack");
+            this.renderer.update(this.meleeAttackDirection);
+            doMeleeAttack();
+        }
     }
 
     /**
@@ -165,7 +173,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private void doMeleeAttack(){
         Ranged.allyProjectiles.add(new MeleeAttack(this.getCenter().add(this.getCenter().sub(this.meleeAttackDirection).normalise().scale(-this.getRadius())).add(new Vector2f(-MeleeAttack.getMeleeRadius(), -MeleeAttack.getMeleeRadius())), this.meleeAttackDirection));
         this.meleeAttackDirection.set(0,0);
-        this.renderer.setLastActivity("Idle");
     }
 
     /**
@@ -174,7 +181,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private void doRangedAttack() {
         Ranged.allyProjectiles.add(new Fireball(this.rangedAttackDirection.copy().normalise().scale(this.getRadius()).add(new Vector2f(this.getCenter().x - Fireball.getFireballRadius(), this.getCenter().y - Fireball.getFireballRadius())), this.rangedAttackDirection.copy())); //décalage car bord haut gauche
         this.rangedAttackDirection.set(0,0);
-        this.renderer.setLastActivity("Idle");
     }
 
     private void startDash(){
@@ -191,13 +197,15 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
     private boolean isDashReady(){return dashCD == 0;}
 
     private void startRangedAttack(){
-        this.rangedAttackDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getCenter());
-        this.renderer.setLastActivity("Attack");
-        this.renderer.update(this.rangedAttackDirection);
-        spellCD = 30;
-        framesLeftBeforeEnablingMovement = 6;
-        this.setSpeed(new Vector2f(0,0));
-        doRangedAttack();
+        if(isAbleToMove() && isCastingUp()){
+            this.rangedAttackDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getCenter());
+            this.renderer.setLastActivity("Cast");
+            this.renderer.update(this.rangedAttackDirection);
+            spellCD = 30;
+            framesLeftBeforeEnablingMovement = 6;
+            this.setSpeed(new Vector2f(0,0));
+            doRangedAttack();
+        }
     }
 
     private boolean isCastingUp(){return this.spellCD == 0;}
