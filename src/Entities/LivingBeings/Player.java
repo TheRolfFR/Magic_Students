@@ -158,8 +158,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private void startMeleeAttack(int mouseX, int mouseY){
         if(isAbleToMove()){
-            this.meleeAttackDirection = new Vector2f(mouseX,mouseY).sub(this.getCenter()).normalise().scale(this.getRadius()).add(this.getCenter());
-            this.framesLeftBeforeEnablingMovement = 6;
+            this.meleeAttackDirection = (new Vector2f(mouseX,mouseY).sub(this.getCenter())).normalise().scale(this.getRadius()).add(this.getCenter());
+            this.framesLeftBeforeEnablingMovement = 50;
             this.setSpeed(new Vector2f(0,0));
             this.renderer.setLastActivity("Attack");
             this.renderer.update(this.meleeAttackDirection);
@@ -196,14 +196,14 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private boolean isDashReady(){return dashCD == 0;}
 
-    private void startRangedAttack(){
+    private void startRangedAttack(int mouseX, int mouseY){
         if(isAbleToMove() && isCastingUp()){
-            this.rangedAttackDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getCenter());
+            this.rangedAttackDirection = new Vector2f(mouseX, mouseY).sub(this.getCenter());
+            spellCD = 30;
+            framesLeftBeforeEnablingMovement = 50;
+            this.setSpeed(new Vector2f(0,0));
             this.renderer.setLastActivity("Cast");
             this.renderer.update(this.rangedAttackDirection);
-            spellCD = 30;
-            framesLeftBeforeEnablingMovement = 6;
-            this.setSpeed(new Vector2f(0,0));
             doRangedAttack();
         }
     }
@@ -335,7 +335,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
                     startMeleeAttack(x, y);
                     break;
                 case 1:
-                    startRangedAttack();
+                    startRangedAttack(x, y);
                     break;
             }
         }
