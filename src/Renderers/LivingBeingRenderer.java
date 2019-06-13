@@ -21,7 +21,6 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
             i++;
         }
-
         return found;
     }
 

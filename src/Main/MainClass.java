@@ -125,7 +125,7 @@ public class MainClass extends BasicGame {
 
         this.hudManager = new HUDManager(this.player);
 
-        generateRoom();
+        //generateRoom();
     }
 
     @Override
