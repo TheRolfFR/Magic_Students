@@ -31,7 +31,7 @@ public class KnightBoss extends Knight {
         }
         else {
             if (isSummonReady()){
-                if (decideToSummon() || true){
+                if (decideToSummon()){
                     summon();
                 }
             }
@@ -65,6 +65,7 @@ public class KnightBoss extends Knight {
     private void summon() {
         this.setSpeed(new Vector2f(0,0));
         MainClass.getInstance().getEnemiesManager().addKnight();
+        this.summonCooldown = 30*60;
     }
 
     private boolean decideToSummon(){
