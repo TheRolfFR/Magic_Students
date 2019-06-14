@@ -98,7 +98,7 @@ public class Item extends Entity {
 
     @Override
     public void render(Graphics g) {
-        this.renderer.render(g, (int) this.getPosition().getX(), (int) this.getPosition().getY());
+        this.renderer.render(g, (int) this.getCenter().getX(), (int) this.getCenter().getY());
         super.render(g);
     }
 }

@@ -50,7 +50,7 @@ public class Knight extends Melee implements KnightConstant{
         }
         else {
             if (!this.isStun()){
-                super.updateSpeed(target.getPosition().sub(super.getPosition()).normalise().scale(super.getAccelerationRate()));
+                super.updateSpeed(target.getCenter().sub(super.getCenter()).normalise().scale(super.getAccelerationRate()));
 
                 super.move();
                 if (this.isTargetInRange(target)){
@@ -74,11 +74,11 @@ public class Knight extends Melee implements KnightConstant{
     }
 
     boolean isTargetInRange(LivingBeing target){
-        return (super.getPosition().add(getLocationOfTarget(target).scale(super.getRadius()*1.5f)).sub(target.getPosition()).length() < target.getRadius() + super.getRadius());
+        return (super.getCenter().add(getLocationOfTarget(target).scale(super.getRadius()*1.5f)).sub(target.getCenter()).length() < target.getRadius() + super.getRadius());
     }
 
     private boolean isTargetStillInRange(LivingBeing target){
-        return (super.getPosition().add(this.attackDirection.scale(super.getRadius()*1.5f)).sub(target.getPosition()).length() < target.getRadius() + super.getRadius());
+        return (super.getCenter().add(this.attackDirection.scale(super.getRadius()*1.5f)).sub(target.getCenter()).length() < target.getRadius() + super.getRadius());
     }
 
     void startAttacking(LivingBeing target){
@@ -96,7 +96,7 @@ public class Knight extends Melee implements KnightConstant{
     }
 
     private Vector2f getLocationOfTarget(LivingBeing target){
-        Vector2f directionOfTarget = new Vector2f(target.getPosition().sub(super.getPosition()));
+        Vector2f directionOfTarget = new Vector2f(target.getCenter().sub(super.getCenter()));
         if (directionOfTarget.getX() < directionOfTarget.getY()){
             if (directionOfTarget.getY() < 0){
                 return new Vector2f(0,-1);

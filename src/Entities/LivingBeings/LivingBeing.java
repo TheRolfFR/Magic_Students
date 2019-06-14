@@ -165,8 +165,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     private void tpOutOf(LivingBeing opponent) {
-        Vector2f diff = super.getPosition().sub(opponent.getPosition()).normalise().scale((float) ceil(super.getRadius() + opponent.getRadius() - opponent.getPosition().sub(super.getPosition()).length()));
-        super.setPosition(super.getPosition().add(diff));
+        Vector2f diff = super.getCenter().sub(opponent.getCenter()).normalise().scale((float) ceil(super.getRadius() + opponent.getRadius() - opponent.getCenter().sub(super.getCenter()).length()));
+        super.setCenter(super.getCenter().add(diff));
         this.tpInBounds();
     }
 
@@ -177,22 +177,22 @@ public abstract class LivingBeing extends Entity implements Comparable {
         }
     }
     private void tpInBounds() {
-        if (super.getPosition().x < super.getRadius()) {
-            super.setPosition(new Vector2f(super.getRadius(), super.getPosition().getY()));
+        if (super.getCenter().x < super.getRadius()) {
+            super.setCenter(new Vector2f(super.getRadius(), super.getCenter().getY()));
         }
-        if (super.getPosition().x >= MainClass.WIDTH - super.getRadius()) {
-            super.setPosition(new Vector2f(MainClass.WIDTH - super.getRadius(), super.getPosition().getY()));
+        if (super.getCenter().x >= MainClass.WIDTH - super.getRadius()) {
+            super.setCenter(new Vector2f(MainClass.WIDTH - super.getRadius(), super.getCenter().getY()));
         }
-        if (super.getPosition().y < super.getRadius()) {
-            super.setPosition(new Vector2f(super.getPosition().getX(), super.getRadius()));
+        if (super.getCenter().y < super.getRadius()) {
+            super.setCenter(new Vector2f(super.getCenter().getX(), super.getRadius()));
         }
-        if (super.getPosition().y >= MainClass.HEIGHT - super.getRadius()) {
-            super.setPosition(new Vector2f(super.getPosition().getX(), MainClass.HEIGHT - super.getRadius()));
+        if (super.getCenter().y >= MainClass.HEIGHT - super.getRadius()) {
+            super.setCenter(new Vector2f(super.getCenter().getX(), MainClass.HEIGHT - super.getRadius()));
         }
     }
 
     public void move() {
-        super.setPosition(super.getPosition().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
+        super.setCenter(super.getCenter().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
         this.tpInBounds();
 
         for(IMoveListener listener : this.moveListeners) {
@@ -209,7 +209,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        if (this.getPosition().getY() > ((LivingBeing) o).getPosition().getY()) {
+        if (this.getCenter().getY() > ((LivingBeing) o).getCenter().getY()) {
             return 1;
         } else {
             return 0;

@@ -30,14 +30,12 @@ public abstract class Entity {
         this.tileSize = tileSize;
     }
 
-    /**
-     * Returns hitbox top left corner
-     * @return hitbox top left corner
-     */
-    public Vector2f getPosition() { return this.position.copy(); }
-
-    protected void setPosition(Vector2f position) {
+    protected void setCenter(Vector2f position) {
         this.position = position;
+    }
+
+    public Vector2f getCenter(){
+        return this.position.copy();
     }
 
     protected void setSpeed(Vector2f speed) {
@@ -153,12 +151,8 @@ public abstract class Entity {
      */
     public abstract void move();
 
-    public Vector2f getCenter(){
-        return this.position.copy();
-     }
-
     public Shape getBounds(){
-        return new Circle(getPosition().x,getPosition().y, getRadius());
+        return new Circle(getCenter().x,getCenter().y, getRadius());
     }
 
     /**
@@ -178,7 +172,7 @@ public abstract class Entity {
      */
     public boolean collidesWith(Entity other){
         if (other != this){
-            return (this.getPosition().sub(other.getPosition()).length() < this.radius + other.getRadius());
+            return (this.getCenter().sub(other.getCenter()).length() < this.radius + other.getRadius());
         }
         else {
             return false;

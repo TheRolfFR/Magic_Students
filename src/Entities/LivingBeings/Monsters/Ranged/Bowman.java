@@ -88,11 +88,11 @@ public class Bowman extends Ranged implements BowmanConstants{
     }
 
     boolean targetIsClose(LivingBeing target) {
-        return target.getPosition().distance(super.getPosition()) < BowmanConstants.RUN_AWAY_THRESHOLD;
+        return target.getCenter().distance(super.getCenter()) < BowmanConstants.RUN_AWAY_THRESHOLD;
     }
 
     void runAway(LivingBeing target) {
-        super.updateSpeed(target.getPosition().sub(super.getPosition()).normalise().negate().scale(super.getAccelerationRate()));
+        super.updateSpeed(target.getCenter().sub(super.getCenter()).normalise().negate().scale(super.getAccelerationRate()));
         this.framesLeftWhileSpeedLocked = 0;
     }
 
@@ -116,7 +116,7 @@ public class Bowman extends Ranged implements BowmanConstants{
     }
 
     void startAttacking(LivingBeing target) {
-        this.attackDirection.set(target.getPosition().sub(this.getPosition()).normalise());
+        this.attackDirection.set(target.getCenter().sub(this.getCenter()).normalise());
         this.setSpeed(new Vector2f(0,0));
         this.framesLeftBeforeAttack = BowmanConstants.ATTACK_LOADING_DURATION;
     }
@@ -149,13 +149,13 @@ public class Bowman extends Ranged implements BowmanConstants{
     }
 
     void aim(LivingBeing target){
-        this.attackDirection.set(target.getPosition().sub(super.getPosition()).normalise());
+        this.attackDirection.set(target.getCenter().sub(super.getCenter()).normalise());
     }
 
     protected void attack(LivingBeing target){
 
-        this.attackDirection.set(target.getPosition().sub(super.getPosition()).normalise());
-        Ranged.enemyProjectiles.add(new Arrow(super.getPosition().add(this.attackDirection.copy().scale(super.getRadius())), this.attackDirection.copy()));
+        this.attackDirection.set(target.getCenter().sub(super.getCenter()).normalise());
+        Ranged.enemyProjectiles.add(new Arrow(super.getCenter().add(this.attackDirection.copy().scale(super.getRadius())), this.attackDirection.copy()));
         Ranged.enemyProjectiles.get(Ranged.enemyProjectiles.size()-1).setShowDebugRect(true);
         this.attackDirection.set(0,0);
         this.shootCooldown = BowmanConstants.SHOOT_COOLDOWN;

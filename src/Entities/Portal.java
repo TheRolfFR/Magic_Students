@@ -20,7 +20,7 @@ public class Portal extends Entity {
         this.visible = false;
         this.roomType = null;
 
-        this.renderer = new PortalRenderer(this,this.getPosition().getX(), this.getPosition().getY());
+        this.renderer = new PortalRenderer(this,this.getCenter().getX(), this.getCenter().getY());
     }
 
     public boolean isVisible() { return this.visible; }

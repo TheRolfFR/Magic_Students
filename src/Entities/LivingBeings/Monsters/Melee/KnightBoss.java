@@ -32,7 +32,7 @@ public class KnightBoss extends Knight implements IBoss, BossConstants {
                 }
             }
             if (!super.isStun()){
-                super.updateSpeed(target.getPosition().sub(super.getPosition()).normalise().scale(super.getAccelerationRate()));
+                super.updateSpeed(target.getCenter().sub(super.getCenter()).normalise().scale(super.getAccelerationRate()));
                 super.move();
                 if (super.isTargetInRange(target)){
                     super.startAttacking(target);

@@ -22,7 +22,7 @@ public class Rusher extends Melee {
     }
 
     public void update(LivingBeing target){
-        this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().scale(this.getAccelerationRate()));
+        this.updateSpeed(target.getCenter().sub(this.getCenter()).normalise().scale(this.getAccelerationRate()));
 
         this.move();
         this.doDamage(target);

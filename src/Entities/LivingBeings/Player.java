@@ -103,7 +103,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     }
 
     private void setAngleFaced(int x, int y) {
-        this.angleFaced = new Vector2f(x, y).sub(this.getPosition()).getTheta() + 90.0;
+        this.angleFaced = new Vector2f(x, y).sub(this.getCenter()).getTheta() + 90.0;
     }
 
     /**
@@ -168,11 +168,11 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     }
 
     private void meleeAttack() {
-        attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(super.getPosition()).normalise();
+        attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(super.getCenter()).normalise();
         super.setSpeed(new Vector2f(0, 0));
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
-        Ranged.allyProjectiles.add(new MeleeAttack(super.getPosition().add(attackDirection.copy().scale(super.getRadius()))));
+        Ranged.allyProjectiles.add(new MeleeAttack(super.getCenter().add(attackDirection.copy().scale(super.getRadius()))));
         super.renderer.setLastActivity("Attack");
         super.renderer.update(attackDirection);
         this.isAttackRendered = true;
@@ -192,12 +192,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private boolean isDashReady(){return dashCooldown <= 0;}
 
     private void shootFireball(){
-        Vector2f fireballDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(super.getPosition()).normalise();
+        Vector2f fireballDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(super.getCenter()).normalise();
         this.spellCooldown = PlayerConstants.SPELL_COOLDOWN;
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
         super.setSpeed(new Vector2f(0,0));
-        Ranged.allyProjectiles.add(new Fireball(super.getPosition().add(fireballDirection.copy().scale(super.getRadius()+Fireball.getFireballRadius())), fireballDirection)); //décalage car bord haut gauche
+        Ranged.allyProjectiles.add(new Fireball(super.getCenter().add(fireballDirection.copy().scale(super.getRadius()+Fireball.getFireballRadius())), fireballDirection)); //décalage car bord haut gauche
         super.renderer.setLastActivity("Cast");
         super.renderer.update(fireballDirection);
     }

@@ -143,7 +143,7 @@ public abstract class Projectile extends Entity {
     public void render(Graphics g) {
         super.render(g);
 
-        Vector2f location = this.getPosition().sub(tileSizeOffset);
+        Vector2f location = this.getCenter().sub(tileSizeOffset);
 
         if (this.image != null) {
             g.drawImage(image, location.getX(), location.getY());
@@ -157,9 +157,9 @@ public abstract class Projectile extends Entity {
     public abstract void fadeOut();
 
     public void move() {
-        super.setPosition(super.getPosition().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
+        super.setCenter(super.getCenter().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
 
-        if (super.getPosition().getX() < super.getRadius() || (super.getPosition().getX() >= MainClass.WIDTH - super.getRadius() || super.getPosition().getY() < super.getRadius() || (super.getPosition().getY() >= MainClass.HEIGHT - super.getRadius()))){
+        if (super.getCenter().getX() < super.getRadius() || (super.getCenter().getX() >= MainClass.WIDTH - super.getRadius() || super.getCenter().getY() < super.getRadius() || (super.getCenter().getY() >= MainClass.HEIGHT - super.getRadius()))){
            this.isDead=true;
         }
     }
