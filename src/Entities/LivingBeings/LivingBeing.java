@@ -59,7 +59,6 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void addHurtListener(IHurtListener listener) {
-        System.out.println(listener.getClass().getName());
         this.hurtListeners.add(listener);
     }
 

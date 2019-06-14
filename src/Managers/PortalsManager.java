@@ -1,20 +1,23 @@
 package Managers;
 
 import Entities.Portal;
+import Main.KeyPressListener;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.PortalRenderer;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
-import static Main.MainClass.WIDTH;
 import static Main.MainClass.HEIGHT;
+import static Main.MainClass.WIDTH;
 
-public class PortalsManager {
+public class PortalsManager implements KeyPressListener {
     private boolean portalSet;
     private boolean portalEngaged;
     private Portal actualPortal;
@@ -34,11 +37,12 @@ public class PortalsManager {
 
     private static ArrayList<Portal> portals = new ArrayList<>();
 
-    public void setPortalEngaged(boolean portalEngaged) {
+    private void setPortalEngaged(boolean portalEngaged) {
         this.portalEngaged = portalEngaged;
     }
 
-    public PortalsManager() {
+    public PortalsManager(GameContainer gc) {
+        gc.getInput().addKeyListener(this);
         this.portalSet = false;
         this.portalEngaged = false;
         this.actualPortal = new Portal(0,0,1,1,1);
@@ -122,6 +126,20 @@ public class PortalsManager {
             if (portal.isVisible()) {
                 portal.render(g);
             }
+        }
+    }
+
+    @Override
+    public void keyPressed(int key, char c) {
+        if (key == Input.KEY_F) {
+            this.setPortalEngaged(true);
+        }
+    }
+
+    @Override
+    public void keyReleased(int key, char c) {
+        if (key == Input.KEY_F) {
+            this.setPortalEngaged(false);
         }
     }
 }

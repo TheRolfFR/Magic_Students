@@ -1,16 +1,23 @@
 package HUD;
 
+import Main.MainClass;
 import org.newdawn.slick.*;
 
-import static java.lang.Math.pow;
+import java.util.ArrayList;
 
 public class FadeToBlack {
-    private Image background;
+    private static final int FADE_DURATION = 2000;
+    private static final float FADE_B = 4/ (float) FADE_DURATION;
+    private static final float FADE_A = -FADE_B/ (float) FADE_DURATION;
 
-    public boolean isActive;
+    private boolean isActive;
+    private int fadeTimer;
 
-    private int DURATION;
-    private int currentCount;
+    private ArrayList<FadeToBlackListener> fadeToBlackListeners;
+
+    public void addFadeToBlackListener(FadeToBlackListener listener) {
+        this.fadeToBlackListeners.add(listener);
+    }
 
     /**
      * Returns whether the menu is visible
@@ -25,52 +32,44 @@ public class FadeToBlack {
      * @param active the state of the menu
      */
     public void setActive(boolean active) {
-        isActive = active;
+        this.isActive = active;
     }
 
     /**
      * Default constructor
-     * @param gc the GameContainer instance
      */
-    public FadeToBlack(GameContainer gc) {
-        try {
-            this.DURATION = 120;
-            this.currentCount = 0;
-            this.isActive = false;
-            this.background = new Image(gc.getWidth(), gc.getHeight());
+    public FadeToBlack() {
+        this.isActive = false;
+        this.fadeTimer = 0;
 
-        } catch (SlickException e) {
-            e.printStackTrace();
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
+        this.fadeToBlackListeners = new ArrayList<>();
     }
 
-    public int getCurrentCount() { return this.currentCount; }
-    public int getDuration() { return this.DURATION; }
-    public boolean atHalfDuration() { return this.getCurrentCount() == this.getDuration() / 2; }
-    public boolean isDone() { return this.getCurrentCount() == this.getDuration(); }
+    private int getFadeTimer() { return this.fadeTimer; }
+    public int getDuration() { return FADE_DURATION; }
+    private boolean willBeAtHalfDuration(int deltaTime) {
+        return this.fadeTimer < FADE_DURATION / 2 && this.fadeTimer + deltaTime >= FADE_DURATION / 2;
+    }
+    public boolean isDone() { return this.getFadeTimer() == this.getDuration(); }
 
-    public void update(GameContainer gc) {
+    public void update(int deltaTime) {
         if (this.isActive()) {
-            if (currentCount < DURATION) {
-                currentCount += 1;
+            if (fadeTimer < FADE_DURATION) {
+                fadeTimer = Math.min(fadeTimer + deltaTime, FADE_DURATION);
 
-                try {
-                    Graphics imageG = this.background.getGraphics();
-                    imageG.clear();
-                    imageG.setColor(new Color(0, 0, 0, (int) (-17 * pow(this.currentCount, 2) / 240) + 17 * this.currentCount / 2));
-                    imageG.fillRect(0, 0, gc.getWidth(), gc.getHeight());
-                    imageG.flush();
-
-                } catch (SlickException e) {
-                    e.printStackTrace();
-                    System.err.println(e.getMessage());
-                    System.exit(1);
+                if(willBeAtHalfDuration(deltaTime)) {
+                    for(FadeToBlackListener listener : this.fadeToBlackListeners) {
+                        listener.atHalf();
+                    }
+                }
+                else if(isDone()) {
+                    for(FadeToBlackListener listener : this.fadeToBlackListeners) {
+                        listener.atEnd();
+                    }
                 }
             }
             else {
-                currentCount = 0;
+                fadeTimer = 0;
                 this.setActive(false);
             }
         }
@@ -82,7 +81,10 @@ public class FadeToBlack {
      */
     public void render(Graphics g) {
         if (this.isActive()) {
-            g.drawImage(this.background, 0, 0);
+            float opacity = FADE_A * fadeTimer*fadeTimer + FADE_B*fadeTimer; // a*x^2 + b*x^2
+
+            g.setColor(new Color(0, 0, 0, opacity));
+            g.fillRect(0, 0, MainClass.instanceGameContainer.getWidth(), MainClass.instanceGameContainer.getHeight());
         }
     }
 }

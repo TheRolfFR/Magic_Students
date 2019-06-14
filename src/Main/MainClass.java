@@ -6,6 +6,7 @@ import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import HUD.FadeToBlack;
+import HUD.FadeToBlackListener;
 import HUD.PauseMenu;
 import Managers.EnemiesManager;
 import Managers.HUDManager;
@@ -24,7 +25,7 @@ public class MainClass extends BasicGame {
     public static final int WIDTH = 1280;
     public static final int HEIGHT = 720;
 
-    private static GameContainer instanceGameContainer;
+    public static GameContainer instanceGameContainer;
     private static MainClass instance = null;
 
     private static double difficulty = 1;
@@ -37,7 +38,7 @@ public class MainClass extends BasicGame {
 
     private HUDManager hudManager;
 
-    private PauseMenu menu;
+    private PauseMenu pauseMenu;
     private FadeToBlack fadeToBlack;
 
     private Item item;
@@ -53,7 +54,7 @@ public class MainClass extends BasicGame {
     }
 
     public static boolean isGamePaused() {
-        return instance.menu.isActive();
+        return instance.pauseMenu.isActive();
     }
 
     private void generateRoom() {
@@ -80,12 +81,12 @@ public class MainClass extends BasicGame {
 
     public static void setGamePaused(boolean gamePaused) {
         TimeScale.getInGameTimeScale().setTimeScale((gamePaused) ? 0f : 1f);
-        instance.menu.setActive(gamePaused);
+        instance.pauseMenu.setActive(gamePaused);
     }
 
     private static void triggerGamePaused() {
         TimeScale.getInGameTimeScale().setTimeScale((isGamePaused()) ? 1f : 0f);
-        instance.menu.setActive(!isGamePaused());
+        instance.pauseMenu.setActive(!isGamePaused());
     }
 
     public EnemiesManager getEnemiesManager() {
@@ -114,19 +115,33 @@ public class MainClass extends BasicGame {
     public void init(GameContainer gc) {
         instanceGameContainer = gc;
         instance = this;
-        this.menu = new PauseMenu(gc);
-        this.fadeToBlack = new FadeToBlack(gc);
+        this.pauseMenu = new PauseMenu(gc);
+        this.fadeToBlack = new FadeToBlack();
 
         this.player = new Player(gc,WIDTH/2,HEIGHT/2);
         this.player.setShowDebugRect(true);
 
         BackgroundRenderer.generateBackground(gc);
 
-        this.portalsManager = new PortalsManager();
+        this.portalsManager = new PortalsManager(gc);
 
         this.enemiesManager = new EnemiesManager(this.player, this.portalsManager);
 
         this.hudManager = new HUDManager(this.player, this.enemiesManager);
+
+        this.fadeToBlack.addFadeToBlackListener(new FadeToBlackListener() {
+            @Override
+            public void atHalf() {
+                System.out.println("Fade at half");
+                generateRoom();
+                portalsManager.hidePortals();
+            }
+
+            @Override
+            public void atEnd() {
+                TimeScale.resume();
+            }
+        });
 
         //generateRoom();
     }
@@ -153,14 +168,7 @@ public class MainClass extends BasicGame {
 
             hudManager.update(timeOfOneFrame);
 
-            fadeToBlack.update(gc);
-            if (fadeToBlack.atHalfDuration()) {
-                generateRoom();
-                portalsManager.hidePortals();
-            }
-            else if (fadeToBlack.isDone()) {
-                TimeScale.resume();
-            }
+            fadeToBlack.update(timeOfOneFrame);
         }
     }
 
@@ -168,18 +176,6 @@ public class MainClass extends BasicGame {
     public void keyPressed(int key, char c) {
         if (key == Input.KEY_ESCAPE) {
             triggerGamePaused();
-        }
-        if (key == Input.KEY_F) {
-            portalsManager.setPortalEngaged(true);
-        }
-    }
-
-    @Override
-    public void keyReleased(int key, char c) {
-        this.player.keyReleased(key, c);
-
-        if (key == Input.KEY_F) {
-            portalsManager.setPortalEngaged(false);
         }
     }
 
@@ -196,7 +192,7 @@ public class MainClass extends BasicGame {
         this.enemiesManager.render(g);
 
         this.hudManager.render(g);
-        this.menu.render(g);
+        this.pauseMenu.render(g);
         this.fadeToBlack.render(g);
     }
 
