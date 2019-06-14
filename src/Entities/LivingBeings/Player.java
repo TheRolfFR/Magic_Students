@@ -107,7 +107,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * In game calculations
      */
     public void update() {
-        updateCooldown();
+        updateCountdown();
         if (!isDashing()){
             if (this.keySpace && isDashReady()){
                 startDash();
@@ -146,7 +146,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         return framesLeftBeforeEnablingMovement == 0;
     }
 
-    private void updateCooldown() {
+    private void updateCountdown() {
         if (!isDashReady()){
             dashCD--;
         }

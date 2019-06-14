@@ -1,7 +1,6 @@
 package Entities.LivingBeings.Monsters.Melee;
 
 import Entities.LivingBeings.LivingBeing;
-import Main.MainClass;
 import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
 import Renderers.SpriteView;
@@ -10,9 +9,9 @@ import org.newdawn.slick.geom.Vector2f;
 public class Knight extends Melee implements KnightConstant{
 
     public static final Vector2f KNIGHT_TILESIZE = new Vector2f(48,48);
-    private float framesLeftBeforeAttack = 0;
+    private float timeLeftBeforeAttack = 0;
     private Vector2f attackDirection = new Vector2f(0,0);
-    private float framesLeftWhileStuned = 0;
+    private float timeLeftWhileStuned = 0;
 
     public Knight(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, (int) KNIGHT_TILESIZE.getX(), (int) KNIGHT_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -43,54 +42,49 @@ public class Knight extends Melee implements KnightConstant{
     }
 
     public void update(LivingBeing target){
+        this.updateCountdown();
         if (this.isAttacking()){
             if (this.isAttackReady()){
-                attack(target);
-            }
-            else {
-                gettingReady();
+                this.attack(target);
             }
         }
         else {
-            if (isStun()){
-                recover();
-            }
-            else {
-                this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().scale(this.getAccelerationRate()));
+            if (!this.isStun()){
+                super.updateSpeed(target.getPosition().sub(super.getPosition()).normalise().scale(super.getAccelerationRate()));
 
-                this.move();
-                if (isTargetInRange(target)){
-                    startAttacking(target);
+                super.move();
+                if (this.isTargetInRange(target)){
+                    this.startAttacking(target);
                 }
             }
         }
     }
 
-    void recover() {
-        framesLeftWhileStuned = framesLeftWhileStuned - TimeScale.getInGameTimeScale().getDeltaTime();
+    void updateCountdown() {
+        if (!this.isAttackReady()){
+            this.timeLeftBeforeAttack = this.timeLeftBeforeAttack - TimeScale.getInGameTimeScale().getDeltaTime();
+        }
+        if (this.isStun()){
+            this.timeLeftWhileStuned = this.timeLeftWhileStuned - TimeScale.getInGameTimeScale().getDeltaTime();
+        }
     }
 
     boolean isStun() {
-        return framesLeftWhileStuned <= 0;
+        return this.timeLeftWhileStuned > 0;
     }
 
     boolean isTargetInRange(LivingBeing target){
-        return (this.getPosition().add(getLocationOfTarget(target).scale(this.getRadius()*2)).sub(target.getPosition()).length() < target.getRadius() + this.getRadius());
+        return (super.getPosition().add(getLocationOfTarget(target).scale(super.getRadius()*2)).sub(target.getPosition()).length() < target.getRadius() + super.getRadius());
     }
 
     void startAttacking(LivingBeing target){
-        this.setSpeed(new Vector2f(0,0));
+        super.setSpeed(new Vector2f(0,0));
         this.attackDirection = getLocationOfTarget(target);
-        this.framesLeftBeforeAttack = KnightConstant.ATTACK_LOADING_DURATION;
-    }
-
-    void gettingReady(){
-        System.out.println(TimeScale.getInGameTimeScale().getDeltaTime());
-        this.framesLeftBeforeAttack = framesLeftBeforeAttack - TimeScale.getInGameTimeScale().getDeltaTime();
+        this.timeLeftBeforeAttack = KnightConstant.ATTACK_LOADING_DURATION;
     }
 
     boolean isAttackReady(){
-        return (this.framesLeftBeforeAttack <= 0);
+        return (this.timeLeftBeforeAttack <= 0);
     }
 
     boolean isAttacking(){
@@ -118,16 +112,16 @@ public class Knight extends Melee implements KnightConstant{
     }
 
     void stun(){
-        this.framesLeftWhileStuned = KnightConstant.STUN_AFTER_ATTACK_DURATION;
+        this.timeLeftWhileStuned = KnightConstant.STUN_AFTER_ATTACK_DURATION;
     }
 
     protected void attack(LivingBeing target){
         System.out.println("attack!");
-        if (isTargetInRange(target)){
+        if (this.isTargetInRange(target)){
             System.out.println("damage");
-            target.takeDamage(this.getDamage());
+            target.takeDamage(super.getDamage());
         }
         this.attackDirection.set(0,0);
-        stun();
+        this.stun();
     }
 }

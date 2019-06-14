@@ -5,6 +5,7 @@ import Entities.Projectiles.Arrow;
 import Entities.Projectiles.Fireball;
 import Entities.Projectiles.Snowball;
 import Main.MainClass;
+import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
 import Renderers.SpriteView;
 import org.newdawn.slick.Graphics;
@@ -12,15 +13,14 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
-public class Bowman extends Ranged {
+public class Bowman extends Ranged implements BowmanConstants{
 
     public static final Vector2f BOWMAN_TILESIZE = new Vector2f(48,48);
-    static final int RUN_AWAY_THRESHOLD = 200;
-    private int framesLeftBeforeAttack;
+    private float framesLeftBeforeAttack;
     private Vector2f attackDirection = new Vector2f(0,0);
-    private int framesLeftWhileStuned = 0;
-    private int framesLeftWhileSpeedLocked = 0;
-    private int shootCooldown = 0;
+    private float framesLeftWhileStuned = 0;
+    private float framesLeftWhileSpeedLocked = 0;
+    private float shootCooldown = 0;
 
     public Bowman(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, (int) BOWMAN_TILESIZE.getX(), (int) BOWMAN_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -52,93 +52,98 @@ public class Bowman extends Ranged {
 
     @Override
     public void update(LivingBeing target) {
-        updateCooldown();
+        this.updateCountdown();
         if (this.isAttacking()){
             if (this.isAttackReady()){
-                attack(target);
+                this.attack(target);
             }
             else {
-                aim(target);
+                this.aim(target);
             }
         }
         else {
-            if (!isStun())
+            if (!this.isStun())
             {
-                if (isShootReady()){
-                    startAttacking(target);
+                if (this.isShootReady()){
+                    this.startAttacking(target);
                 }
                 else {
-                    if(target.getPosition().distance(this.getPosition()) < RUN_AWAY_THRESHOLD) {
-                        runAway(target);
+                    if(this.targetIsClose(target)) {
+                        this.runAway(target);
                     }
                     else {
-                        if (!isSpeedLocked()){
-                            if (decideToMove()){
-                                chooseDirection();
+                        if (!this.isSpeedLocked()){
+                            if (this.decideToMove()){
+                                this.chooseDirection();
                             }
                             else {
-                                if(this.getSpeed().length() != 0) {
-                                    this.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
+                                if(super.getSpeed().length() != 0) {
+                                    super.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
                                 }
                             }
                         }
                     }
                 }
-                this.move();
+                super.move();
             }
         }
     }
 
-    void runAway(LivingBeing target) {
-        this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().negate().scale(this.getAccelerationRate()));
-        framesLeftWhileSpeedLocked = 0;
+    boolean targetIsClose(LivingBeing target) {
+        return target.getPosition().distance(super.getPosition()) < BowmanConstants.RUN_AWAY_THRESHOLD;
     }
 
-    void updateCooldown() {
-        if (!isAttackReady()){
-            framesLeftBeforeAttack = framesLeftBeforeAttack - 1;
+    void runAway(LivingBeing target) {
+        super.updateSpeed(target.getPosition().sub(super.getPosition()).normalise().negate().scale(super.getAccelerationRate()));
+        this.framesLeftWhileSpeedLocked = 0;
+    }
+
+    void updateCountdown() {
+        if (!this.isAttackReady()){
+            this.framesLeftBeforeAttack = this.framesLeftBeforeAttack - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        if (!isShootReady()){
-            shootCooldown = shootCooldown - 1;
+        if (!this.isShootReady()){
+            this.shootCooldown = this.shootCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        if (isStun()){
-            framesLeftWhileStuned = framesLeftWhileStuned - 1;
+        if (this.isStun()){
+            this.framesLeftWhileStuned = this.framesLeftWhileStuned - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        if (isSpeedLocked()) {
-            framesLeftWhileSpeedLocked = framesLeftWhileSpeedLocked - 1;
+        if (this.isSpeedLocked()) {
+            this.framesLeftWhileSpeedLocked = this.framesLeftWhileSpeedLocked - TimeScale.getInGameTimeScale().getDeltaTime();
         }
     }
 
     boolean isShootReady() {
-        return shootCooldown == 0;
+        return this.shootCooldown <= 0;
     }
 
     void startAttacking(LivingBeing target) {
-        attackDirection.set(target.getPosition().sub(this.getPosition()).normalise());
+        this.attackDirection.set(target.getPosition().sub(this.getPosition()).normalise());
         this.setSpeed(new Vector2f(0,0));
+        this.framesLeftBeforeAttack = BowmanConstants.ATTACK_LOADING_DURATION;
     }
 
     void chooseDirection() {
         Random random = new Random();
         this.updateSpeed(new Vector2f(random.nextFloat(),random.nextFloat()).normalise().scale(this.getAccelerationRate()));
-        framesLeftWhileSpeedLocked = MainClass.getNumberOfFramePerSecond()*2;
+        this.framesLeftWhileSpeedLocked = BowmanConstants.MOVEMENT_DURATION;
     }
 
     boolean decideToMove() {
         Random random = new Random();
-        return (random.nextFloat()%1 < 1f/(MainClass.getNumberOfFramePerSecond()*2f));
+        return (random.nextFloat()%1 < 1f/(MainClass.getNumberOfFramePerSecond()*BowmanConstants.AVERAGE_SECONDS_BEFORE_MOVEMENT));
     }
 
     boolean isSpeedLocked() {
-        return framesLeftWhileSpeedLocked != 0;
+        return this.framesLeftWhileSpeedLocked > 0;
     }
 
     boolean isStun() {
-        return framesLeftWhileStuned != 0;
+        return this.framesLeftWhileStuned > 0;
     }
 
     boolean isAttackReady(){
-        return (this.framesLeftBeforeAttack == 0);
+        return (this.framesLeftBeforeAttack <= 0);
     }
 
     boolean isAttacking(){
@@ -146,21 +151,21 @@ public class Bowman extends Ranged {
     }
 
     void aim(LivingBeing target){
-        attackDirection.set(target.getPosition().sub(this.getPosition()).normalise());
+        this.attackDirection.set(target.getPosition().sub(super.getPosition()).normalise());
     }
 
     protected void attack(LivingBeing target){
 
-        attackDirection.set(target.getPosition().sub(this.getPosition()).normalise());
-        enemyProjectiles.add(new Arrow(this.getPosition().add(attackDirection.copy().scale(this.getRadius())), attackDirection.copy()));
-        enemyProjectiles.get(enemyProjectiles.size()-1).setShowDebugRect(true);
-        attackDirection.set(0,0);
-        this.shootCooldown = MainClass.getNumberOfFramePerSecond()*2;
-        stun();
+        this.attackDirection.set(target.getPosition().sub(super.getPosition()).normalise());
+        Ranged.enemyProjectiles.add(new Arrow(super.getPosition().add(this.attackDirection.copy().scale(super.getRadius())), this.attackDirection.copy()));
+        Ranged.enemyProjectiles.get(Ranged.enemyProjectiles.size()-1).setShowDebugRect(true);
+        this.attackDirection.set(0,0);
+        this.shootCooldown = BowmanConstants.SHOOT_COOLDOWN;
+        this.stun();
     }
 
     void stun(){
-        this.framesLeftWhileStuned = MainClass.getNumberOfFramePerSecond()/10;
+        this.framesLeftWhileStuned = BowmanConstants.STUN_AFTER_ATTACK_DURATION;
     }
 
     public void render(Graphics g) {

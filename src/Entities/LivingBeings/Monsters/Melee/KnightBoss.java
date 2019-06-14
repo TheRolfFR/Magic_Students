@@ -1,15 +1,17 @@
 package Entities.LivingBeings.Monsters.Melee;
 
 import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Monsters.BossConstants;
 import Entities.LivingBeings.Monsters.IBoss;
 import Main.MainClass;
+import Main.TimeScale;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
-public class KnightBoss extends Knight implements IBoss {
+public class KnightBoss extends Knight implements IBoss, BossConstants {
     public static final Vector2f KNIGHTBOSS_TILESIZE = new Vector2f(96,96);
-    private int summonCooldown = 30*MainClass.getNumberOfFramePerSecond();
+    private float summonCooldown = BossConstants.SUMMON_COOLDOWN;
 
     public KnightBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
         super(x, y, KNIGHTBOSS_TILESIZE, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -17,54 +19,50 @@ public class KnightBoss extends Knight implements IBoss {
 
     @Override
     public void update(LivingBeing target){
-        updateCooldown();
-        if (this.isAttacking()){
-            if (this.isAttackReady()){
-                attack(target);
-            }
-            else {
-                gettingReady();
+        this.updateCountdown();
+        if (super.isAttacking()){
+            if (super.isAttackReady()){
+                super.attack(target);
             }
         }
         else {
-            if (isSummonReady()){
-                if (decideToSummon()){
-                    summon();
+            if (this.isSummonReady()){
+                if (this.decideToSummon()){
+                    this.summon();
                 }
             }
             if (super.isStun()){
-                this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().scale(this.getAccelerationRate()));
-                this.move();
-                if (isTargetInRange(target)){
-                    startAttacking(target);
+                super.updateSpeed(target.getPosition().sub(super.getPosition()).normalise().scale(super.getAccelerationRate()));
+                super.move();
+                if (super.isTargetInRange(target)){
+                    super.startAttacking(target);
                 }
-            }
-            else {
-                super.recover();
             }
         }
     }
 
-    private void updateCooldown() {
-        if (summonCooldown != 0){
-            summonCooldown = summonCooldown - 1;
+    @Override
+    void updateCountdown() {
+        if (this.summonCooldown > 0){
+            this.summonCooldown = this.summonCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
         }
+        super.updateCountdown();
     }
 
     private void summon() {
-        this.setSpeed(new Vector2f(0,0));
+        super.setSpeed(new Vector2f(0,0));
         MainClass.getInstance().getEnemiesManager().addKnight();
-        this.summonCooldown = 30*MainClass.getNumberOfFramePerSecond();
-        stun();
+        this.summonCooldown = BossConstants.SUMMON_COOLDOWN;
+        super.stun();
     }
 
     private boolean decideToSummon(){
         Random random = new Random();
-        return (random.nextFloat()%1 < 1f/(60f*3f));
+        return (random.nextFloat()%1 < 1f/(MainClass.getNumberOfFramePerSecond()*BossConstants.AVERAGE_SECONDS_BEFORE_SUMMONING));
     }
 
     private boolean isSummonReady() {
-        return summonCooldown == 0;
+        return this.summonCooldown <= 0;
     }
 }
 

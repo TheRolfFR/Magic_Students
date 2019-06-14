@@ -1,15 +1,17 @@
 package Entities.LivingBeings.Monsters.Ranged;
 
 import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Monsters.BossConstants;
 import Entities.LivingBeings.Monsters.IBoss;
 import Main.MainClass;
+import Main.TimeScale;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
-public class BowmanBoss extends Bowman implements IBoss {
+public class BowmanBoss extends Bowman implements IBoss, BossConstants {
     public static final Vector2f BOWMANBOSS_TILESIZE = new Vector2f(96,96);
-    private int summonCooldown = 30*MainClass.getNumberOfFramePerSecond();
+    private float summonCooldown = BossConstants.SUMMON_COOLDOWN;
 
     public BowmanBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
         super(x, y,BOWMANBOSS_TILESIZE, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -17,73 +19,72 @@ public class BowmanBoss extends Bowman implements IBoss {
 
     @Override
     public void update(LivingBeing target) {
-        updateCooldown();
-        if (this.isAttacking()){
-            if (this.isAttackReady()){
-                attack(target);
+        this.updateCountdown();
+        if (super.isAttacking()){
+            if (super.isAttackReady()){
+                super.attack(target);
             }
             else {
-                aim(target);
+                super.aim(target);
             }
         }
         else {
-            if (!isStun())
+            if (!super.isStun())
             {
-                if (isSummonReady()){
-                    if (decideToSummon()){
-                        summon();
+                if (this.isSummonReady()){
+                    if (this.decideToSummon()){
+                        this.summon();
                     }
                 }
                 else {
-                    if (isShootReady()){
-                        startAttacking(target);
+                    if (super.isShootReady()){
+                        super.startAttacking(target);
                     }
                     else {
-                        if(target.getPosition().distance(this.getPosition()) < RUN_AWAY_THRESHOLD) {
-                            runAway(target);
+                        if(super.targetIsClose(target)) {
+                            super.runAway(target);
                         }
                         else {
-                            if (!isSpeedLocked()){
-                                if (decideToMove()){
-                                    chooseDirection();
+                            if (!super.isSpeedLocked()){
+                                if (super.decideToMove()){
+                                    super.chooseDirection();
                                 }
                                 else {
-                                    if(this.getSpeed().length() != 0) {
-                                        this.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
+                                    if(super.getSpeed().length() != 0) {
+                                        super.updateSpeed(super.getSpeed().normalise().negate().scale(getAccelerationRate()));
                                     }
                                 }
                             }
                         }
                     }
                 }
-
-                this.move();
+                super.move();
             }
         }
     }
 
     private boolean isSummonReady() {
-        return summonCooldown == 0;
+        return this.summonCooldown <= 0;
     }
 
     @Override
-    void updateCooldown() {
-        if (summonCooldown != 0){
-            summonCooldown = summonCooldown - 1;
+    void updateCountdown() {
+        if (this.summonCooldown > 0){
+            this.summonCooldown = this.summonCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        super.updateCooldown();
+        super.updateCountdown();
     }
 
     private void summon() {
-        this.setSpeed(new Vector2f(0,0));
+        super.setSpeed(new Vector2f(0,0));
         MainClass.getInstance().getEnemiesManager().addBowman();
-        summonCooldown = 30*MainClass.getNumberOfFramePerSecond();
-        this.setSpeed(new Vector2f(0,0));
-        stun();
+        this.summonCooldown = BossConstants.SUMMON_COOLDOWN;
+        super.setSpeed(new Vector2f(0,0));
+        super.stun();
     }
 
     private boolean decideToSummon(){
         Random random = new Random();
-        return (random.nextFloat()%1 < 1f/(60f*3f));
+        return (random.nextFloat()%1 < 1f/(MainClass.getNumberOfFramePerSecond()*BossConstants.AVERAGE_SECONDS_BEFORE_SUMMONING));
     }
 }
