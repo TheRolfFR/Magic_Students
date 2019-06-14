@@ -1,24 +1,22 @@
 package Entities.Projectiles;
 
 import Renderers.ProjectileRenderer;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Fireball extends Projectile {
 
-    private static final int SIZE = 16;
+    private static final float SCALE = 2f;
+    private static final int RADIUS = (int) (37/2f*SCALE);
+    private static final String IMG_PATH = "img/fireball/fireball_80x37.png";
+    private static final Vector2f TILESIZE = new Vector2f(37, 80).scale(SCALE);
+    private static final int FRAME_DURATION = 1000/8;
 
     public Fireball(Vector2f position, Vector2f direction) {
-        super(position.getX(), position.getY(), Snowball.MAX_SPEED, Snowball.ACCELERATION_RATE, SIZE, direction);
+        super(position.getX(), position.getY(), Snowball.MAX_SPEED, Snowball.ACCELERATION_RATE, RADIUS, direction, TILESIZE);
 
         this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
-        try {
-            this.renderer = new ProjectileRenderer(this, new Image("img/fireball_16x16.png", false, Image.FILTER_NEAREST).getScaledCopy(2),new Vector2f(SIZE*2, SIZE*2), 1000/12);
-        } catch (SlickException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+
+        this.renderer = new ProjectileRenderer(this, IMG_PATH,TILESIZE, FRAME_DURATION);
     }
 
     @Override
@@ -27,5 +25,5 @@ public class Fireball extends Projectile {
             this.renderer.setOpacity(0);
     }
 
-    public static int getFireballRadius(){return SIZE;}
+    public static int getFireballRadius(){return RADIUS;}
 }

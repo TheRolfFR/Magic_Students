@@ -2,10 +2,7 @@ package Renderers;
 
 import Entities.Entity;
 import Main.TimeScale;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public class ProjectileRenderer extends SpriteRenderer {
@@ -15,10 +12,23 @@ public class ProjectileRenderer extends SpriteRenderer {
 
     private double angle;
 
-    public ProjectileRenderer(Entity entity, Image image, Vector2f tileSize, int duration) {
+    public ProjectileRenderer(Entity entity, String imgPath, Vector2f tileSize, int frameDuration) {
         super(entity, tileSize);
-        this.animation = new Animation(new SpriteSheet(image, (int) tileSize.getX(), (int) tileSize.getY()), duration);
-        this.angle = entity.getSpeed().getTheta()- 90;
+
+        Image image = null;
+        try {
+            image = new Image(imgPath, false, Image.FILTER_NEAREST);
+        } catch (SlickException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+
+        float scale = tileSize.getY() / (float) image.getHeight();
+
+        image = image.getScaledCopy(scale);
+
+        this.animation = new Animation(new SpriteSheet(image, (int) tileSize.getX(), (int) tileSize.getY()), frameDuration);
+        this.angle = entity.getSpeed().getTheta() - 90;
         animation.start();
     }
 

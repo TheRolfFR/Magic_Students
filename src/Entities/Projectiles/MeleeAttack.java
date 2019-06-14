@@ -7,7 +7,7 @@ public class MeleeAttack extends Projectile {
     private static final int RADIUS = 25;
 
     public MeleeAttack(Vector2f position) {
-        super(position.getX(), position.getY(), 0, 0, RADIUS, new Vector2f(0,0));
+        super(position.getX(), position.getY(), 0, 0, RADIUS, new Vector2f(0,0), new Vector2f(0, 0));
         this.isDead=true;
     }
 
