@@ -9,7 +9,7 @@ public class Fireball extends Projectile {
     private static final int RADIUS = (int) (37/2f*SCALE);
     private static final String IMG_PATH = "img/fireball/fireball_80x37.png";
     private static final Vector2f TILESIZE = new Vector2f(37, 80).scale(SCALE);
-    private static final int FRAME_DURATION = 1000/8;
+    private static final int FRAME_DURATION = 17*4;
 
     public Fireball(Vector2f position, Vector2f direction) {
         super(position.getX(), position.getY(), Snowball.MAX_SPEED, Snowball.ACCELERATION_RATE, RADIUS, direction, TILESIZE);

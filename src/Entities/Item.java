@@ -4,6 +4,12 @@ import Entities.LivingBeings.Player;
 import Entities.Projectiles.MeleeAttack;
 import Entities.Projectiles.Snowball;
 import Main.MainClass;
+import Renderers.ItemRenderer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,6 +19,9 @@ public class Item extends Entity {
     public static ArrayList<Item> items = new ArrayList<>();
 
     private int typeOfItem;
+
+    private ItemRenderer renderer;
+
     private static int HEALBUFFAMOUNT = 50;
     private static int MAXHPBUFFAMOUNT = 10;
     private static int MELEEBUFFAMOUNT = 5;
@@ -20,29 +29,42 @@ public class Item extends Entity {
     private static int ARMORBUFFAMOUNT = 5;
     private static float SPEEDBUFFAMOUNT = Math.round(15/ MainClass.MAX_FPS);
 
+    private static final float ITEM_IMAGE_SCALE = 2f;
+    private static SpriteSheet ITEMS_SPRITESHEET = null;
+    private static final String ITEMS_SPRITESHEET_PATH = "img/items.png";
+    private static final Vector2f ITEM_TILESIZE = new Vector2f(16, 16).scale(ITEM_IMAGE_SCALE);
+    private static final int ITEM_FRAME_DURATION = 100000;
+
+    private static Image getItemImageFromSpriteSheet(int index) {
+        if (ITEMS_SPRITESHEET == null) {
+            try {
+                Image tmp = new Image(ITEMS_SPRITESHEET_PATH, false, Image.FILTER_NEAREST).getScaledCopy(ITEM_IMAGE_SCALE);
+                ITEMS_SPRITESHEET = new SpriteSheet(tmp, (int) ITEM_TILESIZE.getX(), (int) ITEM_TILESIZE.getY());
+            } catch (SlickException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+
+        return ITEMS_SPRITESHEET.getSprite(index, 0);
+    }
+
     public Item(){
         super(MainClass.WIDTH/2, MainClass.HEIGHT/2, 25,25,13);
         Random random = new Random();
         this.typeOfItem = random.nextInt(6);
         this.setShowDebugRect(true);
-        //loadImage();
+        loadImage();
     }
 
     public Item(int typeOfItem){
         super(MainClass.WIDTH/2, MainClass.HEIGHT/2, 25,25,13);
         this.typeOfItem = typeOfItem;
-        //loadImage();
+        loadImage();
     }
 
     private void loadImage(){
-        switch (this.typeOfItem){
-            case 0 : /*Load image of heal*/ break;
-            case 1 : /*Load image of max hp up*/break;
-            case 2 : /*load image of melee damage up*/break;
-            case 3 : /*Load image of ranged damage up*/break;
-            case 4 : /*Load image of armor up*/break;
-            case 5 : /*Load image of speed up*/break;
-        }
+        this.renderer = new ItemRenderer(this, getItemImageFromSpriteSheet(this.typeOfItem), ITEM_TILESIZE, ITEM_FRAME_DURATION);
     }
 
     @Override
@@ -71,5 +93,11 @@ public class Item extends Entity {
             case 5 : player.buffSpeed((int) Math.round(SPEEDBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
         }
+    }
+
+    @Override
+    public void render(Graphics g) {
+        this.renderer.render(g, (int) this.getPosition().getX(), (int) this.getPosition().getY());
+        super.render(g);
     }
 }
