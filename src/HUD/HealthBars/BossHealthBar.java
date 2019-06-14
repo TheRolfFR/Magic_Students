@@ -3,7 +3,6 @@ package HUD.HealthBars;
 import Entities.LivingBeings.IHurtListener;
 import Entities.LivingBeings.LivingBeing;
 import Main.MainClass;
-import Managers.EnemiesManager;
 import Renderers.FontRenderer;
 import org.newdawn.slick.*;
 
@@ -12,8 +11,8 @@ public class BossHealthBar extends UIHealthBar implements IHurtListener {
     private static final float BOSS_HEALTHBAR_WIDTH_PERCENTAGE = 0.4f;
     private static final int BOSS_HEALTHBAR_WIDTH = (int) (BOSS_HEALTHBAR_WIDTH_PERCENTAGE * MainClass.WIDTH);
     private static final int BOSS_HEALTHBAR_CONTENT_HEIGHT = 20;
-
     private static final int BOSS_HEALTHBAR_BOTTOM_SPACE = 5;
+    private static final int BOSS_HEALTHBAR_HEIGHT = BOSS_HEALTHBAR_CONTENT_HEIGHT + BOSS_HEALTHBAR_BOTTOM_SPACE;
 
     private static final int BOSS_HEALTHBAR_MARGIN = 10;
 
@@ -26,7 +25,7 @@ public class BossHealthBar extends UIHealthBar implements IHurtListener {
 
     private static final int BOSS_HEALTHPOINTS_YPOS = BOSS_HEALTHBAR_YPOS + BOSS_HEALTHBAR_CONTENT_HEIGHT + BOSS_HEALTHBAR_BOTTOM_SPACE + BOSS_HEALTHBAR_MARGIN;
 
-    private int bossHealthbarWidth;
+    private int bossHealthbarContentWidth;
 
     private String bossHealthPointsString;
     private int bossHealPointsXPos;
@@ -35,11 +34,9 @@ public class BossHealthBar extends UIHealthBar implements IHurtListener {
     private boolean isBarDisplayed;
 
     public BossHealthBar() {
-        super(BOSS_HEALTHBAR_WIDTH, BOSS_HEALTHBAR_CONTENT_HEIGHT, BOSS_HEALTHBAR_BOTTOM_SPACE, BOSS_HEALTHBAR_MARGIN, BOSS_HEALTHBAR_COLOR);
-
         this.isBarDisplayed = false;
 
-        FontRenderer.getPixelFontRenderer().setPxSize((int) (BOSS_HEALTHPOINTS_FONT_FACTOR*super.healthBarHeight));
+        FontRenderer.getPixelFontRenderer().setPxSize((int) (BOSS_HEALTHPOINTS_FONT_FACTOR*BOSS_HEALTHBAR_HEIGHT));
         this.bossHealthPointsFont = FontRenderer.getPixelFont();
 
         // MUST BE DONE AFTER THE FONT
@@ -47,29 +44,18 @@ public class BossHealthBar extends UIHealthBar implements IHurtListener {
         this.setHealthPointsString(0, 0);
     }
 
-    @Override
-    public int getCurrentValue() {
-        return 0;
-    }
-
-    @Override
-    public int getMaxValue() {
-        return 0;
-    }
-
-    @Override
-    public float getPercentValue() {
-        return 0;
-    }
-
-    @Override
     public void render(Graphics g) {
         if(this.isBarDisplayed) {
-            g.setColor(HEALTHBAR_BG_COLOR);
-            g.fillRect(BOSS_HEALTHBAR_XPOS, BOSS_HEALTHBAR_YPOS, BOSS_HEALTHBAR_WIDTH, super.healthBarHeight);
-
-            g.setColor(BOSS_HEALTHBAR_COLOR);
-            g.fillRect(BOSS_HEALTHBAR_XPOS, BOSS_HEALTHBAR_YPOS, bossHealthbarWidth, super.healthBarContentHeight);
+            super.render(
+                    g,
+                    BOSS_HEALTHBAR_XPOS,
+                    BOSS_HEALTHBAR_YPOS,
+                    BOSS_HEALTHBAR_WIDTH,
+                    BOSS_HEALTHBAR_HEIGHT,
+                    bossHealthbarContentWidth,
+                    BOSS_HEALTHBAR_CONTENT_HEIGHT,
+                    BOSS_HEALTHBAR_COLOR
+            );
 
             g.setFont(this.bossHealthPointsFont);
             g.drawString(bossHealthPointsString, bossHealPointsXPos, BOSS_HEALTHPOINTS_YPOS);
@@ -90,7 +76,7 @@ public class BossHealthBar extends UIHealthBar implements IHurtListener {
     }
 
     private void setBossHealthbarWidth(int currentHealthPoints, int maxHealthPoints) {
-        this.bossHealthbarWidth = (int) ((float) currentHealthPoints / (float) maxHealthPoints * BOSS_HEALTHBAR_WIDTH);
+        this.bossHealthbarContentWidth = (int) ((float) currentHealthPoints / (float) maxHealthPoints * BOSS_HEALTHBAR_WIDTH);
     }
 
     private void setHealthPointsString(int currentHealthPoints, int maxHealthPoints) {

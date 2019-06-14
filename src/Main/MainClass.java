@@ -117,7 +117,7 @@ public class MainClass extends BasicGame {
         this.menu = new PauseMenu(gc);
         this.fadeToBlack = new FadeToBlack(gc);
 
-        this.player = new Player(gc,100,100);
+        this.player = new Player(gc,WIDTH/2,HEIGHT/2);
         this.player.setShowDebugRect(true);
 
         BackgroundRenderer.generateBackground(gc);
@@ -127,8 +127,6 @@ public class MainClass extends BasicGame {
         this.enemiesManager = new EnemiesManager(this.player, this.portalsManager);
 
         this.hudManager = new HUDManager(this.player, this.enemiesManager);
-        this.enemiesManager.setBossHealthBar(this.hudManager.getBossHealthBar());
-        this.player.addHurtListener(this.hudManager);
 
         //generateRoom();
     }

@@ -1,65 +1,63 @@
 package HUD.HealthBars;
 
+import Entities.LivingBeings.IHurtListener;
+import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Main.MainClass;
 import Renderers.FontRenderer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.TrueTypeFont;
 
-public class PlayerHealthBar extends UIHealthBar {
+public class PlayerHealthBar extends UIHealthBar implements IHurtListener {
 
-    protected static final int PLAYER_HEALTHBAR_WIDTH = 100;
-    protected static final int PLAYER_HEALTHBAR_CONTENT_HEIGHT = PLAYER_HEALTHBAR_WIDTH/10;
-    protected static final int PLAYER_HEALTHBAR_BOTTOM_SPACE = PLAYER_HEALTHBAR_CONTENT_HEIGHT/3;
-    protected static final int PLAYER_HEALTHBAR_MARGIN = 10;
-    protected static final Color PLAYER_HEALTHBAR_COLOR = new Color(0xd32f2f);
+    private static final int PLAYER_HEALTHBAR_WIDTH = 100;
+    private static final int PLAYER_HEALTHBAR_CONTENT_HEIGHT = PLAYER_HEALTHBAR_WIDTH / 10;
+    private static final int PLAYER_HEALTHBAR_BOTTOM_SPACE = PLAYER_HEALTHBAR_CONTENT_HEIGHT / 3;
+    private static final int PLAYER_HEALTHBAR_HEIGHT = PLAYER_HEALTHBAR_CONTENT_HEIGHT + PLAYER_HEALTHBAR_BOTTOM_SPACE;
+    private static final int PLAYER_HEALTHBAR_MARGIN = 10;
+    private static final Color PLAYER_HEALTHBAR_COLOR = new Color(0xd32f2f);
 
-    protected Player player;
+    private static final int PLAYER_HEALTHBAR_XPOS = PLAYER_HEALTHBAR_MARGIN;
+    private static final int PLAYER_HEALTHBAR_YPOS = MainClass.HEIGHT - PLAYER_HEALTHBAR_MARGIN - PLAYER_HEALTHBAR_BOTTOM_SPACE - PLAYER_HEALTHBAR_CONTENT_HEIGHT;
+
+    private static final float PLAYER_HEALTHPOINTS_FONT_SCALE = 2f;
+
+    private int playerHealthbarContentWidth;
+
+    private String playerHealthpointsString;
+    private TrueTypeFont playerHealthpointsFont;
+    private int playerHealthpointsYPos;
 
     public PlayerHealthBar(Player player) {
-        super(PLAYER_HEALTHBAR_WIDTH, PLAYER_HEALTHBAR_CONTENT_HEIGHT, PLAYER_HEALTHBAR_BOTTOM_SPACE, PLAYER_HEALTHBAR_MARGIN, PLAYER_HEALTHBAR_COLOR);
-        this.player = player;
-    }
+        player.addHurtListener(this);
+        this.onHurt(player);
 
-    @Override
-    public int getCurrentValue() {
-        return player.getCurrentHealthPoints();
-    }
-
-    @Override
-    public int getMaxValue() {
-        return player.getMaxHealthPoints();
-    }
-
-    @Override
-    public float getPercentValue() {
-        return ((float) this.getCurrentValue()) / ((this).getMaxValue());
+        FontRenderer.getPixelFontRenderer().setPxSize((int) (PLAYER_HEALTHBAR_HEIGHT * PLAYER_HEALTHPOINTS_FONT_SCALE));
+        this.playerHealthpointsFont = FontRenderer.getPixelFont();
+        this.playerHealthpointsYPos = PLAYER_HEALTHBAR_YPOS - PLAYER_HEALTHBAR_MARGIN - FontRenderer.getPixelFont().getHeight(this.playerHealthpointsString);
     }
 
     public void render(Graphics g) {
-        int x = healthBarMargin;
-        int y = MainClass.HEIGHT - healthBarMargin - healthBarHeight;
-
-        Color tmp = g.getColor();
-
-        g.setColor(HEALTHBAR_BG_COLOR);
-        g.fillRect(x, y, healthBarWidth, healthBarHeight);
-
-        int barWidth = (int) (this.getPercentValue()*healthBarWidth);
-
-        g.setColor(healthBarColor);
-        g.fillRect(x, y, barWidth, healthBarContentHeight);
-
-        String pointsString = "" + this.getCurrentValue() + '/' + this.getMaxValue();
-
-        FontRenderer.getPixelFontRenderer().setPxSize(this.healthBarHeight *2);
-        g.setFont(FontRenderer.getPixelFont());
-
-        int yPoints = y - FontRenderer.getPixelFont().getHeight(pointsString);
+        super.render(
+                g,
+                PLAYER_HEALTHBAR_XPOS,
+                PLAYER_HEALTHBAR_YPOS,
+                PLAYER_HEALTHBAR_WIDTH,
+                PLAYER_HEALTHBAR_HEIGHT,
+                playerHealthbarContentWidth,
+                PLAYER_HEALTHBAR_CONTENT_HEIGHT,
+                PLAYER_HEALTHBAR_COLOR
+        );
 
         g.setColor(Color.black);
-        g.drawString(pointsString, x, yPoints);
+        g.setFont(this.playerHealthpointsFont);
+        g.drawString(this.playerHealthpointsString, PLAYER_HEALTHBAR_XPOS, playerHealthpointsYPos);
+    }
 
-        g.setColor(tmp);
+    @Override
+    public void onHurt(LivingBeing being) {
+        this.playerHealthbarContentWidth = (int) ((float) being.getCurrentHealthPoints() / (float) being.getMaxHealthPoints() * PLAYER_HEALTHBAR_WIDTH);
+        this.playerHealthpointsString = "" + being.getCurrentHealthPoints() + "/" + being.getMaxHealthPoints();
     }
 }
