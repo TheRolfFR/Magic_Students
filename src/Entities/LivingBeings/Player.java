@@ -25,8 +25,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
     private double angleFaced;
 
-    private ArrayList<IPlayerHurted> playerHurtedListeners;
-
     private PlayerMarkerRenderer playerMarkerRenderer;
 
     private float timeLeftBeforeEnablingMovement = 0;
@@ -87,8 +85,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
             }
         }
 
-        this.playerHurtedListeners = new ArrayList<>();
-
         this.playerMarkerRenderer = new PlayerMarkerRenderer(this, 2);
 
         this.setAngleFaced(gc.getInput().getMouseX(), gc.getInput().getMouseY());
@@ -101,10 +97,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
     public void setShowPlayerMarkerDebugRect(boolean showPlayerMarkerDebugRect) {
         this.playerMarkerRenderer.setShowDebugRect(showPlayerMarkerDebugRect);
-    }
-
-    public void addPlayerHurtListener(IPlayerHurted listener) {
-        playerHurtedListeners.add(listener);
     }
 
     private void setAngleFaced(int x, int y) {
@@ -216,11 +208,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     public void takeDamage(int damage) {
         if(!this.isDashing()){
             super.takeDamage(damage);
-
-            // launching listeners
-            for(IPlayerHurted listener : this.playerHurtedListeners) {
-                listener.onPlayerHurt(this);
-            }
             //this.currentHealthPoints = Math.max(0, this.getCurrentHealthPoints() - round(damage / this.getArmorPoints()));
         }
     }

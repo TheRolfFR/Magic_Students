@@ -2,7 +2,6 @@ package Entities.LivingBeings;
 
 import Entities.Entity;
 import Entities.LivingBeings.Monsters.Monster;
-import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
@@ -18,6 +17,9 @@ public abstract class LivingBeing extends Entity implements Comparable {
     private int currentHealthPoints;
     private int maxHealthPoints;
     private int armorPoints;
+
+    private ArrayList<IHurtListener> hurtListeners;
+    private ArrayList<IMoveListener> moveListeners;
 
     public static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
 
@@ -54,6 +56,14 @@ public abstract class LivingBeing extends Entity implements Comparable {
         for (LivingBeing lb : livingBeings) {
             lb.render(g);
         }
+    }
+
+    public void addHurtListener(IHurtListener listener) {
+        this.hurtListeners.add(listener);
+    }
+
+    protected void addMoveListener(IMoveListener listener) {
+        this.moveListeners.add(listener);
     }
 
     public int getArmorPoints() {
@@ -94,6 +104,9 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
 
+        this.hurtListeners = new ArrayList<>();
+        this.moveListeners = new ArrayList<>();
+
         livingBeings.add(this);
     }
 
@@ -102,6 +115,9 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
+
+        this.hurtListeners = new ArrayList<>();
+        this.moveListeners = new ArrayList<>();
 
         livingBeings.add(this);
     }
@@ -112,6 +128,11 @@ public abstract class LivingBeing extends Entity implements Comparable {
      */
     public void takeDamage(int damage) {
         this.currentHealthPoints = Math.max(0, this.currentHealthPoints - Math.max(damage - this.armorPoints, 0));
+
+        // launching listeners
+        for(IHurtListener listener : this.hurtListeners) {
+            listener.onHurt(this);
+        }
     }
 
     public boolean isDead(){
@@ -173,6 +194,10 @@ public abstract class LivingBeing extends Entity implements Comparable {
     public void move() {
         super.setPosition(super.getPosition().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
         this.tpInBounds();
+
+        for(IMoveListener listener : this.moveListeners) {
+            listener.onMove(this);
+        }
     }
 
     public void render(Graphics g, Vector2f facedDirection) {

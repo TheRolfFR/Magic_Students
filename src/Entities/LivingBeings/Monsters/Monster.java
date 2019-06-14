@@ -12,6 +12,7 @@ public abstract class Monster extends LivingBeing {
         super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, radius);
         this.damage = damage;
         this.worldHealthBar = new WorldHealthBar(this);
+        this.addMoveListener(this.worldHealthBar);
     }
 
     protected void doDamage(LivingBeing opponent){

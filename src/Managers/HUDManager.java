@@ -1,6 +1,7 @@
 package Managers;
 
-import Entities.LivingBeings.IPlayerHurted;
+import Entities.LivingBeings.IHurtListener;
+import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import HUD.HealthBars.BossHealthBar;
 import HUD.HealthBars.PlayerHealthBar;
@@ -10,7 +11,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class HUDManager implements IPlayerHurted {
+public class HUDManager implements IHurtListener {
 
     private static final String HURT_EFFECT_IMG_PATH = "img/cameraHurtEffect.png";
     private static final int HURT_EFFECT_DURATION = 500;
@@ -65,11 +66,8 @@ public class HUDManager implements IPlayerHurted {
     }
 
     @Override
-    public void onPlayerHurt(Player player) {
-        if(!this.isHurtEffectActivated) {
-            System.out.println("player is hurted");
-            this.isHurtEffectActivated = true;
-            this.hurtEffectTimer = 0;
-        }
+    public void onHurt(LivingBeing being) {
+        this.isHurtEffectActivated = true;
+        this.hurtEffectTimer = 0;
     }
 }
