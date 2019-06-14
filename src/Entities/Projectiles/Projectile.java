@@ -20,6 +20,7 @@ public abstract class Projectile extends Entity {
     protected Vector2f direction;
     protected float opacity;
     protected boolean isDead;
+    private Vector2f tilesetOffset;
 
     protected ProjectileRenderer renderer;
 
@@ -27,7 +28,7 @@ public abstract class Projectile extends Entity {
         return opacity;
     }
 
-    public Projectile(float x, float y, float maxSpeed, float accelerationRate, int radius, Vector2f direction) {
+    public Projectile(float x, float y, float maxSpeed, float accelerationRate, int radius, Vector2f direction, Vector2f tileSize) {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.direction = direction;
         this.opacity = 1f;
@@ -37,6 +38,9 @@ public abstract class Projectile extends Entity {
         this.isDead = false;
 
         this.renderer = null;
+
+        this.tilesetOffset = tileSize.copy().scale(0.5f);
+
         // for debugging purposes
         this.showDebugRect = true;
     }
@@ -140,12 +144,14 @@ public abstract class Projectile extends Entity {
     public void render(Graphics g) {
         super.render(g);
 
+        Vector2f location = this.getPosition().sub(tilesetOffset);
+
         if (this.image != null) {
-            g.drawImage(image, this.getPosition().getX(), this.getPosition().getY());
+            g.drawImage(image, location.getX(), location.getY());
         }
 
         if (this.renderer != null) {
-            this.renderer.render(g, (int) this.getPosition().getX(), (int) this.getPosition().getY());
+            this.renderer.render(g, (int) location.getX(), (int) location.getY());
         }
     }
 
