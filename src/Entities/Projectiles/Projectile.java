@@ -80,10 +80,10 @@ public abstract class Projectile extends Entity {
 
     @Override
     protected void updateSpeed(Vector2f acceleration) {
-        this.setSpeed(this.getSpeed().add(acceleration));
+        super.setSpeed(super.getSpeed().add(acceleration));
 
-        if (this.getSpeed().length() > this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
-            this.setSpeed(this.getSpeed().normalise().scale(this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()));
+        if (super.getSpeed().length() > super.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
+            super.setSpeed(super.getSpeed().normalise().scale(super.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()));
         }
     }
 
@@ -153,9 +153,9 @@ public abstract class Projectile extends Entity {
     public abstract void fadeOut();
 
     public void move() {
-        this.setPosition(this.getPosition().add(this.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
+        super.setPosition(super.getPosition().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
 
-        if (this.getPosition().getX() < 0 || (this.getPosition().getX() + this.getRadius()>= MainClass.WIDTH) || this.getPosition().getY() < 0 || (this.getPosition().getY() + this.getRadius()>= MainClass.HEIGHT)) {
+        if (super.getPosition().getX() < super.getRadius() || (super.getPosition().getX() >= MainClass.WIDTH - super.getRadius() || super.getPosition().getY() < super.getRadius() || (super.getPosition().getY() >= MainClass.HEIGHT - super.getRadius()))){
            this.isDead=true;
         }
     }

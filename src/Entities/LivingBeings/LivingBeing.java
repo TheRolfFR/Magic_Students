@@ -25,8 +25,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     public void heal(int amountOfHealing) {
         this.currentHealthPoints = this.currentHealthPoints + amountOfHealing;
-        if (currentHealthPoints > maxHealthPoints){
-            currentHealthPoints = maxHealthPoints;
+        if (this.currentHealthPoints > this.maxHealthPoints){
+            this.currentHealthPoints = this.maxHealthPoints;
         }
     }
 
@@ -57,7 +57,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public int getArmorPoints() {
-        return armorPoints;
+        return this.armorPoints;
     }
 
     /**
@@ -65,7 +65,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @return the current health points
      */
     public int getCurrentHealthPoints() {
-        return currentHealthPoints;
+        return this.currentHealthPoints;
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param damage damage value inflicted
      */
     public void takeDamage(int damage) {
-        currentHealthPoints = Math.max(0, currentHealthPoints - Math.max(damage - armorPoints, 0));
+        this.currentHealthPoints = Math.max(0, this.currentHealthPoints - Math.max(damage - this.armorPoints, 0));
     }
 
     public boolean isDead(){
@@ -144,34 +144,34 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     private void tpOutOf(LivingBeing opponent) {
-        Vector2f diff = this.getPosition().sub(opponent.getPosition()).normalise().scale((float) ceil(getRadius() + opponent.getRadius() - opponent.getPosition().sub(getPosition()).length()));
-        setPosition(getPosition().add(diff));
-        tpInBounds();
+        Vector2f diff = super.getPosition().sub(opponent.getPosition()).normalise().scale((float) ceil(super.getRadius() + opponent.getRadius() - opponent.getPosition().sub(super.getPosition()).length()));
+        super.setPosition(super.getPosition().add(diff));
+        this.tpInBounds();
     }
 
     public void collidingAction(LivingBeing opponent) {
-        if (collidesWith(opponent)) {
+        if (this.collidesWith(opponent)) {
             this.tpOutOf(opponent);
             opponent.tpOutOf(this);
         }
     }
     private void tpInBounds() {
-        if (this.getPosition().x < getRadius()) {
-            this.setPosition(new Vector2f(getRadius(), this.getPosition().getY()));
+        if (super.getPosition().x < super.getRadius()) {
+            super.setPosition(new Vector2f(super.getRadius(), super.getPosition().getY()));
         }
-        if (this.getPosition().x >= MainClass.WIDTH - getRadius()) {
-            this.setPosition(new Vector2f(MainClass.WIDTH - getRadius(), this.getPosition().getY()));
+        if (super.getPosition().x >= MainClass.WIDTH - super.getRadius()) {
+            super.setPosition(new Vector2f(MainClass.WIDTH - super.getRadius(), super.getPosition().getY()));
         }
-        if (this.getPosition().y < getRadius()) {
-            this.setPosition(new Vector2f(this.getPosition().getX(), getRadius()));
+        if (super.getPosition().y < super.getRadius()) {
+            super.setPosition(new Vector2f(super.getPosition().getX(), super.getRadius()));
         }
-        if (this.getPosition().y >= MainClass.HEIGHT - getRadius()) {
-            this.setPosition(new Vector2f(this.getPosition().getX(), MainClass.HEIGHT - getRadius()));
+        if (super.getPosition().y >= MainClass.HEIGHT - super.getRadius()) {
+            super.setPosition(new Vector2f(super.getPosition().getX(), MainClass.HEIGHT - super.getRadius()));
         }
     }
 
     public void move() {
-        this.setPosition(this.getPosition().add(this.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
+        super.setPosition(super.getPosition().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
         this.tpInBounds();
     }
 

@@ -192,7 +192,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
         super.setSpeed(new Vector2f(0,0));
-        Ranged.allyProjectiles.add(new Fireball(super.getPosition(), fireballDirection)); //décalage car bord haut gauche
+        Ranged.allyProjectiles.add(new Fireball(super.getPosition().add(fireballDirection.copy().scale(super.getRadius()+Fireball.getFireballRadius())), fireballDirection)); //décalage car bord haut gauche
         super.renderer.setLastActivity("Cast");
         super.renderer.update(this.rangedAttackDirection);
     }
