@@ -1,6 +1,7 @@
 package Entities;
 
 import Entities.LivingBeings.Player;
+import Entities.Projectiles.Fireball;
 import Entities.Projectiles.MeleeAttack;
 import Entities.Projectiles.Snowball;
 import Main.MainClass;
@@ -84,9 +85,9 @@ public class Item extends Entity {
                 break;
             case 1 : player.buffHP((int) Math.round(MAXHPBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
-            case 2 : MeleeAttack.damage = MeleeAttack.damage + (int) Math.round(MELEEBUFFAMOUNT*MainClass.getDifficulty());
+            case 2 : MeleeAttack.increaseDamage((int) Math.round(MELEEBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
-            case 3 : Snowball.damage = Snowball.damage + (int) Math.round(RANGEDBUFFAMOUNT*MainClass.getDifficulty());
+            case 3 : Fireball.increaseDamage((int) Math.round(MELEEBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
             case 4 : player.buffArmor((int) Math.round(ARMORBUFFAMOUNT*MainClass.getDifficulty()));
                 break;

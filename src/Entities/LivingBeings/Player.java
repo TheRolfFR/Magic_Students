@@ -174,7 +174,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     }
 
     private void startDash(){
-        if(super.getSpeed() != null){
+        if(!super.getSpeed().equals(new Vector2f(0,0))){
             super.renderer.setLastActivity("Dash");
             this.timeLeftWhileDashing = PlayerConstants.DASH_DURATION;
             super.setSpeed(super.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));

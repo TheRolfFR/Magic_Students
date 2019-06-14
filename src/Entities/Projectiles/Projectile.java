@@ -15,7 +15,6 @@ import org.newdawn.slick.geom.Vector2f;
 
 
 public abstract class Projectile extends Entity {
-    public static int damage = 500;
     protected Image image;
     protected Vector2f direction;
     protected float opacity;
@@ -32,7 +31,6 @@ public abstract class Projectile extends Entity {
         super(x, y, maxSpeed, accelerationRate, radius);
         this.direction = direction;
         this.opacity = 1f;
-
         this.image = null;
 
         this.isDead = false;
@@ -65,14 +63,11 @@ public abstract class Projectile extends Entity {
         // for debugging purposes
         this.showDebugRect = true;
     }
-
-    public int getDamage(){
-        return damage;
-    }
+    public abstract int getDamage();
 
     public void collidingAction(LivingBeing opponent) {
-        if (collidesWith(opponent)){
-            opponent.takeDamage(damage);
+        if (super.collidesWith(opponent)){
+            opponent.takeDamage(this.getDamage());
             this.isDead = true;
         }
     }

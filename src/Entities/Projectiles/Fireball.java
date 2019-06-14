@@ -6,6 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class Fireball extends Projectile {
 
     private static final float SCALE = 2f;
+    private static int damage = 25;
     private static final int RADIUS = (int) (37/2f*SCALE);
     private static final String IMG_PATH = "img/fireball/fireball_80x37.png";
     private static final Vector2f TILESIZE = new Vector2f(37, 80).scale(SCALE);
@@ -17,6 +18,15 @@ public class Fireball extends Projectile {
         this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
 
         this.renderer = new ProjectileRenderer(this, IMG_PATH,TILESIZE, FRAME_DURATION);
+    }
+
+    @Override
+    public int getDamage() {
+        return Fireball.damage;
+    }
+
+    public static void increaseDamage(int damageBuff){
+        damage = damage + damageBuff;
     }
 
     @Override

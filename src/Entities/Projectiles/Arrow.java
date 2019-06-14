@@ -6,6 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class Arrow extends Projectile {
 
     private static final int RADIUS = 1;
+    private static int damage = 25;
     private static final String IMG_PATH = "img/arrow_32x32.png";
     private static final Vector2f TILESIZE = new Vector2f(64, 64);
     private static final int FRAME_DURATION = 10000;
@@ -19,6 +20,11 @@ public class Arrow extends Projectile {
     }
 
     public static int getArrowRadius(){return RADIUS;}
+
+    @Override
+    public int getDamage() {
+        return Arrow.damage;
+    }
 
     @Override
     public void fadeOut() {

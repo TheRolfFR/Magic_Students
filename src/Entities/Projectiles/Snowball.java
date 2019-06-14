@@ -5,10 +5,17 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Snowball extends Projectile {
+
+    private static int damage = 25;
     public static final float MAX_SPEED = 400/ MainClass.MAX_FPS;
     public static final float ACCELERATION_RATE = 135/ MainClass.MAX_FPS;
     private static final String IMAGE_PATH = "img/snowball.png";
     private static final int RADIUS = 10;
+
+    @Override
+    public int getDamage() {
+        return Snowball.damage;
+    }
 
     /**
      * In game rendering
