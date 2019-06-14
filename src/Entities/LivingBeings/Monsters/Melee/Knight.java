@@ -2,16 +2,17 @@ package Entities.LivingBeings.Monsters.Melee;
 
 import Entities.LivingBeings.LivingBeing;
 import Main.MainClass;
+import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
 import Renderers.SpriteView;
 import org.newdawn.slick.geom.Vector2f;
 
-public class Knight extends Melee {
+public class Knight extends Melee implements KnightConstant{
 
     public static final Vector2f KNIGHT_TILESIZE = new Vector2f(48,48);
-    private int framesLeftBeforeAttack;
+    private float framesLeftBeforeAttack = 0;
     private Vector2f attackDirection = new Vector2f(0,0);
-    private int framesLeftWhileStuned = 0;
+    private float framesLeftWhileStuned = 0;
 
     public Knight(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, (int) KNIGHT_TILESIZE.getX(), (int) KNIGHT_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -65,12 +66,12 @@ public class Knight extends Melee {
         }
     }
 
-    private void recover() {
-        framesLeftWhileStuned = framesLeftWhileStuned - 1;
+    void recover() {
+        framesLeftWhileStuned = framesLeftWhileStuned - TimeScale.getInGameTimeScale().getDeltaTime();
     }
 
-    private boolean isStun() {
-        return framesLeftWhileStuned != 0;
+    boolean isStun() {
+        return framesLeftWhileStuned <= 0;
     }
 
     boolean isTargetInRange(LivingBeing target){
@@ -80,15 +81,16 @@ public class Knight extends Melee {
     void startAttacking(LivingBeing target){
         this.setSpeed(new Vector2f(0,0));
         this.attackDirection = getLocationOfTarget(target);
-        this.framesLeftBeforeAttack = MainClass.getNumberOfFramePerSecond()/2;
+        this.framesLeftBeforeAttack = KnightConstant.ATTACK_LOADING_DURATION;
     }
 
     void gettingReady(){
-        this.framesLeftBeforeAttack = this.framesLeftBeforeAttack - 1;
+        System.out.println(TimeScale.getInGameTimeScale().getDeltaTime());
+        this.framesLeftBeforeAttack = framesLeftBeforeAttack - TimeScale.getInGameTimeScale().getDeltaTime();
     }
 
     boolean isAttackReady(){
-        return (this.framesLeftBeforeAttack == 0);
+        return (this.framesLeftBeforeAttack <= 0);
     }
 
     boolean isAttacking(){
@@ -115,6 +117,10 @@ public class Knight extends Melee {
         }
     }
 
+    void stun(){
+        this.framesLeftWhileStuned = KnightConstant.STUN_AFTER_ATTACK_DURATION;
+    }
+
     protected void attack(LivingBeing target){
         System.out.println("attack!");
         if (isTargetInRange(target)){
@@ -122,6 +128,6 @@ public class Knight extends Melee {
             target.takeDamage(this.getDamage());
         }
         this.attackDirection.set(0,0);
-        framesLeftWhileStuned = MainClass.getNumberOfFramePerSecond()/10;
+        stun();
     }
 }

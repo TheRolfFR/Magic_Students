@@ -171,9 +171,6 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void move() {
-        if(this instanceof Bowman) {
-            System.out.println(this.getSpeed());
-        }
         this.setPosition(this.getPosition().add(this.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
         this.tpInBounds();
     }

@@ -17,34 +17,69 @@ public class BowmanBoss extends Bowman implements IBoss {
 
     @Override
     public void update(LivingBeing target) {
-        if(target.getPosition().distance(this.getPosition()) < 250) {
-            this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().negate().scale(this.getAccelerationRate()));
-            this.move();
-        }
-        else if(this.getSpeed().length()!=0){
-            this.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
-            this.move();
-        }
-        else if(this.delayCounter > SHOT_DELAY) {
-            attack(target);
-        }
-        this.delayCounter = Math.min(this.delayCounter + 1, 121);
         updateCooldown();
-        if(decideToSummon()){
-            summon();
+        if (this.isAttacking()){
+            if (this.isAttackReady()){
+                attack(target);
+            }
+            else {
+                aim(target);
+            }
+        }
+        else {
+            if (!isStun())
+            {
+                if (isSummonReady()){
+                    if (decideToSummon()){
+                        summon();
+                    }
+                }
+                else {
+                    if (isShootReady()){
+                        startAttacking(target);
+                    }
+                    else {
+                        if(target.getPosition().distance(this.getPosition()) < RUN_AWAY_THRESHOLD) {
+                            runAway(target);
+                        }
+                        else {
+                            if (!isSpeedLocked()){
+                                if (decideToMove()){
+                                    chooseDirection();
+                                }
+                                else {
+                                    if(this.getSpeed().length() != 0) {
+                                        this.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                this.move();
+            }
         }
     }
 
-    private void updateCooldown() {
+    private boolean isSummonReady() {
+        return summonCooldown == 0;
+    }
+
+    @Override
+    void updateCooldown() {
         if (summonCooldown != 0){
             summonCooldown = summonCooldown - 1;
         }
+        super.updateCooldown();
     }
 
     private void summon() {
         this.setSpeed(new Vector2f(0,0));
         MainClass.getInstance().getEnemiesManager().addBowman();
         summonCooldown = 30*MainClass.getNumberOfFramePerSecond();
+        this.setSpeed(new Vector2f(0,0));
+        stun();
     }
 
     private boolean decideToSummon(){
