@@ -1,18 +1,18 @@
 package Renderers;
 
-import Entities.Entity;
 import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-public class GraphicRenderer extends SpriteRenderer{
+public class GraphicRenderer{
 
     private Animation animation;
+    private Vector2f tileSize;
 
     private Image lastImage;
 
-    public GraphicRenderer(Entity entity, String imgPath, Vector2f tileSize, int frameDuration) {
-        super(entity, tileSize);
+    public GraphicRenderer(String imgPath, Vector2f tileSize, int frameDuration) {
+        this.tileSize = tileSize;
         Image image = null;
 
         try {
@@ -30,6 +30,8 @@ public class GraphicRenderer extends SpriteRenderer{
         animation.start();
     }
 
+    public Vector2f getTileSize(){return this.tileSize;}
+
 
     public void render(Graphics g, int x, int y) {
         // if game not paused
@@ -39,7 +41,7 @@ public class GraphicRenderer extends SpriteRenderer{
         }
 
         if(this.lastImage != null) {
-            g.drawImage(this.lastImage, x - super.tileSize.getX()/2, y - super.tileSize.getY()/2);
+            g.drawImage(this.lastImage, x - this.tileSize.getX()/2, y - this.tileSize.getY()/2);
         }
     }
 }

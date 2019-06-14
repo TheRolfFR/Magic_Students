@@ -24,6 +24,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private PlayerMarkerRenderer playerMarkerRenderer;
     private GraphicRenderer attackRenderer;
 
+    private Vector2f attackDirection;
+
     private boolean isAttackRendered = false;
 
     private float timeLeftBeforeEnablingMovement = 0;
@@ -55,13 +57,15 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         gc.getInput().addMouseListener(this);
 
         String prepath = "img/wizard/";
+
         int duration = 50;
 
         Color capeColor = new Color(0x0094ff);
 
         this.setTileSize(new Vector2f(96, 96));
+        Vector2f attackTileSize =  new Vector2f(48,48);
         this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
-        this.attackRenderer = new GraphicRenderer(this, prepath + "animationAttack.png",this.getTileSize(), Math.round(1000*4/MainClass.getNumberOfFramePerSecond()));
+        this.attackRenderer = new GraphicRenderer(prepath + "animationAttack.png",attackTileSize, Math.round(1000*4/MainClass.getNumberOfFramePerSecond()));
 
         String[] activities = {"Move", "Idle", "Dash", "Attack", "Cast"};
 
@@ -164,11 +168,11 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     }
 
     private void meleeAttack() {
-        Vector2f attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(super.getPosition()).normalise();
+        attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(super.getPosition()).normalise();
         super.setSpeed(new Vector2f(0, 0));
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
-        Ranged.allyProjectiles.add(new MeleeAttack(super.getPosition().add(attackDirection.scale(super.getRadius()))));
+        Ranged.allyProjectiles.add(new MeleeAttack(super.getPosition().add(attackDirection.copy().scale(super.getRadius()))));
         super.renderer.setLastActivity("Attack");
         super.renderer.update(attackDirection);
         this.isAttackRendered = true;
@@ -214,7 +218,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
     private void renderAttack(Graphics g){
         if(isAttacking() && this.isAttackRendered){
-            this.attackRenderer.render(g, (int) this.getCenter().getX(), (int) this.getCenter().getY());
+            Vector2f addVector = new Vector2f (this.attackDirection.getX()*(this.attackRenderer.getTileSize().getX()/2+super.getRadius()), this.attackDirection.getY()*(this.attackRenderer.getTileSize().getY()/2+super.getRadius()));
+            Vector2f attackPosition = this.getCenter().add(addVector);
+            this.attackRenderer.render(g, (int) attackPosition.getX(), (int) attackPosition.getY());
         }
         else {
             this.isAttackRendered=false;
