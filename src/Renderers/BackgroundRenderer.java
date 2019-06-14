@@ -70,11 +70,11 @@ public class BackgroundRenderer {
         }
     }
 
-    public static void renderBackground(Graphics g, int x, int y) {
+    public static void renderBackground(Graphics g) {
         if (backgroundImage == null)
             return;
 
-        g.drawImage(backgroundImage, x, y);
+        g.drawImage(backgroundImage, 0, 0);
     }
 
     public static boolean inRoomLimits(Shape shape) {

@@ -5,6 +5,7 @@ import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
+import Entities.Projectiles.Projectile;
 import HUD.FadeToBlack;
 import HUD.FadeToBlackListener;
 import HUD.PauseMenu;
@@ -17,8 +18,6 @@ import org.newdawn.slick.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static Entities.Projectiles.Projectile.*;
 
 public class MainClass extends BasicGame {
     public static final int MAX_FPS = 60;
@@ -160,8 +159,8 @@ public class MainClass extends BasicGame {
             if( item!=null) {
                 item = item.update(this.player);
             }
-            updateEnemyProjectile(player);
-            updateAllyProjectiles();
+            Projectile.updateEnemyProjectile(player);
+            Projectile.updateAllyProjectiles();
 
             enemiesManager.update();
             portalsManager.update(timeOfOneFrame);
@@ -181,7 +180,7 @@ public class MainClass extends BasicGame {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        BackgroundRenderer.renderBackground(g, 0, 0);
+        BackgroundRenderer.renderBackground(g);
 
         if(item!=null){
             item.render(g);
