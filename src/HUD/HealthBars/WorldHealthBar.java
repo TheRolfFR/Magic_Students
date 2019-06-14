@@ -24,34 +24,31 @@ public class WorldHealthBar implements IHurtListener, IMoveListener {
     private static final int HEALTHBAR_MARGIN = 10;
     private static final Vector2f HEALTHBAR_MARGIN_OFFSET = new Vector2f(0, HEALTHBAR_MARGIN);
 
-    private float currentHealth;
-    private float maxHealth;
+    private int healthBarWidth;
     private Vector2f tileSizeYOffset;
     private Vector2f location;
 
     public WorldHealthBar(LivingBeing being) {
-        this.currentHealth = being.getCurrentHealthPoints();
-        this.maxHealth = being.getMaxHealthPoints();
+        this.healthBarWidth = (int) ((float) being.getCurrentHealthPoints() / (float) being.getMaxHealthPoints() * HEALTHBAR_WIDTH);
 
         this.tileSizeYOffset = new Vector2f(0, being.getTileSize().getY()/2f);
         this.setLocation(being.getCenter());
     }
 
     public void render(Graphics g){
-        if(this.maxHealth != 0) {
+        if(this.healthBarWidth != 1f) {
 
             g.setColor(HEALTHBAR_BACKGROUND_COLOR);
             g.fillRect(location.getX(), location.getY(), HEALTHBAR_WIDTH, HEALTHBAR_HEIGHT);
 
             g.setColor(HEALTHBAR_COLOR);
-            g.fillRect(location.getX(), location.getY(), round(this.currentHealth/this.maxHealth * HEALTHBAR_WIDTH), HEALTHBAR_HEIGHT);
+            g.fillRect(location.getX(), location.getY(), round(this.healthBarWidth), HEALTHBAR_HEIGHT);
         }
     }
 
     @Override
     public void onHurt(LivingBeing being) {
-        this.currentHealth = being.getCurrentHealthPoints();
-        this.maxHealth = being.getMaxHealthPoints();
+        this.healthBarWidth = (int) ((float) being.getCurrentHealthPoints() / (float) being.getMaxHealthPoints() * HEALTHBAR_WIDTH);
     }
 
     @Override
