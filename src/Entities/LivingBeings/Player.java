@@ -5,13 +5,9 @@ import Entities.Projectiles.MeleeAttack;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Main.MainClass;
 import Main.TimeScale;
-import Renderers.LivingBeingRenderer;
-import Renderers.PlayerMarkerRenderer;
-import Renderers.SpriteView;
+import Renderers.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
-
-import java.util.ArrayList;
 
 import static Main.MainClass.MAX_FPS;
 
@@ -26,6 +22,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private double angleFaced;
 
     private PlayerMarkerRenderer playerMarkerRenderer;
+    private GraphicRenderer attackRenderer;
+
+    private boolean isAttackRendered = false;
 
     private float timeLeftBeforeEnablingMovement = 0;
     private float timeLeftWhileDashing = 0;
@@ -33,8 +32,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private float dashCooldown = 0;
     private float spellCooldown = 0;
 
-    private Vector2f meleeAttackDirection = new Vector2f(0,0);
-    private Vector2f rangedAttackDirection = new Vector2f(0,0);
     private float timeLeftWhileAttacking = 0;
 
 
@@ -64,6 +61,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
         this.setTileSize(new Vector2f(96, 96));
         this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
+        this.attackRenderer = new GraphicRenderer(this, prepath + "animationAttack.png",this.getTileSize(), Math.round(1000*4/MainClass.getNumberOfFramePerSecond()));
 
         String[] activities = {"Move", "Idle", "Dash", "Attack", "Cast"};
 
@@ -86,6 +84,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         }
 
         this.playerMarkerRenderer = new PlayerMarkerRenderer(this, 2);
+        this.setTileSize(new Vector2f(96, 96));
 
         this.setAngleFaced(gc.getInput().getMouseX(), gc.getInput().getMouseY());
     }
@@ -171,7 +170,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
         Ranged.allyProjectiles.add(new MeleeAttack(super.getPosition().add(attackDirection.scale(super.getRadius()))));
         super.renderer.setLastActivity("Attack");
-        super.renderer.update(this.meleeAttackDirection);
+        super.renderer.update(attackDirection);
+        this.isAttackRendered = true;
     }
 
     private void startDash(){
@@ -195,7 +195,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         super.setSpeed(new Vector2f(0,0));
         Ranged.allyProjectiles.add(new Fireball(super.getPosition().add(fireballDirection.copy().scale(super.getRadius()+Fireball.getFireballRadius())), fireballDirection)); //décalage car bord haut gauche
         super.renderer.setLastActivity("Cast");
-        super.renderer.update(this.rangedAttackDirection);
+        super.renderer.update(fireballDirection);
     }
 
     private boolean isSpellReady(){return this.spellCooldown <= 0;}
@@ -209,6 +209,15 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         if(!this.isDashing()){
             super.takeDamage(damage);
             //this.currentHealthPoints = Math.max(0, this.getCurrentHealthPoints() - round(damage / this.getArmorPoints()));
+        }
+    }
+
+    private void renderAttack(Graphics g){
+        if(isAttacking() && this.isAttackRendered){
+            this.attackRenderer.render(g, (int) this.getCenter().getX(), (int) this.getCenter().getY());
+        }
+        else {
+            this.isAttackRendered=false;
         }
     }
 
@@ -229,6 +238,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
             facedDirection.x = -1;
         }
 
+        this.renderAttack(g);
         this.playerMarkerRenderer.Render(g, angleFaced);
 
         super.render(g, facedDirection);
