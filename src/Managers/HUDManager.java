@@ -26,9 +26,13 @@ public class HUDManager implements IHurtListener {
     private PlayerHealthBar playerHealthBar;
     private BossHealthBar bossHealthBar;
 
+    public BossHealthBar getBossHealthBar() {
+        return bossHealthBar;
+    }
+
     public HUDManager(Player player, EnemiesManager enemiesManager) {
         this.playerHealthBar = new PlayerHealthBar(player);
-        this.bossHealthBar = new BossHealthBar(enemiesManager);
+        this.bossHealthBar = new BossHealthBar();
 
         try {
             this.hurtEffect = new Image(HURT_EFFECT_IMG_PATH).getScaledCopy(MainClass.WIDTH, MainClass.HEIGHT);

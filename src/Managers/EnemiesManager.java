@@ -10,6 +10,7 @@ import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.Projectiles.Projectile;
+import HUD.HealthBars.BossHealthBar;
 import HUD.HealthBars.WorldHealthBar;
 import Main.MainClass;
 import org.newdawn.slick.Graphics;
@@ -26,6 +27,7 @@ public class EnemiesManager {
     private ArrayList<Monster> enemies = new ArrayList<>();
     private Player player;
     private PortalsManager portalsManager;
+    private BossHealthBar bossHealthBar;
 
     private IBoss boss;
 
@@ -35,6 +37,10 @@ public class EnemiesManager {
 
     public IBoss getBoss() {
         return boss;
+    }
+
+    public void setBossHealthBar(BossHealthBar bossHealthBar) {
+        this.bossHealthBar = bossHealthBar;
     }
 
     public EnemiesManager(Player player, PortalsManager portalsManager) {
@@ -99,6 +105,8 @@ public class EnemiesManager {
         KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, (int) Math.round(1000*MainClass.getDifficulty()), (int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(0.4*KnightBoss.KNIGHTBOSS_TILESIZE.getY()));
         knightBoss.setShowDebugRect(true);
         this.enemies.add(knightBoss);
+        knightBoss.addHurtListener(this.bossHealthBar);
+        this.bossHealthBar.onHurt(knightBoss);
 
         return knightBoss;
     }
@@ -107,6 +115,8 @@ public class EnemiesManager {
         BowmanBoss bowmanBoss = new BowmanBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, (int) Math.round(1000*MainClass.getDifficulty()), (int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(0.4*BowmanBoss.BOWMANBOSS_TILESIZE.getY()));
         bowmanBoss.setShowDebugRect(true);
         this.enemies.add(bowmanBoss);
+        bowmanBoss.addHurtListener(this.bossHealthBar);
+        this.bossHealthBar.onHurt(bowmanBoss);
 
         return bowmanBoss;
     }

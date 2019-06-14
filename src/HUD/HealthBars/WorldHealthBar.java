@@ -33,10 +33,11 @@ public class WorldHealthBar implements IHurtListener, IMoveListener {
 
         this.tileSizeYOffset = new Vector2f(0, being.getTileSize().getY()/2f);
         this.setLocation(being.getCenter());
+        being.addHurtListener(this);
     }
 
     public void render(Graphics g){
-        if(this.healthBarWidth != 1f) {
+        if(this.healthBarWidth != HEALTHBAR_WIDTH) {
 
             g.setColor(HEALTHBAR_BACKGROUND_COLOR);
             g.fillRect(location.getX(), location.getY(), HEALTHBAR_WIDTH, HEALTHBAR_HEIGHT);

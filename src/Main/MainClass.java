@@ -127,6 +127,7 @@ public class MainClass extends BasicGame {
         this.enemiesManager = new EnemiesManager(this.player, this.portalsManager);
 
         this.hudManager = new HUDManager(this.player, this.enemiesManager);
+        this.enemiesManager.setBossHealthBar(this.hudManager.getBossHealthBar());
         this.player.addHurtListener(this.hudManager);
 
         //generateRoom();

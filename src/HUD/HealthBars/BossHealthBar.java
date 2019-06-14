@@ -1,70 +1,101 @@
 package HUD.HealthBars;
 
-import Entities.LivingBeings.Monsters.IBoss;
+import Entities.LivingBeings.IHurtListener;
+import Entities.LivingBeings.LivingBeing;
 import Main.MainClass;
 import Managers.EnemiesManager;
 import Renderers.FontRenderer;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.*;
 
-public class BossHealthBar extends UIHealthBar {
+public class BossHealthBar extends UIHealthBar implements IHurtListener {
 
     private static final float BOSS_HEALTHBAR_WIDTH_PERCENTAGE = 0.4f;
     private static final int BOSS_HEALTHBAR_WIDTH = (int) (BOSS_HEALTHBAR_WIDTH_PERCENTAGE * MainClass.WIDTH);
     private static final int BOSS_HEALTHBAR_CONTENT_HEIGHT = 20;
+
     private static final int BOSS_HEALTHBAR_BOTTOM_SPACE = 5;
+
     private static final int BOSS_HEALTHBAR_MARGIN = 10;
+
     private static final Color BOSS_HEALTHBAR_COLOR = new Color(0xFDD835);
 
-    private EnemiesManager enemiesManager;
+    private static final int BOSS_HEALTHBAR_XPOS = (int) ((1f - BOSS_HEALTHBAR_WIDTH_PERCENTAGE)/2f*MainClass.WIDTH);
+    private static final int BOSS_HEALTHBAR_YPOS = BOSS_HEALTHBAR_MARGIN;
 
-    public BossHealthBar(EnemiesManager enemiesManager) {
+    private static final float BOSS_HEALTHPOINTS_FONT_FACTOR = 1.5f;
+
+    private static final int BOSS_HEALTHPOINTS_YPOS = BOSS_HEALTHBAR_YPOS + BOSS_HEALTHBAR_CONTENT_HEIGHT + BOSS_HEALTHBAR_BOTTOM_SPACE + BOSS_HEALTHBAR_MARGIN;
+
+    private int bossHealthbarWidth;
+
+    private String bossHealthPointsString;
+    private int bossHealPointsXPos;
+    private TrueTypeFont bossHealthPointsFont;
+
+    private boolean isBarDisplayed;
+
+    public BossHealthBar() {
         super(BOSS_HEALTHBAR_WIDTH, BOSS_HEALTHBAR_CONTENT_HEIGHT, BOSS_HEALTHBAR_BOTTOM_SPACE, BOSS_HEALTHBAR_MARGIN, BOSS_HEALTHBAR_COLOR);
-        this.enemiesManager = enemiesManager;
+
+        this.isBarDisplayed = false;
+
+        FontRenderer.getPixelFontRenderer().setPxSize((int) (BOSS_HEALTHPOINTS_FONT_FACTOR*super.healthBarHeight));
+        this.bossHealthPointsFont = FontRenderer.getPixelFont();
+
+        // MUST BE DONE AFTER THE FONT
+        this.setBossHealthbarWidth(0, 1);
+        this.setHealthPointsString(0, 0);
     }
 
     @Override
     public int getCurrentValue() {
-        return enemiesManager.getBoss().getCurrentHealthPoints();
+        return 0;
     }
 
     @Override
     public int getMaxValue() {
-        return enemiesManager.getBoss().getMaxHealthPoints();
+        return 0;
     }
 
     @Override
     public float getPercentValue() {
-        return (float) this.getCurrentValue() / (float) enemiesManager.getBoss().getMaxHealthPoints();
+        return 0;
     }
 
     @Override
     public void render(Graphics g) {
-        if(enemiesManager.getBoss() != null) {
-            int x = (int) ((1f - BOSS_HEALTHBAR_WIDTH_PERCENTAGE)/2f*MainClass.WIDTH);
-            int y = healthBarMargin;
-
-            Color tmp = g.getColor();
-
+        if(this.isBarDisplayed) {
             g.setColor(HEALTHBAR_BG_COLOR);
-            g.fillRect(x, y, healthBarWidth, healthBarHeight);
+            g.fillRect(BOSS_HEALTHBAR_XPOS, BOSS_HEALTHBAR_YPOS, BOSS_HEALTHBAR_WIDTH, super.healthBarHeight);
 
-            int barWidth = (int) (this.getPercentValue()*healthBarWidth);
+            g.setColor(BOSS_HEALTHBAR_COLOR);
+            g.fillRect(BOSS_HEALTHBAR_XPOS, BOSS_HEALTHBAR_YPOS, bossHealthbarWidth, super.healthBarContentHeight);
 
-            g.setColor(healthBarColor);
-            g.fillRect(x, y, barWidth, healthBarContentHeight);
-
-            String pointsString = this.getCurrentValue() + "/" + this.getMaxValue();
-
-            FontRenderer.getPixelFontRenderer().setPxSize((int) (1.5f*healthBarHeight));
-
-            int xPoints = (MainClass.WIDTH - FontRenderer.getPixelFont().getWidth(pointsString))/2;
-            int yPoints = y + healthBarHeight + healthBarMargin;
-
-            g.setFont(FontRenderer.getPixelFont());
-            g.drawString(pointsString, xPoints, yPoints);
-
-            g.setColor(tmp);
+            g.setFont(this.bossHealthPointsFont);
+            g.drawString(bossHealthPointsString, bossHealPointsXPos, BOSS_HEALTHPOINTS_YPOS);
         }
+    }
+
+    @Override
+    public void onHurt(LivingBeing being) {
+        System.out.println("boss hurt : " + being.getClass().getName());
+        if(being.getCurrentHealthPoints() > 0) {
+            this.isBarDisplayed = true;
+
+            this.setHealthPointsString(being.getCurrentHealthPoints(), being.getMaxHealthPoints());
+            this.setBossHealthbarWidth(being.getCurrentHealthPoints(), being.getMaxHealthPoints());
+        } else {
+            this.isBarDisplayed = false;
+        }
+    }
+
+    private void setBossHealthbarWidth(int currentHealthPoints, int maxHealthPoints) {
+        this.bossHealthbarWidth = (int) ((float) currentHealthPoints / (float) maxHealthPoints * BOSS_HEALTHBAR_WIDTH);
+    }
+
+    private void setHealthPointsString(int currentHealthPoints, int maxHealthPoints) {
+        this.bossHealthPointsString = "" + currentHealthPoints + "/" + maxHealthPoints;
+
+        this.bossHealPointsXPos = (MainClass.WIDTH - bossHealthPointsFont.getWidth(this.bossHealthPointsString)) / 2;
     }
 }
