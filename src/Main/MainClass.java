@@ -58,6 +58,7 @@ public class MainClass extends BasicGame {
 
     private void generateRoom() {
         System.out.println("new room");
+        BackgroundRenderer.regenerateBackground();
         this.item = null;
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
@@ -119,7 +120,7 @@ public class MainClass extends BasicGame {
         this.player = new Player(gc,100,100);
         this.player.setShowDebugRect(true);
 
-        BackgroundRenderer.generateBackground("img/ground.png", gc);
+        BackgroundRenderer.generateBackground(gc);
 
         this.portalsManager = new PortalsManager();
 

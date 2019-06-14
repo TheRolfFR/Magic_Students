@@ -18,6 +18,7 @@ public class ItemRenderer extends SpriteRenderer {
         super(entity, tileSize);
         this.tileSizeOffset = tileSize.copy().scale(0.5f);
         this.animation = new Animation(new SpriteSheet(image, (int) tileSize.getX(), (int) tileSize.getY()), frameDuration);
+        this.lastImage = animation.getCurrentFrame().copy();
     }
 
     public final void setOpacity(float opacity) {

@@ -27,10 +27,6 @@ public class WorldHealthBar {
         this.being = being;
     }
 
-    public WorldHealthBar(LivingBeing being, int x, int y){
-        this.being = being;
-    }
-
     public void render(Graphics g){
         Vector2f location = being.getCenter().sub(HEALTHBAR_OFFSET).add(new Vector2f(0, HEALTHBAR_MARGIN)).add(new Vector2f(0, being.getTileSize().getY()/2));
 

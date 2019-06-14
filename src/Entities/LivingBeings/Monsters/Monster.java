@@ -11,6 +11,7 @@ public abstract class Monster extends LivingBeing {
     public Monster(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, radius);
         this.damage = damage;
+        this.worldHealthBar = new WorldHealthBar(this);
     }
 
     protected void doDamage(LivingBeing opponent){
@@ -23,9 +24,6 @@ public abstract class Monster extends LivingBeing {
         return damage;
     }
 
-    public void setWorldHealthBar(WorldHealthBar worldHealthBar){
-        this.worldHealthBar = worldHealthBar;
-    }
     public WorldHealthBar getWorldHealthBar(){
         return this.worldHealthBar;
     }
