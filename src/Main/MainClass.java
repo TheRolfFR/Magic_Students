@@ -127,6 +127,7 @@ public class MainClass extends BasicGame {
         this.enemiesManager = new EnemiesManager(this.player, this.portalsManager);
 
         this.hudManager = new HUDManager(this.player, this.enemiesManager);
+        this.player.addPlayerHurtListener(this.hudManager);
 
         //generateRoom();
     }
@@ -150,6 +151,8 @@ public class MainClass extends BasicGame {
 
             enemiesManager.update();
             portalsManager.update(timeOfOneFrame);
+
+            hudManager.update(timeOfOneFrame);
 
             fadeToBlack.update(gc);
             if (fadeToBlack.atHalfDuration()) {

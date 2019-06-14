@@ -11,6 +11,8 @@ import Renderers.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.ArrayList;
+
 import static Main.MainClass.MAX_FPS;
 
 public class Player extends LivingBeing implements KeyListener, MouseListener, PlayerConstants{
@@ -22,6 +24,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private boolean keySpace;
 
     private double angleFaced;
+
+    private ArrayList<IPlayerHurted> playerHurtedListeners;
 
     private PlayerMarkerRenderer playerMarkerRenderer;
 
@@ -63,11 +67,10 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.setTileSize(new Vector2f(96, 96));
         this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
 
-        String[] visions = {"top", "left", "right", "bottom"};
         String[] activities = {"Move", "Idle", "Dash", "Attack", "Cast"};
 
         String fileName;
-        for(String vision : visions) {
+        for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             for(String activity : activities) {
                 // Determine filename
                 fileName = vision;
@@ -84,6 +87,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
             }
         }
 
+        this.playerHurtedListeners = new ArrayList<>();
+
         this.playerMarkerRenderer = new PlayerMarkerRenderer(this, 2);
 
         this.setAngleFaced(gc.getInput().getMouseX(), gc.getInput().getMouseY());
@@ -96,6 +101,10 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
     public void setShowPlayerMarkerDebugRect(boolean showPlayerMarkerDebugRect) {
         this.playerMarkerRenderer.setShowDebugRect(showPlayerMarkerDebugRect);
+    }
+
+    public void addPlayerHurtListener(IPlayerHurted listener) {
+        playerHurtedListeners.add(listener);
     }
 
     private void setAngleFaced(int x, int y) {
@@ -207,6 +216,11 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     public void takeDamage(int damage) {
         if(!this.isDashing()){
             super.takeDamage(damage);
+
+            // launching listeners
+            for(IPlayerHurted listener : this.playerHurtedListeners) {
+                listener.onPlayerHurt(this);
+            }
             //this.currentHealthPoints = Math.max(0, this.getCurrentHealthPoints() - round(damage / this.getArmorPoints()));
         }
     }
