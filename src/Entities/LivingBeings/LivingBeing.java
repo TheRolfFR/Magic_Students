@@ -2,6 +2,7 @@ package Entities.LivingBeings;
 
 import Entities.Entity;
 import Entities.LivingBeings.Monsters.Monster;
+import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.LivingBeingRenderer;

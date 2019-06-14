@@ -9,7 +9,6 @@ import java.util.Random;
 
 public class KnightBoss extends Knight implements IBoss {
     public static final Vector2f KNIGHTBOSS_TILESIZE = new Vector2f(96,96);
-    private int recoverTime = 0;
     private int summonCooldown = 30*MainClass.getNumberOfFramePerSecond();
 
     public KnightBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
@@ -33,7 +32,7 @@ public class KnightBoss extends Knight implements IBoss {
                     summon();
                 }
             }
-            if (isAbleToMove()){
+            if (super.isStun()){
                 this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().scale(this.getAccelerationRate()));
                 this.move();
                 if (isTargetInRange(target)){
@@ -41,7 +40,7 @@ public class KnightBoss extends Knight implements IBoss {
                 }
             }
             else {
-                recover();
+                super.recover();
             }
         }
     }
@@ -52,18 +51,11 @@ public class KnightBoss extends Knight implements IBoss {
         }
     }
 
-    private void recover() {
-        recoverTime = recoverTime - 1;
-    }
-
-    private boolean isAbleToMove() {
-        return recoverTime == 0;
-    }
-
     private void summon() {
         this.setSpeed(new Vector2f(0,0));
         MainClass.getInstance().getEnemiesManager().addKnight();
         this.summonCooldown = 30*MainClass.getNumberOfFramePerSecond();
+        stun();
     }
 
     private boolean decideToSummon(){
