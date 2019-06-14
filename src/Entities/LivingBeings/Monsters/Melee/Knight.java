@@ -10,8 +10,8 @@ public class Knight extends Melee implements KnightConstant{
 
     public static final Vector2f KNIGHT_TILESIZE = new Vector2f(48,48);
     private float timeLeftBeforeAttack = 0;
-    private Vector2f attackDirection = new Vector2f(0,0);
     private float timeLeftWhileStuned = 0;
+    private Vector2f attackDirection = new Vector2f(0,0);
 
     public Knight(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, (int) KNIGHT_TILESIZE.getX(), (int) KNIGHT_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);

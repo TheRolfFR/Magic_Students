@@ -4,17 +4,16 @@ import Entities.Projectiles.Fireball;
 import Entities.Projectiles.MeleeAttack;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Main.MainClass;
+import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
 import Renderers.PlayerMarkerRenderer;
 import Renderers.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.util.Random;
-
 import static Main.MainClass.MAX_FPS;
 
-public class Player extends LivingBeing implements KeyListener, MouseListener{
+public class Player extends LivingBeing implements KeyListener, MouseListener, PlayerConstants{
 
     private boolean keyUp;
     private boolean keyDown;
@@ -26,15 +25,15 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
 
     private PlayerMarkerRenderer playerMarkerRenderer;
 
-    private int framesLeftBeforeEnablingMovement = 0;
-    private int framesLeftWhileDashing = 0;
+    private float timeLeftBeforeEnablingMovement = 0;
+    private float timeLeftWhileDashing = 0;
 
-    private int dashCD = 0;
-    private int spellCD = 0;
+    private float dashCooldown = 0;
+    private float spellCooldown = 0;
 
     private Vector2f meleeAttackDirection = new Vector2f(0,0);
     private Vector2f rangedAttackDirection = new Vector2f(0,0);
-
+    private float timeLeftWhileAttacking = 0;
 
 
     /**
@@ -107,97 +106,106 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
      * In game calculations
      */
     public void update() {
-        updateCountdown();
-        if (!isDashing()){
-            if (this.keySpace && isDashReady()){
-                startDash();
+        this.updateCountdown();
+        if (!this.isDashing()){
+            if (this.keySpace && this.isDashReady()){
+                this.startDash();
             }
             else {
-                if (isAbleToMove()){
+                if (this.isAbleToMove()){
                     if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
-                        this.renderer.setLastActivity("Move");
+                        super.renderer.setLastActivity("Move");
                         if (this.keyUp) {
-                            this.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
+                            super.updateSpeed(new Vector2f(0, -1).scale(super.getAccelerationRate()));
                         }
                         if (this.keyDown) {
-                            this.updateSpeed(new Vector2f(0, 1).scale(this.getAccelerationRate()));
+                            super.updateSpeed(new Vector2f(0, 1).scale(super.getAccelerationRate()));
                         }
                         if (this.keyLeft) {
-                            this.updateSpeed(new Vector2f(-1, 0).scale(this.getAccelerationRate()));
+                            super.updateSpeed(new Vector2f(-1, 0).scale(super.getAccelerationRate()));
                         }
                         if (this.keyRight) {
-                            this.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()));
+                            super.updateSpeed(new Vector2f(1, 0).scale(super.getAccelerationRate()));
                         }
                     }
                     else {
-                        if (this.getSpeed().equals(new Vector2f(0, 0))) {
-                            this.renderer.setLastActivity("Idle");
+                        if (super.getSpeed().equals(new Vector2f(0, 0))) {
+                            super.renderer.setLastActivity("Idle");
                         } else {
-                            this.updateSpeed(this.getSpeed().negate().scale(0.2f));
+                            super.updateSpeed(super.getSpeed().negate().scale(0.2f));
                         }
                     }
                 }
             }
         }
-        this.move();
+        super.move();
     }
 
     private boolean isAbleToMove(){
-        return framesLeftBeforeEnablingMovement == 0;
+        return this.timeLeftBeforeEnablingMovement <= 0;
     }
 
     private void updateCountdown() {
-        if (!isDashReady()){
-            dashCD--;
+        if (this.isAttacking()){
+            this.timeLeftWhileAttacking = this.timeLeftWhileAttacking - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        if (!isSpellReady()){
-            spellCD--;
+        if (!this.isDashReady()){
+            this.dashCooldown = this.dashCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        if (!isAbleToMove()){
-            framesLeftBeforeEnablingMovement--;
+        if (!this.isSpellReady()){
+            this.spellCooldown = this.spellCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
+        }
+        if (!this.isAbleToMove()){
+            this.timeLeftBeforeEnablingMovement = this.timeLeftBeforeEnablingMovement - TimeScale.getInGameTimeScale().getDeltaTime();
         }
         if (isDashing()){
-            framesLeftWhileDashing--;
+            this.timeLeftWhileDashing = this.timeLeftWhileDashing - TimeScale.getInGameTimeScale().getDeltaTime();
         }
     }
 
     private void meleeAttack() {
-        Vector2f attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(this.getPosition()).normalise();
-        this.setSpeed(new Vector2f(0, 0));
-        this.framesLeftBeforeEnablingMovement = MainClass.getNumberOfFramePerSecond()/10;
-        Ranged.allyProjectiles.add(new MeleeAttack(this.getPosition().add(attackDirection.scale(this.getRadius()))));
-        this.renderer.setLastActivity("Attack");
-        this.renderer.update(this.meleeAttackDirection);
+        Vector2f attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(super.getPosition()).normalise();
+        super.setSpeed(new Vector2f(0, 0));
+        this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
+        this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
+        Ranged.allyProjectiles.add(new MeleeAttack(super.getPosition().add(attackDirection.scale(super.getRadius()))));
+        super.renderer.setLastActivity("Attack");
+        super.renderer.update(this.meleeAttackDirection);
     }
 
     private void startDash(){
-        if(this.getSpeed()!=null){
-            this.renderer.setLastActivity("Dash");
-            framesLeftWhileDashing = MainClass.getNumberOfFramePerSecond()/3;
-            this.setSpeed(this.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
-            dashCD = MainClass.getNumberOfFramePerSecond()/2;
+        if(super.getSpeed() != null){
+            super.renderer.setLastActivity("Dash");
+            this.timeLeftWhileDashing = PlayerConstants.DASH_DURATION;
+            super.setSpeed(super.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
+            this.dashCooldown = PlayerConstants.DASH_COOLDOWN;
         }
     }
 
-    public boolean isDashing(){return this.framesLeftWhileDashing != 0;}
+    public boolean isDashing(){return this.timeLeftWhileDashing > 0;}
 
-    private boolean isDashReady(){return dashCD == 0;}
+    private boolean isDashReady(){return dashCooldown <= 0;}
 
     private void shootFireball(){
-        Vector2f fireballDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(this.getPosition()).normalise();
-        spellCD = MainClass.getNumberOfFramePerSecond()*4;
-        framesLeftBeforeEnablingMovement = MainClass.getNumberOfFramePerSecond()/10;
-        this.setSpeed(new Vector2f(0,0));
-        Ranged.allyProjectiles.add(new Fireball(this.getPosition(), fireballDirection)); //décalage car bord haut gauche
-        this.renderer.setLastActivity("Cast");
-        this.renderer.update(this.rangedAttackDirection);
+        Vector2f fireballDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(super.getPosition()).normalise();
+        this.spellCooldown = PlayerConstants.SPELL_COOLDOWN;
+        this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
+        this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
+        super.setSpeed(new Vector2f(0,0));
+        Ranged.allyProjectiles.add(new Fireball(super.getPosition(), fireballDirection)); //décalage car bord haut gauche
+        super.renderer.setLastActivity("Cast");
+        super.renderer.update(this.rangedAttackDirection);
     }
 
-    private boolean isSpellReady(){return this.spellCD == 0;}
+    private boolean isSpellReady(){return this.spellCooldown <= 0;}
+
+    private boolean isAttacking(){
+        return timeLeftWhileAttacking > 0;
+    }
 
     @Override
     public void takeDamage(int damage) {
-        if(!isDashing()){
+        if(!this.isDashing()){
             super.takeDamage(damage);
             //this.currentHealthPoints = Math.max(0, this.getCurrentHealthPoints() - round(damage / this.getArmorPoints()));
         }
@@ -317,13 +325,19 @@ public class Player extends LivingBeing implements KeyListener, MouseListener{
         if (!MainClass.isGamePaused() && !isDashing()) {
             switch (button) {
                 case 0:
-                    meleeAttack();
+                    if (!this.isAttacking()){
+                        this.meleeAttack();
+                    }
+
                     break;
                 case 1:
-                    shootFireball();
+                    if (!this.isAttacking()) {
+                        this.shootFireball();
 //                    if (isSpellReady()){
 //                        shootFireball();
 //                    }
+                    }
+
                     break;
             }
         }

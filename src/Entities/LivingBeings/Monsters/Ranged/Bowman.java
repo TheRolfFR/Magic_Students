@@ -78,7 +78,7 @@ public class Bowman extends Ranged implements BowmanConstants{
                             }
                             else {
                                 if(super.getSpeed().length() != 0) {
-                                    super.updateSpeed(this.getSpeed().normalise().negate().scale(getAccelerationRate()));
+                                    super.updateSpeed(super.getSpeed().normalise().negate().scale(getAccelerationRate()));
                                 }
                             }
                         }

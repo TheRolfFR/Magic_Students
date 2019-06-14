@@ -15,7 +15,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 
 public abstract class Projectile extends Entity {
-    public static int damage = 25;
+    public static int damage = 500;
     protected Image image;
     protected Vector2f direction;
     protected float opacity;
