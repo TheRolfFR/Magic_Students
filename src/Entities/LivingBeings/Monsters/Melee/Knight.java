@@ -9,8 +9,8 @@ import org.newdawn.slick.geom.Vector2f;
 public class Knight extends Melee implements KnightConstant{
 
     public static final Vector2f KNIGHT_TILESIZE = new Vector2f(48,48);
-    private float timeLeftBeforeAttack = 0;
-    private float timeLeftWhileStuned = 0;
+    private float timeLeftBeforeAttack = KnightConstant.ATTACK_LOADING_DURATION;
+    private float timeLeftWhileStuned = KnightConstant.STUN_AFTER_ATTACK_DURATION;
     private Vector2f attackDirection = new Vector2f(0,0);
 
     public Knight(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){

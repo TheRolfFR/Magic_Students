@@ -2,8 +2,6 @@ package Entities.LivingBeings.Monsters.Ranged;
 
 import Entities.LivingBeings.LivingBeing;
 import Entities.Projectiles.Arrow;
-import Entities.Projectiles.Fireball;
-import Entities.Projectiles.Snowball;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
@@ -18,9 +16,9 @@ public class Bowman extends Ranged implements BowmanConstants{
     public static final Vector2f BOWMAN_TILESIZE = new Vector2f(48,48);
     private float framesLeftBeforeAttack;
     private Vector2f attackDirection = new Vector2f(0,0);
-    private float framesLeftWhileStuned = 0;
-    private float framesLeftWhileSpeedLocked = 0;
-    private float shootCooldown = 0;
+    private float framesLeftWhileStuned = BowmanConstants.STUN_AFTER_ATTACK_DURATION;
+    private float framesLeftWhileSpeedLocked = BowmanConstants.MOVEMENT_DURATION;
+    private float shootCooldown = BowmanConstants.SHOOT_COOLDOWN;
 
     public Bowman(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, (int) BOWMAN_TILESIZE.getX(), (int) BOWMAN_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
