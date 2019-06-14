@@ -65,6 +65,10 @@ public abstract class Projectile extends Entity {
     }
     public abstract int getDamage();
 
+    public Vector2f getDirection() {
+        return direction;
+    }
+
     public void collidingAction(LivingBeing opponent) {
         if (super.collidesWith(opponent)){
             opponent.takeDamage(this.getDamage());
