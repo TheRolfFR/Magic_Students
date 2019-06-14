@@ -11,6 +11,7 @@ public class Knight extends Melee {
     public static final Vector2f KNIGHT_TILESIZE = new Vector2f(48,48);
     private int framesLeftBeforeAttack;
     private Vector2f attackDirection = new Vector2f(0,0);
+    private int framesLeftWhileStuned = 0;
 
     public Knight(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, (int) KNIGHT_TILESIZE.getX(), (int) KNIGHT_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -50,13 +51,26 @@ public class Knight extends Melee {
             }
         }
         else {
-            this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().scale(this.getAccelerationRate()));
+            if (isStun()){
+                recover();
+            }
+            else {
+                this.updateSpeed(target.getPosition().sub(this.getPosition()).normalise().scale(this.getAccelerationRate()));
 
-            this.move();
-            if (isTargetInRange(target)){
-                startAttacking(target);
+                this.move();
+                if (isTargetInRange(target)){
+                    startAttacking(target);
+                }
             }
         }
+    }
+
+    private void recover() {
+        framesLeftWhileStuned = framesLeftWhileStuned - 1;
+    }
+
+    private boolean isStun() {
+        return framesLeftWhileStuned != 0;
     }
 
     boolean isTargetInRange(LivingBeing target){
@@ -108,5 +122,6 @@ public class Knight extends Melee {
             target.takeDamage(this.getDamage());
         }
         this.attackDirection.set(0,0);
+        framesLeftWhileStuned = MainClass.getNumberOfFramePerSecond()/10;
     }
 }

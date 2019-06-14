@@ -2,6 +2,7 @@ package Entities.LivingBeings;
 
 import Entities.Entity;
 import Entities.LivingBeings.Monsters.Monster;
+import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
@@ -170,6 +171,9 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     public void move() {
+        if(this instanceof Bowman) {
+            System.out.println(this.getSpeed());
+        }
         this.setPosition(this.getPosition().add(this.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
         this.tpInBounds();
     }
