@@ -142,7 +142,6 @@ public class EnemiesManager {
             enemy.render(g);
 
             if(!(enemy instanceof IBoss)) {
-                enemy.setWorldHealthBar(new WorldHealthBar(enemy ,(int) enemy.getPosition().x, (int) enemy.getPosition().y + (int) round(enemy.getRadius()*2.5)));
                 enemy.getWorldHealthBar().render(g);
             }
         }

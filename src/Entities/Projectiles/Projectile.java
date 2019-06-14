@@ -20,7 +20,7 @@ public abstract class Projectile extends Entity {
     protected Vector2f direction;
     protected float opacity;
     protected boolean isDead;
-    private Vector2f tilesetOffset;
+    private Vector2f tileSizeOffset;
 
     protected ProjectileRenderer renderer;
 
@@ -39,7 +39,7 @@ public abstract class Projectile extends Entity {
 
         this.renderer = null;
 
-        this.tilesetOffset = tileSize.copy().scale(0.5f);
+        this.tileSizeOffset = tileSize.copy().scale(0.5f);
 
         // for debugging purposes
         this.showDebugRect = true;
@@ -144,7 +144,7 @@ public abstract class Projectile extends Entity {
     public void render(Graphics g) {
         super.render(g);
 
-        Vector2f location = this.getPosition().sub(tilesetOffset);
+        Vector2f location = this.getPosition().sub(tileSizeOffset);
 
         if (this.image != null) {
             g.drawImage(image, location.getX(), location.getY());

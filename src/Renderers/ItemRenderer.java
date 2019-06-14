@@ -12,9 +12,13 @@ public class ItemRenderer extends SpriteRenderer {
     private Animation animation;
     private Image lastImage;
 
-    public ItemRenderer(Entity entity, Image image, Vector2f tileSize, int duration) {
+    private Vector2f tileSizeOffset;
+
+    public ItemRenderer(Entity entity, Image image, Vector2f tileSize, int frameDuration) {
         super(entity, tileSize);
-        this.animation = new Animation(new SpriteSheet(image, (int) tileSize.getX(), (int) tileSize.getY()), duration);
+        this.tileSizeOffset = tileSize.copy().scale(0.5f);
+        this.animation = new Animation(new SpriteSheet(image, (int) tileSize.getX(), (int) tileSize.getY()), frameDuration);
+        this.lastImage = animation.getCurrentFrame().copy();
     }
 
     public final void setOpacity(float opacity) {
@@ -28,7 +32,7 @@ public class ItemRenderer extends SpriteRenderer {
         }
 
         if(lastImage != null) {
-            g.drawImage(this.lastImage, x, y);
+            g.drawImage(this.lastImage, x - (int) tileSizeOffset.getX(), y - (int) tileSizeOffset.getY());
         }
     }
 }
