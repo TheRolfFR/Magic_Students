@@ -27,6 +27,11 @@ public class PortalRenderer extends SpriteRenderer {
     private static final int OPENED_DURATION = 750;
     private static final String PORTAL_OPENED_PATH = PREPATH + "portalOpened_32x32.png";
 
+    public void restart() {
+        this.timeCounter = 0;
+        this.openingAnimation.restart();
+    }
+
     public static Vector2f getTILESIZE() {
         return TILESIZE.copy();
     }
