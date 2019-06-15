@@ -6,13 +6,9 @@ import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.LivingBeings.Player;
 import Entities.Projectiles.Projectile;
 import HUD.FadeToBlack;
-import Listeners.ButtonListener;
-import Listeners.FadeToBlackListener;
 import HUD.PauseMenu;
-import Managers.EnemiesManager;
-import Managers.HUDManager;
-import Managers.ItemManager;
-import Managers.PortalsManager;
+import Listeners.FadeToBlackListener;
+import Managers.*;
 import Renderers.BackgroundRenderer;
 import org.newdawn.slick.*;
 
@@ -37,6 +33,7 @@ public class MainClass extends BasicGame {
     private PortalsManager portalsManager;
     private EnemiesManager enemiesManager;
     private HUDManager hudManager;
+    private AttackVisualsManager attackVisualsManager;
 
     private PauseMenu pauseMenu;
 
@@ -115,6 +112,7 @@ public class MainClass extends BasicGame {
         this.portalsManager = new PortalsManager(gc, this.player, this.fadeToBlack);
         this.enemiesManager = new EnemiesManager(this.player, this.portalsManager);
         this.hudManager = new HUDManager(this.player, this.enemiesManager);
+        this.attackVisualsManager = new AttackVisualsManager();
 
         this.fadeToBlack.addFadeToBlackListener(new FadeToBlackListener() {
             @Override
@@ -170,6 +168,7 @@ public class MainClass extends BasicGame {
         this.itemManager.render(g);
         this.enemiesManager.render(g);
         this.hudManager.render(g);
+        this.attackVisualsManager.render(g);
 
         this.pauseMenu.render(g);
 
