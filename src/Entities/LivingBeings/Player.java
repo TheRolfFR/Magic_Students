@@ -63,9 +63,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         Color capeColor = new Color(0x0094ff);
 
         this.setTileSize(new Vector2f(96, 96));
-        Vector2f attackTileSize =  new Vector2f(48,48);
+        Vector2f attackTileSize =  new Vector2f(96,58);
         this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
-        this.attackRenderer = new GraphicRenderer(prepath + "animationAttack.png",attackTileSize, Math.round(1000*4/MainClass.getNumberOfFramePerSecond()));
+        this.attackRenderer = new GraphicRenderer(prepath + "animationAttack.png",attackTileSize, Math.round(1000*PlayerConstants.ATTACK_DURATION/2));
 
         String[] activities = {"Move", "Idle", "Dash", "Attack", "Cast"};
 
@@ -220,7 +220,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         if(isAttacking() && this.isAttackRendered){
             Vector2f addVector = new Vector2f (this.attackDirection.getX()*(this.attackRenderer.getTileSize().getX()/2+super.getRadius()), this.attackDirection.getY()*(this.attackRenderer.getTileSize().getY()/2+super.getRadius()));
             Vector2f attackPosition = this.getCenter().add(addVector);
-            this.attackRenderer.render(g, (int) attackPosition.getX(), (int) attackPosition.getY());
+            this.attackRenderer.render(g, (int) attackPosition.getX(), (int) attackPosition.getY(), (float) attackDirection.getTheta() - 90);
         }
         else {
             this.isAttackRendered=false;

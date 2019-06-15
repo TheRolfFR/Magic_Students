@@ -33,15 +33,16 @@ public class GraphicRenderer{
     public Vector2f getTileSize(){return this.tileSize;}
 
 
-    public void render(Graphics g, int x, int y) {
+    public void render(Graphics g, int centerX, int centerY, float angle) {
         // if game not paused
         if (TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
             animation.draw(-10000, -10000);
             this.lastImage = animation.getCurrentFrame().copy();
+            this.lastImage.rotate(angle);
         }
 
         if(this.lastImage != null) {
-            g.drawImage(this.lastImage, x - this.tileSize.getX()/2, y - this.tileSize.getY()/2);
+            g.drawImage(this.lastImage, centerX - this.tileSize.getX()/2, centerY - this.tileSize.getY()/2);
         }
     }
 }
