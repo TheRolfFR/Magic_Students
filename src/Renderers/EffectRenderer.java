@@ -4,14 +4,14 @@ import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-public class GraphicRenderer{
+public class EffectRenderer{
 
     private Animation animation;
     private Vector2f tileSize;
 
     private Image lastImage;
 
-    public GraphicRenderer(String imgPath, Vector2f tileSize, int frameDuration) {
+    public EffectRenderer(String imgPath, Vector2f tileSize, int frameDuration) {
         this.tileSize = tileSize;
         Image image = null;
 

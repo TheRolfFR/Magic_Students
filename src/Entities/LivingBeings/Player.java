@@ -22,7 +22,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private double angleFaced;
 
     private PlayerMarkerRenderer playerMarkerRenderer;
-    private GraphicRenderer attackRenderer;
+    private EffectRenderer attackRenderer;
 
     private Vector2f mousePosition;
     private Vector2f attackDirection;
@@ -68,7 +68,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.setTileSize(new Vector2f(96, 96));
         Vector2f attackTileSize =  new Vector2f(96,58);
         this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
-        this.attackRenderer = new GraphicRenderer(prepath + "animationAttack.png",attackTileSize, Math.round(1000*PlayerConstants.ATTACK_DURATION/2));
+        this.attackRenderer = new EffectRenderer(prepath + "animationAttack.png",attackTileSize, Math.round(1000*PlayerConstants.ATTACK_DURATION/3));
 
         String[] activities = {"Move", "Idle", "Dash", "Attack", "Cast"};
 
