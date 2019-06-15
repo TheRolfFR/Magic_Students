@@ -1,6 +1,6 @@
 package Renderers;
 
-import Entities.LivingBeings.IHurtListener;
+import Listeners.LivingBeingHurtListener;
 import Entities.LivingBeings.LivingBeing;
 import Main.MainClass;
 import org.newdawn.slick.Color;
@@ -8,7 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class HurtEffectRenderer implements IHurtListener {
+public class HurtEffectRenderer implements LivingBeingHurtListener {
 
     private static final String HURT_EFFECT_IMG_PATH = "img/cameraHurtEffect.png";
     private static final int HURT_EFFECT_DURATION = 500;

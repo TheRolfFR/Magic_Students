@@ -1,12 +1,12 @@
 package HUD.HealthBars;
 
-import Entities.LivingBeings.IHurtListener;
+import Listeners.LivingBeingHurtListener;
 import Entities.LivingBeings.LivingBeing;
 import Main.MainClass;
 import Renderers.FontRenderer;
 import org.newdawn.slick.*;
 
-public class BossHealthBar extends UIHealthBar implements IHurtListener {
+public class BossHealthBar extends UIHealthBar implements LivingBeingHurtListener {
 
     private static final float BOSS_HEALTHBAR_WIDTH_PERCENTAGE = 0.4f;
     private static final int BOSS_HEALTHBAR_WIDTH = (int) (BOSS_HEALTHBAR_WIDTH_PERCENTAGE * MainClass.WIDTH);

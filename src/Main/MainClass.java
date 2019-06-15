@@ -1,16 +1,16 @@
 package Main;
 
-import Entities.Item;
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.LivingBeings.Player;
 import Entities.Projectiles.Projectile;
 import HUD.FadeToBlack;
-import HUD.FadeToBlackListener;
+import Listeners.FadeToBlackListener;
 import HUD.PauseMenu;
 import Managers.EnemiesManager;
 import Managers.HUDManager;
+import Managers.ItemManager;
 import Managers.PortalsManager;
 import Renderers.BackgroundRenderer;
 import org.newdawn.slick.*;
@@ -30,17 +30,16 @@ public class MainClass extends BasicGame {
     private static double difficulty = 1;
     private static int numberOfFramePerSecond = 60;
 
-    private PortalsManager portalsManager;
-    private EnemiesManager enemiesManager;
-
     private Player player;
 
+    private ItemManager itemManager;
+    private PortalsManager portalsManager;
+    private EnemiesManager enemiesManager;
     private HUDManager hudManager;
 
     private PauseMenu pauseMenu;
-    private FadeToBlack fadeToBlack;
 
-    private Item item;
+    private FadeToBlack fadeToBlack;
 
     public static double getDifficulty(){return difficulty;}
 
@@ -50,10 +49,6 @@ public class MainClass extends BasicGame {
         difficulty++;
     }
 
-    public FadeToBlack getFadeToBlack() {
-        return fadeToBlack;
-    }
-
     public static boolean isGamePaused() {
         return instance.pauseMenu.isActive();
     }
@@ -61,7 +56,6 @@ public class MainClass extends BasicGame {
     private void generateRoom() {
         System.out.println("new room");
         BackgroundRenderer.regenerateBackground();
-        this.item = null;
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
 
@@ -71,7 +65,7 @@ public class MainClass extends BasicGame {
                     enemiesManager.generateBoss();
                     break;
                 case "item":
-                    item = new Item();
+                    itemManager.newItem();
                     break;
                 case "classic":
                     enemiesManager.generateEnemies();
@@ -106,10 +100,6 @@ public class MainClass extends BasicGame {
         return enemiesManager.getEnemies();
     }
 
-    public static Input getInput() {
-        return instanceGameContainer.getInput();
-    }
-
     public MainClass(String name) { super(name); }
 
     @Override
@@ -124,10 +114,9 @@ public class MainClass extends BasicGame {
 
         BackgroundRenderer.generateBackground(gc);
 
-        this.portalsManager = new PortalsManager(gc);
-
+        this.itemManager = new ItemManager(this.player);
+        this.portalsManager = new PortalsManager(gc, this.player, this.fadeToBlack);
         this.enemiesManager = new EnemiesManager(this.player, this.portalsManager);
-
         this.hudManager = new HUDManager(this.player, this.enemiesManager);
 
         this.fadeToBlack.addFadeToBlackListener(new FadeToBlackListener() {
@@ -153,19 +142,13 @@ public class MainClass extends BasicGame {
             TimeScale.getInGameTimeScale().setDeltaTime(timeOfOneFrame);
 
             this.player.update();
-            if (!this.player.isDashing()) {
-                this.player.checkCollision();
-            }
-            if( item!=null) {
-                item = item.update(this.player);
-            }
+
             Projectile.updateEnemyProjectile(player);
             Projectile.updateAllyProjectiles();
 
-            enemiesManager.update();
-            portalsManager.update(timeOfOneFrame);
-
-            hudManager.update(timeOfOneFrame);
+            this.enemiesManager.update();
+            this.portalsManager.update(timeOfOneFrame);
+            this.hudManager.update(timeOfOneFrame);
 
             fadeToBlack.update(timeOfOneFrame);
         }
@@ -182,16 +165,17 @@ public class MainClass extends BasicGame {
     public void render(GameContainer gc, Graphics g) {
         BackgroundRenderer.renderBackground(g);
 
-        if(item!=null){
-            item.render(g);
-        }
+        // must be rendered before the living beings to be behind
+        this.portalsManager.render(g);
 
-        portalsManager.render(g);
         LivingBeing.sortAndRenderLivingBeings(g);
-        this.enemiesManager.render(g);
 
+        this.itemManager.render(g);
+        this.enemiesManager.render(g);
         this.hudManager.render(g);
+
         this.pauseMenu.render(g);
+
         this.fadeToBlack.render(g);
     }
 

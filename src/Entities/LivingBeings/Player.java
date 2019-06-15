@@ -24,6 +24,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private PlayerMarkerRenderer playerMarkerRenderer;
     private GraphicRenderer attackRenderer;
 
+    private Vector2f mousePosition;
     private Vector2f attackDirection;
 
     private boolean isAttackRendered = false;
@@ -55,6 +56,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
         gc.getInput().addKeyListener(this);
         gc.getInput().addMouseListener(this);
+        this.mousePosition = new Vector2f(gc.getInput().getMouseX(), gc.getInput().getMouseY());
+        this.setAngleFaced(gc.getInput().getMouseX(), gc.getInput().getMouseY());
 
         String prepath = "img/wizard/";
 
@@ -89,8 +92,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
         this.playerMarkerRenderer = new PlayerMarkerRenderer(this, 2);
         this.setTileSize(new Vector2f(96, 96));
-
-        this.setAngleFaced(gc.getInput().getMouseX(), gc.getInput().getMouseY());
     }
 
     @Override
@@ -141,6 +142,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
                     }
                 }
             }
+            this.checkCollision();
         }
         super.move();
     }
@@ -168,11 +170,14 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     }
 
     private void meleeAttack() {
-        attackDirection = new Vector2f(MainClass.getInput().getMouseX(),MainClass.getInput().getMouseY()).sub(super.getCenter()).normalise();
+        this.attackDirection = this.mousePosition.sub(super.getCenter()).normalise();
         super.setSpeed(new Vector2f(0, 0));
+
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
+
         Ranged.allyProjectiles.add(new MeleeAttack(super.getCenter().add(attackDirection.copy().scale(super.getRadius()))));
+
         super.renderer.setLastActivity("Attack");
         super.renderer.update(attackDirection);
         this.isAttackRendered = true;
@@ -192,7 +197,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private boolean isDashReady(){return dashCooldown <= 0;}
 
     private void shootFireball(){
-        Vector2f fireballDirection = new Vector2f(MainClass.getInput().getMouseX(), MainClass.getInput().getMouseY()).sub(super.getCenter()).normalise();
+        Vector2f fireballDirection = this.mousePosition.copy().sub(super.getCenter()).normalise();
         this.spellCooldown = PlayerConstants.SPELL_COOLDOWN;
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
@@ -367,6 +372,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
         this.setAngleFaced(newx, newy);
+        this.mousePosition = new Vector2f(newx, newy);
     }
 
     @Override

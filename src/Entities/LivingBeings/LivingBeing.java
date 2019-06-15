@@ -2,6 +2,8 @@ package Entities.LivingBeings;
 
 import Entities.Entity;
 import Entities.LivingBeings.Monsters.Monster;
+import Listeners.LivingBeingHurtListener;
+import Listeners.LivingBeingMoveListener;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
@@ -18,8 +20,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
     private int maxHealthPoints;
     private int armorPoints;
 
-    private ArrayList<IHurtListener> hurtListeners;
-    private ArrayList<IMoveListener> moveListeners;
+    private ArrayList<LivingBeingHurtListener> livingBeingHurtListeners;
+    private ArrayList<LivingBeingMoveListener> livingBeingMoveListeners;
 
     public static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
 
@@ -58,12 +60,12 @@ public abstract class LivingBeing extends Entity implements Comparable {
         }
     }
 
-    public void addHurtListener(IHurtListener listener) {
-        this.hurtListeners.add(listener);
+    public void addHurtListener(LivingBeingHurtListener listener) {
+        this.livingBeingHurtListeners.add(listener);
     }
 
-    protected void addMoveListener(IMoveListener listener) {
-        this.moveListeners.add(listener);
+    public void addMoveListener(LivingBeingMoveListener listener) {
+        this.livingBeingMoveListeners.add(listener);
     }
 
     public int getArmorPoints() {
@@ -104,8 +106,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
 
-        this.hurtListeners = new ArrayList<>();
-        this.moveListeners = new ArrayList<>();
+        this.livingBeingHurtListeners = new ArrayList<>();
+        this.livingBeingMoveListeners = new ArrayList<>();
 
         livingBeings.add(this);
     }
@@ -116,8 +118,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
 
-        this.hurtListeners = new ArrayList<>();
-        this.moveListeners = new ArrayList<>();
+        this.livingBeingHurtListeners = new ArrayList<>();
+        this.livingBeingMoveListeners = new ArrayList<>();
 
         livingBeings.add(this);
     }
@@ -130,7 +132,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.currentHealthPoints = Math.max(0, this.currentHealthPoints - Math.max(damage - this.armorPoints, 0));
 
         // launching listeners
-        for(IHurtListener listener : this.hurtListeners) {
+        for(LivingBeingHurtListener listener : this.livingBeingHurtListeners) {
             listener.onHurt(this);
         }
     }
@@ -195,7 +197,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         super.setCenter(super.getCenter().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
         this.tpInBounds();
 
-        for(IMoveListener listener : this.moveListeners) {
+        for(LivingBeingMoveListener listener : this.livingBeingMoveListeners) {
             listener.onMove(this);
         }
     }

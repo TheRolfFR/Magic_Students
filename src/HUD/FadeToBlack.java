@@ -1,12 +1,15 @@
 package HUD;
 
+import Listeners.FadeToBlackListener;
 import Main.MainClass;
+import Managers.PortalsManager;
+import Listeners.PortalsManagerListener;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
 
-public class FadeToBlack {
+public class FadeToBlack implements PortalsManagerListener {
     private static final int FADE_DURATION = 2000;
     private static final float FADE_B = 4/ (float) FADE_DURATION;
     private static final float FADE_A = -FADE_B/ (float) FADE_DURATION;
@@ -86,5 +89,10 @@ public class FadeToBlack {
             g.setColor(new Color(0, 0, 0, opacity));
             g.fillRect(0, 0, MainClass.instanceGameContainer.getWidth(), MainClass.instanceGameContainer.getHeight());
         }
+    }
+
+    @Override
+    public void onEngage(PortalsManager portalsManager) {
+        this.setActive(true);
     }
 }

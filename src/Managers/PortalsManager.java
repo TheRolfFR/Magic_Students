@@ -1,6 +1,11 @@
 package Managers;
 
+import Listeners.LivingBeingMoveListener;
+import Entities.LivingBeings.LivingBeing;
+import Entities.LivingBeings.Player;
 import Entities.Portal;
+import HUD.FadeToBlack;
+import Listeners.PortalsManagerListener;
 import Main.KeyPressListener;
 import Main.MainClass;
 import Main.TimeScale;
@@ -17,19 +22,15 @@ import java.util.Random;
 import static Main.MainClass.HEIGHT;
 import static Main.MainClass.WIDTH;
 
-public class PortalsManager implements KeyPressListener {
-    private boolean portalSet;
-    private boolean portalEngaged;
-    private Portal actualPortal;
+public class PortalsManager implements KeyPressListener, LivingBeingMoveListener {
 
-
-    private static String[] types = {"classic", "item", "boss"};
-    public static Map<String, Color> roomColor = Map.of(
+    private static final String[] PORTAL_TYPES = {"classic", "item", "boss"};
+    public static final Map<String, Color> ROOM_COLOR = Map.of(
             "classic", new Color(0x0094FF),     // blue
             "item", Color.yellow,                     // yellow
             "boss", new Color(0xf44336)         // red
     );
-    private static Map<String, Float> cumulativeRoomProbability = Map.of(
+    private static final Map<String, Float> CUMULATIVE_ROOM_PROBABILITY = Map.of(
             "classic", 0.20f,
             "item", 0.24f,
             "boss", 0.27f
@@ -37,11 +38,21 @@ public class PortalsManager implements KeyPressListener {
 
     private static ArrayList<Portal> portals = new ArrayList<>();
 
+    private boolean portalSet;
+    private boolean portalEngaged;
+    private Portal actualPortal;
+
+    private ArrayList<PortalsManagerListener> portalsManagerListeners;
+
+    public void addPortalsManagerListeners(PortalsManagerListener listener) {
+        this.portalsManagerListeners.add(listener);
+    }
+
     private void setPortalEngaged(boolean portalEngaged) {
         this.portalEngaged = portalEngaged;
     }
 
-    public PortalsManager(GameContainer gc) {
+    public PortalsManager(GameContainer gc, Player player, FadeToBlack fadeToBlack) {
         gc.getInput().addKeyListener(this);
         this.portalSet = false;
         this.portalEngaged = false;
@@ -59,6 +70,12 @@ public class PortalsManager implements KeyPressListener {
             portal.setShowDebugRect(true);
             portals.add(portal);
         }
+
+        player.addMoveListener(this);
+
+        this.portalsManagerListeners = new ArrayList<>();
+        this.addPortalsManagerListeners(fadeToBlack);
+        this.addPortalsManagerListeners(TimeScale.getInGameTimeScale());
     }
 
     public Portal getActualPortal() { return this.actualPortal; }
@@ -77,8 +94,8 @@ public class PortalsManager implements KeyPressListener {
                 if (!portal.isVisible()) {
                     chance = random.nextFloat();
 
-                    for (String type: cumulativeRoomProbability.keySet()) {
-                        if (chance <= cumulativeRoomProbability.get(type)) {
+                    for (String type: CUMULATIVE_ROOM_PROBABILITY.keySet()) {
+                        if (chance <= CUMULATIVE_ROOM_PROBABILITY.get(type)) {
                             portal.setVisible(true);
                             portal.setType(type);
                             break;
@@ -87,20 +104,6 @@ public class PortalsManager implements KeyPressListener {
                 }
             }
             portalSet = true;
-        }
-
-        if (this.portalEngaged) {
-            for (Portal portal : portals) {
-                if (portal.isVisible() && MainClass.getInstance().getPlayer().collidesWith(portal)) {
-                    if(this.actualPortal.getType().equals("boss")){
-                        MainClass.nextDifficulty();
-                    }
-                    this.actualPortal = portal;
-                    TimeScale.getInGameTimeScale().setTimeScale(0f);
-                    MainClass.getInstance().getFadeToBlack().setActive(true);
-                    this.portalEngaged = false;
-                }
-            }
         }
     }
 
@@ -133,6 +136,14 @@ public class PortalsManager implements KeyPressListener {
     public void keyPressed(int key, char c) {
         if (key == Input.KEY_F) {
             this.setPortalEngaged(true);
+
+            // trigger all listeners
+            if(this.portalsManagerListeners.size()  > 0) {
+                for(PortalsManagerListener listener : this.portalsManagerListeners) {
+                    listener.onEngage(this);
+                }
+                this.setPortalEngaged(false);
+            }
         }
     }
 
@@ -140,6 +151,26 @@ public class PortalsManager implements KeyPressListener {
     public void keyReleased(int key, char c) {
         if (key == Input.KEY_F) {
             this.setPortalEngaged(false);
+        }
+    }
+
+    @Override
+    public void onMove(LivingBeing being) {
+        // if the being is the player
+        if(being instanceof Player) {
+            // for each portal
+            for(Portal portal : portals) {
+                // if the player collides with the portal
+                if(being.collidesWith(portal)) {
+                    // if the actual room was a boss room
+                    if(this.actualPortal.getType().equals("boss")){
+                        MainClass.nextDifficulty();
+                    }
+
+                    // update the actual portal
+                    this.actualPortal = portal;
+                }
+            }
         }
     }
 }

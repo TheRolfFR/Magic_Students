@@ -1,11 +1,25 @@
 package Main;
 
-public class TimeScale {
+import Managers.PortalsManager;
+import Listeners.PortalsManagerListener;
+
+public class TimeScale implements PortalsManagerListener {
     private float timeScale;
     private float deltaTime;
 
-    private static final TimeScale inGameTimeScale = new TimeScale(1f);
+    private static final TimeScale inGameTimeScale = new TimeScale(1f, new PortalsManagerListener() {
+        @Override
+        public void onEngage(PortalsManager portalsManager) {
+            inGameTimeScale.setTimeScale(0f);
+        }
+    });
     private static final TimeScale guiTimeScale = new TimeScale(1f);
+
+    private PortalsManagerListener listener;
+
+    public void setListener(PortalsManagerListener listener) {
+        this.listener = listener;
+    }
 
     public static TimeScale getInGameTimeScale() {
         return inGameTimeScale;
@@ -35,5 +49,18 @@ public class TimeScale {
 
     public TimeScale(float timeScale) {
         this.timeScale = timeScale;
+        this.listener = null;
+    }
+
+    public TimeScale(float timeScale, PortalsManagerListener listener) {
+        this.timeScale = timeScale;
+        this.listener = listener;
+    }
+
+    @Override
+    public void onEngage(PortalsManager portalsManager) {
+        if(this.listener != null) {
+            this.listener.onEngage(portalsManager);
+        }
     }
 }

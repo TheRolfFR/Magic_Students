@@ -38,7 +38,7 @@ public class Portal extends Entity {
     @Override
     public void render(Graphics g) {
         if (this.renderer != null) {
-            this.renderer.Render(PortalsManager.roomColor.get(this.roomType));
+            this.renderer.Render(PortalsManager.ROOM_COLOR.get(this.roomType));
             //this.renderer.render(g, (int) this.getPosition().getX(), (int) this.getPosition().getY());
         }
         super.render(g);

@@ -1,6 +1,6 @@
 package HUD.HealthBars;
 
-import Entities.LivingBeings.IHurtListener;
+import Listeners.LivingBeingHurtListener;
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Main.MainClass;
@@ -9,7 +9,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
 
-public class PlayerHealthBar extends UIHealthBar implements IHurtListener {
+public class PlayerHealthBar extends UIHealthBar implements LivingBeingHurtListener {
 
     private static final int PLAYER_HEALTHBAR_WIDTH = 100;
     private static final int PLAYER_HEALTHBAR_CONTENT_HEIGHT = PLAYER_HEALTHBAR_WIDTH / 10;

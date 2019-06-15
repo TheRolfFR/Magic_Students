@@ -1,4 +1,4 @@
-package HUD;
+package Listeners;
 
 public interface FadeToBlackListener {
     void atHalf();
