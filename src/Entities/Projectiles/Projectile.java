@@ -2,9 +2,9 @@ package Entities.Projectiles;
 
 import Entities.Entity;
 import Entities.LivingBeings.LivingBeing;
-import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
+import Entities.LivingBeings.Player;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.ProjectileRenderer;
@@ -70,13 +70,13 @@ public abstract class Projectile extends Entity {
     }
 
     public void collidingAction(LivingBeing opponent) {
-        if (super.collidesWith(opponent)){
+        if (super.collidesWith(opponent)) {
             opponent.takeDamage(this.getDamage());
             this.isDead = true;
         }
     }
 
-    public boolean isDead(){
+    public boolean isDead() {
         return this.isDead;
     }
 
@@ -91,7 +91,7 @@ public abstract class Projectile extends Entity {
         }
     }
 
-    public static void updateEnemyProjectile(Player target){
+    public static void updateEnemyProjectile(Player target) {
         for (int i = 0; i < Ranged.enemyProjectiles.size(); i++) {
             Projectile p = Ranged.enemyProjectiles.get(i);
 
@@ -109,7 +109,7 @@ public abstract class Projectile extends Entity {
         }
     }
 
-    public static void updateAllyProjectiles(){
+    public static void updateAllyProjectiles() {
         Projectile p;
         for (int j = 0; j < Ranged.allyProjectiles.size(); j++) {
             p = Ranged.allyProjectiles.get(j);
@@ -118,8 +118,8 @@ public abstract class Projectile extends Entity {
 
             p.update();
 
-            for(Monster enemy : MainClass.getInstance().getEnemies()){
-                checkCollidesProjectile(p,enemy);
+            for (Monster enemy : MainClass.getInstance().getEnemies()) {
+                checkCollidesProjectile(p, enemy);
             }
 
             if (p.isFadeOut() || p.isDead()) {
@@ -129,8 +129,8 @@ public abstract class Projectile extends Entity {
         }
     }
 
-    private static void checkCollidesProjectile(Projectile p, LivingBeing opponent){
-        if(p.collidesWith(opponent)){
+    private static void checkCollidesProjectile(Projectile p, LivingBeing opponent) {
+        if (p.collidesWith(opponent)) {
                 p.collidingAction(opponent);
                 p.opacity=0;
         }
@@ -159,7 +159,7 @@ public abstract class Projectile extends Entity {
     public void move() {
         super.setCenter(super.getCenter().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
 
-        if (super.getCenter().getX() < super.getRadius() || (super.getCenter().getX() >= MainClass.WIDTH - super.getRadius() || super.getCenter().getY() < super.getRadius() || (super.getCenter().getY() >= MainClass.HEIGHT - super.getRadius()))){
+        if (super.getCenter().getX() < super.getRadius() || (super.getCenter().getX() >= MainClass.WIDTH - super.getRadius() || super.getCenter().getY() < super.getRadius() || (super.getCenter().getY() >= MainClass.HEIGHT - super.getRadius()))) {
            this.isDead=true;
         }
     }

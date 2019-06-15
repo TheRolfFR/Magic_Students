@@ -1,7 +1,7 @@
 package Renderers;
 
-import Listeners.LivingBeingHealthListener;
 import Entities.LivingBeings.LivingBeing;
+import Listeners.LivingBeingHealthListener;
 import Main.MainClass;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -33,8 +33,8 @@ public class HurtEffectRenderer implements LivingBeingHealthListener {
     }
 
     public void update(int deltaTime) {
-        if(this.isHurtEffectActivated) {
-            if(this.hurtEffectTimer < HURT_EFFECT_DURATION) {
+        if (this.isHurtEffectActivated) {
+            if (this.hurtEffectTimer < HURT_EFFECT_DURATION) {
                 this.hurtEffectTimer = Math.min(this.hurtEffectTimer + deltaTime, HURT_EFFECT_DURATION);
             } else {
                 this.isHurtEffectActivated = false;
@@ -43,7 +43,7 @@ public class HurtEffectRenderer implements LivingBeingHealthListener {
     }
 
     public void render(Graphics g) {
-        if(this.isHurtEffectActivated) {
+        if (this.isHurtEffectActivated) {
             float opacity = HURT_A * this.hurtEffectTimer*this.hurtEffectTimer + HURT_B * this.hurtEffectTimer; // a*x^2 + b*x
 
             g.drawImage(this.hurtEffect, 0, 0, new Color(255, 255, 255, opacity));
@@ -52,7 +52,7 @@ public class HurtEffectRenderer implements LivingBeingHealthListener {
 
     @Override
     public void onHurt(LivingBeing being) {
-        if(!isHurtEffectActivated) {
+        if (!isHurtEffectActivated) {
             this.isHurtEffectActivated = true;
             this.hurtEffectTimer = 0;
         }

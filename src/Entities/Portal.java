@@ -16,18 +16,21 @@ public class Portal extends Entity {
         this.visible = false;
         this.roomType = null;
 
-        this.renderer = new PortalRenderer(this,this.getCenter().getX(), this.getCenter().getY());
+        this.renderer = new PortalRenderer(this, this.getCenter().getX(), this.getCenter().getY());
     }
 
     public boolean isVisible() { return this.visible; }
     public void setVisible(boolean visible) {
         this.visible = visible;
-        if(this.visible) {
+        if (this.visible) {
             this.renderer.restart();
         }
     }
     public void setType(String type) { this.roomType = type; }
-    public String getType(){return this.roomType;}
+
+    public String getType() {
+        return this.roomType;
+    }
 
     @Override
     public void move() {}

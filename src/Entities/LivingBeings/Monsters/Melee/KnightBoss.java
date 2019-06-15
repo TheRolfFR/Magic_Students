@@ -12,7 +12,7 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.Random;
 
 public class KnightBoss extends Knight implements IBoss, BossConstants {
-    public static final Vector2f KNIGHTBOSS_TILESIZE = new Vector2f(96,96);
+    public static final Vector2f KNIGHTBOSS_TILESIZE = new Vector2f(96, 96);
     private float summonCooldown = BossConstants.SUMMON_COOLDOWN;
 
     public KnightBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
@@ -22,24 +22,24 @@ public class KnightBoss extends Knight implements IBoss, BossConstants {
     }
 
     @Override
-    public void update(LivingBeing target){
+    public void update(LivingBeing target) {
         this.updateCountdown();
-        if (super.isAttacking()){
-            if (super.isAttackReady()){
+        if (super.isAttacking()) {
+            if (super.isAttackReady()) {
                 super.attack(target);
             }
         }
         else {
-            if (this.isSummonReady()){
-                if (this.decideToSummon()){
+            if (this.isSummonReady()) {
+                if (this.decideToSummon()) {
                     this.summon();
                 }
             }
-            if (!super.isStun()){
+            if (!super.isStun()) {
                 this.renderer.setLastActivity("Move");
                 super.updateSpeed(target.getCenter().sub(super.getCenter()).normalise().scale(super.getAccelerationRate()));
                 super.move();
-                if (super.isTargetInRange(target)){
+                if (super.isTargetInRange(target)) {
                     super.startAttacking(target);
                 }
             }
@@ -48,21 +48,21 @@ public class KnightBoss extends Knight implements IBoss, BossConstants {
 
     @Override
     void updateCountdown() {
-        if (this.summonCooldown > 0){
+        if (this.summonCooldown > 0) {
             this.summonCooldown = this.summonCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
         }
         super.updateCountdown();
     }
 
     private void summon() {
-        super.setSpeed(new Vector2f(0,0));
+        super.setSpeed(new Vector2f(0, 0));
         this.renderer.setLastActivity("Summon");
         this.triggerListener(EnemiesManager.newKnight());
         this.summonCooldown = BossConstants.SUMMON_COOLDOWN;
         super.stun();
     }
 
-    private boolean decideToSummon(){
+    private boolean decideToSummon() {
         Random random = new Random();
         return (random.nextFloat()%1 < 1f/(MainClass.getNumberOfFramePerSecond()*BossConstants.AVERAGE_SECONDS_BEFORE_SUMMONING));
     }

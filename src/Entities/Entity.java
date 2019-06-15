@@ -34,7 +34,7 @@ public abstract class Entity {
         this.position = position;
     }
 
-    public Vector2f getCenter(){
+    public Vector2f getCenter() {
         return this.position.copy();
     }
 
@@ -151,8 +151,8 @@ public abstract class Entity {
      */
     public abstract void move();
 
-    public Shape getBounds(){
-        return new Circle(getCenter().x,getCenter().y, getRadius());
+    public Shape getBounds() {
+        return new Circle(getCenter().x, getCenter().y, getRadius());
     }
 
     /**
@@ -170,8 +170,8 @@ public abstract class Entity {
      * @param other the other entity
      * @return whether it collides with another entity
      */
-    public boolean collidesWith(Entity other){
-        if (other != this){
+    public boolean collidesWith(Entity other) {
+        if (other != this) {
             return (this.getCenter().sub(other.getCenter()).length() < this.radius + other.getRadius());
         }
         else {

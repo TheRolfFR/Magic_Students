@@ -13,14 +13,14 @@ import java.util.Random;
 
 public class Bowman extends Ranged implements BowmanConstants{
 
-    public static final Vector2f BOWMAN_TILESIZE = new Vector2f(48,48);
+    public static final Vector2f BOWMAN_TILESIZE = new Vector2f(48, 48);
     private float framesLeftBeforeAttack;
-    private Vector2f attackDirection = new Vector2f(0,0);
+    private Vector2f attackDirection = new Vector2f(0, 0);
     private float framesLeftWhileStuned = BowmanConstants.STUN_AFTER_ATTACK_DURATION;
     private float framesLeftWhileSpeedLocked = BowmanConstants.MOVEMENT_DURATION;
     private float shootCooldown = BowmanConstants.SHOOT_COOLDOWN;
 
-    public Bowman(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
+    public Bowman(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
         super(x, y, (int) BOWMAN_TILESIZE.getX(), (int) BOWMAN_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
 
         this.renderer = new LivingBeingRenderer(this, BOWMAN_TILESIZE);
@@ -29,12 +29,12 @@ public class Bowman extends Ranged implements BowmanConstants{
 
         final int duration = 1000/8;
 
-        for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
+        for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", BOWMAN_TILESIZE, duration));
         }
     }
 
-    public Bowman(float x, float y, Vector2f tileSize, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
+    public Bowman(float x, float y, Vector2f tileSize, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
         super(x, y, (int) tileSize.getX(), (int) tileSize.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
 
         this.renderer = new LivingBeingRenderer(this, tileSize);
@@ -43,7 +43,7 @@ public class Bowman extends Ranged implements BowmanConstants{
 
         final int duration = 1000/8;
 
-        for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
+        for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", tileSize, duration));
         }
     }
@@ -51,8 +51,8 @@ public class Bowman extends Ranged implements BowmanConstants{
     @Override
     public void update(LivingBeing target) {
         this.updateCountdown();
-        if (this.isAttacking()){
-            if (this.isAttackReady()){
+        if (this.isAttacking()) {
+            if (this.isAttackReady()) {
                 this.attack(target);
             }
             else {
@@ -62,20 +62,20 @@ public class Bowman extends Ranged implements BowmanConstants{
         else {
             if (!this.isStun())
             {
-                if (this.isShootReady()){
+                if (this.isShootReady()) {
                     this.startAttacking(target);
                 }
                 else {
-                    if(this.targetIsClose(target)) {
+                    if (this.targetIsClose(target)) {
                         this.runAway(target);
                     }
                     else {
-                        if (!this.isSpeedLocked()){
-                            if (this.decideToMove()){
+                        if (!this.isSpeedLocked()) {
+                            if (this.decideToMove()) {
                                 this.chooseDirection();
                             }
                             else {
-                                if(super.getSpeed().length() != 0) {
+                                if (super.getSpeed().length() != 0) {
                                     super.updateSpeed(super.getSpeed().normalise().negate().scale(getAccelerationRate()));
                                 }
                             }
@@ -97,13 +97,13 @@ public class Bowman extends Ranged implements BowmanConstants{
     }
 
     void updateCountdown() {
-        if (!this.isAttackReady()){
+        if (!this.isAttackReady()) {
             this.framesLeftBeforeAttack = this.framesLeftBeforeAttack - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        if (!this.isShootReady()){
+        if (!this.isShootReady()) {
             this.shootCooldown = this.shootCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        if (this.isStun()){
+        if (this.isStun()) {
             this.framesLeftWhileStuned = this.framesLeftWhileStuned - TimeScale.getInGameTimeScale().getDeltaTime();
         }
         if (this.isSpeedLocked()) {
@@ -117,13 +117,13 @@ public class Bowman extends Ranged implements BowmanConstants{
 
     void startAttacking(LivingBeing target) {
         this.attackDirection.set(target.getCenter().sub(this.getCenter()).normalise());
-        this.setSpeed(new Vector2f(0,0));
+        this.setSpeed(new Vector2f(0, 0));
         this.framesLeftBeforeAttack = BowmanConstants.ATTACK_LOADING_DURATION;
     }
 
     void chooseDirection() {
         Random random = new Random();
-        this.updateSpeed(new Vector2f(random.nextFloat(),random.nextFloat()).normalise().scale(this.getAccelerationRate()));
+        this.updateSpeed(new Vector2f(random.nextFloat(), random.nextFloat()).normalise().scale(this.getAccelerationRate()));
         this.framesLeftWhileSpeedLocked = BowmanConstants.MOVEMENT_DURATION;
     }
 
@@ -140,29 +140,29 @@ public class Bowman extends Ranged implements BowmanConstants{
         return this.framesLeftWhileStuned > 0;
     }
 
-    boolean isAttackReady(){
+    boolean isAttackReady() {
         return (this.framesLeftBeforeAttack <= 0);
     }
 
-    boolean isAttacking(){
-        return (!this.attackDirection.equals(new Vector2f(0,0)));
+    boolean isAttacking() {
+        return (!this.attackDirection.equals(new Vector2f(0, 0)));
     }
 
-    void aim(LivingBeing target){
+    void aim(LivingBeing target) {
         this.attackDirection.set(target.getCenter().sub(super.getCenter()).normalise());
     }
 
-    protected void attack(LivingBeing target){
+    protected void attack(LivingBeing target) {
 
         this.attackDirection.set(target.getCenter().sub(super.getCenter()).normalise());
         Ranged.enemyProjectiles.add(new Arrow(super.getCenter().add(this.attackDirection.copy().scale(super.getRadius())), this.attackDirection.copy()));
         Ranged.enemyProjectiles.get(Ranged.enemyProjectiles.size()-1).setShowDebugRect(true);
-        this.attackDirection.set(0,0);
+        this.attackDirection.set(0, 0);
         this.shootCooldown = BowmanConstants.SHOOT_COOLDOWN;
         this.stun();
     }
 
-    void stun(){
+    void stun() {
         this.framesLeftWhileStuned = BowmanConstants.STUN_AFTER_ATTACK_DURATION;
     }
 

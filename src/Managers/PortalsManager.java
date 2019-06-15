@@ -125,8 +125,8 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
 
     public void update(int deltaTime) {
         if (this.portalSet) {
-            for(Portal portal : portals){
-                if(portal.isVisible()){
+            for (Portal portal : portals) {
+                if (portal.isVisible()) {
                     portal.update(deltaTime);
                 }
             }
@@ -159,36 +159,33 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     public void keyPressed(int key, char c) {
         if (this.portalHovered != null && key == Input.KEY_F) {
             // if the latest room was a boss room
-            System.out.println("taking portal");
 
             // update the actual portal
             this.setLatestPortal(this.portalHovered);
             this.portalHovered = null;
 
-            if(this.latestPortal != null && this.latestPortal.getType().equals("boss")){
-                System.out.println("increase difficulty");
+            if (this.latestPortal != null && this.latestPortal.getType().equals("nextFloor")) {
                 MainClass.nextDifficulty();
             }
 
             // trigger all listeners
-            if(this.portalsManagerListeners.size()  > 0) {
-                for(PortalsManagerListener listener : this.portalsManagerListeners) {
+            if (this.portalsManagerListeners.size() > 0) {
+                for (PortalsManagerListener listener : this.portalsManagerListeners) {
                     listener.onEngage(this);
                 }
             }
-
         }
     }
 
     @Override
     public void onMove(LivingBeing being) {
         // if the being is the player
-        if(being instanceof Player) {
+        if (being instanceof Player) {
             this.portalHovered = null;
             // for each portal
-            for(Portal portal : portals) {
+            for (Portal portal : portals) {
                 // if the player collides with the portal
-                if(portal.isVisible() && being.collidesWith(portal)) {
+                if (portal.isVisible() && being.collidesWith(portal)) {
                     // update the colliding portal
                     this.portalHovered = portal;
                 }

@@ -27,11 +27,11 @@ public class ItemRenderer extends SpriteRenderer {
 
     public void render(Graphics g, int x, int y) {
         // if game not paused
-        if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
+        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
             this.lastImage = animation.getCurrentFrame().copy();
         }
 
-        if(lastImage != null) {
+        if (lastImage != null) {
             g.drawImage(this.lastImage, x - (int) tileSizeOffset.getX(), y - (int) tileSizeOffset.getY());
         }
     }

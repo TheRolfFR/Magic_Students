@@ -1,7 +1,7 @@
 package Main;
 
-import Managers.PortalsManager;
 import Listeners.PortalsManagerListener;
+import Managers.PortalsManager;
 
 public class TimeScale implements PortalsManagerListener {
     private float timeScale;
@@ -41,7 +41,7 @@ public class TimeScale implements PortalsManagerListener {
         this.deltaTime = (float)delta / 1000f;
     }
 
-    public void setTimeScale(float timeScale) {
+    void setTimeScale(float timeScale) {
         this.timeScale = Math.max(0f, Math.min(1f, timeScale));
     }
 
@@ -59,7 +59,7 @@ public class TimeScale implements PortalsManagerListener {
 
     @Override
     public void onEngage(PortalsManager portalsManager) {
-        if(this.listener != null) {
+        if (this.listener != null) {
             this.listener.onEngage(portalsManager);
         }
     }

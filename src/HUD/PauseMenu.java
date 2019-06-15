@@ -1,7 +1,6 @@
 package HUD;
 
 import Listeners.ButtonListener;
-import Main.MainClass;
 import Renderers.FontRenderer;
 import org.newdawn.slick.*;
 
@@ -83,7 +82,7 @@ public class PauseMenu implements MouseListener {
 
             // calculate spacing
             this.totalButtonsHeight = (this.buttons.size() - 1) * SPACING;
-            for(Button btn : this.buttons) {
+            for (Button btn : this.buttons) {
                 this.totalButtonsHeight += btn.getHeight();
             }
 
@@ -91,7 +90,7 @@ public class PauseMenu implements MouseListener {
 
             // initialize horizontal offset
             int offsetY = (this.windowHeight - this.totalButtonsHeight) / 2;
-            for(Button btn : this.buttons) {
+            for (Button btn : this.buttons) {
 
                 // locate all the buttons
                 this.totalButtonsWidth = Math.max(totalButtonsWidth, btn.getWidth());
@@ -114,12 +113,12 @@ public class PauseMenu implements MouseListener {
      * @param g the graphics to draw on
      */
     public void render(Graphics g) {
-        if(this.isActive()) {
+        if (this.isActive()) {
             // render the background
             g.drawImage(this.background, 0, 0);
 
             // render all the buttons
-            for(Button btn : this.buttons) {
+            for (Button btn : this.buttons) {
                 btn.render(g);
             }
         }
@@ -144,8 +143,8 @@ public class PauseMenu implements MouseListener {
      */
     @Override
     public void mouseClicked(int i, int i1, int i2, int i3) {
-        if(this.isActive()) {
-            for(Button btn : this.buttons) {
+        if (this.isActive()) {
+            for (Button btn : this.buttons) {
                 btn.mouseClicked(i, i1, i2, i3);
             }
         }

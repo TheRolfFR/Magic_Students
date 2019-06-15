@@ -43,7 +43,7 @@ public class FontRenderer {
      * @param path the file path to the ttf file
      */
     public FontRenderer(String path) {
-        init(path,12.f);
+        init(path, 12.f);
     }
 
     /**
@@ -68,7 +68,7 @@ public class FontRenderer {
     }
 
     public void setPtSize(float ptSize) {
-        if(!this.fontSizesList.containsKey(ptSize)) {
+        if (!this.fontSizesList.containsKey(ptSize)) {
             Font awtFont = this.originalAwtFont.deriveFont(Font.PLAIN, ptSize);
             TrueTypeFont ttfFont = new TrueTypeFont(awtFont, false);
 

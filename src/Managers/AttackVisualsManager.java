@@ -23,7 +23,7 @@ public class AttackVisualsManager {
     }
 
     private static void initializeList() {
-        if(visuals == null) {
+        if (visuals == null) {
             visuals = new ArrayList<>();
             attackVisualsXPos = MainClass.WIDTH;
         }
@@ -35,7 +35,7 @@ public class AttackVisualsManager {
 
     public void render(Graphics g) {
         int xPos = attackVisualsXPos;
-        for(AttackVisual visual : visuals) {
+        for (AttackVisual visual : visuals) {
             visual.render(g, xPos, ATTACK_VISUALS_YPOS);
             xPos += ATTACK_VISUALS_XOFFSET;
         }

@@ -1,9 +1,9 @@
 package HUD;
 
 import Listeners.FadeToBlackListener;
+import Listeners.PortalsManagerListener;
 import Main.MainClass;
 import Managers.PortalsManager;
-import Listeners.PortalsManagerListener;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -59,14 +59,14 @@ public class FadeToBlack implements PortalsManagerListener {
     public void update(int deltaTime) {
         if (this.isActive()) {
             if (fadeTimer < FADE_DURATION) {
-                if(willBeAtHalfDuration(deltaTime)) {
-                    for(FadeToBlackListener listener : this.fadeToBlackListeners) {
+                if (willBeAtHalfDuration(deltaTime)) {
+                    for (FadeToBlackListener listener : this.fadeToBlackListeners) {
                         listener.atHalf();
                     }
                 }
                 fadeTimer = Math.min(fadeTimer + deltaTime, FADE_DURATION);
                 if (isDone()) {
-                    for(FadeToBlackListener listener : this.fadeToBlackListeners) {
+                    for (FadeToBlackListener listener : this.fadeToBlackListeners) {
                         listener.atEnd();
                     }
                 }

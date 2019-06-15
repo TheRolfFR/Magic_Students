@@ -44,7 +44,7 @@ public class ProjectileRenderer extends SpriteRenderer {
             this.lastImage.rotate((float) this.angle);
         }
 
-        if(this.lastImage != null) {
+        if (this.lastImage != null) {
             g.drawImage(this.lastImage, x, y);
         }
     }

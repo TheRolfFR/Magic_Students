@@ -17,7 +17,7 @@ public class Fireball extends Projectile {
 
         this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
 
-        this.renderer = new ProjectileRenderer(this, IMG_PATH,TILESIZE, FRAME_DURATION);
+        this.renderer = new ProjectileRenderer(this, IMG_PATH, TILESIZE, FRAME_DURATION);
     }
 
     @Override
@@ -25,15 +25,17 @@ public class Fireball extends Projectile {
         return Fireball.damage;
     }
 
-    public static void increaseDamage(int damageBuff){
+    public static void increaseDamage(int damageBuff) {
         damage = damage + damageBuff;
     }
 
     @Override
     public void fadeOut() {
-        if(this.renderer != null)
+        if (this.renderer != null)
             this.renderer.setOpacity(0);
     }
 
-    public static int getFireballRadius(){return RADIUS;}
+    public static int getFireballRadius() {
+        return RADIUS;
+    }
 }

@@ -4,7 +4,6 @@ import Entities.Entity;
 import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.opengl.PNGImageData;
 
 public class PortalRenderer extends SpriteRenderer {
     private Animation openingAnimation;
@@ -57,7 +56,7 @@ public class PortalRenderer extends SpriteRenderer {
     }
 
     public void update(int deltaTime) {
-        if(this.timeCounter < OPENING_DURATION) {
+        if (this.timeCounter < OPENING_DURATION) {
             this.timeCounter += deltaTime;
         }
     }
@@ -65,7 +64,7 @@ public class PortalRenderer extends SpriteRenderer {
     public void Render(Color color) {
         Animation animationToShow;
 
-        if(this.timeCounter < OPENING_DURATION) {
+        if (this.timeCounter < OPENING_DURATION) {
             animationToShow = this.openingAnimation;
         } else {
             animationToShow = this.openedAnimation;

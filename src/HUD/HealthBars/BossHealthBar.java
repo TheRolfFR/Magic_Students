@@ -1,10 +1,12 @@
 package HUD.HealthBars;
 
-import Listeners.LivingBeingHealthListener;
 import Entities.LivingBeings.LivingBeing;
+import Listeners.LivingBeingHealthListener;
 import Main.MainClass;
 import Renderers.FontRenderer;
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.TrueTypeFont;
 
 public class BossHealthBar extends UIHealthBar implements LivingBeingHealthListener {
 
@@ -45,7 +47,7 @@ public class BossHealthBar extends UIHealthBar implements LivingBeingHealthListe
     }
 
     public void render(Graphics g) {
-        if(this.isBarDisplayed) {
+        if (this.isBarDisplayed) {
             super.render(
                     g,
                     BOSS_HEALTHBAR_XPOS,
@@ -64,7 +66,7 @@ public class BossHealthBar extends UIHealthBar implements LivingBeingHealthListe
 
     @Override
     public void onUpdate(LivingBeing being) {
-        if(being.getCurrentHealthPoints() > 0) {
+        if (being.getCurrentHealthPoints() > 0) {
             this.isBarDisplayed = true;
 
             this.setHealthPointsString(being.getCurrentHealthPoints(), being.getMaxHealthPoints());

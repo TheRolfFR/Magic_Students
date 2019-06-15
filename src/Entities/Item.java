@@ -3,7 +3,6 @@ package Entities;
 import Entities.LivingBeings.Player;
 import Entities.Projectiles.Fireball;
 import Entities.Projectiles.MeleeAttack;
-import Entities.Projectiles.Snowball;
 import Main.MainClass;
 import Renderers.ItemRenderer;
 import org.newdawn.slick.Graphics;
@@ -50,37 +49,37 @@ public class Item extends Entity {
         return ITEMS_SPRITESHEET.getSprite(index, 0);
     }
 
-    public Item(){
-        super(MainClass.WIDTH/2, MainClass.HEIGHT/2, 25,25,13);
+    public Item() {
+        super(MainClass.WIDTH / 2, MainClass.HEIGHT / 2, 25, 25, 13);
         Random random = new Random();
         this.typeOfItem = random.nextInt(6);
         this.setShowDebugRect(true);
         loadImage();
     }
 
-    public Item(int typeOfItem){
-        super(MainClass.WIDTH/2, MainClass.HEIGHT/2, 25,25,13);
+    public Item(int typeOfItem) {
+        super(MainClass.WIDTH / 2, MainClass.HEIGHT / 2, 25, 25, 13);
         this.typeOfItem = typeOfItem;
         loadImage();
     }
 
-    private void loadImage(){
+    private void loadImage() {
         this.renderer = new ItemRenderer(this, getItemImageFromSpriteSheet(this.typeOfItem), ITEM_TILESIZE, ITEM_FRAME_DURATION);
     }
 
     @Override
     public void move() {}
 
-    public Item update(Player player){
-        if(collidesWith(player)){
+    public Item update(Player player) {
+        if (collidesWith(player)) {
             collidingType(player);
             return null;
         }
         return this;
     }
 
-    private void collidingType(Player player){
-        switch (this.typeOfItem){
+    private void collidingType(Player player) {
+        switch (this.typeOfItem) {
             case 0 : player.heal((int) Math.round(HEALBUFFAMOUNT*MainClass.getDifficulty()));
                 break;
             case 1 : player.buffHP((int) Math.round(MAXHPBUFFAMOUNT*MainClass.getDifficulty()));

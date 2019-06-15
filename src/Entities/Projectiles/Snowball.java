@@ -74,5 +74,7 @@ public class Snowball extends Projectile {
         this.image.setAlpha(opacity);
     }
 
-    public static int getSnowballRadius(){return RADIUS;}
+    public static int getSnowballRadius() {
+        return RADIUS;
+    }
 }

@@ -39,7 +39,9 @@ public class MainClass extends BasicGame {
 
     private FadeToBlack fadeToBlack;
 
-    public static double getDifficulty(){return difficulty;}
+    public static double getDifficulty() {
+        return difficulty;
+    }
 
     public static int getNumberOfFramePerSecond() { return numberOfFramePerSecond; }
 
@@ -56,7 +58,7 @@ public class MainClass extends BasicGame {
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
 
-        if(portalsManager.getLatestPortal()!=null){
+        if (portalsManager.getLatestPortal() != null) {
             switch (portalsManager.getLatestPortal().getType()) {
                 case "boss":
                     enemiesManager.generateBoss();
@@ -102,7 +104,7 @@ public class MainClass extends BasicGame {
         this.pauseMenu = new PauseMenu(gc, (i, i1, i2, i3) -> this.setGamePaused(false));
         this.fadeToBlack = new FadeToBlack();
 
-        this.player = new Player(gc,WIDTH/2,HEIGHT/2);
+        this.player = new Player(gc, WIDTH / 2, HEIGHT / 2);
         this.player.setShowDebugRect(true);
 
         BackgroundRenderer.generateBackground(gc);

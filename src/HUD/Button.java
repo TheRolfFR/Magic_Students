@@ -101,7 +101,7 @@ public class Button {
     public void render(Graphics g) {
         g.drawImage(this.image, this.shape.getX(), this.shape.getY());
 
-        if(showDebugRect()) {
+        if (showDebugRect()) {
             g.draw(shape);
         }
     }
@@ -114,7 +114,7 @@ public class Button {
      * @param clickCount the number of times the button was clicked
      */
     public void mouseClicked(int button, int x, int y, int clickCount) {
-        if(shape.contains(x, y)) {
+        if (shape.contains(x, y)) {
             listener.mouseClicked(button, x, y, clickCount);
         }
     }

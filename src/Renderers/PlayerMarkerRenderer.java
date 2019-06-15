@@ -53,7 +53,7 @@ public class PlayerMarkerRenderer extends SpriteRenderer {
 
         Vector2f location = entity.getCenter().sub(playerMarkerImageCenter);
 
-        if(this.lastImage != null) {
+        if (this.lastImage != null) {
             g.drawImage(this.lastImage, (int) location.getX(), (int) location.getY());
         }
 
