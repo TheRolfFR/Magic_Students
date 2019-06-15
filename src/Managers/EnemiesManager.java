@@ -42,8 +42,8 @@ public class EnemiesManager implements SummonListener {
 
     public void generateEnemies() {
         Random random = new Random();
-        for (int i = 1; /*i < 4 + (int) Math.round(MainClass.getDifficulty() / 4)*/i==1; i++) {
-            switch(1/*random.nextInt(2)*/){
+        for (int i = 1; i < 4 + (int) Math.round(MainClass.getDifficulty() / 4); i++) {
+            switch(random.nextInt(2)){
                 case 0 :
                     this.enemies.add(newBowman());
                     break;

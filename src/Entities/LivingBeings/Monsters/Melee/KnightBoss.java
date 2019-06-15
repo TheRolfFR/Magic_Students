@@ -6,6 +6,7 @@ import Entities.LivingBeings.Monsters.IBoss;
 import Main.MainClass;
 import Main.TimeScale;
 import Managers.EnemiesManager;
+import Renderers.SpriteView;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
@@ -16,6 +17,8 @@ public class KnightBoss extends Knight implements IBoss, BossConstants {
 
     public KnightBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
         super(x, y, KNIGHTBOSS_TILESIZE, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+        this.renderer.addView("Summon", new SpriteView("img/knight/" + "Summon.png", KnightConstant.KNIGHT_TILESIZE, Math.round (KnightConstant.STUN_AFTER_ATTACK_DURATION*1000/3)));
+
     }
 
     @Override
@@ -33,6 +36,7 @@ public class KnightBoss extends Knight implements IBoss, BossConstants {
                 }
             }
             if (!super.isStun()){
+                this.renderer.setLastActivity("Move");
                 super.updateSpeed(target.getCenter().sub(super.getCenter()).normalise().scale(super.getAccelerationRate()));
                 super.move();
                 if (super.isTargetInRange(target)){
@@ -52,6 +56,7 @@ public class KnightBoss extends Knight implements IBoss, BossConstants {
 
     private void summon() {
         super.setSpeed(new Vector2f(0,0));
+        this.renderer.setLastActivity("Summon");
         this.triggerListener(EnemiesManager.newKnight());
         this.summonCooldown = BossConstants.SUMMON_COOLDOWN;
         super.stun();

@@ -110,7 +110,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         AttackVisualsManager.addVisual(this.dashEffectVisual);
         AttackVisualsManager.addVisual(this.meleeAttackVisual);
         AttackVisualsManager.addVisual(this.spellAttackVisual);
-    }
+}
 
     @Override
     public void setShowDebugRect(boolean showDebugRect) {
@@ -196,7 +196,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
 
-        Ranged.allyProjectiles.add(new MeleeAttack(super.getCenter().add(attackDirection.copy().scale(super.getRadius()))));
+        Ranged.allyProjectiles.add(new MeleeAttack(super.getCenter().add(attackDirection.copy().scale(super.getRadius()*2f))));
 
         super.renderer.setLastActivity("Attack");
         super.renderer.update(attackDirection);

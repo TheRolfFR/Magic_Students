@@ -8,15 +8,14 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Knight extends Melee implements KnightConstant{
 
-    public static final Vector2f KNIGHT_TILESIZE = new Vector2f(48,48);
     private float timeLeftBeforeAttack = KnightConstant.ATTACK_LOADING_DURATION;
     private float timeLeftWhileStuned = KnightConstant.STUN_AFTER_ATTACK_DURATION;
     private Vector2f attackDirection = new Vector2f(0,0);
 
     public Knight(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
-        super(x, y, (int) KNIGHT_TILESIZE.getX(), (int) KNIGHT_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+        super(x, y, (int) KnightConstant.KNIGHT_TILESIZE.getX(), (int) KnightConstant.KNIGHT_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
 
-        this.renderer = new LivingBeingRenderer(this, KNIGHT_TILESIZE);
+        this.renderer = new LivingBeingRenderer(this, KnightConstant.KNIGHT_TILESIZE);
 
         final String prepath = "img/knight/";
 
@@ -37,15 +36,17 @@ public class Knight extends Melee implements KnightConstant{
                 else{
                     duration = moveDuration;
                 }
-                this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", KNIGHT_TILESIZE, duration));
+                this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", KnightConstant.KNIGHT_TILESIZE, duration));
             }
         }
+        this.renderer.addView("Idle", new SpriteView(prepath + "Idle.png", KnightConstant.KNIGHT_TILESIZE, Math.round (KnightConstant.STUN_AFTER_ATTACK_DURATION*1000)));
     }
 
     public Knight(float x, float y, Vector2f tileSize, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius){
         super(x, y, (int) tileSize.getX(), (int) tileSize.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
 
         this.renderer = new LivingBeingRenderer(this, tileSize);
+        this.renderer.setLastActivity("Idle");
 
         final String prepath = "img/knight/";
 
@@ -60,9 +61,10 @@ public class Knight extends Melee implements KnightConstant{
                 if(!activity.equals("Move")){
                     fileName += activity;
                 }
-                this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", KNIGHT_TILESIZE, duration));
+                this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", tileSize, duration));
             }
         }
+        this.renderer.addView("Idle", new SpriteView(prepath + "Idle.png", tileSize, Math.round (KnightConstant.STUN_AFTER_ATTACK_DURATION*1000)));
     }
 
     public void update(LivingBeing target){

@@ -3,7 +3,7 @@ package Entities.Projectiles;
 import org.newdawn.slick.geom.Vector2f;
 
 public class MeleeAttack extends Projectile {
-    private static final int RADIUS = 58;
+    private static final int RADIUS = 35;
     private static int damage = 25;
 
     public MeleeAttack(Vector2f position) {
