@@ -3,7 +3,7 @@ package Listeners;
 public interface AttackCooldownListener {
     void onCooldownStart();
 
-    void onCooldownUpdate(int currentValue, int maxValue);
+    void onCooldownUpdate(float currentValue, float maxValue);
 
     void onCooldownEnd();
 }
