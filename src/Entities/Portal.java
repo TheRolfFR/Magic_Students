@@ -26,7 +26,7 @@ public class Portal extends Entity {
     public boolean isVisible() { return this.visible; }
     public void setVisible(boolean visible) {
         this.visible = visible;
-        if(visible) {
+        if(this.visible) {
             this.renderer.restart();
         }
     }
