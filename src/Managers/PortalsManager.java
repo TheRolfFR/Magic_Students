@@ -1,12 +1,12 @@
 package Managers;
 
-import Listeners.LivingBeingMoveListener;
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
 import Entities.Portal;
 import HUD.FadeToBlack;
-import Listeners.PortalsManagerListener;
 import Listeners.KeyPressListener;
+import Listeners.LivingBeingMoveListener;
+import Listeners.PortalsManagerListener;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.PortalRenderer;
@@ -23,8 +23,6 @@ import static Main.MainClass.HEIGHT;
 import static Main.MainClass.WIDTH;
 
 public class PortalsManager implements KeyPressListener, LivingBeingMoveListener {
-
-    private static final String[] PORTAL_TYPES = {"classic", "item", "boss"};
     public static final Map<String, Color> ROOM_COLOR = Map.of(
             "classic", new Color(0x0094FF),     // blue
             "item", Color.yellow,                     // yellow
@@ -54,8 +52,13 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         this.latestPortal = null;
         this.portalHovered = null;
 
-        int[][] possiblePositions = {{WIDTH / 2 - 20, 40}, {WIDTH / 2 - 20, HEIGHT - 40 - 40},
-                {40, HEIGHT / 2 - 20}, {WIDTH - 40 - 40, HEIGHT / 2 - 20}};
+        int offsetFromWall = 60;
+        int[][] possiblePositions = {
+                {WIDTH / 2, offsetFromWall},
+                {WIDTH / 2, HEIGHT - offsetFromWall},
+                {offsetFromWall, HEIGHT / 2},
+                {WIDTH - offsetFromWall, HEIGHT / 2}
+        };
 
         Portal portal;
 
