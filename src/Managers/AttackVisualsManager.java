@@ -16,16 +16,18 @@ public class AttackVisualsManager {
     private static int attackVisualsXPos;
 
     public static void addVisual(AttackVisual visual) {
-        if(visuals == null)
-            initializeList();
+        initializeList();
 
         visuals.add(visual);
+        System.out.println(visuals.size());
         attackVisualsXPos -= ATTACK_VISUALS_XOFFSET;
     }
 
     private static void initializeList() {
-        visuals = new ArrayList<>();
-        attackVisualsXPos = MainClass.WIDTH;
+        if(visuals == null) {
+            visuals = new ArrayList<>();
+            attackVisualsXPos = MainClass.WIDTH;
+        }
     }
 
     public AttackVisualsManager() {

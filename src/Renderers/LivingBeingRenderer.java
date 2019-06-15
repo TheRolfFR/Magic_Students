@@ -148,7 +148,9 @@ public class LivingBeingRenderer extends SpriteRenderer {
         return v;
     }
 
-    /** supposed update **/
+    /**
+     * supposed update
+     * */
     public void update(Vector2f facedDirection) {
         // update last faced direction
         if (!facedDirection.equals(zero)) {

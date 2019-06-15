@@ -3,15 +3,20 @@ package Entities.LivingBeings;
 import Entities.Projectiles.Fireball;
 import Entities.Projectiles.MeleeAttack;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
+import HUD.AttackVisual;
 import Main.MainClass;
 import Main.TimeScale;
+import Managers.AttackVisualsManager;
 import Renderers.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 import static Main.MainClass.MAX_FPS;
 
-public class Player extends LivingBeing implements KeyListener, MouseListener, PlayerConstants{
+public class Player extends LivingBeing implements KeyListener, MouseListener, PlayerConstants {
+
+    private static final String MELEE_ATTACK_IMG_PATH = "img/meleeAttack.png";
+    private static final String SPELL_ATTACK_IMG_PATH = "img/spellAttack.png";
 
     private boolean keyUp;
     private boolean keyDown;
@@ -34,6 +39,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
     private float dashCooldown = 0;
     private float spellCooldown = 0;
+
+    private AttackVisual meleeAttackVisual;
+    private AttackVisual spellAttackVisual;
 
     private float timeLeftWhileAttacking = 0;
 
@@ -92,6 +100,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
         this.playerMarkerRenderer = new PlayerMarkerRenderer(this, 2);
         this.setTileSize(new Vector2f(96, 96));
+
+        this.meleeAttackVisual = new AttackVisual(MELEE_ATTACK_IMG_PATH, 10);
+        this.spellAttackVisual = new AttackVisual(SPELL_ATTACK_IMG_PATH);
+
+        AttackVisualsManager.addVisual(this.meleeAttackVisual);
+        AttackVisualsManager.addVisual(this.spellAttackVisual);
     }
 
     @Override
@@ -160,6 +174,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         }
         if (!this.isSpellReady()){
             this.spellCooldown = this.spellCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
+            this.spellAttackVisual.onCooldownUpdate(this.spellCooldown, PlayerConstants.SPELL_COOLDOWN);
         }
         if (!this.isAbleToMove()){
             this.timeLeftBeforeEnablingMovement = this.timeLeftBeforeEnablingMovement - TimeScale.getInGameTimeScale().getDeltaTime();
@@ -170,7 +185,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     }
 
     private void meleeAttack() {
-        this.attackDirection = this.mousePosition.sub(super.getCenter()).normalise();
+        this.attackDirection = this.mousePosition.copy().sub(super.getCenter()).normalise();
         super.setSpeed(new Vector2f(0, 0));
 
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
@@ -181,6 +196,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         super.renderer.setLastActivity("Attack");
         super.renderer.update(attackDirection);
         this.isAttackRendered = true;
+
+        this.meleeAttackVisual.onCooldownStart();
     }
 
     private void startDash(){
@@ -205,6 +222,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         Ranged.allyProjectiles.add(new Fireball(super.getCenter().add(fireballDirection.copy().scale(super.getRadius()+Fireball.getFireballRadius())), fireballDirection)); //décalage car bord haut gauche
         super.renderer.setLastActivity("Cast");
         super.renderer.update(fireballDirection);
+        this.spellAttackVisual.onCooldownStart();
     }
 
     private boolean isSpellReady(){return this.spellCooldown <= 0;}
