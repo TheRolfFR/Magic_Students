@@ -1,6 +1,6 @@
 package Renderers;
 
-import Listeners.LivingBeingHurtListener;
+import Listeners.LivingBeingHealthListener;
 import Entities.LivingBeings.LivingBeing;
 import Main.MainClass;
 import org.newdawn.slick.Color;
@@ -8,7 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class HurtEffectRenderer implements LivingBeingHurtListener {
+public class HurtEffectRenderer implements LivingBeingHealthListener {
 
     private static final String HURT_EFFECT_IMG_PATH = "img/cameraHurtEffect.png";
     private static final int HURT_EFFECT_DURATION = 500;
@@ -51,7 +51,7 @@ public class HurtEffectRenderer implements LivingBeingHurtListener {
     }
 
     @Override
-    public void onUpdate(LivingBeing being) {
+    public void onHurt(LivingBeing being) {
         if(!isHurtEffectActivated) {
             this.isHurtEffectActivated = true;
             this.hurtEffectTimer = 0;

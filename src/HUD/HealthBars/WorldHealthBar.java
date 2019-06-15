@@ -1,6 +1,6 @@
 package HUD.HealthBars;
 
-import Listeners.LivingBeingHurtListener;
+import Listeners.LivingBeingHealthListener;
 import Listeners.LivingBeingMoveListener;
 import Entities.LivingBeings.LivingBeing;
 import org.newdawn.slick.Color;
@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Vector2f;
 import static java.lang.Math.max;
 import static java.lang.Math.round;
 
-public class WorldHealthBar implements LivingBeingHurtListener, LivingBeingMoveListener {
+public class WorldHealthBar implements LivingBeingHealthListener, LivingBeingMoveListener {
     private static final int HEALTHBAR_WIDTH = 50;
     private static final int HEALTHBAR_HEIGHT = 10;
 

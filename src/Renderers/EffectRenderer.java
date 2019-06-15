@@ -18,7 +18,7 @@ public class EffectRenderer{
         try {
             image = new Image(imgPath, false, Image.FILTER_NEAREST);
         } catch (SlickException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             System.exit(1);
         }
 

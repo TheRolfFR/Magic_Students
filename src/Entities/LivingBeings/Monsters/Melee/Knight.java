@@ -147,9 +147,7 @@ public class Knight extends Melee implements KnightConstant{
     }
 
     protected void attack(LivingBeing target){
-        System.out.println("attack!");
         if (this.isTargetStillInRange(target)){
-            System.out.println("damage");
             target.takeDamage(super.getDamage());
         }
         this.attackDirection.set(0,0);

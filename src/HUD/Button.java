@@ -80,7 +80,6 @@ public class Button {
 
             this.shape = new Rectangle(-500, -500, this.width, this.height);
         } catch (SlickException e) {
-            System.err.println(e.getMessage());
             e.printStackTrace();
             System.exit(1);
         }

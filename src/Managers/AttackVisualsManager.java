@@ -19,7 +19,6 @@ public class AttackVisualsManager {
         initializeList();
 
         visuals.add(visual);
-        System.out.println(visuals.size());
         attackVisualsXPos -= ATTACK_VISUALS_XOFFSET;
     }
 

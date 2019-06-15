@@ -78,7 +78,7 @@ public class PauseMenu implements MouseListener {
             // add some buttons
             this.buttons = new LinkedList<>();
             this.buttons.add(new Button(gc, "Resume", resumeListener));
-            this.buttons.add(new Button(gc, "Settings", (ButtonListener) (i, i1, i2, i3) -> System.out.println("go to settings menu")));
+            //this.buttons.add(new Button(gc, "Settings", (ButtonListener) (i, i1, i2, i3) -> System.out.println("go to settings menu")));
             this.buttons.add(new Button(gc, "Exit", (ButtonListener) (i, i1, i2, i3) -> System.exit(0)));
 
             // calculate spacing

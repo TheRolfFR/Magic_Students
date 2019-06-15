@@ -130,7 +130,6 @@ public class EnemiesManager implements SummonListener {
                 //setGamePaused(true);
             }
             if (enemy.isDead()) {
-                System.out.println("You killed an enemy");
                 LivingBeing.livingBeings.remove(enemy);
                 this.enemies.remove(enemy);
             }

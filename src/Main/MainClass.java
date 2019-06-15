@@ -52,7 +52,6 @@ public class MainClass extends BasicGame {
     }
 
     private void generateRoom() {
-        System.out.println("new room");
         BackgroundRenderer.regenerateBackground();
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
@@ -119,7 +118,6 @@ public class MainClass extends BasicGame {
         this.fadeToBlack.addFadeToBlackListener(new FadeToBlackListener() {
             @Override
             public void atHalf() {
-                System.out.println("Fade at half");
                 generateRoom();
                 portalsManager.hidePortals();
             }
