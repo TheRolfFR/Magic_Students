@@ -32,6 +32,11 @@ public abstract class LivingBeing extends Entity implements Comparable {
         if (this.currentHealthPoints > this.maxHealthPoints){
             this.currentHealthPoints = this.maxHealthPoints;
         }
+
+        // update bar on heal too
+        for(LivingBeingHurtListener listener : livingBeingHurtListeners) {
+            listener.onUpdate(this);
+        }
     }
 
     public void buffHP(int buffAmount){
@@ -133,7 +138,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
         // launching listeners
         for(LivingBeingHurtListener listener : this.livingBeingHurtListeners) {
-            listener.onHurt(this);
+            listener.onUpdate(this);
         }
     }
 
