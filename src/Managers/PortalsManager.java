@@ -26,7 +26,8 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     private static final Map<String, Color> ROOM_COLOR = Map.of(
             "classic", new Color(0x0094FF),     // blue
             "item", Color.yellow,                     // yellow
-            "boss", new Color(0xf44336)         // red
+            "boss", new Color(0xf44336),        // red
+            "nextFloor", new Color(0x32FF32)
     );
     private static final Map<String, Float> CUMULATIVE_ROOM_PROBABILITY = Map.of(
             "classic", 0.20f,
@@ -35,6 +36,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     );
 
     private static ArrayList<Portal> portals = new ArrayList<>();
+    private static Portal floorPortal;
 
     private boolean portalSet;
     private Portal portalHovered;
@@ -64,7 +66,11 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                 {WIDTH - offsetFromWall, HEIGHT / 2}
         };
 
-        Portal portal;
+        Portal portal = new Portal(WIDTH / 2, HEIGHT / 2,
+                (int) PortalRenderer.getTILESIZE().getX(), (int) PortalRenderer.getTILESIZE().getY(), 20);
+        portal.setType("nextFloor");
+        portal.setShowDebugRect(true);
+        floorPortal = portal;
 
         for (int p = 0; p < 4; p++) {
             portal = new Portal(possiblePositions[p][0], possiblePositions[p][1],
@@ -88,22 +94,26 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
 
     void setPortals() {
         if (!portalSet) {
-            Random random = new Random();
+            if (this.latestPortal != null && this.latestPortal.getType().equals("boss")) {
+                floorPortal.setVisible(true);
+            } else {
+                Random random = new Random();
 
-            Portal p = portals.get(random.nextInt(portals.size()));
-            p.setVisible(true);
-            p.setType("classic");
+                Portal p = portals.get(random.nextInt(portals.size()));
+                p.setVisible(true);
+                p.setType("classic");
 
-            float chance;
-            for (Portal portal: portals) {
-                if (!portal.isVisible()) {
-                    chance = random.nextFloat();
+                float chance;
+                for (Portal portal : portals) {
+                    if (!portal.isVisible()) {
+                        chance = random.nextFloat();
 
-                    for (String type: CUMULATIVE_ROOM_PROBABILITY.keySet()) {
-                        if (chance <= CUMULATIVE_ROOM_PROBABILITY.get(type)) {
-                            portal.setVisible(true);
-                            portal.setType(type);
-                            break;
+                        for (String type : CUMULATIVE_ROOM_PROBABILITY.keySet()) {
+                            if (chance <= CUMULATIVE_ROOM_PROBABILITY.get(type)) {
+                                portal.setVisible(true);
+                                portal.setType(type);
+                                break;
+                            }
                         }
                     }
                 }
@@ -120,14 +130,18 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                     portal.update(deltaTime);
                 }
             }
+            if (floorPortal.isVisible()) {
+                floorPortal.update(deltaTime);
+            }
         }
     }
 
     public void hidePortals() {
         for (Portal portalBis : portals) {
             portalBis.setVisible(false);
-            portalSet = false;
         }
+        floorPortal.setVisible(false);
+        portalSet = false;
     }
 
     public void render(Graphics g) {
@@ -135,6 +149,9 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
             if (portal.isVisible()) {
                 portal.render(g);
             }
+        }
+        if (floorPortal.isVisible()) {
+            floorPortal.render(g);
         }
     }
 
@@ -174,6 +191,10 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                     // update the colliding portal
                     this.portalHovered = portal;
                 }
+            }
+            if (floorPortal.isVisible() && being.collidesWith(floorPortal)) {
+                // update the colliding portal
+                this.portalHovered = floorPortal;
             }
         }
     }
