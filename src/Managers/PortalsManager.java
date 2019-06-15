@@ -161,6 +161,10 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
             // if the latest room was a boss room
             System.out.println("taking portal");
 
+            // update the actual portal
+            this.setLatestPortal(this.portalHovered);
+            this.portalHovered = null;
+
             if(this.latestPortal != null && this.latestPortal.getType().equals("boss")){
                 System.out.println("increase difficulty");
                 MainClass.nextDifficulty();
@@ -173,9 +177,6 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                 }
             }
 
-            // update the actual portal
-            this.setLatestPortal(this.portalHovered);
-            this.portalHovered = null;
         }
     }
 
