@@ -2,8 +2,10 @@ package Entities.LivingBeings.Monsters.Melee;
 
 import Entities.LivingBeings.LivingBeing;
 import Main.TimeScale;
+import Renderers.EffectRenderer;
 import Renderers.LivingBeingRenderer;
 import Renderers.SpriteView;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Knight extends Melee implements KnightConstant{
@@ -11,6 +13,8 @@ public class Knight extends Melee implements KnightConstant{
     private float timeLeftBeforeAttack = KnightConstant.ATTACK_LOADING_DURATION;
     private float timeLeftWhileStuned = KnightConstant.STUN_AFTER_ATTACK_DURATION;
     private Vector2f attackDirection = new Vector2f(0, 0);
+
+    EffectRenderer attackRenderer;
 
     public Knight(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
         super(x, y, (int) KnightConstant.KNIGHT_TILESIZE.getX(), (int) KnightConstant.KNIGHT_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
@@ -21,6 +25,9 @@ public class Knight extends Melee implements KnightConstant{
 
         final int moveDuration = 1000/8;
         final int attackDuration = Math.round(1000*KnightConstant.ATTACK_LOADING_DURATION);
+
+        Vector2f attackTileSize = new Vector2f(48, 29);
+        this.attackRenderer = new EffectRenderer(prepath + "animationAttackWhite.png", attackTileSize, Math.round (KnightConstant.ATTACK_LOADING_DURATION*1000/10));
 
         String[] activities = {"Move", "Attack"};
 
@@ -39,7 +46,7 @@ public class Knight extends Melee implements KnightConstant{
                 this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", KnightConstant.KNIGHT_TILESIZE, duration));
             }
         }
-        this.renderer.addView("Idle", new SpriteView(prepath + "Idle.png", KnightConstant.KNIGHT_TILESIZE, Math.round (KnightConstant.STUN_AFTER_ATTACK_DURATION*1000)));
+        this.renderer.addView("bottomIdle", new SpriteView(prepath + "bottomIdle.png", KnightConstant.KNIGHT_TILESIZE, Math.round (KnightConstant.STUN_AFTER_ATTACK_DURATION*1000)));
     }
 
     public Knight(float x, float y, Vector2f tileSize, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
@@ -50,21 +57,30 @@ public class Knight extends Melee implements KnightConstant{
 
         final String prepath = "img/knight/";
 
-        final int duration = 1000/8;
+        final int moveDuration = 1000/8;
+        final int attackDuration = Math.round(1000*KnightConstant.ATTACK_LOADING_DURATION);
+
+        Vector2f attackTileSize = new Vector2f(48, 29);
+        this.attackRenderer = new EffectRenderer(prepath + "animationAttackWhite.png", attackTileSize, Math.round (KnightConstant.ATTACK_LOADING_DURATION*1000/10));
 
         String[] activities = {"Attack", "Move"};
 
+        int duration;
         String fileName;
         for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             for (String activity : activities) {
                 fileName = vision;
                 if (!activity.equals("Move")) {
                     fileName += activity;
+                    duration = attackDuration;
+                }
+                else{
+                    duration = moveDuration;
                 }
                 this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", tileSize, duration));
             }
         }
-        this.renderer.addView("Idle", new SpriteView(prepath + "Idle.png", tileSize, Math.round (KnightConstant.STUN_AFTER_ATTACK_DURATION*1000)));
+        this.renderer.addView("bottomIdle", new SpriteView(prepath + "bottomIdle.png", tileSize, Math.round (KnightConstant.STUN_AFTER_ATTACK_DURATION*1000)));
     }
 
     public void update(LivingBeing target) {
@@ -109,9 +125,9 @@ public class Knight extends Melee implements KnightConstant{
     }
 
     void startAttacking(LivingBeing target) {
+        this.timeLeftBeforeAttack = KnightConstant.ATTACK_LOADING_DURATION;
         super.setSpeed(new Vector2f(0, 0));
         this.attackDirection = getLocationOfTarget(target);
-        this.timeLeftBeforeAttack = KnightConstant.ATTACK_LOADING_DURATION;
         this.renderer.setLastActivity("Attack");
         this.renderer.update(this.attackDirection);
     }
@@ -154,5 +170,13 @@ public class Knight extends Melee implements KnightConstant{
         }
         this.attackDirection.set(0, 0);
         this.stun();
+    }
+
+    public void render(Graphics g){
+        super.render(g);
+        if(isAttacking() && this.timeLeftBeforeAttack < ATTACK_LOADING_DURATION/5 && this.timeLeftBeforeAttack > -ATTACK_LOADING_DURATION/5){
+            Vector2f position = this.getCenter().add(this.attackDirection.copy().scale(this.getRadius()));
+            this.attackRenderer.render(g, (int) position.getX(), (int) position.getY(), (float) attackDirection.getTheta()-90);
+        }
     }
 }
