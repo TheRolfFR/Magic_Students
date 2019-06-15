@@ -49,21 +49,20 @@ public class FadeToBlack {
     private int getFadeTimer() { return this.fadeTimer; }
     public int getDuration() { return FADE_DURATION; }
     private boolean willBeAtHalfDuration(int deltaTime) {
-        return this.fadeTimer <= FADE_DURATION / 2 && this.fadeTimer + deltaTime >= FADE_DURATION / 2;
+        return this.fadeTimer < FADE_DURATION / 2 && this.fadeTimer + deltaTime >= FADE_DURATION / 2;
     }
     public boolean isDone() { return this.getFadeTimer() == this.getDuration(); }
 
     public void update(int deltaTime) {
         if (this.isActive()) {
             if (fadeTimer < FADE_DURATION) {
-                fadeTimer = Math.min(fadeTimer + deltaTime, FADE_DURATION);
-
                 if(willBeAtHalfDuration(deltaTime)) {
                     for(FadeToBlackListener listener : this.fadeToBlackListeners) {
                         listener.atHalf();
                     }
                 }
-                else if(isDone()) {
+                fadeTimer = Math.min(fadeTimer + deltaTime, FADE_DURATION);
+                if (isDone()) {
                     for(FadeToBlackListener listener : this.fadeToBlackListeners) {
                         listener.atEnd();
                     }
