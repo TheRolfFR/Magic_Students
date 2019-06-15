@@ -23,7 +23,7 @@ import static Main.MainClass.HEIGHT;
 import static Main.MainClass.WIDTH;
 
 public class PortalsManager implements KeyPressListener, LivingBeingMoveListener {
-    public static final Map<String, Color> ROOM_COLOR = Map.of(
+    private static final Map<String, Color> ROOM_COLOR = Map.of(
             "classic", new Color(0x0094FF),     // blue
             "item", Color.yellow,                     // yellow
             "boss", new Color(0xf44336)         // red
@@ -44,6 +44,10 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
 
     private void addPortalsManagerListeners(PortalsManagerListener listener) {
         this.portalsManagerListeners.add(listener);
+    }
+
+    public static Map<String, Color> getRoomColor() {
+        return ROOM_COLOR;
     }
 
     public PortalsManager(GameContainer gc, Player player, FadeToBlack fadeToBlack) {
