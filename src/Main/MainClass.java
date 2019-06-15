@@ -57,8 +57,8 @@ public class MainClass extends BasicGame {
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
 
-        if(portalsManager.getActualPortal()!=null){
-            switch (portalsManager.getActualPortal().getType()) {
+        if(portalsManager.getLatestPortal()!=null){
+            switch (portalsManager.getLatestPortal().getType()) {
                 case "boss":
                     enemiesManager.generateBoss();
                     break;
