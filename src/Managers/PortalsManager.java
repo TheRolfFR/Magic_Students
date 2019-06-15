@@ -49,7 +49,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     public PortalsManager(GameContainer gc, Player player, FadeToBlack fadeToBlack) {
         gc.getInput().addKeyListener(this);
         this.portalSet = false;
-        this.latestPortal = null;
+        this.setLatestPortal(null);
         this.portalHovered = null;
 
         int offsetFromWall = 60;
@@ -78,6 +78,9 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
 
     public Portal getLatestPortal() { return this.latestPortal; }
 
+    private void setLatestPortal(Portal latestPortal) {
+        this.latestPortal = latestPortal;
+    }
 
     void setPortals() {
         if (!portalSet) {
@@ -120,8 +123,6 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
             portalBis.setVisible(false);
             portalSet = false;
         }
-
-        this.latestPortal = null;
     }
 
     public void render(Graphics g) {
@@ -136,7 +137,10 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     public void keyPressed(int key, char c) {
         if (this.portalHovered != null && key == Input.KEY_F) {
             // if the latest room was a boss room
+            System.out.println("taking portal");
+
             if(this.latestPortal != null && this.latestPortal.getType().equals("boss")){
+                System.out.println("increase difficulty");
                 MainClass.nextDifficulty();
             }
 
@@ -148,7 +152,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
             }
 
             // update the actual portal
-            this.latestPortal = this.portalHovered;
+            this.setLatestPortal(this.portalHovered);
             this.portalHovered = null;
         }
     }
