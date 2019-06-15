@@ -106,7 +106,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
         AttackVisualsManager.addVisual(this.meleeAttackVisual);
         AttackVisualsManager.addVisual(this.spellAttackVisual);
-    }
+}
 
     @Override
     public void setShowDebugRect(boolean showDebugRect) {
