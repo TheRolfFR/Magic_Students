@@ -6,7 +6,7 @@ import Entities.LivingBeings.Player;
 import Entities.Portal;
 import HUD.FadeToBlack;
 import Listeners.PortalsManagerListener;
-import Main.KeyPressListener;
+import Listeners.KeyPressListener;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.PortalRenderer;
@@ -44,7 +44,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
 
     private ArrayList<PortalsManagerListener> portalsManagerListeners;
 
-    public void addPortalsManagerListeners(PortalsManagerListener listener) {
+    private void addPortalsManagerListeners(PortalsManagerListener listener) {
         this.portalsManagerListeners.add(listener);
     }
 

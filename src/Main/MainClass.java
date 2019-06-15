@@ -6,6 +6,7 @@ import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.LivingBeings.Player;
 import Entities.Projectiles.Projectile;
 import HUD.FadeToBlack;
+import Listeners.ButtonListener;
 import Listeners.FadeToBlackListener;
 import HUD.PauseMenu;
 import Managers.EnemiesManager;
@@ -74,14 +75,14 @@ public class MainClass extends BasicGame {
         }
     }
 
-    public static void setGamePaused(boolean gamePaused) {
+    private void setGamePaused(boolean gamePaused) {
         TimeScale.getInGameTimeScale().setTimeScale((gamePaused) ? 0f : 1f);
         instance.pauseMenu.setActive(gamePaused);
     }
 
-    private static void triggerGamePaused() {
+    private void triggerGamePaused() {
         TimeScale.getInGameTimeScale().setTimeScale((isGamePaused()) ? 1f : 0f);
-        instance.pauseMenu.setActive(!isGamePaused());
+        this.pauseMenu.setActive(!isGamePaused());
     }
 
     public static MainClass getInstance() {
@@ -102,7 +103,7 @@ public class MainClass extends BasicGame {
     public void init(GameContainer gc) {
         instanceGameContainer = gc;
         instance = this;
-        this.pauseMenu = new PauseMenu(gc);
+        this.pauseMenu = new PauseMenu(gc, (i, i1, i2, i3) -> this.setGamePaused(false));
         this.fadeToBlack = new FadeToBlack();
 
         this.player = new Player(gc,WIDTH/2,HEIGHT/2);
@@ -153,7 +154,7 @@ public class MainClass extends BasicGame {
     @Override
     public void keyPressed(int key, char c) {
         if (key == Input.KEY_ESCAPE) {
-            triggerGamePaused();
+            this.triggerGamePaused();
         }
     }
 

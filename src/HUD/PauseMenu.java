@@ -1,6 +1,6 @@
 package HUD;
 
-import HUD.HealthBars.ButtonListener;
+import Listeners.ButtonListener;
 import Main.MainClass;
 import Renderers.FontRenderer;
 import org.newdawn.slick.*;
@@ -44,7 +44,7 @@ public class PauseMenu implements MouseListener {
      * Default constructor
      * @param gc the GameContainer instance
      */
-    public PauseMenu(GameContainer gc) {
+    public PauseMenu(GameContainer gc, ButtonListener resumeListener) {
         try {
             this.windowHeight = gc.getHeight();
             this.windowWidth = gc.getWidth();
@@ -76,8 +76,8 @@ public class PauseMenu implements MouseListener {
             imageG.flush();
 
             // add some buttons
-            this.buttons = new LinkedList<Button>();
-            this.buttons.add(new Button(gc, "Resume", (ButtonListener) (i, i1, i2, i3) -> MainClass.setGamePaused(false)));
+            this.buttons = new LinkedList<>();
+            this.buttons.add(new Button(gc, "Resume", resumeListener));
             this.buttons.add(new Button(gc, "Settings", (ButtonListener) (i, i1, i2, i3) -> System.out.println("go to settings menu")));
             this.buttons.add(new Button(gc, "Exit", (ButtonListener) (i, i1, i2, i3) -> System.exit(0)));
 

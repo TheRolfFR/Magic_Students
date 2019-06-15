@@ -1,4 +1,4 @@
-package Main;
+package Listeners;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
