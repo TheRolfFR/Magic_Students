@@ -98,6 +98,7 @@ public class EnemiesManager implements SummonListener {
         knightBoss.setShowDebugRect(true);
         this.enemies.add(knightBoss);
         knightBoss.addHurtListener(this.bossHealthBar);
+        knightBoss.addSummonListener(this);
         this.bossHealthBar.onHurt(knightBoss);
     }
 
@@ -106,6 +107,7 @@ public class EnemiesManager implements SummonListener {
         bowmanBoss.setShowDebugRect(true);
         this.enemies.add(bowmanBoss);
         bowmanBoss.addHurtListener(this.bossHealthBar);
+        bowmanBoss.addSummonListener(this);
         this.bossHealthBar.onHurt(bowmanBoss);
 
     }
