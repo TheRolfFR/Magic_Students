@@ -11,6 +11,7 @@ import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.LivingBeings.Player;
 import Entities.Projectiles.Projectile;
 import HUD.HealthBars.BossHealthBar;
+import Listeners.SummonListener;
 import Main.MainClass;
 import org.newdawn.slick.Graphics;
 
@@ -19,7 +20,7 @@ import java.util.Random;
 
 import static Main.MainClass.*;
 
-public class EnemiesManager {
+public class EnemiesManager implements SummonListener {
 
     private ArrayList<Monster> enemies = new ArrayList<>();
     private Player player;
@@ -144,5 +145,10 @@ public class EnemiesManager {
         for (Projectile p : Ranged.allyProjectiles) {
             p.render(g);
         }
+    }
+
+    @Override
+    public void onSummon(Monster monster) {
+        this.enemies.add(monster);
     }
 }
