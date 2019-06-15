@@ -20,10 +20,25 @@ public class Knight extends Melee implements KnightConstant{
 
         final String prepath = "img/knight/";
 
-        final int duration = 1000/8;
+        final int moveDuration = 1000/8;
+        final int attackDuration = Math.round(1000*KnightConstant.ATTACK_LOADING_DURATION);
 
+        String[] activities = {"Move", "Attack"};
+
+        String fileName;
+        int duration;
         for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
-            this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", KNIGHT_TILESIZE, duration));
+            for(String activity : activities){
+                fileName = vision;
+                if(!activity.equals("Move")){
+                    fileName += activity;
+                    duration = attackDuration;
+                }
+                else{
+                    duration = moveDuration;
+                }
+                this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", KNIGHT_TILESIZE, duration));
+            }
         }
     }
 
@@ -36,8 +51,17 @@ public class Knight extends Melee implements KnightConstant{
 
         final int duration = 1000/8;
 
+        String[] activities = {"Attack", "Move"};
+
+        String fileName;
         for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
-            this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", tileSize, duration));
+            for(String activity : activities){
+                fileName = vision;
+                if(!activity.equals("Move")){
+                    fileName += activity;
+                }
+                this.renderer.addView(vision + activity, new SpriteView(prepath + fileName + ".png", KNIGHT_TILESIZE, duration));
+            }
         }
     }
 
@@ -50,6 +74,7 @@ public class Knight extends Melee implements KnightConstant{
         }
         else {
             if (!this.isStun()){
+                this.renderer.setLastActivity("Move");
                 super.updateSpeed(target.getCenter().sub(super.getCenter()).normalise().scale(super.getAccelerationRate()));
 
                 super.move();
@@ -85,6 +110,8 @@ public class Knight extends Melee implements KnightConstant{
         super.setSpeed(new Vector2f(0,0));
         this.attackDirection = getLocationOfTarget(target);
         this.timeLeftBeforeAttack = KnightConstant.ATTACK_LOADING_DURATION;
+        this.renderer.setLastActivity("Attack");
+        this.renderer.update(this.attackDirection);
     }
 
     boolean isAttackReady(){
