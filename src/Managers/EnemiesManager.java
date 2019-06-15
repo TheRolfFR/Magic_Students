@@ -2,13 +2,13 @@ package Managers;
 
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Monsters.IBoss;
-import Entities.LivingBeings.Monsters.Melee.KnightBoss;
-import Entities.LivingBeings.Monsters.Ranged.BowmanBoss;
-import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Melee.Knight;
+import Entities.LivingBeings.Monsters.Melee.KnightBoss;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Bowman;
+import Entities.LivingBeings.Monsters.Ranged.BowmanBoss;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
+import Entities.LivingBeings.Player;
 import Entities.Projectiles.Projectile;
 import HUD.HealthBars.BossHealthBar;
 import Main.MainClass;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static Main.MainClass.*;
-import static java.lang.Math.round;
 
 public class EnemiesManager {
 
@@ -42,7 +41,7 @@ public class EnemiesManager {
 
     public void generateEnemies() {
         Random random = new Random();
-        for(int i = 0; i< 4+(int) Math.round(MainClass.getDifficulty()/4); i++){
+        for (int i = 1; i < 4 + (int) Math.round(MainClass.getDifficulty() / 4); i++) {
             switch(random.nextInt(2)){
                 case 0 :
                     addBowman();

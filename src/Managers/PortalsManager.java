@@ -32,7 +32,7 @@ public class PortalsManager implements KeyPressListener {
     private static Map<String, Float> cumulativeRoomProbability = Map.of(
             "classic", 0.20f,
             "item", 0.24f,
-            "boss", 0.28f
+            "boss", 0.27f
     );
 
     private static ArrayList<Portal> portals = new ArrayList<>();

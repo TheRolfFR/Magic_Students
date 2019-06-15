@@ -1,7 +1,8 @@
 package HUD;
 
 import Main.MainClass;
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,7 @@ public class FadeToBlack {
     private int getFadeTimer() { return this.fadeTimer; }
     public int getDuration() { return FADE_DURATION; }
     private boolean willBeAtHalfDuration(int deltaTime) {
-        return this.fadeTimer < FADE_DURATION / 2 && this.fadeTimer + deltaTime >= FADE_DURATION / 2;
+        return this.fadeTimer <= FADE_DURATION / 2 && this.fadeTimer + deltaTime >= FADE_DURATION / 2;
     }
     public boolean isDone() { return this.getFadeTimer() == this.getDuration(); }
 

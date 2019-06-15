@@ -2,9 +2,9 @@ package Main;
 
 import Entities.Item;
 import Entities.LivingBeings.LivingBeing;
-import Entities.LivingBeings.Player;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
+import Entities.LivingBeings.Player;
 import Entities.Projectiles.Projectile;
 import HUD.FadeToBlack;
 import HUD.FadeToBlackListener;
@@ -46,7 +46,9 @@ public class MainClass extends BasicGame {
 
     public static int getNumberOfFramePerSecond() { return numberOfFramePerSecond; }
 
-    public static void nextDifficulty(){difficulty = difficulty+1;}
+    public static void nextDifficulty() {
+        difficulty++;
+    }
 
     public FadeToBlack getFadeToBlack() {
         return fadeToBlack;
@@ -141,8 +143,6 @@ public class MainClass extends BasicGame {
                 TimeScale.resume();
             }
         });
-
-        //generateRoom();
     }
 
     @Override
