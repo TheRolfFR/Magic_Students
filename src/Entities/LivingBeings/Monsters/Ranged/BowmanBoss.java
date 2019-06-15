@@ -5,6 +5,7 @@ import Entities.LivingBeings.Monsters.BossConstants;
 import Entities.LivingBeings.Monsters.IBoss;
 import Main.MainClass;
 import Main.TimeScale;
+import Managers.EnemiesManager;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
@@ -77,7 +78,7 @@ public class BowmanBoss extends Bowman implements IBoss, BossConstants {
 
     private void summon() {
         super.setSpeed(new Vector2f(0,0));
-        MainClass.getInstance().getEnemiesManager().addBowman();
+        this.triggerListener(EnemiesManager.newBowman());
         this.summonCooldown = BossConstants.SUMMON_COOLDOWN;
         super.setSpeed(new Vector2f(0,0));
         super.stun();

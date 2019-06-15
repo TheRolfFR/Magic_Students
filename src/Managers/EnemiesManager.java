@@ -45,17 +45,17 @@ public class EnemiesManager implements SummonListener {
         for (int i = 1; i < 4 + (int) Math.round(MainClass.getDifficulty() / 4); i++) {
             switch(random.nextInt(2)){
                 case 0 :
-                    addBowman();
+                    this.enemies.add(newBowman());
                     break;
                 case 1 :
-                    addKnight();
+                    this.enemies.add(newKnight());
                     break;
                 default: break;
             }
         }
     }
 
-    public void addBowman(){
+    public static Bowman newBowman(){
 
         Random random = new Random();
 
@@ -64,10 +64,11 @@ public class EnemiesManager implements SummonListener {
 
         Bowman tmpb = new Bowman(randomX, randomY,150/MAX_FPS, 60/MAX_FPS, (int) Math.round(75*MainClass.getDifficulty()),(int) Math.round(2*MainClass.getDifficulty()),(int) Math.round(1*MainClass.getDifficulty()),(int) Math.round(0.4*Bowman.BOWMAN_TILESIZE.getY()));
         tmpb.setShowDebugRect(true);
-        this.enemies.add(tmpb);
+
+        return tmpb;
     }
 
-    public void addKnight(){
+    public static Knight newKnight(){
 
         Random random = new Random();
 
@@ -76,40 +77,46 @@ public class EnemiesManager implements SummonListener {
 
         Knight tmpk = new Knight(randomX, randomY, 250/MAX_FPS, 60/MAX_FPS, (int) Math.round(100*MainClass.getDifficulty()),(int) Math.round(2*MainClass.getDifficulty()),(int) Math.round(1*MainClass.getDifficulty()),(int) Math.round(0.4*Knight.KNIGHT_TILESIZE.getY()));
         tmpk.setShowDebugRect(true);
-        this.enemies.add(tmpk);
+
+        return tmpk;
     }
 
     public void generateBoss() {
         Random random = new Random();
 
+        IBoss boss = null;
         switch(random.nextInt(2)){
             case 0 :
-                addBossBowman();
+                boss = addBossBowman();
                 break;
             case 1 :
-                addBossKnight();
+                boss = addBossKnight();
                 break;
             default: break;
         }
+
+        if(boss != null)
+            boss.addSummonListener(this);
     }
 
-    private void addBossKnight(){
+    private IBoss addBossKnight(){
         KnightBoss knightBoss = new KnightBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, (int) Math.round(1000*MainClass.getDifficulty()), (int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(0.4*KnightBoss.KNIGHTBOSS_TILESIZE.getY()));
         knightBoss.setShowDebugRect(true);
         this.enemies.add(knightBoss);
         knightBoss.addHurtListener(this.bossHealthBar);
-        knightBoss.addSummonListener(this);
         this.bossHealthBar.onHurt(knightBoss);
+
+        return knightBoss;
     }
 
-    private void addBossBowman(){
+    private IBoss addBossBowman(){
         BowmanBoss bowmanBoss = new BowmanBoss(WIDTH/2, HEIGHT/2,200/MAX_FPS, 60/MAX_FPS, (int) Math.round(1000*MainClass.getDifficulty()), (int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(10*MainClass.getDifficulty()),(int) Math.round(0.4*BowmanBoss.BOWMANBOSS_TILESIZE.getY()));
         bowmanBoss.setShowDebugRect(true);
         this.enemies.add(bowmanBoss);
         bowmanBoss.addHurtListener(this.bossHealthBar);
-        bowmanBoss.addSummonListener(this);
         this.bossHealthBar.onHurt(bowmanBoss);
 
+        return bowmanBoss;
     }
 
     public void update() {

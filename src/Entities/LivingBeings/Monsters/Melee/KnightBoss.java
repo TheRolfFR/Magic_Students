@@ -5,6 +5,7 @@ import Entities.LivingBeings.Monsters.BossConstants;
 import Entities.LivingBeings.Monsters.IBoss;
 import Main.MainClass;
 import Main.TimeScale;
+import Managers.EnemiesManager;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
@@ -51,7 +52,7 @@ public class KnightBoss extends Knight implements IBoss, BossConstants {
 
     private void summon() {
         super.setSpeed(new Vector2f(0,0));
-        MainClass.getInstance().getEnemiesManager().addKnight();
+        this.triggerListener(EnemiesManager.newKnight());
         this.summonCooldown = BossConstants.SUMMON_COOLDOWN;
         super.stun();
     }

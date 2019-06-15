@@ -84,10 +84,6 @@ public class MainClass extends BasicGame {
         instance.pauseMenu.setActive(!isGamePaused());
     }
 
-    public EnemiesManager getEnemiesManager() {
-        return enemiesManager;
-    }
-
     public static MainClass getInstance() {
         return instance;
     }
