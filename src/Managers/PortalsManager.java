@@ -104,12 +104,13 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                     }
                 }
             }
-            portalSet = true;
+            this.portalSet = true;
+            this.latestPortal = null;
         }
     }
 
     public void update(int deltaTime) {
-        if(portalSet){
+        if (this.portalSet) {
             for(Portal portal : portals){
                 if(portal.isVisible()){
                     portal.update(deltaTime);
