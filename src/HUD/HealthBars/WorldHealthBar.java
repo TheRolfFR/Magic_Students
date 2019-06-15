@@ -48,7 +48,7 @@ public class WorldHealthBar implements LivingBeingHurtListener, LivingBeingMoveL
     }
 
     @Override
-    public void onHurt(LivingBeing being) {
+    public void onUpdate(LivingBeing being) {
         this.healthBarWidth = (int) ((float) being.getCurrentHealthPoints() / (float) being.getMaxHealthPoints() * HEALTHBAR_WIDTH);
     }
 

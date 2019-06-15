@@ -17,6 +17,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
     private static final String MELEE_ATTACK_IMG_PATH = "img/meleeAttack.png";
     private static final String SPELL_ATTACK_IMG_PATH = "img/spellAttack.png";
+    private static final String DASH_EFFECT_IMG_PATH = "img/dashEffect.png";
 
     private boolean keyUp;
     private boolean keyDown;
@@ -40,6 +41,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private float dashCooldown = 0;
     private float spellCooldown = 0;
 
+    private AttackVisual dashEffectVisual;
     private AttackVisual meleeAttackVisual;
     private AttackVisual spellAttackVisual;
 
@@ -101,9 +103,11 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.playerMarkerRenderer = new PlayerMarkerRenderer(this, 2);
         this.setTileSize(new Vector2f(96, 96));
 
+        this.dashEffectVisual = new AttackVisual(DASH_EFFECT_IMG_PATH);
         this.meleeAttackVisual = new AttackVisual(MELEE_ATTACK_IMG_PATH, 10);
         this.spellAttackVisual = new AttackVisual(SPELL_ATTACK_IMG_PATH);
 
+        AttackVisualsManager.addVisual(this.dashEffectVisual);
         AttackVisualsManager.addVisual(this.meleeAttackVisual);
         AttackVisualsManager.addVisual(this.spellAttackVisual);
 }
@@ -171,6 +175,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         }
         if (!this.isDashReady()){
             this.dashCooldown = this.dashCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
+            this.dashEffectVisual.onCooldownUpdate(this.dashCooldown, PlayerConstants.DASH_COOLDOWN);
         }
         if (!this.isSpellReady()){
             this.spellCooldown = this.spellCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
@@ -191,7 +196,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
 
-        Ranged.allyProjectiles.add(new MeleeAttack(super.getCenter().add(attackDirection.copy().scale(super.getRadius()))));
+        Ranged.allyProjectiles.add(new MeleeAttack(super.getCenter().add(attackDirection.copy().scale(super.getRadius()*2f))));
 
         super.renderer.setLastActivity("Attack");
         super.renderer.update(attackDirection);
@@ -206,6 +211,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
             this.timeLeftWhileDashing = PlayerConstants.DASH_DURATION;
             super.setSpeed(super.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
             this.dashCooldown = PlayerConstants.DASH_COOLDOWN;
+
+            this.dashEffectVisual.onCooldownStart();
         }
     }
 

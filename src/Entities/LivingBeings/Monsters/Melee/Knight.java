@@ -126,7 +126,7 @@ public class Knight extends Melee implements KnightConstant{
 
     private Vector2f getLocationOfTarget(LivingBeing target){
         Vector2f directionOfTarget = new Vector2f(target.getCenter().sub(super.getCenter()));
-        if (directionOfTarget.getX() < directionOfTarget.getY()){
+        if (Math.abs(directionOfTarget.getX()) < Math.abs(directionOfTarget.getY())){
             if (directionOfTarget.getY() < 0){
                 return new Vector2f(0,-1);
             }

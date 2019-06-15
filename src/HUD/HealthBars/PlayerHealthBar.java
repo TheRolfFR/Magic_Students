@@ -31,7 +31,7 @@ public class PlayerHealthBar extends UIHealthBar implements LivingBeingHurtListe
 
     public PlayerHealthBar(Player player) {
         player.addHurtListener(this);
-        this.onHurt(player);
+        this.onUpdate(player);
 
         FontRenderer.getPixelFontRenderer().setPxSize((int) (PLAYER_HEALTHBAR_HEIGHT * PLAYER_HEALTHPOINTS_FONT_SCALE));
         this.playerHealthpointsFont = FontRenderer.getPixelFont();
@@ -56,7 +56,7 @@ public class PlayerHealthBar extends UIHealthBar implements LivingBeingHurtListe
     }
 
     @Override
-    public void onHurt(LivingBeing being) {
+    public void onUpdate(LivingBeing being) {
         this.playerHealthbarContentWidth = (int) ((float) being.getCurrentHealthPoints() / (float) being.getMaxHealthPoints() * PLAYER_HEALTHBAR_WIDTH);
         this.playerHealthpointsString = "" + being.getCurrentHealthPoints() + "/" + being.getMaxHealthPoints();
     }

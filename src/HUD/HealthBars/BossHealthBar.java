@@ -63,7 +63,7 @@ public class BossHealthBar extends UIHealthBar implements LivingBeingHurtListene
     }
 
     @Override
-    public void onHurt(LivingBeing being) {
+    public void onUpdate(LivingBeing being) {
         System.out.println("boss hurt : " + being.getClass().getName());
         if(being.getCurrentHealthPoints() > 0) {
             this.isBarDisplayed = true;
