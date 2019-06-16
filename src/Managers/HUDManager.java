@@ -29,7 +29,7 @@ public class HUDManager {
     public void render(Graphics g) {
         this.playerHealthBar.render(g);
 
-        if(this.bossHealthBar != null) {
+        if (this.bossHealthBar != null) {
             this.bossHealthBar.render(g);
         }
 

@@ -16,7 +16,7 @@ public interface IBoss {
     }
 
     default void triggerListener(Monster monster) {
-        for(SummonListener listener : summonListeners) {
+        for (SummonListener listener : summonListeners) {
             listener.onSummon(monster);
         }
     }

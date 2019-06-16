@@ -1,14 +1,14 @@
 package Renderers;
 
-import Listeners.LivingBeingHurtListener;
 import Entities.LivingBeings.LivingBeing;
+import Listeners.LivingBeingHealthListener;
 import Main.MainClass;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class HurtEffectRenderer implements LivingBeingHurtListener {
+public class HurtEffectRenderer implements LivingBeingHealthListener {
 
     private static final String HURT_EFFECT_IMG_PATH = "img/cameraHurtEffect.png";
     private static final int HURT_EFFECT_DURATION = 500;
@@ -33,8 +33,8 @@ public class HurtEffectRenderer implements LivingBeingHurtListener {
     }
 
     public void update(int deltaTime) {
-        if(this.isHurtEffectActivated) {
-            if(this.hurtEffectTimer < HURT_EFFECT_DURATION) {
+        if (this.isHurtEffectActivated) {
+            if (this.hurtEffectTimer < HURT_EFFECT_DURATION) {
                 this.hurtEffectTimer = Math.min(this.hurtEffectTimer + deltaTime, HURT_EFFECT_DURATION);
             } else {
                 this.isHurtEffectActivated = false;
@@ -43,7 +43,7 @@ public class HurtEffectRenderer implements LivingBeingHurtListener {
     }
 
     public void render(Graphics g) {
-        if(this.isHurtEffectActivated) {
+        if (this.isHurtEffectActivated) {
             float opacity = HURT_A * this.hurtEffectTimer*this.hurtEffectTimer + HURT_B * this.hurtEffectTimer; // a*x^2 + b*x
 
             g.drawImage(this.hurtEffect, 0, 0, new Color(255, 255, 255, opacity));
@@ -51,8 +51,8 @@ public class HurtEffectRenderer implements LivingBeingHurtListener {
     }
 
     @Override
-    public void onUpdate(LivingBeing being) {
-        if(!isHurtEffectActivated) {
+    public void onHurt(LivingBeing being) {
+        if (!isHurtEffectActivated) {
             this.isHurtEffectActivated = true;
             this.hurtEffectTimer = 0;
         }

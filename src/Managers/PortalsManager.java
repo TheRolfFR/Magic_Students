@@ -23,10 +23,11 @@ import static Main.MainClass.HEIGHT;
 import static Main.MainClass.WIDTH;
 
 public class PortalsManager implements KeyPressListener, LivingBeingMoveListener {
-    public static final Map<String, Color> ROOM_COLOR = Map.of(
+    private static final Map<String, Color> ROOM_COLOR = Map.of(
             "classic", new Color(0x0094FF),     // blue
             "item", Color.yellow,                     // yellow
-            "boss", new Color(0xf44336)         // red
+            "boss", new Color(0xf44336),        // red
+            "nextFloor", new Color(0x32FF32)
     );
     private static final Map<String, Float> CUMULATIVE_ROOM_PROBABILITY = Map.of(
             "classic", 0.20f,
@@ -35,6 +36,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     );
 
     private static ArrayList<Portal> portals = new ArrayList<>();
+    private static Portal floorPortal;
 
     private boolean portalSet;
     private Portal portalHovered;
@@ -46,10 +48,14 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         this.portalsManagerListeners.add(listener);
     }
 
+    public static Map<String, Color> getRoomColor() {
+        return ROOM_COLOR;
+    }
+
     public PortalsManager(GameContainer gc, Player player, FadeToBlack fadeToBlack) {
         gc.getInput().addKeyListener(this);
         this.portalSet = false;
-        this.latestPortal = null;
+        this.setLatestPortal(null);
         this.portalHovered = null;
 
         int offsetFromWall = 60;
@@ -60,7 +66,11 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                 {WIDTH - offsetFromWall, HEIGHT / 2}
         };
 
-        Portal portal;
+        Portal portal = new Portal(WIDTH / 2, HEIGHT / 2,
+                (int) PortalRenderer.getTILESIZE().getX(), (int) PortalRenderer.getTILESIZE().getY(), 20);
+        portal.setType("nextFloor");
+        portal.setShowDebugRect(true);
+        floorPortal = portal;
 
         for (int p = 0; p < 4; p++) {
             portal = new Portal(possiblePositions[p][0], possiblePositions[p][1],
@@ -78,39 +88,50 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
 
     public Portal getLatestPortal() { return this.latestPortal; }
 
+    private void setLatestPortal(Portal latestPortal) {
+        this.latestPortal = latestPortal;
+    }
 
     void setPortals() {
         if (!portalSet) {
-            Random random = new Random();
+            if (this.latestPortal != null && this.latestPortal.getType().equals("boss")) {
+                floorPortal.setVisible(true);
+            } else {
+                Random random = new Random();
 
-            Portal p = portals.get(random.nextInt(portals.size()));
-            p.setVisible(true);
-            p.setType("classic");
+                Portal p = portals.get(random.nextInt(portals.size()));
+                p.setVisible(true);
+                p.setType("classic");
 
-            float chance;
-            for (Portal portal: portals) {
-                if (!portal.isVisible()) {
-                    chance = random.nextFloat();
+                float chance;
+                for (Portal portal : portals) {
+                    if (!portal.isVisible()) {
+                        chance = random.nextFloat();
 
-                    for (String type: CUMULATIVE_ROOM_PROBABILITY.keySet()) {
-                        if (chance <= CUMULATIVE_ROOM_PROBABILITY.get(type)) {
-                            portal.setVisible(true);
-                            portal.setType(type);
-                            break;
+                        for (String type : CUMULATIVE_ROOM_PROBABILITY.keySet()) {
+                            if (chance <= CUMULATIVE_ROOM_PROBABILITY.get(type)) {
+                                portal.setVisible(true);
+                                portal.setType(type);
+                                break;
+                            }
                         }
                     }
                 }
             }
-            portalSet = true;
+            this.portalSet = true;
+            this.latestPortal = null;
         }
     }
 
     public void update(int deltaTime) {
-        if(portalSet){
-            for(Portal portal : portals){
-                if(portal.isVisible()){
+        if (this.portalSet) {
+            for (Portal portal : portals) {
+                if (portal.isVisible()) {
                     portal.update(deltaTime);
                 }
+            }
+            if (floorPortal.isVisible()) {
+                floorPortal.update(deltaTime);
             }
         }
     }
@@ -118,10 +139,9 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     public void hidePortals() {
         for (Portal portalBis : portals) {
             portalBis.setVisible(false);
-            portalSet = false;
         }
-
-        this.latestPortal = null;
+        floorPortal.setVisible(false);
+        portalSet = false;
     }
 
     public void render(Graphics g) {
@@ -130,41 +150,49 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                 portal.render(g);
             }
         }
+        if (floorPortal.isVisible()) {
+            floorPortal.render(g);
+        }
     }
 
     @Override
     public void keyPressed(int key, char c) {
         if (this.portalHovered != null && key == Input.KEY_F) {
             // if the latest room was a boss room
-            if(this.latestPortal != null && this.latestPortal.getType().equals("boss")){
+
+            // update the actual portal
+            this.setLatestPortal(this.portalHovered);
+            this.portalHovered = null;
+
+            if (this.latestPortal != null && this.latestPortal.getType().equals("nextFloor")) {
                 MainClass.nextDifficulty();
             }
 
             // trigger all listeners
-            if(this.portalsManagerListeners.size()  > 0) {
-                for(PortalsManagerListener listener : this.portalsManagerListeners) {
+            if (this.portalsManagerListeners.size() > 0) {
+                for (PortalsManagerListener listener : this.portalsManagerListeners) {
                     listener.onEngage(this);
                 }
             }
-
-            // update the actual portal
-            this.latestPortal = this.portalHovered;
-            this.portalHovered = null;
         }
     }
 
     @Override
     public void onMove(LivingBeing being) {
         // if the being is the player
-        if(being instanceof Player) {
+        if (being instanceof Player) {
             this.portalHovered = null;
             // for each portal
-            for(Portal portal : portals) {
+            for (Portal portal : portals) {
                 // if the player collides with the portal
-                if(portal.isVisible() && being.collidesWith(portal)) {
+                if (portal.isVisible() && being.collidesWith(portal)) {
                     // update the colliding portal
                     this.portalHovered = portal;
                 }
+            }
+            if (floorPortal.isVisible() && being.collidesWith(floorPortal)) {
+                // update the colliding portal
+                this.portalHovered = floorPortal;
             }
         }
     }

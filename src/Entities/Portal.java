@@ -5,8 +5,6 @@ import Renderers.PortalRenderer;
 import org.newdawn.slick.Graphics;
 
 public class Portal extends Entity {
-    private int width;
-    private int height;
     private boolean visible;
 
     private String roomType;
@@ -15,18 +13,24 @@ public class Portal extends Entity {
 
     public Portal(float x, float y, int width, int height, int radius) {
         super(x, y, width, height, radius);
-        this.width = width;
-        this.height = height;
         this.visible = false;
         this.roomType = null;
 
-        this.renderer = new PortalRenderer(this,this.getCenter().getX(), this.getCenter().getY());
+        this.renderer = new PortalRenderer(this, this.getCenter().getX(), this.getCenter().getY());
     }
 
     public boolean isVisible() { return this.visible; }
-    public void setVisible(boolean visible) { this.visible = visible; }
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+        if (this.visible) {
+            this.renderer.restart();
+        }
+    }
     public void setType(String type) { this.roomType = type; }
-    public String getType(){return this.roomType;}
+
+    public String getType() {
+        return this.roomType;
+    }
 
     @Override
     public void move() {}
@@ -38,7 +42,7 @@ public class Portal extends Entity {
     @Override
     public void render(Graphics g) {
         if (this.renderer != null) {
-            this.renderer.Render(PortalsManager.ROOM_COLOR.get(this.roomType));
+            this.renderer.Render(PortalsManager.getRoomColor().get(this.roomType));
             //this.renderer.render(g, (int) this.getPosition().getX(), (int) this.getPosition().getY());
         }
         super.render(g);

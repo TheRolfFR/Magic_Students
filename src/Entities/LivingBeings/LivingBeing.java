@@ -2,7 +2,7 @@ package Entities.LivingBeings;
 
 import Entities.Entity;
 import Entities.LivingBeings.Monsters.Monster;
-import Listeners.LivingBeingHurtListener;
+import Listeners.LivingBeingHealthListener;
 import Listeners.LivingBeingMoveListener;
 import Main.MainClass;
 import Main.TimeScale;
@@ -13,14 +13,14 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static java.lang.Math.*;
+import static java.lang.Math.ceil;
 
 public abstract class LivingBeing extends Entity implements Comparable {
     private int currentHealthPoints;
     private int maxHealthPoints;
     private int armorPoints;
 
-    private ArrayList<LivingBeingHurtListener> livingBeingHurtListeners;
+    private ArrayList<LivingBeingHealthListener> livingBeingHealthListeners;
     private ArrayList<LivingBeingMoveListener> livingBeingMoveListeners;
 
     public static ArrayList<LivingBeing> livingBeings = new ArrayList<>();
@@ -29,26 +29,27 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     public void heal(int amountOfHealing) {
         this.currentHealthPoints = this.currentHealthPoints + amountOfHealing;
-        if (this.currentHealthPoints > this.maxHealthPoints){
+        if (this.currentHealthPoints > this.maxHealthPoints) {
             this.currentHealthPoints = this.maxHealthPoints;
         }
 
         // update bar on heal too
-        for(LivingBeingHurtListener listener : livingBeingHurtListeners) {
+        for (LivingBeingHealthListener listener : livingBeingHealthListeners) {
             listener.onUpdate(this);
+            listener.onHeal(this);
         }
     }
 
-    public void buffHP(int buffAmount){
+    public void buffHP(int buffAmount) {
         this.maxHealthPoints = this.maxHealthPoints + buffAmount;
         this.heal(buffAmount);
     }
 
-    public void buffArmor(int buffAmount){
+    public void buffArmor(int buffAmount) {
         this.armorPoints = this.armorPoints + buffAmount;
     }
 
-    public void buffSpeed(float buffAmount){
+    public void buffSpeed(float buffAmount) {
         this.MAX_SPEED = this.MAX_SPEED + buffAmount;
         this.ACCELERATION_RATE = this.ACCELERATION_RATE + buffAmount * 135/450;
     }
@@ -65,8 +66,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
         }
     }
 
-    public void addHurtListener(LivingBeingHurtListener listener) {
-        this.livingBeingHurtListeners.add(listener);
+    public void addHurtListener(LivingBeingHealthListener listener) {
+        this.livingBeingHealthListeners.add(listener);
     }
 
     public void addMoveListener(LivingBeingMoveListener listener) {
@@ -111,7 +112,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
 
-        this.livingBeingHurtListeners = new ArrayList<>();
+        this.livingBeingHealthListeners = new ArrayList<>();
         this.livingBeingMoveListeners = new ArrayList<>();
 
         livingBeings.add(this);
@@ -123,7 +124,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
 
-        this.livingBeingHurtListeners = new ArrayList<>();
+        this.livingBeingHealthListeners = new ArrayList<>();
         this.livingBeingMoveListeners = new ArrayList<>();
 
         livingBeings.add(this);
@@ -137,12 +138,13 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.currentHealthPoints = Math.max(0, this.currentHealthPoints - Math.max(damage - this.armorPoints, 0));
 
         // launching listeners
-        for(LivingBeingHurtListener listener : this.livingBeingHurtListeners) {
+        for (LivingBeingHealthListener listener : this.livingBeingHealthListeners) {
             listener.onUpdate(this);
+            listener.onHurt(this);
         }
     }
 
-    public boolean isDead(){
+    public boolean isDead() {
         return this.currentHealthPoints <= 0;
     }
 
@@ -150,11 +152,11 @@ public abstract class LivingBeing extends Entity implements Comparable {
         if (level <= MainClass.getInstance().getEnemies().size()) {
             percuted.collidingAction(pusher);
             if (percuted.collidesWith(MainClass.getInstance().getPlayer())) {
-                solveCollision(percuted,MainClass.getInstance().getPlayer(),level+1);
+                solveCollision(percuted, MainClass.getInstance().getPlayer(), level + 1);
             }
             for (Monster m: MainClass.getInstance().getEnemies()) {
                 if (percuted.collidesWith(m)) {
-                    solveCollision(percuted,m,level+1);
+                    solveCollision(percuted, m, level + 1);
                 }
             }
         }
@@ -162,11 +164,11 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     public void checkCollision() {
         if (this.collidesWith(MainClass.getInstance().getPlayer())) {
-            solveCollision(this,MainClass.getInstance().getPlayer(),1);
+            solveCollision(this, MainClass.getInstance().getPlayer(), 1);
         }
         for (Monster m: MainClass.getInstance().getEnemies()) {
-            if (this.collidesWith(m)){
-                solveCollision(this,m,1);
+            if (this.collidesWith(m)) {
+                solveCollision(this, m, 1);
             }
         }
     }
@@ -202,13 +204,13 @@ public abstract class LivingBeing extends Entity implements Comparable {
         super.setCenter(super.getCenter().add(super.getSpeed().scale(TimeScale.getInGameTimeScale().getTimeScale())));
         this.tpInBounds();
 
-        for(LivingBeingMoveListener listener : this.livingBeingMoveListeners) {
+        for (LivingBeingMoveListener listener : this.livingBeingMoveListeners) {
             listener.onMove(this);
         }
     }
 
     public void render(Graphics g, Vector2f facedDirection) {
-        if(this.renderer != null) {
+        if (this.renderer != null) {
             this.renderer.render(g, facedDirection);
         }
         super.render(g);

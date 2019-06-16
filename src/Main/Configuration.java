@@ -18,7 +18,6 @@ class Configuration {
                 configurationFile = new JSONObject(content);
             } catch (IOException e) {
                 e.printStackTrace();
-                System.err.println(e.getMessage());
                 System.exit(1);
             }
         }

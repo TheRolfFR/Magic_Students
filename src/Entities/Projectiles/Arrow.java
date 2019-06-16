@@ -19,7 +19,9 @@ public class Arrow extends Projectile {
         this.renderer = new ProjectileRenderer(this, IMG_PATH, TILESIZE, FRAME_DURATION);
     }
 
-    public static int getArrowRadius(){return RADIUS;}
+    public static int getArrowRadius() {
+        return RADIUS;
+    }
 
     @Override
     public int getDamage() {

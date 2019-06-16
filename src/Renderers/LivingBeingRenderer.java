@@ -2,7 +2,8 @@ package Renderers;
 
 import Entities.Entity;
 import Main.TimeScale;
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 
 public class LivingBeingRenderer extends SpriteRenderer {
 
-    public static final String ACCEPTED_VISION_DIRECTIONS[] = {"left", "right", "top", "bottom"};
+    public static final String[] ACCEPTED_VISION_DIRECTIONS = {"left", "right", "top", "bottom"};
 
     private static boolean acceptedDirectionsContains(String direction) {
         boolean found = false;
@@ -41,7 +42,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
      * @param lastActivity the wanted activity
      */
     public void setLastActivity(String lastActivity) {
-        if(this.activities.contains(lastActivity)) {
+        if (this.activities.contains(lastActivity)) {
             this.lastActivity = lastActivity;
         }
     }
@@ -54,7 +55,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
     private String hasCorrectName(String viewName) {
         String[] arr = viewName.split("(?=\\p{Lu})");
 
-        if(arr.length == 2 && acceptedDirectionsContains(arr[0]))
+        if (arr.length == 2 && acceptedDirectionsContains(arr[0]))
             return arr[1];
 
         System.err.println("not correct view name : " + viewName);
@@ -78,7 +79,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
             }
 
             // finally put data in the list
-            if(!this.activities.contains(activity))
+            if (!this.activities.contains(activity))
                 this.activities.add(activity);
             this.views.put(viewName, view);
         }
@@ -123,7 +124,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
      * @param v the view wanted
      */
     private void setLastView(SpriteView v) {
-        if(v != null) {
+        if (v != null) {
             this.lastView = v;
         }
     }
@@ -138,8 +139,8 @@ public class LivingBeingRenderer extends SpriteRenderer {
         SpriteView v;
         v = this.views.get(visionDirection + activity);
         int i = 0;
-        while(i < activities.size() && v == null) {
-            if(!activities.get(i).equals(activity)) {
+        while (i < activities.size() && v == null) {
+            if (!activities.get(i).equals(activity)) {
                 v = this.views.get(visionDirection + activities.get(i));
             }
             i++;
@@ -173,13 +174,13 @@ public class LivingBeingRenderer extends SpriteRenderer {
      */
     public void render(Graphics g, Vector2f facedDirection) {
         // update render if not paused
-        if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
+        if (TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
             update(facedDirection);
         }
 
-        if(this.lastView != null) {
+        if (this.lastView != null) {
             // if game is not paused (OBLIGATORY because I need to pause the animations)
-            if(TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
+            if (TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
                 this.lastView.start();
             } else {
                 this.lastView.stop();

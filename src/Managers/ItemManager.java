@@ -1,9 +1,9 @@
 package Managers;
 
 import Entities.Item;
-import Listeners.LivingBeingMoveListener;
 import Entities.LivingBeings.LivingBeing;
 import Entities.LivingBeings.Player;
+import Listeners.LivingBeingMoveListener;
 import org.newdawn.slick.Graphics;
 
 public class ItemManager implements LivingBeingMoveListener {
@@ -20,14 +20,14 @@ public class ItemManager implements LivingBeingMoveListener {
     }
 
     public void render(Graphics g) {
-        if(item!=null){
+        if (item != null) {
             item.render(g);
         }
     }
 
     @Override
     public void onMove(LivingBeing being) {
-        if( item!=null && being instanceof Player) {
+        if (item != null && being instanceof Player) {
             item = item.update((Player) being);
         }
     }

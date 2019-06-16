@@ -1,12 +1,14 @@
 package HUD.HealthBars;
 
-import Listeners.LivingBeingHurtListener;
 import Entities.LivingBeings.LivingBeing;
+import Listeners.LivingBeingHealthListener;
 import Main.MainClass;
 import Renderers.FontRenderer;
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.TrueTypeFont;
 
-public class BossHealthBar extends UIHealthBar implements LivingBeingHurtListener {
+public class BossHealthBar extends UIHealthBar implements LivingBeingHealthListener {
 
     private static final float BOSS_HEALTHBAR_WIDTH_PERCENTAGE = 0.4f;
     private static final int BOSS_HEALTHBAR_WIDTH = (int) (BOSS_HEALTHBAR_WIDTH_PERCENTAGE * MainClass.WIDTH);
@@ -45,7 +47,7 @@ public class BossHealthBar extends UIHealthBar implements LivingBeingHurtListene
     }
 
     public void render(Graphics g) {
-        if(this.isBarDisplayed) {
+        if (this.isBarDisplayed) {
             super.render(
                     g,
                     BOSS_HEALTHBAR_XPOS,
@@ -64,8 +66,7 @@ public class BossHealthBar extends UIHealthBar implements LivingBeingHurtListene
 
     @Override
     public void onUpdate(LivingBeing being) {
-        System.out.println("boss hurt : " + being.getClass().getName());
-        if(being.getCurrentHealthPoints() > 0) {
+        if (being.getCurrentHealthPoints() > 0) {
             this.isBarDisplayed = true;
 
             this.setHealthPointsString(being.getCurrentHealthPoints(), being.getMaxHealthPoints());

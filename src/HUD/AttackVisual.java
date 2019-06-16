@@ -47,7 +47,7 @@ public class AttackVisual implements AttackCooldownListener {
             g.fillRect(x, y, backgroundWidth, ICON_SIZE);
         } else {
             this.numberOfFramesDisplayed += 1;
-            if(this.numberOfFramesDisplayed > this.framesHidden) {
+            if (this.numberOfFramesDisplayed > this.framesHidden) {
                 this.onCooldownEnd();
             }
         }
@@ -65,7 +65,7 @@ public class AttackVisual implements AttackCooldownListener {
     @Override
     public void onCooldownUpdate(float currentValue, float maxValue) {
         this.backgroundWidth = (int) Math.floor(currentValue / maxValue * ICON_SIZE);
-        if(this.backgroundWidth < 1) {
+        if (this.backgroundWidth < 1) {
             this.onCooldownEnd();
         }
     }

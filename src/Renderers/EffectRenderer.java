@@ -18,7 +18,7 @@ public class EffectRenderer{
         try {
             image = new Image(imgPath, false, Image.FILTER_NEAREST);
         } catch (SlickException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             System.exit(1);
         }
 
@@ -30,7 +30,9 @@ public class EffectRenderer{
         animation.start();
     }
 
-    public Vector2f getTileSize(){return this.tileSize;}
+    public Vector2f getTileSize() {
+        return this.tileSize;
+    }
 
 
     public void render(Graphics g, int centerX, int centerY, float angle) {
@@ -41,7 +43,7 @@ public class EffectRenderer{
             this.lastImage.rotate(angle);
         }
 
-        if(this.lastImage != null) {
+        if (this.lastImage != null) {
             g.drawImage(this.lastImage, centerX - this.tileSize.getX()/2, centerY - this.tileSize.getY()/2);
         }
     }

@@ -1,13 +1,16 @@
 package Entities.LivingBeings;
 
+import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.Projectiles.Fireball;
 import Entities.Projectiles.MeleeAttack;
-import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import HUD.AttackVisual;
 import Main.MainClass;
 import Main.TimeScale;
 import Managers.AttackVisualsManager;
-import Renderers.*;
+import Renderers.EffectRenderer;
+import Renderers.LivingBeingRenderer;
+import Renderers.PlayerMarkerRenderer;
+import Renderers.SpriteView;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -56,7 +59,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
      * @param y initial y position of the player
      */
     public Player(GameContainer gc, float x, float y) {
-        super(x, y,450 / MAX_FPS, 135 / MAX_FPS, 100, 1, (int) (0.4*45));
+        super(x, y, 450 / MAX_FPS, 135 / MAX_FPS, 100, 1, (int) (0.4 * 45));
 
         this.keyUp = false;
         this.keyDown = false;
@@ -76,15 +79,15 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         Color capeColor = new Color(0x0094ff);
 
         this.setTileSize(new Vector2f(96, 96));
-        Vector2f attackTileSize =  new Vector2f(96,58);
+        Vector2f attackTileSize = new Vector2f(96, 58);
         this.renderer = new LivingBeingRenderer(this, this.getTileSize(), capeColor);
-        this.attackRenderer = new EffectRenderer(prepath + "animationAttackWhite.png",attackTileSize, Math.round(1000*PlayerConstants.ATTACK_DURATION/3));
+        this.attackRenderer = new EffectRenderer(prepath + "animationAttackWhite.png", attackTileSize, Math.round(1000 * PlayerConstants.ATTACK_DURATION / 3));
 
         String[] activities = {"Move", "Idle", "Dash", "Attack", "Cast"};
 
         String fileName;
-        for(String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
-            for(String activity : activities) {
+        for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
+            for (String activity : activities) {
                 // Determine filename
                 fileName = vision;
                 if (!activity.equals("Move"))
@@ -110,7 +113,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         AttackVisualsManager.addVisual(this.dashEffectVisual);
         AttackVisualsManager.addVisual(this.meleeAttackVisual);
         AttackVisualsManager.addVisual(this.spellAttackVisual);
-    }
+}
 
     @Override
     public void setShowDebugRect(boolean showDebugRect) {
@@ -130,12 +133,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
      */
     public void update() {
         this.updateCountdown();
-        if (!this.isDashing()){
-            if (this.keySpace && this.isDashReady()){
+        if (!this.isDashing()) {
+            if (this.keySpace && this.isDashReady()) {
                 this.startDash();
             }
             else {
-                if (this.isAbleToMove()){
+                if (this.isAbleToMove()) {
                     if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
                         super.renderer.setLastActivity("Move");
                         if (this.keyUp) {
@@ -165,26 +168,26 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         super.move();
     }
 
-    private boolean isAbleToMove(){
+    private boolean isAbleToMove() {
         return this.timeLeftBeforeEnablingMovement <= 0;
     }
 
     private void updateCountdown() {
-        if (this.isAttacking()){
+        if (this.isAttacking()) {
             this.timeLeftWhileAttacking = this.timeLeftWhileAttacking - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        if (!this.isDashReady()){
+        if (!this.isDashReady()) {
             this.dashCooldown = this.dashCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
             this.dashEffectVisual.onCooldownUpdate(this.dashCooldown, PlayerConstants.DASH_COOLDOWN);
         }
-        if (!this.isSpellReady()){
+        if (!this.isSpellReady()) {
             this.spellCooldown = this.spellCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
             this.spellAttackVisual.onCooldownUpdate(this.spellCooldown, PlayerConstants.SPELL_COOLDOWN);
         }
-        if (!this.isAbleToMove()){
+        if (!this.isAbleToMove()) {
             this.timeLeftBeforeEnablingMovement = this.timeLeftBeforeEnablingMovement - TimeScale.getInGameTimeScale().getDeltaTime();
         }
-        if (isDashing()){
+        if (isDashing()) {
             this.timeLeftWhileDashing = this.timeLeftWhileDashing - TimeScale.getInGameTimeScale().getDeltaTime();
         }
     }
@@ -205,8 +208,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.meleeAttackVisual.onCooldownStart();
     }
 
-    private void startDash(){
-        if(!super.getSpeed().equals(new Vector2f(0,0))){
+    private void startDash() {
+        if (!super.getSpeed().equals(new Vector2f(0, 0))) {
             super.renderer.setLastActivity("Dash");
             this.timeLeftWhileDashing = PlayerConstants.DASH_DURATION;
             super.setSpeed(super.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
@@ -216,38 +219,44 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         }
     }
 
-    public boolean isDashing(){return this.timeLeftWhileDashing > 0;}
+    public boolean isDashing() {
+        return this.timeLeftWhileDashing > 0;
+    }
 
-    private boolean isDashReady(){return dashCooldown <= 0;}
+    private boolean isDashReady() {
+        return dashCooldown <= 0;
+    }
 
-    private void shootFireball(){
+    private void shootFireball() {
         Vector2f fireballDirection = this.mousePosition.copy().sub(super.getCenter()).normalise();
         this.spellCooldown = PlayerConstants.SPELL_COOLDOWN;
         this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
-        super.setSpeed(new Vector2f(0,0));
+        super.setSpeed(new Vector2f(0, 0));
         Ranged.allyProjectiles.add(new Fireball(super.getCenter().add(fireballDirection.copy().scale(super.getRadius()+Fireball.getFireballRadius())), fireballDirection)); //décalage car bord haut gauche
         super.renderer.setLastActivity("Cast");
         super.renderer.update(fireballDirection);
         this.spellAttackVisual.onCooldownStart();
     }
 
-    private boolean isSpellReady(){return this.spellCooldown <= 0;}
+    private boolean isSpellReady() {
+        return this.spellCooldown <= 0;
+    }
 
-    private boolean isAttacking(){
+    private boolean isAttacking() {
         return timeLeftWhileAttacking > 0;
     }
 
     @Override
     public void takeDamage(int damage) {
-        if(!this.isDashing()){
+        if (!this.isDashing()) {
             super.takeDamage(damage);
             //this.currentHealthPoints = Math.max(0, this.getCurrentHealthPoints() - round(damage / this.getArmorPoints()));
         }
     }
 
-    private void renderAttack(Graphics g){
-        if(isAttacking() && this.isAttackRendered){
+    private void renderAttack(Graphics g) {
+        if (isAttacking() && this.isAttackRendered) {
             Vector2f addVector = new Vector2f (this.attackDirection.getX()*(this.attackRenderer.getTileSize().getX()/2+super.getRadius()), this.attackDirection.getY()*(this.attackRenderer.getTileSize().getY()/2+super.getRadius()));
             Vector2f attackPosition = this.getCenter().add(addVector);
             this.attackRenderer.render(g, (int) attackPosition.getX(), (int) attackPosition.getY(), (float) attackDirection.getTheta() - 90);
@@ -262,15 +271,15 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
      * @param g the graphics to draw on
      */
     public void render(Graphics g) {
-        Vector2f facedDirection = new Vector2f(0,0);
-        if(this.keyDown) {
+        Vector2f facedDirection = new Vector2f(0, 0);
+        if (this.keyDown) {
             facedDirection.y = 1;
-        } else if(this.keyUp) {
+        } else if (this.keyUp) {
             facedDirection.y = -1;
         }
-        if(this.keyRight) {
+        if (this.keyRight) {
             facedDirection.x = 1;
-        } else if(this.keyLeft) {
+        } else if (this.keyLeft) {
             facedDirection.x = -1;
         }
 
@@ -372,14 +381,14 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         if (!MainClass.isGamePaused() && !isDashing()) {
             switch (button) {
                 case 0:
-                    if (!this.isAttacking()){
+                    if (!this.isAttacking()) {
                         this.meleeAttack();
                     }
 
                     break;
                 case 1:
                     if (!this.isAttacking()) {
-                        if (isSpellReady()){
+                        if (isSpellReady()) {
                             shootFireball();
                         }
                     }

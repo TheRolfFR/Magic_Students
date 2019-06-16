@@ -19,7 +19,7 @@ public class ProjectileRenderer extends SpriteRenderer {
         try {
             image = new Image(imgPath, false, Image.FILTER_NEAREST);
         } catch (SlickException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             System.exit(1);
         }
 
@@ -44,7 +44,7 @@ public class ProjectileRenderer extends SpriteRenderer {
             this.lastImage.rotate((float) this.angle);
         }
 
-        if(this.lastImage != null) {
+        if (this.lastImage != null) {
             g.drawImage(this.lastImage, x, y);
         }
     }
