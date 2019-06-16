@@ -30,8 +30,8 @@ public class BowmanBoss extends Bowman implements IBoss, BossConstants {
             }
         }
         else {
-            if (!super.isStun())
-            {
+            if (!super.isStun()) {
+                this.renderer.setLastActivity("Move");
                 if (this.isSummonReady()) {
                     if (this.decideToSummon()) {
                         this.summon();

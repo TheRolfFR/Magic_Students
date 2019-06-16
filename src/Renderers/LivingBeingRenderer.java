@@ -73,7 +73,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
         if (activity != null && !views.containsKey(viewName)) {
             // if there is no default view set it
             if (lastView == null) {
-                lastView = view;
+                this.lastView = view;
             } else if (viewName.equals("bottomIdle")) { // else if this is the bottom idle view set it
                 this.lastView = view;
             }

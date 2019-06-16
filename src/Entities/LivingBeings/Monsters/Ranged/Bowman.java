@@ -4,6 +4,7 @@ import Entities.LivingBeings.LivingBeing;
 import Entities.Projectiles.Arrow;
 import Main.MainClass;
 import Main.TimeScale;
+import Renderers.EffectRenderer;
 import Renderers.LivingBeingRenderer;
 import Renderers.SpriteView;
 import org.newdawn.slick.Graphics;
@@ -20,12 +21,22 @@ public class Bowman extends Ranged implements BowmanConstants{
     private float framesLeftWhileSpeedLocked = BowmanConstants.MOVEMENT_DURATION;
     private float shootCooldown = BowmanConstants.SHOOT_COOLDOWN;
 
+    private EffectRenderer bowCharge;
+    private EffectRenderer bowRelease;
+    private Vector2f renderDirection = new Vector2f(0,0);
+
     public Bowman(float x, float y, int hpCount, int armor, int damage, int radius) {
         super(x, y, (int) BOWMAN_TILESIZE.getX(), (int) BOWMAN_TILESIZE.getY(), hpCount, armor, damage, radius);
 
         this.renderer = new LivingBeingRenderer(this, BOWMAN_TILESIZE);
 
         final String prepath = "img/bowman/";
+
+        bowCharge = new EffectRenderer(prepath + "bowCharge.png", this.getTileSize(), Math.round(1000*BowmanConstants.ATTACK_LOADING_DURATION/6));
+        bowCharge.noLoop();
+
+        bowRelease = new EffectRenderer(prepath + "bowRelease.png", this.getTileSize(), Math.round(1000*BowmanConstants.STUN_AFTER_ATTACK_DURATION/8));
+        bowRelease.noLoop();
 
         final int duration = 1000/8;
 
@@ -40,12 +51,21 @@ public class Bowman extends Ranged implements BowmanConstants{
         this.renderer = new LivingBeingRenderer(this, tileSize);
 
         final String prepath = "img/bowman/";
+        bowCharge = new EffectRenderer(prepath + "bowCharge.png", this.getTileSize(), Math.round(1000*BowmanConstants.ATTACK_LOADING_DURATION/6));
+        bowCharge.noLoop();
+
+        bowRelease = new EffectRenderer(prepath + "bowRelease.png", this.getTileSize(), Math.round(1000*BowmanConstants.STUN_AFTER_ATTACK_DURATION/8));
+        bowRelease.noLoop();
 
         final int duration = 1000/8;
 
         for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", tileSize, duration));
         }
+        this.renderer.addView("rightAttack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
+        this.renderer.addView("leftAttack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
+        this.renderer.addView("bottomAttack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
+        this.renderer.addView("topAttack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
     }
 
     @Override
@@ -66,6 +86,7 @@ public class Bowman extends Ranged implements BowmanConstants{
                     this.startAttacking(target);
                 }
                 else {
+                    this.renderer.setLastActivity("Move");
                     if (this.targetIsClose(target)) {
                         this.runAway(target);
                     }
@@ -119,6 +140,8 @@ public class Bowman extends Ranged implements BowmanConstants{
         this.attackDirection.set(target.getCenter().sub(this.getCenter()).normalise());
         this.setSpeed(new Vector2f(0, 0));
         this.framesLeftBeforeAttack = BowmanConstants.ATTACK_LOADING_DURATION;
+        this.renderer.setLastActivity("Attack");
+        this.renderer.update(this.attackDirection);
     }
 
     void chooseDirection() {
@@ -155,6 +178,7 @@ public class Bowman extends Ranged implements BowmanConstants{
     protected void attack(LivingBeing target) {
 
         this.attackDirection.set(target.getCenter().sub(super.getCenter()).normalise());
+        this.renderDirection.set(this.attackDirection);
         Ranged.enemyProjectiles.add(new Arrow(super.getCenter().add(this.attackDirection.copy().scale(super.getRadius())), this.attackDirection.copy()));
         Ranged.enemyProjectiles.get(Ranged.enemyProjectiles.size()-1).setShowDebugRect(true);
         this.attackDirection.set(0, 0);
@@ -168,6 +192,12 @@ public class Bowman extends Ranged implements BowmanConstants{
 
     public void render(Graphics g) {
         super.render(g);
+        if(isAttacking()){
+            this.bowCharge.render(g, (int) super.getCenter().getX(), (int) super.getCenter().getY(), (float) this.attackDirection.getTheta());
+        }
+        else if(isStun()){
+            this.bowRelease.render(g, (int) super.getCenter().getX(), (int) super.getCenter().getY(), (float) this.renderDirection.getTheta());
+        }
     }
 
     @Override
