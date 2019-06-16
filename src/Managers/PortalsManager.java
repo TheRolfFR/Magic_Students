@@ -109,10 +109,12 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                         chance = random.nextFloat();
 
                         for (String type : CUMULATIVE_ROOM_PROBABILITY.keySet()) {
-                            if (chance <= CUMULATIVE_ROOM_PROBABILITY.get(type)) {
-                                portal.setVisible(true);
-                                portal.setType(type);
-                                break;
+                            if (!(type.equals("item") && lastestPortalIsItem())) {
+                                if (chance <= CUMULATIVE_ROOM_PROBABILITY.get(type)) {
+                                    portal.setVisible(true);
+                                    portal.setType(type);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -142,6 +144,10 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         }
         floorPortal.setVisible(false);
         portalSet = false;
+    }
+
+    private boolean lastestPortalIsItem() {
+        return this.latestPortal != null && this.latestPortal.getType().equals("item");
     }
 
     public void render(Graphics g) {
