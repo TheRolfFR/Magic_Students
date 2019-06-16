@@ -43,6 +43,10 @@ public class Bowman extends Ranged implements BowmanConstants{
         for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", BOWMAN_TILESIZE, duration));
         }
+        this.renderer.addView("rightAttack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
+        this.renderer.addView("leftAttack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
+        this.renderer.addView("bottomAttack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
+        this.renderer.addView("topAttack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
     }
 
     public Bowman(float x, float y, Vector2f tileSize, int hpCount, int armor, int damage, int radius) {
@@ -72,6 +76,7 @@ public class Bowman extends Ranged implements BowmanConstants{
     public void update(LivingBeing target) {
         this.updateCountdown();
         if (this.isAttacking()) {
+            this.renderer.setLastActivity("Attack");
             if (this.isAttackReady()) {
                 this.attack(target);
             }
@@ -80,8 +85,7 @@ public class Bowman extends Ranged implements BowmanConstants{
             }
         }
         else {
-            if (!this.isStun())
-            {
+            if (!this.isStun()) {
                 if (this.isShootReady()) {
                     this.startAttacking(target);
                 }
