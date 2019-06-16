@@ -150,7 +150,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
                 this.startDash();
             }
             else {
-                if (this.isAbleToMove()) {
+                if (!this.isAttacking()) {
                     if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
                         super.renderer.setLastActivity("Move");
                         if (this.keyUp) {
@@ -180,10 +180,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         super.move();
     }
 
-    private boolean isAbleToMove() {
-        return this.timeLeftBeforeEnablingMovement <= 0;
-    }
-
     private void updateCountdown() {
         if (this.isAttacking()) {
             this.timeLeftWhileAttacking = this.timeLeftWhileAttacking - TimeScale.getInGameTimeScale().getDeltaTime();
@@ -196,9 +192,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
             this.spellCooldown = this.spellCooldown - TimeScale.getInGameTimeScale().getDeltaTime();
             this.spellAttackVisual.onCooldownUpdate(this.spellCooldown, PlayerConstants.SPELL_COOLDOWN);
         }
-        if (!this.isAbleToMove()) {
-            this.timeLeftBeforeEnablingMovement = this.timeLeftBeforeEnablingMovement - TimeScale.getInGameTimeScale().getDeltaTime();
-        }
         if (isDashing()) {
             this.timeLeftWhileDashing = this.timeLeftWhileDashing - TimeScale.getInGameTimeScale().getDeltaTime();
         }
@@ -209,7 +202,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         super.setSpeed(new Vector2f(0, 0));
 
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
-        this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
 
         Ranged.allyProjectiles.add(new MeleeAttack(super.getCenter().add(attackDirection.copy().scale(super.getRadius()*2f))));
 
@@ -242,7 +234,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private void shootFireball() {
         Vector2f fireballDirection = this.mousePosition.copy().sub(super.getCenter()).normalise();
         this.spellCooldown = PlayerConstants.SPELL_COOLDOWN;
-        this.timeLeftBeforeEnablingMovement = PlayerConstants.STUN_AFTER_ATTACK_DURATION;
         this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
         super.setSpeed(new Vector2f(0, 0));
         Ranged.allyProjectiles.add(new Fireball(super.getCenter().add(fireballDirection.copy().scale(super.getRadius()+Fireball.getFireballRadius())), fireballDirection)); //décalage car bord haut gauche
