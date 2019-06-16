@@ -16,6 +16,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -23,17 +24,19 @@ import static Main.MainClass.HEIGHT;
 import static Main.MainClass.WIDTH;
 
 public class PortalsManager implements KeyPressListener, LivingBeingMoveListener {
-    private static final Map<String, Color> ROOM_COLOR = Map.of(
-            "classic", new Color(0x0094FF),     // blue
-            "item", Color.yellow,                     // yellow
-            "boss", new Color(0xf44336),        // red
-            "nextFloor", new Color(0x32FF32)
-    );
-    private static final Map<String, Float> CUMULATIVE_ROOM_PROBABILITY = Map.of(
-            "classic", 0.20f,
-            "item", 0.24f,
-            "boss", 0.27f
-    );
+    private static final Map<String, Color> ROOM_COLOR = new HashMap<>();
+    private static final Map<String, Float> CUMULATIVE_ROOM_PROBABILITY = new HashMap<>();
+
+    static {
+        ROOM_COLOR.put("classic", new Color(0x0094FF));
+        ROOM_COLOR.put("item", Color.yellow);
+        ROOM_COLOR.put("boss", new Color(0xf44336));
+        ROOM_COLOR.put("nextFloor", new Color(0x32FF32));
+
+        CUMULATIVE_ROOM_PROBABILITY.put("classic", 0.20f);
+        CUMULATIVE_ROOM_PROBABILITY.put("item", 0.24f);
+        CUMULATIVE_ROOM_PROBABILITY.put("boss", 0.27f);
+    }
 
     private static ArrayList<Portal> portals = new ArrayList<>();
     private static Portal floorPortal;
