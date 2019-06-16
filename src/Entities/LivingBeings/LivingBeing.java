@@ -153,7 +153,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
      */
     public void takeDamage(int damage) {
         int tmp = this.currentHealthPoints;
-        this.currentHealthPoints = Math.max(0, this.currentHealthPoints - Math.max(damage - this.armorPoints, 0));
+        this.currentHealthPoints = Math.max(0, this.currentHealthPoints - Math.max(1, damage - this.armorPoints));
 
         // launching listeners
         for (LivingBeingHealthListener listener : this.livingBeingHealthListeners) {
