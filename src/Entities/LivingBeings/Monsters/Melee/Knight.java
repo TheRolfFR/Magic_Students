@@ -10,8 +10,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Knight extends Melee implements KnightConstants {
 
-    private float timeLeftBeforeAttack = 0;
-    private float timeLeftWhileStuned = 0;
+    private float timeLeftBeforeAttack = KnightConstants.ATTACK_LOADING_DURATION;
+    private float timeLeftWhileStuned = KnightConstants.STUN_AFTER_ATTACK_DURATION;
     private Vector2f attackDirection = new Vector2f(0, 0);
 
     EffectRenderer attackRenderer;
