@@ -17,7 +17,7 @@ public class Bowman extends Ranged implements BowmanConstants{
     public static final Vector2f BOWMAN_TILESIZE = new Vector2f(48, 48);
     private float framesLeftBeforeAttack;
     private Vector2f attackDirection = new Vector2f(0, 0);
-    private float framesLeftWhileStuned = BowmanConstants.STUN_AFTER_ATTACK_DURATION;
+    float framesLeftWhileStuned = BowmanConstants.STUN_AFTER_ATTACK_DURATION;
     private float framesLeftWhileSpeedLocked = BowmanConstants.MOVEMENT_DURATION;
     private float shootCooldown = BowmanConstants.SHOOT_COOLDOWN;
 
@@ -42,11 +42,9 @@ public class Bowman extends Ranged implements BowmanConstants{
 
         for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", BOWMAN_TILESIZE, duration));
+            this.renderer.addView(vision + "Attack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
+            this.renderer.addView(vision + "Idle", new SpriteView(prepath + "idle.png", BOWMAN_TILESIZE, 1000));
         }
-        this.renderer.addView("rightAttack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
-        this.renderer.addView("leftAttack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
-        this.renderer.addView("bottomAttack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
-        this.renderer.addView("topAttack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
     }
 
     public Bowman(float x, float y, Vector2f tileSize, int hpCount, int armor, int damage, int radius) {
@@ -65,18 +63,15 @@ public class Bowman extends Ranged implements BowmanConstants{
 
         for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", tileSize, duration));
+            this.renderer.addView(vision + "Attack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
+            this.renderer.addView(vision + "Idle", new SpriteView(prepath + "idle.png", tileSize, 1000));
         }
-        this.renderer.addView("rightAttack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
-        this.renderer.addView("leftAttack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
-        this.renderer.addView("bottomAttack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
-        this.renderer.addView("topAttack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
     }
 
     @Override
     public void update(LivingBeing target) {
         this.updateCountdown();
         if (this.isAttacking()) {
-            this.renderer.setLastActivity("Attack");
             if (this.isAttackReady()) {
                 this.attack(target);
             }
@@ -90,7 +85,6 @@ public class Bowman extends Ranged implements BowmanConstants{
                     this.startAttacking(target);
                 }
                 else {
-                    this.renderer.setLastActivity("Move");
                     if (this.targetIsClose(target)) {
                         this.runAway(target);
                     }
@@ -100,6 +94,7 @@ public class Bowman extends Ranged implements BowmanConstants{
                                 this.chooseDirection();
                             }
                             else {
+                                this.renderer.setLastActivity("Idle");
                                 if (super.getSpeed().length() != 0) {
                                     super.updateSpeed(super.getSpeed().normalise().negate().scale(getAccelerationRate()));
                                 }
@@ -117,6 +112,7 @@ public class Bowman extends Ranged implements BowmanConstants{
     }
 
     void runAway(LivingBeing target) {
+        this.renderer.setLastActivity("Move");
         super.updateSpeed(target.getCenter().sub(super.getCenter()).normalise().negate().scale(this.getAccelerationRate()));
         this.framesLeftWhileSpeedLocked = 0;
     }
@@ -152,6 +148,7 @@ public class Bowman extends Ranged implements BowmanConstants{
         Random random = new Random();
         this.updateSpeed(new Vector2f(random.nextFloat(), random.nextFloat()).normalise().scale(this.getAccelerationRate()));
         this.framesLeftWhileSpeedLocked = BowmanConstants.MOVEMENT_DURATION;
+        this.renderer.setLastActivity("Move");
     }
 
     boolean decideToMove() {

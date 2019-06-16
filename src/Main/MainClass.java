@@ -120,6 +120,8 @@ public class MainClass extends BasicGame {
         this.hudManager = new HUDManager(this.player, this.enemiesManager);
         this.attackVisualsManager = new AttackVisualsManager();
 
+        this.enemiesManager.generateBoss();
+
         this.fadeToBlack.addFadeToBlackListener(new FadeToBlackListener() {
             @Override
             public void atHalf() {
