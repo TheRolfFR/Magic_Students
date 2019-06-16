@@ -5,5 +5,5 @@ public interface PlayerConstants {
     float ATTACK_DURATION = 0.15f;
     float DASH_DURATION = 1f/3f;
     float DASH_COOLDOWN = 0.5f;
-    float SPELL_COOLDOWN = 0.5f;
+    float SPELL_COOLDOWN = 2f;
 }

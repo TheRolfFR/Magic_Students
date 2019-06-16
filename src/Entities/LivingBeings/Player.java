@@ -379,10 +379,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
                     break;
                 case 1:
                     if (!this.isAttacking()) {
-                        this.shootFireball();
-//                    if (isSpellReady()){
-//                        shootFireball();
-//                    }
+                        if (isSpellReady()){
+                            shootFireball();
+                        }
                     }
 
                     break;
