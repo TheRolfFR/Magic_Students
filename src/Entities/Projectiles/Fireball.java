@@ -3,7 +3,7 @@ package Entities.Projectiles;
 import Renderers.ProjectileRenderer;
 import org.newdawn.slick.geom.Vector2f;
 
-public class Fireball extends Projectile {
+public class Fireball extends Projectile implements FireballConstants{
 
     private static final float SCALE = 1.4f;
     private static int damage = 100;
@@ -13,11 +13,13 @@ public class Fireball extends Projectile {
     private static final int FRAME_DURATION = 17*4;
 
     public Fireball(Vector2f position, Vector2f direction) {
-        super(position.getX(), position.getY(), Snowball.MAX_SPEED, Snowball.ACCELERATION_RATE, RADIUS, direction, TILESIZE);
-
-        this.updateSpeed(direction.normalise().scale(this.getAccelerationRate()));
-
+        super(position.getX(), position.getY(), RADIUS, direction, TILESIZE);
         this.renderer = new ProjectileRenderer(this, IMG_PATH, TILESIZE, FRAME_DURATION);
+    }
+
+    @Override
+    public float getMaxSpeed() {
+        return FireballConstants.MAX_SPEED;
     }
 
     @Override

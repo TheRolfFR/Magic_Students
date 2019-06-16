@@ -167,6 +167,9 @@ public class LivingBeingRenderer extends SpriteRenderer {
         this.setLastView(this.getView(this.lastVisionDirection, this.lastActivity));
     }
 
+    public void restartLastView(){this.lastView.restartAnimation();}
+    public void noLoop(){this.lastView.stopLoop();}
+
     /**
      * Method used when the developer wants an automatic choice of the vision direction
      * @param g the graphics to draw on

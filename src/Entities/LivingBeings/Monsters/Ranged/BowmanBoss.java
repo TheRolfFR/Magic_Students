@@ -14,8 +14,8 @@ public class BowmanBoss extends Bowman implements IBoss, BossConstants {
     public static final Vector2f BOWMANBOSS_TILESIZE = new Vector2f(96, 96);
     private float summonCooldown = BossConstants.SUMMON_COOLDOWN;
 
-    public BowmanBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
-        super(x, y, BOWMANBOSS_TILESIZE, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+    public BowmanBoss(float x, float y, int hpCount, int armor, int damage, int radius) {
+        super(x, y, BOWMANBOSS_TILESIZE, hpCount, armor, damage, radius);
     }
 
     @Override

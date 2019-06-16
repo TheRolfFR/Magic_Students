@@ -47,4 +47,6 @@ public class EffectRenderer{
             g.drawImage(this.lastImage, centerX - this.tileSize.getX()/2, centerY - this.tileSize.getY()/2);
         }
     }
+
+    public void restartAnimation(){this.animation.restart();}
 }

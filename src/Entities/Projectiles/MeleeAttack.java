@@ -7,7 +7,7 @@ public class MeleeAttack extends Projectile {
     private static int damage = 25;
 
     public MeleeAttack(Vector2f position) {
-        super(position.getX(), position.getY(), 0, 0, RADIUS, new Vector2f(0, 0), new Vector2f(0, 0));
+        super(position.getX(), position.getY(), RADIUS, new Vector2f(0, 0), new Vector2f(0, 0));
         this.isDead=true;
     }
 
@@ -17,6 +17,11 @@ public class MeleeAttack extends Projectile {
 
     public static void increaseDamage(int damageBuff) {
         damage = damage + damageBuff;
+    }
+
+    @Override
+    public float getMaxSpeed() {
+        return 0;
     }
 
     @Override

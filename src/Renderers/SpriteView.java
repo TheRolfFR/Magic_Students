@@ -56,4 +56,8 @@ public class SpriteView {
             this.animation.draw((int) location.getX(), (int) location.getY(), filter);
         }
     }
+
+    public void stopLoop(){this.animation.setLooping(false);}
+
+    public void restartAnimation(){this.animation.restart();}
 }

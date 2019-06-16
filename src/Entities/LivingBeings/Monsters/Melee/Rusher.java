@@ -6,8 +6,8 @@ import Renderers.SpriteView;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Rusher extends Melee {
-    public Rusher(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
-        super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+    public Rusher(float x, float y, int width, int height, int hpCount, int armor, int damage, int radius) {
+        super(x, y, width, height, hpCount, armor, damage, radius);
 
         Vector2f tileSize = new Vector2f(48, 48);
         this.renderer = new LivingBeingRenderer(this, tileSize);
@@ -26,5 +26,15 @@ public class Rusher extends Melee {
 
         this.move();
         this.doDamage(target);
+    }
+
+    @Override
+    public float getMaxSpeed() {
+        return 0;
+    }
+
+    @Override
+    public float getAccelerationRate() {
+        return 0;
     }
 }

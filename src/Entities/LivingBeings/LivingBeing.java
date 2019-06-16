@@ -28,6 +28,10 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     protected LivingBeingRenderer renderer;
 
+    public abstract float getMaxSpeed();
+
+    public abstract float getAccelerationRate();
+
     public void heal(int amountOfHealing) {
         this.currentHealthPoints = this.currentHealthPoints + amountOfHealing;
         if (this.currentHealthPoints > this.maxHealthPoints) {
@@ -50,11 +54,6 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.armorPoints = this.armorPoints + buffAmount;
     }
 
-    public void buffSpeed(float buffAmount) {
-        this.MAX_SPEED = this.MAX_SPEED + buffAmount;
-        this.ACCELERATION_RATE = this.ACCELERATION_RATE + buffAmount * 135/450;
-    }
-
     /**
      * Updates speed with an acceleration
      * @param acceleration the given acceleration
@@ -62,8 +61,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
     protected void updateSpeed(Vector2f acceleration) {
         super.setSpeed(super.getSpeed().add(acceleration));
 
-        if (super.getSpeed().length() > super.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
-            super.setSpeed(super.getSpeed().normalise().scale(super.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()));
+        if (super.getSpeed().length() > this.getMaxSpeed() * TimeScale.getInGameTimeScale().getTimeScale()) {
+            super.setSpeed(super.getSpeed().normalise().scale(this.getMaxSpeed() * TimeScale.getInGameTimeScale().getTimeScale()));
         }
 
         if (super.getSpeed().getX() > -LivingBeingConstants.MINIMUM_SPEED  && super.getSpeed().getX() < LivingBeingConstants.MINIMUM_SPEED) {
@@ -121,26 +120,23 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param y y initial position of the living being
      * @param height the height of the living being
      * @param width the width of the living being
-     * @param maxSpeed max speed of the living being
-     * @param accelerationRate acceleration factor of the living being
      * @param maxHealthPoints maximum health points of the living being
      * @param armorPoints armor points of the living being
      * @param radius the collision radius
      */
-    public LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, int armorPoints, int radius) {
-        super(x, y, width, height, maxSpeed, accelerationRate, radius);
+    public LivingBeing(float x, float y, int width, int height, int maxHealthPoints, int armorPoints, int radius) {
+        super(x, y, width, height, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
-
         this.livingBeingHealthListeners = new ArrayList<>();
         this.livingBeingMoveListeners = new ArrayList<>();
 
         livingBeings.add(this);
     }
 
-    public LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, int armorPoints, int radius) {
-        super(x, y, maxSpeed, accelerationRate, radius);
+    public LivingBeing(float x, float y, int maxHealthPoints, int armorPoints, int radius) {
+        super(x, y, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
