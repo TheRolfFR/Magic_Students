@@ -57,7 +57,7 @@ public class SpriteView {
         }
     }
 
-    public void stopLoop(){this.animation.setLooping(false);}
+    void stopLoop(){this.animation.setLooping(false);}
 
-    public void restartAnimation(){this.animation.restart();}
+    void restartAnimation(){this.animation.restart();}
 }

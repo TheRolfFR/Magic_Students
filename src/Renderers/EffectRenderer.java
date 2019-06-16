@@ -49,4 +49,5 @@ public class EffectRenderer{
     }
 
     public void restartAnimation(){this.animation.restart();}
+    public void noLoop(){this.animation.setLooping(false);}
 }

@@ -6,6 +6,7 @@ import Entities.LivingBeings.Monsters.IBoss;
 import Main.MainClass;
 import Main.TimeScale;
 import Managers.EnemiesManager;
+import Renderers.SpriteView;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
@@ -16,6 +17,7 @@ public class BowmanBoss extends Bowman implements IBoss, BossConstants {
 
     public BowmanBoss(float x, float y, int hpCount, int armor, int damage, int radius) {
         super(x, y, BOWMANBOSS_TILESIZE, hpCount, armor, damage, radius);
+        this.renderer.addView("bottomSummon", new SpriteView("img/bowman/Summon.png", BOWMANBOSS_TILESIZE, Math.round(1000*STUN_AFTER_SUMMON/6)));
     }
 
     @Override
@@ -30,8 +32,7 @@ public class BowmanBoss extends Bowman implements IBoss, BossConstants {
             }
         }
         else {
-            if (!super.isStun())
-            {
+            if (!super.isStun()) {
                 if (this.isSummonReady()) {
                     if (this.decideToSummon()) {
                         this.summon();
@@ -51,6 +52,7 @@ public class BowmanBoss extends Bowman implements IBoss, BossConstants {
                                     super.chooseDirection();
                                 }
                                 else {
+                                    this.renderer.setLastActivity("Idle");
                                     if (super.getSpeed().length() != 0) {
                                         super.updateSpeed(super.getSpeed().normalise().negate().scale(getAccelerationRate()));
                                     }
@@ -78,11 +80,15 @@ public class BowmanBoss extends Bowman implements IBoss, BossConstants {
 
     private void summon() {
         super.setSpeed(new Vector2f(0, 0));
+        this.renderer.setLastActivity("Summon");
+        this.renderer.update(new Vector2f(0,1));
         this.triggerListener(EnemiesManager.newBowman());
         this.summonCooldown = BossConstants.SUMMON_COOLDOWN;
         super.setSpeed(new Vector2f(0, 0));
-        super.stun();
+        this.stun();
     }
+
+    void stun(){super.framesLeftWhileStuned = BossConstants.STUN_AFTER_SUMMON;}
 
     private boolean decideToSummon() {
         Random random = new Random();
