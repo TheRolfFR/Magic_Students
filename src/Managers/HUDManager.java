@@ -17,9 +17,9 @@ public class HUDManager {
         enemiesManager.setBossHealthBar(bossHealthBar);
 
         this.playerHealthBar = new PlayerHealthBar(player);
-        player.addHurtListener(this.playerHealthBar);
+        player.addHealthListener(this.playerHealthBar);
         this.hurtEffectRenderer = new HurtEffectRenderer();
-        player.addHurtListener(this.hurtEffectRenderer);
+        player.addHealthListener(this.hurtEffectRenderer);
     }
 
     public void update(int deltaTime) {

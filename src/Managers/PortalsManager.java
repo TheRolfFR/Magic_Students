@@ -7,6 +7,7 @@ import HUD.FadeToBlack;
 import Listeners.KeyPressListener;
 import Listeners.LivingBeingMoveListener;
 import Listeners.PortalsManagerListener;
+import Main.GameStats;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.PortalRenderer;
@@ -165,7 +166,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
             this.portalHovered = null;
 
             if (this.latestPortal != null && this.latestPortal.getType().equals("nextFloor")) {
-                MainClass.nextDifficulty();
+                GameStats.getInstance().nextDifficulty();
             }
 
             // trigger all listeners

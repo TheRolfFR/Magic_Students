@@ -38,4 +38,9 @@ public abstract class Monster extends LivingBeing {
     public void render(Graphics g) {
         super.render(g, this.getSpeed());
     }
+
+    @Override
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+    }
 }

@@ -5,7 +5,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Fireball extends Projectile {
 
-    private static final float SCALE = 2f;
+    private static final float SCALE = 1.4f;
     private static int damage = 100;
     private static final int RADIUS = (int) (37/2f*SCALE);
     private static final String IMG_PATH = "img/fireball/fireball_80x37.png";

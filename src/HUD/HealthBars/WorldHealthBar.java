@@ -32,7 +32,7 @@ public class WorldHealthBar implements LivingBeingHealthListener, LivingBeingMov
 
         this.tileSizeYOffset = new Vector2f(0, being.getTileSize().getY()/2f);
         this.setLocation(being.getCenter());
-        being.addHurtListener(this);
+        being.addHealthListener(this);
     }
 
     public void render(Graphics g) {
@@ -47,7 +47,7 @@ public class WorldHealthBar implements LivingBeingHealthListener, LivingBeingMov
     }
 
     @Override
-    public void onUpdate(LivingBeing being) {
+    public void onUpdate(LivingBeing being, int amount) {
         this.healthBarWidth = (int) ((float) being.getCurrentHealthPoints() / (float) being.getMaxHealthPoints() * HEALTHBAR_WIDTH);
     }
 

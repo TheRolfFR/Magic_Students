@@ -3,6 +3,7 @@ package Entities;
 import Entities.LivingBeings.Player;
 import Entities.Projectiles.Fireball;
 import Entities.Projectiles.MeleeAttack;
+import Main.GameStats;
 import Main.MainClass;
 import Renderers.ItemRenderer;
 import org.newdawn.slick.Graphics;
@@ -31,7 +32,7 @@ public class Item extends Entity {
 
     private static final float ITEM_IMAGE_SCALE = 2f;
     private static SpriteSheet ITEMS_SPRITESHEET = null;
-    private static final String ITEMS_SPRITESHEET_PATH = "img/items.png";
+    private static final String ITEMS_SPRITESHEET_PATH = "img/items/items.png";
     private static final Vector2f ITEM_TILESIZE = new Vector2f(16, 16).scale(ITEM_IMAGE_SCALE);
     private static final int ITEM_FRAME_DURATION = 100000;
 
@@ -80,17 +81,17 @@ public class Item extends Entity {
 
     private void collidingType(Player player) {
         switch (this.typeOfItem) {
-            case 0 : player.heal((int) Math.round(HEALBUFFAMOUNT*MainClass.getDifficulty()));
+            case 0 : player.heal((int) Math.round(HEALBUFFAMOUNT* GameStats.getInstance().getDifficulty()));
                 break;
-            case 1 : player.buffHP((int) Math.round(MAXHPBUFFAMOUNT*MainClass.getDifficulty()));
+            case 1 : player.buffHP((int) Math.round(MAXHPBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
-            case 2 : MeleeAttack.increaseDamage((int) Math.round(MELEEBUFFAMOUNT*MainClass.getDifficulty()));
+            case 2 : MeleeAttack.increaseDamage((int) Math.round(MELEEBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
-            case 3 : Fireball.increaseDamage((int) Math.round(MELEEBUFFAMOUNT*MainClass.getDifficulty()));
+            case 3 : Fireball.increaseDamage((int) Math.round(MELEEBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
-            case 4 : player.buffArmor((int) Math.round(ARMORBUFFAMOUNT*MainClass.getDifficulty()));
+            case 4 : player.buffArmor((int) Math.round(ARMORBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
-            case 5 : player.buffSpeed((int) Math.round(SPEEDBUFFAMOUNT*MainClass.getDifficulty()));
+            case 5 : player.buffSpeed((int) Math.round(SPEEDBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
         }
     }
