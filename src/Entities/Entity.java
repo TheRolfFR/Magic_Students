@@ -1,6 +1,5 @@
 package Entities;
 
-import Main.TimeScale;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
@@ -15,8 +14,6 @@ public abstract class Entity {
 
     protected float MAX_SPEED;
     protected float ACCELERATION_RATE;
-
-    private static final float SPEED_THRESHOLD = 0.5f;
 
     protected boolean showDebugRect;
 
@@ -39,7 +36,11 @@ public abstract class Entity {
     }
 
     protected void setSpeed(Vector2f speed) {
-        this.speed = speed;
+        this.speed.set(speed);
+    }
+
+    protected void setSpeed(float x, float y) {
+        this.speed.set(x,y);
     }
 
     /**
@@ -124,26 +125,6 @@ public abstract class Entity {
 
         this.showDebugRect = false;
         this.tileSize = new Vector2f(width, height);
-    }
-
-    /**
-     * Updates speed with an acceleration
-     * @param acceleration the given acceleration
-     */
-    protected void updateSpeed(Vector2f acceleration) {
-        this.speed.add(acceleration);
-
-        if (this.speed.length() > this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
-            this.speed.normalise().scale(this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale());
-        }
-
-        if (this.speed.getX() > -SPEED_THRESHOLD  && this.speed.getX() < SPEED_THRESHOLD) {
-            this.speed.set(0, this.speed.getY());
-        }
-
-        if (this.speed.getY() > -SPEED_THRESHOLD && this.speed.getY() < SPEED_THRESHOLD) {
-            this.speed.set(this.speed.getX(), 0);
-        }
     }
 
     /**

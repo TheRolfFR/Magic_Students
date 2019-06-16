@@ -56,6 +56,26 @@ public abstract class LivingBeing extends Entity implements Comparable {
     }
 
     /**
+     * Updates speed with an acceleration
+     * @param acceleration the given acceleration
+     */
+    protected void updateSpeed(Vector2f acceleration) {
+        super.setSpeed(super.getSpeed().add(acceleration));
+
+        if (super.getSpeed().length() > super.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
+            super.setSpeed(super.getSpeed().normalise().scale(super.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()));
+        }
+
+        if (super.getSpeed().getX() > -LivingBeingConstants.MINIMUM_SPEED  && super.getSpeed().getX() < LivingBeingConstants.MINIMUM_SPEED) {
+            super.setSpeed(0, super.getSpeed().getY());
+        }
+
+        if (super.getSpeed().getY() > -LivingBeingConstants.MINIMUM_SPEED && super.getSpeed().getY() < LivingBeingConstants.MINIMUM_SPEED) {
+            super.setSpeed(super.getSpeed().getX(), 0);
+        }
+    }
+
+    /**
      * In game rendering of all Living beings
      * @param g the graphics to draw on
      */
