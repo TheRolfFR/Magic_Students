@@ -12,14 +12,18 @@ import java.util.List;
  * @author TheRolf
  */
 public class PauseMenu implements MouseListener {
+
+    private static final int PAUSE_MENU_SPACING = 10;
+    private static final int BUTTON_SPACING = 13;
+
+    private static final Color PAUSE_MENU_BACKGROUND_COLOR = new Color(0, 0, 0, 128);
+
+    private static final String PAUSE_MENU_TEXT = "Pause Menu";
+    private static final int PAUSE_MENU_TEXT_FONT_SIZE_PX = 20;
+    private static final Color PAUSE_MENU_TEXT_COLOR = Color.black;
+
     private Image background;
     private List<Button> buttons;
-
-    private int windowHeight;
-    private int windowWidth;
-    private int totalButtonsHeight;
-    private int totalButtonsWidth;
-    private static final int SPACING = 10;
 
     public boolean isActive;
 
@@ -45,8 +49,8 @@ public class PauseMenu implements MouseListener {
      */
     public PauseMenu(GameContainer gc, ButtonListener resumeListener) {
         try {
-            this.windowHeight = gc.getHeight();
-            this.windowWidth = gc.getWidth();
+            int windowHeight = gc.getHeight();
+            int windowWidth = gc.getWidth();
 
             // create a new image of the size of the game
             this.background = new Image(gc.getWidth(), gc.getHeight());
@@ -60,16 +64,16 @@ public class PauseMenu implements MouseListener {
             imageG.clear();
 
             // set the color to a semi-transparent black and fill the graphics with
-            imageG.setColor(new Color(0, 0, 0, 128));
+            imageG.setColor(PAUSE_MENU_BACKGROUND_COLOR);
             imageG.fillRect(0, 0, gc.getWidth(), gc.getHeight());
 
             // set the font size to 30px pixel font
-            FontRenderer.getPixelFontRenderer().setPxSize(20);
+            FontRenderer.getPixelFontRenderer().setPxSize(PAUSE_MENU_TEXT_FONT_SIZE_PX);
             imageG.setFont(FontRenderer.getPixelFont());
 
             // write in black the pause message
-            imageG.setColor(Color.black);
-            imageG.drawString("|| Pause", 10, 10);
+            imageG.setColor(PAUSE_MENU_TEXT_COLOR);
+            imageG.drawString(PAUSE_MENU_TEXT, PAUSE_MENU_SPACING, PAUSE_MENU_SPACING);
 
             // update the image with the new graphics
             imageG.flush();
@@ -81,23 +85,23 @@ public class PauseMenu implements MouseListener {
             this.buttons.add(new Button(gc, "Exit", (ButtonListener) (i, i1, i2, i3) -> System.exit(0)));
 
             // calculate spacing
-            this.totalButtonsHeight = (this.buttons.size() - 1) * SPACING;
+            int totalButtonsHeight = (this.buttons.size() - 1) * BUTTON_SPACING;
             for (Button btn : this.buttons) {
-                this.totalButtonsHeight += btn.getHeight();
+                totalButtonsHeight += btn.getHeight();
             }
 
-            this.totalButtonsWidth = 0;
+            int totalButtonsWidth = 0;
 
             // initialize horizontal offset
-            int offsetY = (this.windowHeight - this.totalButtonsHeight) / 2;
+            int offsetY = (windowHeight - totalButtonsHeight) / 2;
             for (Button btn : this.buttons) {
 
                 // locate all the buttons
-                this.totalButtonsWidth = Math.max(totalButtonsWidth, btn.getWidth());
+                totalButtonsWidth = Math.max(totalButtonsWidth, btn.getWidth());
 
-                btn.setLocation((this.windowWidth - btn.getWidth())/2, offsetY);
+                btn.setLocation((windowWidth - btn.getWidth())/2, offsetY);
 
-                offsetY += btn.getHeight() + SPACING;
+                offsetY += btn.getHeight() + BUTTON_SPACING;
             }
 
             // add the pause menu mouse listener to the game

@@ -51,7 +51,7 @@ public class HurtEffectRenderer implements LivingBeingHealthListener {
     }
 
     @Override
-    public void onHurt(LivingBeing being) {
+    public void onHurt(LivingBeing being, int amount) {
         if (!isHurtEffectActivated) {
             this.isHurtEffectActivated = true;
             this.hurtEffectTimer = 0;

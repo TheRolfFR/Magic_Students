@@ -8,8 +8,8 @@ public abstract class Monster extends LivingBeing {
     private int damage;
     private WorldHealthBar worldHealthBar;
 
-    public Monster(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
-        super(x, y, width, height, maxSpeed, accelerationRate, hpCount, armor, radius);
+    public Monster(float x, float y, int width, int height, int hpCount, int armor, int damage, int radius) {
+        super(x, y, width, height, hpCount, armor, radius);
         this.damage = damage;
         this.worldHealthBar = new WorldHealthBar(this);
         this.addMoveListener(this.worldHealthBar);
@@ -37,5 +37,10 @@ public abstract class Monster extends LivingBeing {
     @Override
     public void render(Graphics g) {
         super.render(g, this.getSpeed());
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
     }
 }

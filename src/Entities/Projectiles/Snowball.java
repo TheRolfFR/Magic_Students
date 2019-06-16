@@ -13,6 +13,11 @@ public class Snowball extends Projectile {
     private static final int RADIUS = 10;
 
     @Override
+    public float getMaxSpeed() {
+        return 0;
+    }
+
+    @Override
     public int getDamage() {
         return Snowball.damage;
     }
@@ -34,9 +39,7 @@ public class Snowball extends Projectile {
      * @param direction the direction vector
      */
     public Snowball(Vector2f position, Vector2f direction) {
-        super(position.getX(), position.getY(), MAX_SPEED, ACCELERATION_RATE, direction, IMAGE_PATH, RADIUS);
-
-        this.updateSpeed(direction.copy().normalise().scale(this.getAccelerationRate()));
+        super(position.getX(), position.getY(), direction, IMAGE_PATH, RADIUS);
     }
 
     /**
@@ -46,24 +49,19 @@ public class Snowball extends Projectile {
      * @param direction the direction of the snowball
      */
     public Snowball(float x, float y, Vector2f direction) {
-        super(x, y, MAX_SPEED, ACCELERATION_RATE, direction, IMAGE_PATH, RADIUS);
-
-        this.updateSpeed(direction.copy().normalise().scale(this.getAccelerationRate()));
+        super(x, y, direction, IMAGE_PATH, RADIUS);
     }
 
     /**
      * Complex constructor
      * @param x initial x position of the entity
      * @param y initial y position of the entity
-     * @param maxSpeed maximum speed of the entity
-     * @param accelerationRate acceleration factor of the entity
+
      * @param imagePath the image ref to the the snowball image
      * @param direction the direction vector
      */
-    public Snowball(float x, float y, float maxSpeed, float accelerationRate, String imagePath, Vector2f direction) {
-        super(x, y, maxSpeed, accelerationRate, direction, imagePath, RADIUS);
-
-        this.updateSpeed(direction.copy().normalise().scale(this.getAccelerationRate()));
+    public Snowball(float x, float y, String imagePath, Vector2f direction) {
+        super(x, y, direction, imagePath, RADIUS);
     }
 
     /**

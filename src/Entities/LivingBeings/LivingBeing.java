@@ -4,6 +4,7 @@ import Entities.Entity;
 import Entities.LivingBeings.Monsters.Monster;
 import Listeners.LivingBeingHealthListener;
 import Listeners.LivingBeingMoveListener;
+import Main.GameStats;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
@@ -27,6 +28,10 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     protected LivingBeingRenderer renderer;
 
+    public abstract float getMaxSpeed();
+
+    public abstract float getAccelerationRate();
+
     public void heal(int amountOfHealing) {
         this.currentHealthPoints = this.currentHealthPoints + amountOfHealing;
         if (this.currentHealthPoints > this.maxHealthPoints) {
@@ -35,8 +40,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
         // update bar on heal too
         for (LivingBeingHealthListener listener : livingBeingHealthListeners) {
-            listener.onUpdate(this);
-            listener.onHeal(this);
+            listener.onUpdate(this, amountOfHealing);
+            listener.onHeal(this, amountOfHealing);
         }
     }
 
@@ -49,9 +54,24 @@ public abstract class LivingBeing extends Entity implements Comparable {
         this.armorPoints = this.armorPoints + buffAmount;
     }
 
-    public void buffSpeed(float buffAmount) {
-        this.MAX_SPEED = this.MAX_SPEED + buffAmount;
-        this.ACCELERATION_RATE = this.ACCELERATION_RATE + buffAmount * 135/450;
+    /**
+     * Updates speed with an acceleration
+     * @param acceleration the given acceleration
+     */
+    protected void updateSpeed(Vector2f acceleration) {
+        super.setSpeed(super.getSpeed().add(acceleration));
+
+        if (super.getSpeed().length() > this.getMaxSpeed() * TimeScale.getInGameTimeScale().getTimeScale()) {
+            super.setSpeed(super.getSpeed().normalise().scale(this.getMaxSpeed() * TimeScale.getInGameTimeScale().getTimeScale()));
+        }
+
+        if (super.getSpeed().getX() > -LivingBeingConstants.MINIMUM_SPEED  && super.getSpeed().getX() < LivingBeingConstants.MINIMUM_SPEED) {
+            super.setSpeed(0, super.getSpeed().getY());
+        }
+
+        if (super.getSpeed().getY() > -LivingBeingConstants.MINIMUM_SPEED && super.getSpeed().getY() < LivingBeingConstants.MINIMUM_SPEED) {
+            super.setSpeed(super.getSpeed().getX(), 0);
+        }
     }
 
     /**
@@ -66,7 +86,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         }
     }
 
-    public void addHurtListener(LivingBeingHealthListener listener) {
+    public void addHealthListener(LivingBeingHealthListener listener) {
         this.livingBeingHealthListeners.add(listener);
     }
 
@@ -100,26 +120,23 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param y y initial position of the living being
      * @param height the height of the living being
      * @param width the width of the living being
-     * @param maxSpeed max speed of the living being
-     * @param accelerationRate acceleration factor of the living being
      * @param maxHealthPoints maximum health points of the living being
      * @param armorPoints armor points of the living being
      * @param radius the collision radius
      */
-    public LivingBeing(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int maxHealthPoints, int armorPoints, int radius) {
-        super(x, y, width, height, maxSpeed, accelerationRate, radius);
+    public LivingBeing(float x, float y, int width, int height, int maxHealthPoints, int armorPoints, int radius) {
+        super(x, y, width, height, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
-
         this.livingBeingHealthListeners = new ArrayList<>();
         this.livingBeingMoveListeners = new ArrayList<>();
 
         livingBeings.add(this);
     }
 
-    public LivingBeing(float x, float y, float maxSpeed, float accelerationRate, int maxHealthPoints, int armorPoints, int radius) {
-        super(x, y, maxSpeed, accelerationRate, radius);
+    public LivingBeing(float x, float y, int maxHealthPoints, int armorPoints, int radius) {
+        super(x, y, radius);
         this.currentHealthPoints = maxHealthPoints;
         this.maxHealthPoints = maxHealthPoints;
         this.armorPoints = armorPoints;
@@ -135,12 +152,23 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param damage damage value inflicted
      */
     public void takeDamage(int damage) {
+        int tmp = this.currentHealthPoints;
         this.currentHealthPoints = Math.max(0, this.currentHealthPoints - Math.max(damage - this.armorPoints, 0));
 
         // launching listeners
         for (LivingBeingHealthListener listener : this.livingBeingHealthListeners) {
-            listener.onUpdate(this);
-            listener.onHurt(this);
+            listener.onUpdate(this, tmp-currentHealthPoints);
+            listener.onHurt(this, tmp-currentHealthPoints);
+        }
+
+        if(this instanceof Monster) {
+            GameStats.getInstance().onAttack(tmp-currentHealthPoints);
+        }
+
+        if(this.currentHealthPoints == 0) {
+            for(LivingBeingHealthListener listener : this.livingBeingHealthListeners) {
+                listener.onDeath(this);
+            }
         }
     }
 

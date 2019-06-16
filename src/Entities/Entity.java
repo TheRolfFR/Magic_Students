@@ -1,6 +1,5 @@
 package Entities;
 
-import Main.TimeScale;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
@@ -12,11 +11,6 @@ public abstract class Entity {
     private int radius;
 
     private Vector2f tileSize;
-
-    protected float MAX_SPEED;
-    protected float ACCELERATION_RATE;
-
-    private static final float SPEED_THRESHOLD = 0.5f;
 
     protected boolean showDebugRect;
 
@@ -39,7 +33,11 @@ public abstract class Entity {
     }
 
     protected void setSpeed(Vector2f speed) {
-        this.speed = speed;
+        this.speed.set(speed);
+    }
+
+    protected void setSpeed(float x, float y) {
+        this.speed.set(x,y);
     }
 
     /**
@@ -53,13 +51,6 @@ public abstract class Entity {
      * @return entity speed
      */
     public Vector2f getSpeed() { return this.speed.copy(); }
-
-    /**
-     * Returns acceleration factor
-     * @return acceleration factor
-     */
-    public float getAccelerationRate() { return this.ACCELERATION_RATE; }
-
 
     /**
      * Allows to show the debug rect shape
@@ -76,9 +67,6 @@ public abstract class Entity {
         this.position = new Vector2f(0, 0);
         this.speed = new Vector2f(0, 0);
         this.radius = 0;
-        this.MAX_SPEED = 0;
-        this.ACCELERATION_RATE = 0;
-
         this.showDebugRect = false;
         this.tileSize = new Vector2f(0, 0);
     }
@@ -86,64 +74,17 @@ public abstract class Entity {
     public Entity(float x, float y, int width, int height, int radius) {
         this.position = new Vector2f(x, y);
         this.speed = new Vector2f(0, 0);
-        this.MAX_SPEED = 0;
-        this.ACCELERATION_RATE = 0;
         this.radius = radius;
-
         this.showDebugRect = false;
         this.tileSize = new Vector2f(width, height);
     }
 
-    public Entity(float x, float y, float maxSpeed, float accelerationRate, int radius) {
+    public Entity(float x, float y, int radius) {
         this.position = new Vector2f(x, y);
         this.speed = new Vector2f(0, 0);
-        this.MAX_SPEED = maxSpeed;
-        this.ACCELERATION_RATE = accelerationRate;
         this.radius = radius;
-
         this.showDebugRect = false;
         this.tileSize = new Vector2f(radius*2, radius*2);
-    }
-
-    /**
-     * Simple constructor with position, maximum speed and acceleration rate
-     * @param x initial x position of the entity
-     * @param y initial y position of the entity
-     * @param height the height of the entity
-     * @param width the width of the entity
-     * @param maxSpeed maximum speed of the entity
-     * @param accelerationRate acceleration factor of the entity
-     * @param radius the hitbox radius
-     */
-    public Entity(float x, float y, int width, int height, float maxSpeed, float accelerationRate, int radius) {
-        this.position = new Vector2f(x, y);
-        this.speed = new Vector2f(0, 0);
-        this.MAX_SPEED = maxSpeed;
-        this.ACCELERATION_RATE = accelerationRate;
-        this.radius = radius;
-
-        this.showDebugRect = false;
-        this.tileSize = new Vector2f(width, height);
-    }
-
-    /**
-     * Updates speed with an acceleration
-     * @param acceleration the given acceleration
-     */
-    protected void updateSpeed(Vector2f acceleration) {
-        this.speed.add(acceleration);
-
-        if (this.speed.length() > this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
-            this.speed.normalise().scale(this.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale());
-        }
-
-        if (this.speed.getX() > -SPEED_THRESHOLD  && this.speed.getX() < SPEED_THRESHOLD) {
-            this.speed.set(0, this.speed.getY());
-        }
-
-        if (this.speed.getY() > -SPEED_THRESHOLD && this.speed.getY() < SPEED_THRESHOLD) {
-            this.speed.set(this.speed.getX(), 0);
-        }
     }
 
     /**

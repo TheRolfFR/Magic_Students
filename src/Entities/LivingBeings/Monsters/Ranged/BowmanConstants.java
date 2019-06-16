@@ -7,4 +7,6 @@ public interface BowmanConstants {
     float STUN_AFTER_ATTACK_DURATION = 0.2f;
     float ATTACK_LOADING_DURATION = 0.5f;
     int RUN_AWAY_THRESHOLD = 200;
+    float MAX_SPEED = 2.5f;
+    float ACCELERATION_RATE = 1;
 }

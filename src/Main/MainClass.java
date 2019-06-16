@@ -5,6 +5,7 @@ import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.LivingBeings.Player;
 import Entities.Projectiles.Projectile;
+import HUD.EndScreen;
 import HUD.FadeToBlack;
 import HUD.PauseMenu;
 import Listeners.FadeToBlackListener;
@@ -21,10 +22,12 @@ public class MainClass extends BasicGame {
     public static final int WIDTH = 1280;
     public static final int HEIGHT = 720;
 
+    private static final String ICON_PATH = "img/icons/icon_";
+    private static final int[] ICON_SIZES = { 16, 64, 32, 24, 48};
+
     public static GameContainer instanceGameContainer;
     private static MainClass instance = null;
 
-    private static double difficulty = 1;
     private static int numberOfFramePerSecond = 60;
 
     private Player player;
@@ -39,16 +42,9 @@ public class MainClass extends BasicGame {
 
     private FadeToBlack fadeToBlack;
 
-    public static double getDifficulty() {
-        return difficulty;
-    }
-
     public static int getNumberOfFramePerSecond() { return numberOfFramePerSecond; }
 
-    public static void nextDifficulty() {
-        difficulty++;
-    }
-
+    public static void setGamePaused() { instance.pauseMenu.setActive(true);}
     public static boolean isGamePaused() {
         return instance.pauseMenu.isActive();
     }
@@ -58,8 +54,8 @@ public class MainClass extends BasicGame {
         Ranged.allyProjectiles = new ArrayList<>();
         Ranged.enemyProjectiles = new ArrayList<>();
 
-        if (portalsManager.getLatestPortal() != null) {
-            switch (portalsManager.getLatestPortal().getType()) {
+        if (portalsManager.getLatestPortalType() != null) {
+            switch (portalsManager.getLatestPortalType()) {
                 case "boss":
                     enemiesManager.generateBoss();
                     break;
@@ -71,6 +67,15 @@ public class MainClass extends BasicGame {
                     break;
             }
         }
+    }
+
+    private static String[] getIcons() {
+        String[] array = new String[ICON_SIZES.length];
+        for(int i = 0; i < ICON_SIZES.length; i++) {
+            array[i] = ICON_PATH + ICON_SIZES[i] + "x" + ICON_SIZES[i] + ".png";
+        }
+
+        return array;
     }
 
     private void setGamePaused(boolean gamePaused) {
@@ -170,9 +175,11 @@ public class MainClass extends BasicGame {
         this.hudManager.render(g);
         this.attackVisualsManager.render(g);
 
+        this.fadeToBlack.render(g);
+
         this.pauseMenu.render(g);
 
-        this.fadeToBlack.render(g);
+        EndScreen.getInstance().Render(g);
     }
 
     public static void main(String[] args) {
@@ -181,6 +188,7 @@ public class MainClass extends BasicGame {
             appgc = new AppGameContainer(new MainClass("Magic Students"));
             appgc.setDisplayMode(WIDTH, HEIGHT, false);
             appgc.setTargetFrameRate(MAX_FPS);
+            appgc.setIcons(getIcons());
             appgc.start();
         }
         catch (SlickException ex) {

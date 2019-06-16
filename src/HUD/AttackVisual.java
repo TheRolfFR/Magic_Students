@@ -1,12 +1,12 @@
 package HUD;
 
-import Listeners.AttackCooldownListener;
+import Listeners.AttackListener;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class AttackVisual implements AttackCooldownListener {
+public class AttackVisual implements AttackListener {
     public static final int ICON_SIZE = 60;
     private static final float ICON_UNAVAILABLE_OPACITY = 0.5f;
     private static final float ICON_BACKGROUND_OPACITY = 0.4f;
