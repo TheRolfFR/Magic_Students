@@ -11,6 +11,8 @@ import org.newdawn.slick.geom.Shape;
  */
 public class Button {
 
+    private static final int FONT_SIZE_PX = 35;
+
     private Image image;
     private int height;
     private int width;
@@ -62,7 +64,7 @@ public class Button {
      */
     public Button(GameContainer gc, String text, MouseListener listener) {
         try {
-            FontRenderer.getPixelFontRenderer().setPtSize(30.f);
+            FontRenderer.getPixelFontRenderer().setPxSize(FONT_SIZE_PX);
             this.width = FontRenderer.getPixelFont().getWidth(text);
             this.height = FontRenderer.getPixelFont().getHeight(text);
 

@@ -12,6 +12,7 @@ import Entities.LivingBeings.Player;
 import Entities.Projectiles.Projectile;
 import HUD.HealthBars.BossHealthBar;
 import Listeners.SummonListener;
+import Main.GameStats;
 import Main.MainClass;
 import org.newdawn.slick.Graphics;
 
@@ -42,7 +43,7 @@ public class EnemiesManager implements SummonListener {
 
     public void generateEnemies() {
         Random random = new Random();
-        for (int i = 1; i < 4 + (int) Math.round(MainClass.getDifficulty() / 4); i++) {
+        for (int i = 1; i < 4 + (int) Math.round(GameStats.getInstance().getDifficulty() / 4); i++) {
             switch (random.nextInt(2)) {
                 case 0 :
                     this.enemies.add(newBowman());
@@ -62,7 +63,7 @@ public class EnemiesManager implements SummonListener {
         int randomX = random.nextInt(Math.round(WIDTH-2*Bowman.BOWMAN_TILESIZE.getX())) + (int) Bowman.BOWMAN_TILESIZE.getX();
         int randomY = random.nextInt(Math.round(HEIGHT-2*Bowman.BOWMAN_TILESIZE.getY())) + (int) Bowman.BOWMAN_TILESIZE.getY();
 
-        Bowman tmpb = new Bowman(randomX, randomY, (int) Math.round(75 * MainClass.getDifficulty()), (int) Math.round(2 * MainClass.getDifficulty()), (int) Math.round(1 * MainClass.getDifficulty()), (int) Math.round(0.4 * Bowman.BOWMAN_TILESIZE.getY()));
+        Bowman tmpb = new Bowman(randomX, randomY, (int) Math.round(75 * GameStats.getInstance().getDifficulty()), (int) Math.round(2 * GameStats.getInstance().getDifficulty()), (int) Math.round(1 * GameStats.getInstance().getDifficulty()), (int) Math.round(0.4 * Bowman.BOWMAN_TILESIZE.getY()));
         tmpb.setShowDebugRect(true);
 
         return tmpb;
@@ -75,7 +76,7 @@ public class EnemiesManager implements SummonListener {
         int randomX = random.nextInt(Math.round(WIDTH-2*Knight.KNIGHT_TILESIZE.getX())) + (int) Knight.KNIGHT_TILESIZE.getX();
         int randomY = random.nextInt(Math.round(HEIGHT-2*Knight.KNIGHT_TILESIZE.getY())) + (int) Knight.KNIGHT_TILESIZE.getY();
 
-        Knight tmpk = new Knight(randomX, randomY, (int) Math.round(100 * MainClass.getDifficulty()), (int) Math.round(2 * MainClass.getDifficulty()), (int) Math.round(1 * MainClass.getDifficulty()), (int) Math.round(0.4 * Knight.KNIGHT_TILESIZE.getY()));
+        Knight tmpk = new Knight(randomX, randomY, (int) Math.round(100 * GameStats.getInstance().getDifficulty()), (int) Math.round(2 * GameStats.getInstance().getDifficulty()), (int) Math.round(1 * GameStats.getInstance().getDifficulty()), (int) Math.round(0.4 * Knight.KNIGHT_TILESIZE.getY()));
         tmpk.setShowDebugRect(true);
 
         return tmpk;
@@ -100,21 +101,21 @@ public class EnemiesManager implements SummonListener {
     }
 
     private IBoss addBossKnight() {
-        KnightBoss knightBoss = new KnightBoss(WIDTH / 2, HEIGHT / 2,(int) Math.round(1000 * MainClass.getDifficulty()), (int) Math.round(10 * MainClass.getDifficulty()), (int) Math.round(10 * MainClass.getDifficulty()), (int) Math.round(0.4 * KnightBoss.KNIGHTBOSS_TILESIZE.getY()));
+        KnightBoss knightBoss = new KnightBoss(WIDTH / 2, HEIGHT / 2,(int) Math.round(1000 * GameStats.getInstance().getDifficulty()), (int) Math.round(10 * GameStats.getInstance().getDifficulty()), (int) Math.round(10 * GameStats.getInstance().getDifficulty()), (int) Math.round(0.4 * KnightBoss.KNIGHTBOSS_TILESIZE.getY()));
         knightBoss.setShowDebugRect(true);
         this.enemies.add(knightBoss);
-        knightBoss.addHurtListener(this.bossHealthBar);
-        this.bossHealthBar.onUpdate(knightBoss);
+        knightBoss.addHealthListener(this.bossHealthBar);
+        this.bossHealthBar.onUpdate(knightBoss, 0);
 
         return knightBoss;
     }
 
     private IBoss addBossBowman() {
-        BowmanBoss bowmanBoss = new BowmanBoss(WIDTH / 2, HEIGHT / 2, (int) Math.round(1000 * MainClass.getDifficulty()), (int) Math.round(10 * MainClass.getDifficulty()), (int) Math.round(10 * MainClass.getDifficulty()), (int) Math.round(0.4 * BowmanBoss.BOWMANBOSS_TILESIZE.getY()));
+        BowmanBoss bowmanBoss = new BowmanBoss(WIDTH / 2, HEIGHT / 2, (int) Math.round(1000 * GameStats.getInstance().getDifficulty()), (int) Math.round(10 * GameStats.getInstance().getDifficulty()), (int) Math.round(10 * GameStats.getInstance().getDifficulty()), (int) Math.round(0.4 * BowmanBoss.BOWMANBOSS_TILESIZE.getY()));
         bowmanBoss.setShowDebugRect(true);
         this.enemies.add(bowmanBoss);
-        bowmanBoss.addHurtListener(this.bossHealthBar);
-        this.bossHealthBar.onUpdate(bowmanBoss);
+        bowmanBoss.addHealthListener(this.bossHealthBar);
+        this.bossHealthBar.onUpdate(bowmanBoss, 0);
 
         return bowmanBoss;
     }

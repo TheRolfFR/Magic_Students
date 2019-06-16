@@ -4,6 +4,7 @@ import Entities.Entity;
 import Entities.LivingBeings.Monsters.Monster;
 import Listeners.LivingBeingHealthListener;
 import Listeners.LivingBeingMoveListener;
+import Main.GameStats;
 import Main.MainClass;
 import Main.TimeScale;
 import Renderers.LivingBeingRenderer;
@@ -39,8 +40,8 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
         // update bar on heal too
         for (LivingBeingHealthListener listener : livingBeingHealthListeners) {
-            listener.onUpdate(this);
-            listener.onHeal(this);
+            listener.onUpdate(this, amountOfHealing);
+            listener.onHeal(this, amountOfHealing);
         }
     }
 
@@ -85,7 +86,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
         }
     }
 
-    public void addHurtListener(LivingBeingHealthListener listener) {
+    public void addHealthListener(LivingBeingHealthListener listener) {
         this.livingBeingHealthListeners.add(listener);
     }
 
@@ -151,12 +152,23 @@ public abstract class LivingBeing extends Entity implements Comparable {
      * @param damage damage value inflicted
      */
     public void takeDamage(int damage) {
+        int tmp = this.currentHealthPoints;
         this.currentHealthPoints = Math.max(0, this.currentHealthPoints - Math.max(damage - this.armorPoints, 0));
 
         // launching listeners
         for (LivingBeingHealthListener listener : this.livingBeingHealthListeners) {
-            listener.onUpdate(this);
-            listener.onHurt(this);
+            listener.onUpdate(this, tmp-currentHealthPoints);
+            listener.onHurt(this, tmp-currentHealthPoints);
+        }
+
+        if(this instanceof Monster) {
+            GameStats.getInstance().onAttack(tmp-currentHealthPoints);
+        }
+
+        if(this.currentHealthPoints == 0) {
+            for(LivingBeingHealthListener listener : this.livingBeingHealthListeners) {
+                listener.onDeath(this);
+            }
         }
     }
 

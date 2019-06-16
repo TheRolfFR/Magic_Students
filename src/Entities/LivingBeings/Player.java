@@ -4,6 +4,8 @@ import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.Projectiles.Fireball;
 import Entities.Projectiles.MeleeAttack;
 import HUD.AttackVisual;
+import HUD.EndScreen;
+import Main.GameStats;
 import Main.MainClass;
 import Main.TimeScale;
 import Managers.AttackVisualsManager;
@@ -18,9 +20,9 @@ import static Main.MainClass.MAX_FPS;
 
 public class Player extends LivingBeing implements KeyListener, MouseListener, PlayerConstants {
 
-    private static final String MELEE_ATTACK_IMG_PATH = "img/meleeAttack.png";
-    private static final String SPELL_ATTACK_IMG_PATH = "img/spellAttack.png";
-    private static final String DASH_EFFECT_IMG_PATH = "img/dashEffect.png";
+    private static final String MELEE_ATTACK_IMG_PATH = "img/items/meleeAttack.png";
+    private static final String SPELL_ATTACK_IMG_PATH = "img/items/spellAttack.png";
+    private static final String DASH_EFFECT_IMG_PATH = "img/items/dashEffect.png";
 
     private boolean keyUp;
     private boolean keyDown;
@@ -115,6 +117,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         AttackVisualsManager.addVisual(this.dashEffectVisual);
         AttackVisualsManager.addVisual(this.meleeAttackVisual);
         AttackVisualsManager.addVisual(this.spellAttackVisual);
+
+        this.addHealthListener(GameStats.getInstance());
+        this.addHealthListener(EndScreen.getInstance());
 }
 
     @Override

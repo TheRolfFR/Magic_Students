@@ -65,7 +65,7 @@ public class BossHealthBar extends UIHealthBar implements LivingBeingHealthListe
     }
 
     @Override
-    public void onUpdate(LivingBeing being) {
+    public void onUpdate(LivingBeing being, int amount) {
         if (being.getCurrentHealthPoints() > 0) {
             this.isBarDisplayed = true;
 
