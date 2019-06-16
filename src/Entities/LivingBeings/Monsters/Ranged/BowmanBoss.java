@@ -13,9 +13,10 @@ import java.util.Random;
 public class BowmanBoss extends Bowman implements IBoss, BossConstants {
     public static final Vector2f BOWMANBOSS_TILESIZE = new Vector2f(96, 96);
     private float summonCooldown = BossConstants.SUMMON_COOLDOWN;
+    //200 / MAX_FPS, 60 / MAX_FPS,
 
-    public BowmanBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
-        super(x, y, BOWMANBOSS_TILESIZE, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+    public BowmanBoss(float x, float y, int hpCount, int armor, int damage, int radius) {
+        super(x, y, BOWMANBOSS_TILESIZE, hpCount, armor, damage, radius);
     }
 
     @Override

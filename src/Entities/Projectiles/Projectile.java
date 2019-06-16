@@ -27,12 +27,14 @@ public abstract class Projectile extends Entity {
         return opacity;
     }
 
-    public Projectile(float x, float y, float maxSpeed, float accelerationRate, int radius, Vector2f direction, Vector2f tileSize) {
-        super(x, y, maxSpeed, accelerationRate, radius);
+    public abstract float getMaxSpeed();
+
+    public Projectile(float x, float y, int radius, Vector2f direction, Vector2f tileSize) {
+        super(x, y, radius);
         this.direction = direction;
         this.opacity = 1f;
         this.image = null;
-
+        super.setSpeed(direction.copy().scale(this.getMaxSpeed()));
         this.isDead = false;
 
         this.renderer = null;
@@ -43,8 +45,8 @@ public abstract class Projectile extends Entity {
         this.showDebugRect = true;
     }
 
-    public Projectile(float x, float y, float maxSpeed, float accelerationRate, Vector2f direction, String imagePath, int radius) {
-        super(x, y, maxSpeed, accelerationRate, radius);
+    public Projectile(float x, float y, Vector2f direction, String imagePath, int radius) {
+        super(x, y, radius);
         this.direction = direction;
 
         this.image = null;
@@ -80,21 +82,10 @@ public abstract class Projectile extends Entity {
         return this.isDead;
     }
 
-    public void update() {}
-
-    protected void updateSpeed(Vector2f acceleration) {
-        super.setSpeed(super.getSpeed().add(acceleration));
-
-        if (super.getSpeed().length() > super.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()) {
-            super.setSpeed(super.getSpeed().normalise().scale(super.MAX_SPEED * TimeScale.getInGameTimeScale().getTimeScale()));
-        }
-    }
-
     public static void updateEnemyProjectile(Player target) {
         for (int i = 0; i < Ranged.enemyProjectiles.size(); i++) {
             Projectile p = Ranged.enemyProjectiles.get(i);
 
-            p.updateSpeed(p.direction.copy().normalise().scale(p.getAccelerationRate()));
             p.move();
 
             if (p.collidesWith(target) && !target.isDashing()) {
@@ -112,10 +103,7 @@ public abstract class Projectile extends Entity {
         Projectile p;
         for (int j = 0; j < Ranged.allyProjectiles.size(); j++) {
             p = Ranged.allyProjectiles.get(j);
-            p.updateSpeed(p.direction.copy().normalise().scale(p.getAccelerationRate()));
             p.move();
-
-            p.update();
 
             for (Monster enemy : MainClass.getInstance().getEnemies()) {
                 checkCollidesProjectile(p, enemy);

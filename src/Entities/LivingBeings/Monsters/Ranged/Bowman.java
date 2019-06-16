@@ -20,8 +20,8 @@ public class Bowman extends Ranged implements BowmanConstants{
     private float framesLeftWhileSpeedLocked = BowmanConstants.MOVEMENT_DURATION;
     private float shootCooldown = BowmanConstants.SHOOT_COOLDOWN;
 
-    public Bowman(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
-        super(x, y, (int) BOWMAN_TILESIZE.getX(), (int) BOWMAN_TILESIZE.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+    public Bowman(float x, float y, int hpCount, int armor, int damage, int radius) {
+        super(x, y, (int) BOWMAN_TILESIZE.getX(), (int) BOWMAN_TILESIZE.getY(), hpCount, armor, damage, radius);
 
         this.renderer = new LivingBeingRenderer(this, BOWMAN_TILESIZE);
 
@@ -34,8 +34,8 @@ public class Bowman extends Ranged implements BowmanConstants{
         }
     }
 
-    public Bowman(float x, float y, Vector2f tileSize, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
-        super(x, y, (int) tileSize.getX(), (int) tileSize.getY(), maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+    public Bowman(float x, float y, Vector2f tileSize, int hpCount, int armor, int damage, int radius) {
+        super(x, y, (int) tileSize.getX(), (int) tileSize.getY(), hpCount, armor, damage, radius);
 
         this.renderer = new LivingBeingRenderer(this, tileSize);
 
@@ -92,7 +92,7 @@ public class Bowman extends Ranged implements BowmanConstants{
     }
 
     void runAway(LivingBeing target) {
-        super.updateSpeed(target.getCenter().sub(super.getCenter()).normalise().negate().scale(super.getAccelerationRate()));
+        super.updateSpeed(target.getCenter().sub(super.getCenter()).normalise().negate().scale(this.getAccelerationRate()));
         this.framesLeftWhileSpeedLocked = 0;
     }
 
@@ -168,5 +168,15 @@ public class Bowman extends Ranged implements BowmanConstants{
 
     public void render(Graphics g) {
         super.render(g);
+    }
+
+    @Override
+    public float getMaxSpeed() {
+        return MAX_SPEED;
+    }
+
+    @Override
+    public float getAccelerationRate() {
+        return ACCELERATION_RATE;
     }
 }

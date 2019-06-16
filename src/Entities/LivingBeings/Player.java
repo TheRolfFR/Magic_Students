@@ -49,6 +49,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     private AttackVisual spellAttackVisual;
 
     private float timeLeftWhileAttacking = 0;
+    private float maxSpeed = BASE_MAX_SPEED;
+    private float accelerationNorm = BASE_ACCELERATION_NORM;
 
 
     /**
@@ -59,7 +61,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
      * @param y initial y position of the player
      */
     public Player(GameContainer gc, float x, float y) {
-        super(x, y, 450 / MAX_FPS, 135 / MAX_FPS, 100, 1, (int) (0.4 * 45));
+        super(x, y, 100, 1, (int) (0.4 * 45));
 
         this.keyUp = false;
         this.keyDown = false;
@@ -128,6 +130,11 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.angleFaced = new Vector2f(x, y).sub(this.getCenter()).getTheta() + 90.0;
     }
 
+    public void buffSpeed(float buffAmount) {
+        this.maxSpeed = this.maxSpeed + buffAmount;
+        this.accelerationNorm = this.accelerationNorm + buffAmount * 135/450;
+    }
+
     /**
      * In game calculations
      */
@@ -142,16 +149,16 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
                     if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
                         super.renderer.setLastActivity("Move");
                         if (this.keyUp) {
-                            super.updateSpeed(new Vector2f(0, -1).scale(super.getAccelerationRate()));
+                            super.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
                         }
                         if (this.keyDown) {
-                            super.updateSpeed(new Vector2f(0, 1).scale(super.getAccelerationRate()));
+                            super.updateSpeed(new Vector2f(0, 1).scale(this.getAccelerationRate()));
                         }
                         if (this.keyLeft) {
-                            super.updateSpeed(new Vector2f(-1, 0).scale(super.getAccelerationRate()));
+                            super.updateSpeed(new Vector2f(-1, 0).scale(this.getAccelerationRate()));
                         }
                         if (this.keyRight) {
-                            super.updateSpeed(new Vector2f(1, 0).scale(super.getAccelerationRate()));
+                            super.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()));
                         }
                     }
                     else {
@@ -212,7 +219,7 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         if (!super.getSpeed().equals(new Vector2f(0, 0))) {
             super.renderer.setLastActivity("Dash");
             this.timeLeftWhileDashing = PlayerConstants.DASH_DURATION;
-            super.setSpeed(super.getSpeed().copy().normalise().scale(MAX_SPEED*2.5f));
+            super.setSpeed(super.getSpeed().copy().normalise().scale(getMaxSpeed()*2.5f));
             this.dashCooldown = PlayerConstants.DASH_COOLDOWN;
 
             this.dashEffectVisual.onCooldownStart();
@@ -245,6 +252,16 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
     private boolean isAttacking() {
         return timeLeftWhileAttacking > 0;
+    }
+
+    @Override
+    public float getMaxSpeed() {
+        return this.maxSpeed;
+    }
+
+    @Override
+    public float getAccelerationRate() {
+        return this.accelerationNorm;
     }
 
     @Override

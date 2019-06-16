@@ -16,8 +16,8 @@ public class KnightBoss extends Knight implements IBoss, BossConstants {
     public static final Vector2f KNIGHTBOSS_TILESIZE = new Vector2f(96, 96);
     private float summonCooldown = BossConstants.SUMMON_COOLDOWN;
 
-    public KnightBoss(float x, float y, float maxSpeed, float accelerationRate, int hpCount, int armor, int damage, int radius) {
-        super(x, y, KNIGHTBOSS_TILESIZE, maxSpeed, accelerationRate, hpCount, armor, damage, radius);
+    public KnightBoss(float x, float y, int hpCount, int armor, int damage, int radius) {
+        super(x, y, KNIGHTBOSS_TILESIZE, hpCount, armor, damage, radius);
         this.renderer.addView("bottomSummon", new SpriteView("img/knight/" + "bottomSummon.png", KnightConstants.KNIGHT_TILESIZE, Math.round (KnightConstants.STUN_AFTER_ATTACK_DURATION*1000/3)));
 
         Vector2f attackTileSize = new Vector2f(96, 58);
