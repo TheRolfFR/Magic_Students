@@ -82,7 +82,6 @@ public abstract class Projectile extends Entity {
 
     public void update() {}
 
-    @Override
     protected void updateSpeed(Vector2f acceleration) {
         super.setSpeed(super.getSpeed().add(acceleration));
 
