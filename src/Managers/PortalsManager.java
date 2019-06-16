@@ -8,7 +8,6 @@ import Listeners.KeyPressListener;
 import Listeners.LivingBeingMoveListener;
 import Listeners.PortalsManagerListener;
 import Main.GameStats;
-import Main.MainClass;
 import Main.TimeScale;
 import Renderers.PortalRenderer;
 import org.newdawn.slick.Color;
@@ -41,7 +40,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
 
     private boolean portalSet;
     private Portal portalHovered;
-    private Portal latestPortal;
+    private String latestPortalType;
 
     private ArrayList<PortalsManagerListener> portalsManagerListeners;
 
@@ -56,7 +55,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     public PortalsManager(GameContainer gc, Player player, FadeToBlack fadeToBlack) {
         gc.getInput().addKeyListener(this);
         this.portalSet = false;
-        this.setLatestPortal(null);
+        this.setLatestPortalType(null);
         this.portalHovered = null;
 
         int offsetFromWall = 60;
@@ -87,15 +86,17 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         this.addPortalsManagerListeners(TimeScale.getInGameTimeScale());
     }
 
-    public Portal getLatestPortal() { return this.latestPortal; }
+    public String getLatestPortalType() {
+        return this.latestPortalType;
+    }
 
-    private void setLatestPortal(Portal latestPortal) {
-        this.latestPortal = latestPortal;
+    private void setLatestPortalType(String type) {
+        this.latestPortalType = type;
     }
 
     void setPortals() {
         if (!portalSet) {
-            if (this.latestPortal != null && this.latestPortal.getType().equals("boss")) {
+            if (this.latestPortalType != null && this.latestPortalType.equals("boss")) {
                 floorPortal.setVisible(true);
             } else {
                 Random random = new Random();
@@ -122,7 +123,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                 }
             }
             this.portalSet = true;
-            this.latestPortal = null;
+            this.latestPortalType = null;
         }
     }
 
@@ -148,7 +149,7 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     }
 
     private boolean lastestPortalIsItem() {
-        return this.latestPortal != null && this.latestPortal.getType().equals("item");
+        return this.latestPortalType != null && this.latestPortalType.equals("item");
     }
 
     public void render(Graphics g) {
@@ -168,10 +169,10 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
             // if the latest room was a boss room
 
             // update the actual portal
-            this.setLatestPortal(this.portalHovered);
+            this.setLatestPortalType(this.portalHovered.getType());
             this.portalHovered = null;
 
-            if (this.latestPortal != null && this.latestPortal.getType().equals("nextFloor")) {
+            if (this.latestPortalType != null && this.latestPortalType.equals("nextFloor")) {
                 GameStats.getInstance().nextDifficulty();
             }
 
