@@ -18,12 +18,16 @@ import org.newdawn.slick.geom.Vector2f;
 
 import static Main.MainClass.MAX_FPS;
 
+/**
+ * the player is a beinq that the user can control
+ */
 public class Player extends LivingBeing implements KeyListener, MouseListener, PlayerConstants {
 
     private static final String MELEE_ATTACK_IMG_PATH = "img/items/meleeAttack.png";
     private static final String SPELL_ATTACK_IMG_PATH = "img/items/spellAttack.png";
     private static final String DASH_EFFECT_IMG_PATH = "img/items/dashEffect.png";
 
+    //boolean that indicate if a key is pressed
     private boolean keyUp;
     private boolean keyDown;
     private boolean keyLeft;
@@ -40,7 +44,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
     private boolean isAttackRendered = false;
 
-    private float timeLeftBeforeEnablingMovement = 0;
     private float timeLeftWhileDashing = 0;
 
     private float dashCooldown = 0;

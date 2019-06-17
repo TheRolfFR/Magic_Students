@@ -15,8 +15,10 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * An item is an object that increase the statistics of the player
+ */
 public class Item extends Entity {
-    //An item is an object that increase the statistics of the player
 
     private int typeOfItem; //an integer between 0 and 5 that indicate which item it is
 

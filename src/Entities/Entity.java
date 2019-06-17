@@ -5,8 +5,10 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * The mother class of all our object
+ */
 public abstract class Entity {
-    //The mother class of all our object
 
     private Vector2f position; //Coordonates of our object
     private Vector2f speed; //Speed of our object

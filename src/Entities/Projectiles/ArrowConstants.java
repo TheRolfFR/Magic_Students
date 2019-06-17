@@ -1,7 +1,10 @@
 package Entities.Projectiles;
 
+/**
+ * Interface that contains constants relative to an arrow
+ */
 public interface ArrowConstants {
-    //Constant relative to an arrow
+    //
 
     float MAX_SPEED = 10;
 }

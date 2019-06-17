@@ -3,8 +3,10 @@ package Entities.Projectiles;
 import Renderers.ProjectileRenderer;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * An arrow is the projectile shoot by the bowman
+ */
 public class Arrow extends Projectile implements ArrowConstants{
-    //An arrow is the projectile shoot by the bowman
 
     private static final int RADIUS = 1; //hitbow radius
     private int damage = 15;
@@ -27,7 +29,7 @@ public class Arrow extends Projectile implements ArrowConstants{
 
     /**
      * Getter for the speed
-     * @return the speed of an arrow
+     * @return the norm of the speed of an arrow
      */
     @Override
     public float getMaxSpeed() {
