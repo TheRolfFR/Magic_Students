@@ -16,25 +16,45 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Item extends Entity {
+    //An item is an object that increase the statistics of the player
 
-    public static ArrayList<Item> items = new ArrayList<>();
-
-    private int typeOfItem;
+    private int typeOfItem; //an integer between 0 and 5 that indicate which item it is
 
     private ItemRenderer renderer;
 
-    private static int HEALBUFFAMOUNT = 50;
-    private static int MAXHPBUFFAMOUNT = 10;
-    private static int MELEEBUFFAMOUNT = 5;
-    private static int RANGEDBUFFAMOUNT = 5;
-    private static int ARMORBUFFAMOUNT = 5;
-    private static float SPEEDBUFFAMOUNT = Math.round(15/ MainClass.MAX_FPS);
+    private static int HEALBUFFAMOUNT = 50; //Base heal provide by an item
+    private static int MAXHPBUFFAMOUNT = 10; //Base increase of HP provide by an item
+    private static int MELEEBUFFAMOUNT = 5; // Base increase of damage provide by an item
+    private static int ARMORBUFFAMOUNT = 5;  //Base increase of armor provide by an item
+    private static float SPEEDBUFFAMOUNT = Math.round(15/ MainClass.MAX_FPS); //Base increase od speed provide by an item
 
     private static final float ITEM_IMAGE_SCALE = 2f;
     private static SpriteSheet ITEMS_SPRITESHEET = null;
     private static final String ITEMS_SPRITESHEET_PATH = "img/items/items.png";
     private static final Vector2f ITEM_TILESIZE = new Vector2f(16, 16).scale(ITEM_IMAGE_SCALE);
     private static final int ITEM_FRAME_DURATION = 100000;
+
+    /**
+     * Default constructor that creates a random item
+     */
+    public Item() {
+        super(MainClass.WIDTH / 2, MainClass.HEIGHT / 2, 25, 25, 13); //Create an entity located in the middle of the screen
+        Random random = new Random();
+        this.typeOfItem = random.nextInt(6); //Pick randomly of type of item
+        this.setShowDebugRect(true);
+        loadImage(); //Add the image to the renderer
+    }
+
+    /**
+     * Constructor that creates a specific item
+     * @param typeOfItem the type of the item
+     */
+    public Item(int typeOfItem) {
+        super(MainClass.WIDTH / 2, MainClass.HEIGHT / 2, 25, 25, 13);
+        this.typeOfItem = typeOfItem;
+        loadImage();
+    }
+
 
     private static Image getItemImageFromSpriteSheet(int index) {
         if (ITEMS_SPRITESHEET == null) {
@@ -50,48 +70,40 @@ public class Item extends Entity {
         return ITEMS_SPRITESHEET.getSprite(index, 0);
     }
 
-    public Item() {
-        super(MainClass.WIDTH / 2, MainClass.HEIGHT / 2, 25, 25, 13);
-        Random random = new Random();
-        this.typeOfItem = random.nextInt(6);
-        this.setShowDebugRect(true);
-        loadImage();
-    }
-
-    public Item(int typeOfItem) {
-        super(MainClass.WIDTH / 2, MainClass.HEIGHT / 2, 25, 25, 13);
-        this.typeOfItem = typeOfItem;
-        loadImage();
-    }
-
     private void loadImage() {
         this.renderer = new ItemRenderer(this, getItemImageFromSpriteSheet(this.typeOfItem), ITEM_TILESIZE, ITEM_FRAME_DURATION);
     }
 
-    @Override
-    public void move() {}
-
+    /**
+     * Indicate if the player pick the item
+     * @param player the player
+     * @return the item if the player doesn't pick it, null otherwise
+     */
     public Item update(Player player) {
-        if (collidesWith(player)) {
-            collidingType(player);
+        if (collidesWith(player)) { //If the player is on the item
+            collidingType(player); //Apply the buff provide by the item
             return null;
         }
         return this;
     }
 
+    /**
+     * Apply the buff provide by the item to the player
+     * @param player the player
+     */
     private void collidingType(Player player) {
         switch (this.typeOfItem) {
-            case 0 : player.heal((int) Math.round(HEALBUFFAMOUNT* GameStats.getInstance().getDifficulty()));
+            case 0 : player.heal( Math.round(HEALBUFFAMOUNT* GameStats.getInstance().getDifficulty())); //the buff is proportional to the current difficulty
                 break;
-            case 1 : player.buffHP((int) Math.round(MAXHPBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
+            case 1 : player.buffHP( Math.round(MAXHPBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
-            case 2 : MeleeAttack.increaseDamage((int) Math.round(MELEEBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
+            case 2 : MeleeAttack.increaseDamage( Math.round(MELEEBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
-            case 3 : Fireball.increaseDamage((int) Math.round(MELEEBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
+            case 3 : Fireball.increaseDamage( Math.round(MELEEBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
-            case 4 : player.buffArmor((int) Math.round(ARMORBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
+            case 4 : player.buffArmor( Math.round(ARMORBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
-            case 5 : player.buffSpeed((int) Math.round(SPEEDBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
+            case 5 : player.buffSpeed( Math.round(SPEEDBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
         }
     }
