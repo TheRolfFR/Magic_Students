@@ -15,19 +15,15 @@ import org.newdawn.slick.geom.Vector2f;
 
 
 public abstract class Projectile extends Entity {
-    protected Image image;
-    protected Vector2f direction;
+    //A projectil is an object that deal damage to the contact
+
+    protected Image image; //the image of the projectile
+    protected Vector2f direction; //direction of the projectile
     protected float opacity;
-    protected boolean isDead;
+    protected boolean isDead; //Indication if the projectile still exist
     private Vector2f tileSizeOffset;
 
     protected ProjectileRenderer renderer;
-
-    public float getOpacity() {
-        return opacity;
-    }
-
-    public abstract float getMaxSpeed();
 
     public Projectile(float x, float y, int radius, Vector2f direction, Vector2f tileSize) {
         super(x, y, radius);
@@ -65,6 +61,13 @@ public abstract class Projectile extends Entity {
         // for debugging purposes
         this.showDebugRect = true;
     }
+
+    public float getOpacity() {
+        return opacity;
+    }
+
+    public abstract float getMaxSpeed();
+
     public abstract int getDamage();
 
     public Vector2f getDirection() {
