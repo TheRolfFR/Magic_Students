@@ -52,7 +52,7 @@ public class TimeScale implements PortalsManagerListener {
         this.listener = null;
     }
 
-    public TimeScale(float timeScale, PortalsManagerListener listener) {
+    private TimeScale(float timeScale, PortalsManagerListener listener) {
         this.timeScale = timeScale;
         this.listener = listener;
     }
