@@ -60,7 +60,7 @@ public class Knight extends Melee implements KnightConstants{
         final int moveDuration = 1000/8;
         final int attackDuration = Math.round(1000*KnightConstants.ATTACK_LOADING_DURATION);
 
-        Vector2f attackTileSize = new Vector2f(48, 29);
+        Vector2f attackTileSize = new Vector2f(96, 58);
         this.attackRenderer = new EffectRenderer(prepath + "animationAttackWhite.png", attackTileSize, Math.round (KnightConstants.ATTACK_LOADING_DURATION*1000/10));
 
         String[] activities = {"Attack", "Move"};

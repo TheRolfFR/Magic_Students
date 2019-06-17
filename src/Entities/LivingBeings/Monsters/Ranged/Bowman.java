@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class Bowman extends Ranged implements BowmanConstants{
 
-    public static final Vector2f BOWMAN_TILESIZE = new Vector2f(48, 48);
+    public static final Vector2f BOWMAN_TILESIZE = new Vector2f(96, 96);
     private float framesLeftBeforeAttack;
     private Vector2f attackDirection = new Vector2f(0, 0);
     float framesLeftWhileStuned = BowmanConstants.STUN_AFTER_ATTACK_DURATION;
@@ -42,7 +42,7 @@ public class Bowman extends Ranged implements BowmanConstants{
 
         for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", BOWMAN_TILESIZE, duration));
-            this.renderer.addView(vision + "Attack", new SpriteView(prepath+ "attack.png", BOWMAN_TILESIZE, 1000));
+            this.renderer.addView(vision + "Attack", new SpriteView(prepath + vision + "attack.png", BOWMAN_TILESIZE, 1000));
             this.renderer.addView(vision + "Idle", new SpriteView(prepath + "idle.png", BOWMAN_TILESIZE, 1000));
         }
     }
@@ -63,7 +63,7 @@ public class Bowman extends Ranged implements BowmanConstants{
 
         for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", tileSize, duration));
-            this.renderer.addView(vision + "Attack", new SpriteView(prepath+ "attack.png", tileSize, 1000));
+            this.renderer.addView(vision + "Attack", new SpriteView(prepath + vision + "attack.png", tileSize, 1000));
             this.renderer.addView(vision + "Idle", new SpriteView(prepath + "idle.png", tileSize, 1000));
         }
     }
@@ -141,7 +141,7 @@ public class Bowman extends Ranged implements BowmanConstants{
         this.setSpeed(new Vector2f(0, 0));
         this.framesLeftBeforeAttack = BowmanConstants.ATTACK_LOADING_DURATION;
         this.renderer.setLastActivity("Attack");
-        this.renderer.update(this.attackDirection);
+        this.renderer.update(this.correctedAttackDirectionForRenderer());
     }
 
     void chooseDirection() {
@@ -174,6 +174,16 @@ public class Bowman extends Ranged implements BowmanConstants{
 
     void aim(LivingBeing target) {
         this.attackDirection.set(target.getCenter().sub(super.getCenter()).normalise());
+        this.renderer.update(this.correctedAttackDirectionForRenderer());
+    }
+
+    private Vector2f correctedAttackDirectionForRenderer(){
+        if(this.attackDirection.getX()!=0){
+            return new Vector2f(this.attackDirection.getX(), 0);
+        }
+        else{
+            return new Vector2f(0,this.attackDirection.getY());
+        }
     }
 
     protected void attack(LivingBeing target) {
@@ -193,12 +203,13 @@ public class Bowman extends Ranged implements BowmanConstants{
 
     public void render(Graphics g) {
         super.render(g);
-        if(isAttacking()){
-            this.bowCharge.render(g, (int) super.getCenter().getX(), (int) super.getCenter().getY(), (float) this.attackDirection.getTheta());
+            if(isAttacking()){
+                this.bowCharge.render(g, (int) super.getCenter().getX(), (int) super.getCenter().getY(), (float) this.attackDirection.getTheta());
+            }
+            else if(isStun()){
+                this.bowRelease.render(g, (int) super.getCenter().getX(), (int) super.getCenter().getY(), (float) this.renderDirection.getTheta());
         }
-        else if(isStun()){
-            this.bowRelease.render(g, (int) super.getCenter().getX(), (int) super.getCenter().getY(), (float) this.renderDirection.getTheta());
-        }
+
     }
 
     @Override
