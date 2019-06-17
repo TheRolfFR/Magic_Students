@@ -152,7 +152,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
     /**
      * supposed update
      * */
-    public void update(Vector2f facedDirection) {
+    public void update(Vector2f facedDirection){
         // update last faced direction
         if (!facedDirection.equals(zero)) {
             this.lastFacedDirection = facedDirection;
@@ -166,9 +166,6 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
         this.setLastView(this.getView(this.lastVisionDirection, this.lastActivity));
     }
-
-    public void restartLastView(){this.lastView.restartAnimation();}
-    public void noLoop(){this.lastView.stopLoop();}
 
     /**
      * Method used when the developer wants an automatic choice of the vision direction
