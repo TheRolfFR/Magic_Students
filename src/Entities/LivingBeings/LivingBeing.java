@@ -231,7 +231,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
                 solveCollision(percuted, MainClass.getInstance().getPlayer(), level + 1); //create a new level
             }
             for (Monster m: MainClass.getInstance().getEnemies()) { //for each monster
-                if (percuted.collidesWith(m)) { //if the percuted collides with the currant monster
+                if (percuted.collidesWith(m)) { //if the percuted collides with the current monster
                     solveCollision(percuted, m, level + 1); //create a new level
                 }
             }
@@ -240,7 +240,7 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
     /**
      * Separate this being and an other one
-     * @param opponent
+     * @param opponent the being that pushed this one
      */
     public void collidingAction(LivingBeing opponent) {
         if (this.collidesWith(opponent)) { //if they collides
