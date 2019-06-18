@@ -1,5 +1,8 @@
 package Entities.LivingBeings.Monsters.Ranged;
 
+/**
+ * Interface that contains constants relative to a bowman
+ */
 public interface BowmanConstants {
     float MOVEMENT_DURATION = 2;
     float AVERAGE_SECONDS_BEFORE_MOVEMENT = 2;

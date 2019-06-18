@@ -25,7 +25,6 @@ public class Rusher extends Melee {
         this.updateSpeed(target.getCenter().sub(this.getCenter()).normalise().scale(this.getAccelerationRate()));
 
         this.move();
-        this.doDamage(target);
     }
 
     @Override
