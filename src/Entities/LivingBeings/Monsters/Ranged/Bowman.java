@@ -67,7 +67,7 @@ public class Bowman extends Ranged implements BowmanConstants{
      * @param hpCount hpcount of the bowman
      * @param armor amout of armor of the bowman
      * @param damage damage of the bowman
-     * @param radius hitbowradius of the bowman
+     * @param radius hitboxradius of the bowman
      */
     public Bowman(float x, float y, Vector2f tileSize, int hpCount, int armor, int damage, int radius) {
         super(x, y, (int) tileSize.getX(), (int) tileSize.getY(), hpCount, armor, damage, radius);
@@ -91,7 +91,7 @@ public class Bowman extends Ranged implements BowmanConstants{
     }
 
     /**
-     * update the bowman accordind to his behavior
+     * update the bowman according to his behavior
      * @param target the player
      */
     @Override
@@ -279,7 +279,7 @@ public class Bowman extends Ranged implements BowmanConstants{
     }
 
     /**
-     * Stun the bowman to prevent him from doing an action for a set amount of time
+     * Stun the bowman to prevent him from doing another action for a set amount of time
      */
     void stun() {
         this.framesLeftWhileStuned = BowmanConstants.STUN_AFTER_ATTACK_DURATION;
