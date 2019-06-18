@@ -46,6 +46,7 @@ public class PauseMenu implements MouseListener {
     /**
      * Default constructor
      * @param gc the GameContainer instance
+     * @param resumeListener the listener to trigger when the resume button is pressed
      */
     public PauseMenu(GameContainer gc, ButtonListener resumeListener) {
         try {

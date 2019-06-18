@@ -5,6 +5,9 @@ import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * projectile renderer for fireballs and arrows
+ */
 public class ProjectileRenderer extends SpriteRenderer {
     private Animation animation;
 
@@ -12,6 +15,13 @@ public class ProjectileRenderer extends SpriteRenderer {
 
     private double angle;
 
+    /**
+     * Default renderer : tries to load the image, crash otherwise
+     * @param projectile the projectile related
+     * @param imgPath the path of the image
+     * @param tileSize the size of the image
+     * @param frameDuration the duration in ms of a frame of the animation
+     */
     public ProjectileRenderer(Projectile projectile, String imgPath, Vector2f tileSize, int frameDuration) {
         super(projectile, tileSize);
 
@@ -32,10 +42,20 @@ public class ProjectileRenderer extends SpriteRenderer {
         animation.start();
     }
 
+    /**
+     * Opacity setter
+     * @param opacity the opacity to set
+     */
     public final void setOpacity(float opacity) {
-        this.opacity = opacity;
+        this.opacity = Math.min(1f, Math.max(opacity, 0f));
     }
 
+    /**
+     * In game rendering
+     * @param g the graphics to draw on
+     * @param x the x center position
+     * @param y the y center position
+     */
     public void render(Graphics g, int x, int y) {
         // if game not paused
         if (TimeScale.getInGameTimeScale().getTimeScale() != 0f) {
@@ -44,6 +64,7 @@ public class ProjectileRenderer extends SpriteRenderer {
             this.lastImage.rotate((float) this.angle);
         }
 
+        // avoid NullPointerException
         if (this.lastImage != null) {
             g.drawImage(this.lastImage, x, y);
         }

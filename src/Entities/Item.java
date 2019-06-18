@@ -34,7 +34,6 @@ public class Item extends Entity {
     private static SpriteSheet ITEMS_SPRITESHEET = null;
     private static final String ITEMS_SPRITESHEET_PATH = "img/items/items.png";
     private static final Vector2f ITEM_TILESIZE = new Vector2f(16, 16).scale(ITEM_IMAGE_SCALE);
-    private static final int ITEM_FRAME_DURATION = 100000;
 
     /**
      * Default constructor that creates a random item
@@ -57,7 +56,11 @@ public class Item extends Entity {
         loadImage();
     }
 
-
+    /**
+     * returns the correct image from the items spritesheet, but crashes if the image creation fails
+     * @param index the index of the wanted image
+     * @return the image of the index wanted, null else
+     */
     private static Image getItemImageFromSpriteSheet(int index) {
         if (ITEMS_SPRITESHEET == null) {
             try {
@@ -72,8 +75,11 @@ public class Item extends Entity {
         return ITEMS_SPRITESHEET.getSprite(index, 0);
     }
 
+    /**
+     * Create a renderer for the image
+     */
     private void loadImage() {
-        this.renderer = new ItemRenderer(this, getItemImageFromSpriteSheet(this.typeOfItem), ITEM_TILESIZE, ITEM_FRAME_DURATION);
+        this.renderer = new ItemRenderer(this, getItemImageFromSpriteSheet(this.typeOfItem), ITEM_TILESIZE);
     }
 
     /**
@@ -94,8 +100,8 @@ public class Item extends Entity {
      * @param player the player
      */
     private void collidingType(Player player) {
-        switch (this.typeOfItem) {
-            case 0 : player.heal( Math.round(HEALBUFFAMOUNT* GameStats.getInstance().getDifficulty())); //the buff is proportional to the current difficulty
+        switch (this.typeOfItem) { //the buff is proportional to the current difficulty
+            case 0 : player.heal( Math.round(HEALBUFFAMOUNT* GameStats.getInstance().getDifficulty()));
                 break;
             case 1 : player.buffHP( Math.round(MAXHPBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
@@ -110,6 +116,10 @@ public class Item extends Entity {
         }
     }
 
+    /**
+     * In game rendering
+     * @param g the graphics to draw on
+     */
     @Override
     public void render(Graphics g) {
         this.renderer.render(g, (int) this.getCenter().getX(), (int) this.getCenter().getY());
