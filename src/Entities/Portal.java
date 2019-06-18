@@ -4,8 +4,10 @@ import Managers.PortalsManager;
 import Renderers.PortalRenderer;
 import org.newdawn.slick.Graphics;
 
+/**
+ * A portal is an object that the player can interact with to go in another room
+ */
 public class Portal extends Entity {
-    //A portal is an object that the player can interact with to go in another room
 
     private boolean visible; //Indicate wether or not the portal is visible
 

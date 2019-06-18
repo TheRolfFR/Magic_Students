@@ -18,12 +18,16 @@ import org.newdawn.slick.geom.Vector2f;
 
 import static Main.MainClass.MAX_FPS;
 
+/**
+ * the player is a beinq that the user can control
+ */
 public class Player extends LivingBeing implements KeyListener, MouseListener, PlayerConstants {
 
     private static final String MELEE_ATTACK_IMG_PATH = "img/items/meleeAttack.png";
     private static final String SPELL_ATTACK_IMG_PATH = "img/items/spellAttack.png";
     private static final String DASH_EFFECT_IMG_PATH = "img/items/dashEffect.png";
 
+    //boolean that indicate if a key is pressed
     private boolean keyUp;
     private boolean keyDown;
     private boolean keyLeft;
@@ -40,7 +44,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
     private boolean isAttackRendered = false;
 
-    private float timeLeftBeforeEnablingMovement = 0;
     private float timeLeftWhileDashing = 0;
 
     private float dashCooldown = 0;
@@ -120,39 +123,49 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
 
         this.addHealthListener(GameStats.getInstance());
         this.addHealthListener(EndScreen.getInstance());
-}
+    }
 
+    /**
+     * Allow to show the hitbox on the screen
+     * @param showDebugRect show or not the hitbox
+     */
     @Override
     public void setShowDebugRect(boolean showDebugRect) {
         super.setShowDebugRect(showDebugRect);
     }
 
-    public void setShowPlayerMarkerDebugRect(boolean showPlayerMarkerDebugRect) {
-        this.playerMarkerRenderer.setShowDebugRect(showPlayerMarkerDebugRect);
-    }
-
+    /**
+     * Setter for the angle that the player is facing
+     * @param x the x-coordonate of the mouse
+     * @param y the y-coordonate of the mouse
+     */
     private void setAngleFaced(int x, int y) {
         this.angleFaced = new Vector2f(x, y).sub(this.getCenter()).getTheta() + 90.0;
     }
 
+    /**
+     * Increase the maximum speed and the acceleration of the player
+     * @param buffAmount increase in max speed
+     */
     public void buffSpeed(float buffAmount) {
         this.maxSpeed = this.maxSpeed + buffAmount;
         this.accelerationNorm = this.accelerationNorm + buffAmount * 135/450;
     }
 
     /**
-     * In game calculations
+     * Update the position and timer of the player
      */
     public void update() {
-        this.updateCountdown();
-        if (!this.isDashing()) {
-            if (this.keySpace && this.isDashReady()) {
-                this.startDash();
+        this.updateCountdown(); //update every timer
+        if (!this.isDashing()) { //if the player isn't dashing
+            if (this.keySpace && this.isDashReady()) { //if the player want to dash and the dash is ready
+                this.startDash(); //dash
             }
-            else {
-                if (!this.isAttacking()) {
-                    if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) {
-                        super.renderer.setLastActivity("Move");
+            else { //if the player isn't dashing
+                if (!this.isAttacking()) { //if the player isn't attacking
+                    if (this.keyUp || this.keyDown || this.keyLeft || this.keyRight) { //if a key is pressed
+                        super.renderer.setLastActivity("Move"); //set animation to move
+                        //update the speed base on what key is pressed
                         if (this.keyUp) {
                             super.updateSpeed(new Vector2f(0, -1).scale(this.getAccelerationRate()));
                         }
@@ -166,11 +179,11 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
                             super.updateSpeed(new Vector2f(1, 0).scale(this.getAccelerationRate()));
                         }
                     }
-                    else {
-                        if (super.getSpeed().equals(new Vector2f(0, 0))) {
-                            super.renderer.setLastActivity("Idle");
-                        } else {
-                            super.updateSpeed(super.getSpeed().negate().scale(0.2f));
+                    else { //if no key is pressed
+                        if (super.getSpeed().equals(new Vector2f(0, 0))) { //if the player has no speed
+                            super.renderer.setLastActivity("Idle"); //set animation to idle
+                        } else { //if the player has speed
+                            super.updateSpeed(super.getSpeed().negate().scale(0.2f)); //decrease the speed
                         }
                     }
                 }
@@ -180,6 +193,9 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         super.move();
     }
 
+    /**
+     * update every timer relative to the player
+     */
     private void updateCountdown() {
         if (this.isAttacking()) {
             this.timeLeftWhileAttacking = this.timeLeftWhileAttacking - TimeScale.getInGameTimeScale().getDeltaTime();
@@ -197,74 +213,110 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         }
     }
 
+    /**
+     * Allow the player to attack close to him in the direction of the mouse
+     */
     private void meleeAttack() {
-        this.attackDirection = this.mousePosition.copy().sub(super.getCenter()).normalise();
-        super.setSpeed(new Vector2f(0, 0));
+        this.attackDirection = this.mousePosition.copy().sub(super.getCenter()).normalise(); //compute the direction of the attack
+        super.setSpeed(new Vector2f(0, 0)); //make the player stand still
 
-        this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
+        this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION; //avoiding the spam of attack
 
-        Ranged.allyProjectiles.add(new MeleeAttack(super.getCenter().add(attackDirection.copy().scale(super.getRadius()*2f))));
+        Ranged.allyProjectiles.add(new MeleeAttack(super.getCenter().add(attackDirection.copy().scale(super.getRadius()*2f)))); //create a projectile that reprensents the melee attack
 
-        super.renderer.setLastActivity("Attack");
+        super.renderer.setLastActivity("Attack"); //set animation to attack
         super.renderer.update(attackDirection);
         this.isAttackRendered = true;
 
         this.meleeAttackVisual.onCooldownStart();
     }
 
+    /**
+     * Initiate dashing
+     */
     private void startDash() {
-        if (!super.getSpeed().equals(new Vector2f(0, 0))) {
-            super.renderer.setLastActivity("Dash");
-            this.timeLeftWhileDashing = PlayerConstants.DASH_DURATION;
-            super.setSpeed(super.getSpeed().copy().normalise().scale(getMaxSpeed()*2.5f));
-            this.dashCooldown = PlayerConstants.DASH_COOLDOWN;
+        if (!super.getSpeed().equals(new Vector2f(0, 0))) { //if the player is currently moving
+            super.renderer.setLastActivity("Dash"); //set animation to dash
+            this.timeLeftWhileDashing = PlayerConstants.DASH_DURATION; //setting the timer to the timer that the player will be dashing
+            super.setSpeed(super.getSpeed().copy().normalise().scale(getMaxSpeed()*2.5f)); //setting the speed of the dash
+            this.dashCooldown = PlayerConstants.DASH_COOLDOWN; //Setting a cooldown to avoid spam
 
             this.dashEffectVisual.onCooldownStart();
         }
     }
 
+    /**
+     * Indicate if the player is currently dashing
+     * @return true if the player is dashing, false otherwise
+     */
     public boolean isDashing() {
         return this.timeLeftWhileDashing > 0;
     }
 
+    /**
+     * Indicate if the player can use his dash again
+     * @return true if he can, false otherwise
+     */
     private boolean isDashReady() {
         return dashCooldown <= 0;
     }
 
+    /**
+     * Allow the player the shoot a fireball in the direction of the mouse
+     */
     private void shootFireball() {
-        Vector2f fireballDirection = this.mousePosition.copy().sub(super.getCenter()).normalise();
-        this.spellCooldown = PlayerConstants.SPELL_COOLDOWN;
-        this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION;
-        super.setSpeed(new Vector2f(0, 0));
-        Ranged.allyProjectiles.add(new Fireball(super.getCenter().add(fireballDirection.copy().scale(super.getRadius()+Fireball.getFireballRadius())), fireballDirection)); //décalage car bord haut gauche
-        super.renderer.setLastActivity("Cast");
+        Vector2f fireballDirection = this.mousePosition.copy().sub(super.getCenter()).normalise(); //Getting the mouse position
+        this.spellCooldown = PlayerConstants.SPELL_COOLDOWN; //Setting the cooldown
+        this.timeLeftWhileAttacking = PlayerConstants.ATTACK_DURATION; //Imobilize the player for a short period of time
+        super.setSpeed(new Vector2f(0, 0)); //kill the speed of the player
+        Ranged.allyProjectiles.add(new Fireball(super.getCenter().add(fireballDirection.copy().scale(super.getRadius()+Fireball.getFireballRadius())), fireballDirection)); //create the fireball
+        super.renderer.setLastActivity("Cast"); //set animation to "cast"
         super.renderer.update(fireballDirection);
         this.spellAttackVisual.onCooldownStart();
     }
 
+    /**
+     * Indicate if the player can shoot a fireball again
+     * @return true if he can, false otherwise
+     */
     private boolean isSpellReady() {
         return this.spellCooldown <= 0;
     }
 
+    /**
+     * Indicate if the player is currently attacking
+     * @return trus if he does, false otherwise
+     */
     private boolean isAttacking() {
         return timeLeftWhileAttacking > 0;
     }
 
+    /**
+     * Getter for the maximum speed
+     * @return the norm of the maximum speed
+     */
     @Override
     public float getMaxSpeed() {
         return this.maxSpeed;
     }
 
+    /**
+     * Getter for the acceleration
+     * @return the norm of the acceleration
+     */
     @Override
     public float getAccelerationRate() {
         return this.accelerationNorm;
     }
 
+    /**
+     * Allow the player to take damage if he isn't dashing
+     * @param damage damage value inflicted
+     */
     @Override
     public void takeDamage(int damage) {
         if (!this.isDashing()) {
             super.takeDamage(damage);
-            //this.currentHealthPoints = Math.max(0, this.getCurrentHealthPoints() - round(damage / this.getArmorPoints()));
         }
     }
 
@@ -389,19 +441,25 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {}
 
+    /**
+     * Mouse listener on button pressed
+     * @param button the vutton of the mouse that was pressed
+     * @param x the x-coordonate of the mouse
+     * @param y the y-coordonate of the mouse
+     */
     @Override
     public void mousePressed(int button, int x, int y) {
-        if (!MainClass.isGamePaused() && !isDashing()) {
+        if (!MainClass.isGamePaused() && !isDashing()) { //if the game is running and the player isn't dashing
             switch (button) {
                 case 0:
-                    if (!this.isAttacking()) {
+                    if (!this.isAttacking()) { //if the player isn't already attacking
                         this.meleeAttack();
                     }
 
                     break;
                 case 1:
-                    if (!this.isAttacking()) {
-                        if (isSpellReady()) {
+                    if (!this.isAttacking()) { //if the player isn't already attacking
+                        if (isSpellReady()) { //if the fireball is ready
                             shootFireball();
                         }
                     }
@@ -415,6 +473,13 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     public void mouseReleased(int button, int x, int y) {
     }
 
+    /**
+     * Mouse listener on mouse move
+     * @param oldx x-coordonate of the last position of the mouse
+     * @param oldy y-coordonate of the last position of the mouse
+     * @param newx x-coordonate of the new position of the mouse
+     * @param newy y-coordonate of the new position of the mouse
+     */
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
         this.setAngleFaced(newx, newy);

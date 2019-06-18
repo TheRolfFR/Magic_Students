@@ -4,6 +4,9 @@ import Main.MainClass;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * old class that isn't relevant anymore
+ */
 public class Snowball extends Projectile {
 
     private static int damage = 25;
