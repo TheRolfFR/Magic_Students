@@ -1,5 +1,6 @@
 package Renderers;
 
+import Main.MainClass;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
@@ -8,12 +9,16 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.Random;
 
 /**
- * Game grass background renderer
+ * Game grass background renderer with keys on first start
  */
 public class BackgroundRenderer {
 
     private static final String BACKGROUND_PATH = "img/ground.png"; // ground image location
     private static final float BACKGROUND_SCALE = 2f; // backgorund tile scale
+
+    private static final String KEYS_IMAGE_PATH = "img/keys.png"; // keys image location
+    private static final float KEYS_IMAGE_SCALE = 3f;
+    private static final float KEYS_IMAGE_OPACITY = 0.4f;
 
     private static final Color GROUND_COLOR = new Color(0x4CAF50); // green ground color
 
@@ -21,6 +26,10 @@ public class BackgroundRenderer {
     private static Image backgroundImage = null; // the background image to display
 
     private static Vector2f roomDimension = null; // the size of the room (the window size)
+
+    private static boolean keysDisplayed = false;
+    private static Image keyImage;
+    private static Vector2f keyImagePosition;
 
     private BackgroundRenderer() {
     }
@@ -44,7 +53,13 @@ public class BackgroundRenderer {
 
                 backgroundImage = new Image((int) roomDimension.getX(), (int) roomDimension.getY()); // create an empty image woth the room size
 
+                keyImage = new Image(KEYS_IMAGE_PATH, false, Image.FILTER_NEAREST).getScaledCopy(3f);
+                keyImage.setAlpha(KEYS_IMAGE_OPACITY);
+                keyImagePosition = new Vector2f((MainClass.WIDTH - keyImage.getWidth())/2, (MainClass.HEIGHT - keyImage.getHeight())/2);
+
                 regenerateBackground(); // generating the background
+
+                keysDisplayed = false;
             } catch (SlickException e) { // else crash
                 e.printStackTrace();
                 System.exit(1);
@@ -80,6 +95,7 @@ public class BackgroundRenderer {
             backgroundImageG.fillRect(0, 0, roomDimension.getX(), roomDimension.getY()); // "coloring" the generated background
 
             backgroundImageG.flush(); // update of the image
+            keysDisplayed = true;
         } catch (SlickException e) {
             e.printStackTrace();
             System.exit(1);
@@ -95,5 +111,10 @@ public class BackgroundRenderer {
             return;
 
         g.drawImage(backgroundImage, 0, 0); // render of the background at position (0,0)
+
+
+        if(!keysDisplayed) {
+            g.drawImage(keyImage, (int) keyImagePosition.getX(), (int) keyImagePosition.getY());
+        }
     }
 }
