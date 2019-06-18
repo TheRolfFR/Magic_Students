@@ -3,29 +3,52 @@ package Renderers;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * Sprite view for {@link LivingBeingRenderer} class
+ */
 public class SpriteView {
+    /**
+     * the sprite view animation
+     */
     protected Animation animation;
     private Vector2f animationCenter;
 
-    public SpriteView(String path, Vector2f tileSize, int duration) {
-        init(path, tileSize, duration, null);
+    /**
+     * Constructor without transparent color
+     * @param imagePath the image spritesheet path
+     * @param tileSize the size of a tile of the spritesheet
+     * @param frameDuration the duration in ms of a tile
+     */
+    public SpriteView(String imagePath, Vector2f tileSize, int frameDuration) {
+        init(imagePath, tileSize, frameDuration, null);
     }
 
-    public SpriteView(String path, Vector2f tileSize, int duration, Color filter) {
-        init(path, tileSize, duration, filter);
+    /**
+     * Constructor with transparent color
+     * @param imagePath the image spritesheet path
+     * @param tileSize the size of a tile of the spritesheet
+     * @param frameDuration the duration in ms of a tile
+     * @param transparentColor the background color to put transparent
+     */
+    public SpriteView(String imagePath, Vector2f tileSize, int frameDuration, Color transparentColor) {
+        init(imagePath, tileSize, frameDuration, transparentColor);
     }
 
-    private void init(String path, Vector2f tileSize, int duration) {
-        init(path, tileSize, duration, null);
-    }
-    private void init(String path, Vector2f tileSize, int duration, Color filter) {
+    /**
+     * initialization function for constructors
+     * @param imagePath the image spritesheet path
+     * @param tileSize the size of a tile of the spritesheet
+     * @param frameDuration the duration in ms of a tile
+     * @param transparentColor the background color to put transparent
+     */
+    private void init(String imagePath, Vector2f tileSize, int frameDuration, Color transparentColor) {
         Image original = null;
 
         try {
-            if (filter == null) {
-                original = new Image(path, false, Image.FILTER_NEAREST);
+            if (transparentColor == null) {
+                original = new Image(imagePath, false, Image.FILTER_NEAREST);
             } else {
-                original = new Image(path, false, Image.FILTER_NEAREST, filter);
+                original = new Image(imagePath, false, Image.FILTER_NEAREST, transparentColor);
             }
         } catch (SlickException e) {
             System.exit(1);
@@ -39,25 +62,33 @@ public class SpriteView {
 
         animationCenter = new Vector2f(tileSize.getX()/2f, tileSize.getY()/2f);
 
-        this.animation = new Animation(sp, duration);
+        this.animation = new Animation(sp, frameDuration);
     }
 
+    /**
+     * Stops the animation
+     */
     public void stop() {
         this.animation.stop();
     }
 
+    /**
+     * Resume the animation
+     */
     public void start() {
         this.animation.start();
     }
 
+    /**
+     * In game rendering
+     * @param center spriteview center position
+     * @param filter color filter to "color" the image
+     * @see LivingBeingRenderer#render(Graphics, Vector2f)
+     */
     public void render(Vector2f center, Color filter) {
         if (this.animation != null) {
             Vector2f location = center.copy().sub(animationCenter);
             this.animation.draw((int) location.getX(), (int) location.getY(), filter);
         }
     }
-
-    void stopLoop(){this.animation.setLooping(false);}
-
-    void restartAnimation(){this.animation.restart();}
 }

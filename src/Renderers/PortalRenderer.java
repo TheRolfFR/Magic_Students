@@ -5,6 +5,9 @@ import Main.TimeScale;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * Portal renderer with 2 animations, the opening animation and the opened animation
+ */
 public class PortalRenderer extends SpriteRenderer {
     private Animation openingAnimation;
     private Animation openedAnimation;
@@ -26,15 +29,28 @@ public class PortalRenderer extends SpriteRenderer {
     private static final int OPENED_DURATION = 750;
     private static final String PORTAL_OPENED_PATH = PREPATH + "portalOpened_32x32.png";
 
+    /**
+     * restarts the animation
+     */
     public void restart() {
         this.timeCounter = 0;
         this.openingAnimation.restart();
     }
 
-    public static Vector2f getTILESIZE() {
+    /**
+     * tilesize getter
+     * @return the tile size getter
+     */
+    public static Vector2f getTileSize() {
         return TILESIZE.copy();
     }
 
+    /**
+     * Default constructor : tries to load the images, crash otherwise
+     * @param entity the entity related
+     * @param x the x center of the portal
+     * @param y the y center of the portal
+     */
     public PortalRenderer(Entity entity, float x, float y) {
         super(entity, TILESIZE);
 
@@ -55,15 +71,24 @@ public class PortalRenderer extends SpriteRenderer {
 
     }
 
+    /**
+     * In game update : updates the time counter
+     * @param deltaTime the duration in ms of the last frame
+     */
     public void update(int deltaTime) {
         if (this.timeCounter < OPENING_DURATION) {
             this.timeCounter += deltaTime;
         }
     }
 
+    /**
+     * In game rendering
+     * @param color the color of the portal
+     */
     public void Render(Color color) {
         Animation animationToShow;
 
+        // animation selection based on the OPENING_DURATION
         if (this.timeCounter < OPENING_DURATION) {
             animationToShow = this.openingAnimation;
         } else {
@@ -77,6 +102,7 @@ public class PortalRenderer extends SpriteRenderer {
             animationToShow.stop();
         }
 
+        // draw the animation
         animationToShow.draw(topLeftAngle.getX(), topLeftAngle.getY(), color);
     }
 }

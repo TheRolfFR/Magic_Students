@@ -33,8 +33,6 @@ public class Fireball extends Projectile implements FireballConstants{
 
     @Override
     public void fadeOut() {
-        if (this.renderer != null)
-            this.renderer.setOpacity(0);
     }
 
     public static int getFireballRadius() {

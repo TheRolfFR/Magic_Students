@@ -9,33 +9,51 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Most complex renderer of this package<br>
+ * Dynamic activity and directional renderer
+ */
 public class LivingBeingRenderer extends SpriteRenderer {
 
+    /**
+     * Accepted vision directions for the view names
+     */
     public static final String[] ACCEPTED_VISION_DIRECTIONS = {"left", "right", "top", "bottom"};
 
+    /**
+     * Says wether the accepted directions is coressponding to ACCEPTED_VISION_DIRECTIONS
+     * @param direction the direction we want to check
+     * @return true if the array contains the direction, false otherwise
+     */
     private static boolean acceptedDirectionsContains(String direction) {
         boolean found = false;
 
         int i = 0;
-        while (i < ACCEPTED_VISION_DIRECTIONS.length && !found) {
+        while (i < ACCEPTED_VISION_DIRECTIONS.length && !found) { // search for a correct direction name
             found = ACCEPTED_VISION_DIRECTIONS[i].equals(direction);
 
             i++;
         }
-        return found;
+        return found; // returns if it found it
     }
 
-    private Color colorFilter;
+    private Color colorFilter; // the color to "color" the image
 
+    /**
+     * the list of all activities names
+     */
     protected ArrayList<String> activities;
 
-    private String lastActivity;
-    private String lastVisionDirection;
-    private Vector2f lastFacedDirection;
-    private SpriteView lastView;
+    private String lastActivity; // the last activity done
+    private String lastVisionDirection; // the lsast vision seen
+    private Vector2f lastFacedDirection; // the last direction faced
+    private SpriteView lastView; // the last view displayed
 
-    private HashMap<String, SpriteView> views;
+    private HashMap<String, SpriteView> views; // all the views
 
+    /**
+     * The null vector (necessary for the {@link #update(Vector2f) upate} function)
+     */
     protected static final Vector2f zero = new Vector2f(0f, 0f);
     /**
      * Sets last activity if the value exists
@@ -151,6 +169,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
 
     /**
      * supposed update
+     * @param facedDirection the direction faced by the living being
      * */
     public void update(Vector2f facedDirection){
         // update last faced direction
