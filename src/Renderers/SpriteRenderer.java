@@ -7,9 +7,21 @@ import org.newdawn.slick.geom.Vector2f;
  * Basic abstract renderer
  */
 public abstract class SpriteRenderer {
+    /**
+     * Says wether the debug rect will be displayed at render
+     */
     protected boolean showDebugRect;
+    /**
+     * Opacity of the sprite renderer between 0 and 1
+     */
     protected float opacity;
+    /**
+     * The entity related
+     */
     protected Entity entity;
+    /**
+     * the renderer tile size
+     */
     protected Vector2f tileSize;
 
     /**

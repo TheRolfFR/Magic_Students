@@ -13,13 +13,15 @@ import Entities.Projectiles.Projectile;
 import HUD.HealthBars.BossHealthBar;
 import Listeners.SummonListener;
 import Main.GameStats;
+import Main.MainClass;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static Main.MainClass.*;
-
+/**
+ * Enemies data manager
+ */
 public class EnemiesManager implements SummonListener {
 
     private ArrayList<Monster> enemies = new ArrayList<>();
@@ -27,19 +29,35 @@ public class EnemiesManager implements SummonListener {
     private PortalsManager portalsManager;
     private BossHealthBar bossHealthBar;
 
+    /**
+     * Enemies list getter
+     * @return the enemies list
+     */
     public ArrayList<Monster> getEnemies() {
         return enemies;
     }
 
+    /**
+     * boss healthbar setter
+     * @param bossHealthBar the boss health bar
+     */
     void setBossHealthBar(BossHealthBar bossHealthBar) {
         this.bossHealthBar = bossHealthBar;
     }
 
+    /**
+     * Default constructor
+     * @param player the player related
+     * @param portalsManager the portalManager instance
+     */
     public EnemiesManager(Player player, PortalsManager portalsManager) {
         this.player = player;
         this.portalsManager = portalsManager;
     }
 
+    /**
+     * Random generation of enemies wherer its number depends of the difficulty
+     */
     public void generateEnemies() {
         Random random = new Random();
         for (int i = 1; i < 4 + Math.round(GameStats.getInstance().getDifficulty() / 4); i++) {
@@ -55,12 +73,16 @@ public class EnemiesManager implements SummonListener {
         }
     }
 
+    /**
+     * {@link Bowman} generation at a random posiion. Its armor, health points and damage depends of the difficulty
+     * @return a bowan
+     */
     public static Bowman newBowman() {
 
         Random random = new Random();
 
-        int randomX = random.nextInt(Math.round(WIDTH-2*Bowman.BOWMAN_TILESIZE.getX())) + (int) Bowman.BOWMAN_TILESIZE.getX();
-        int randomY = random.nextInt(Math.round(HEIGHT-2*Bowman.BOWMAN_TILESIZE.getY())) + (int) Bowman.BOWMAN_TILESIZE.getY();
+        int randomX = random.nextInt(Math.round(MainClass.WIDTH-2*Bowman.BOWMAN_TILESIZE.getX())) + (int) Bowman.BOWMAN_TILESIZE.getX();
+        int randomY = random.nextInt(Math.round(MainClass.HEIGHT-2*Bowman.BOWMAN_TILESIZE.getY())) + (int) Bowman.BOWMAN_TILESIZE.getY();
 
         Bowman tmpb = new Bowman(randomX, randomY,
                 Math.round(75 * GameStats.getInstance().getDifficulty()),
@@ -72,12 +94,17 @@ public class EnemiesManager implements SummonListener {
         return tmpb;
     }
 
+
+    /**
+     * {@link Knight} generation at a random posiion. Its armor, health points and damage depends of the difficulty
+     * @return a knight
+     */
     public static Knight newKnight() {
 
         Random random = new Random();
 
-        int randomX = random.nextInt(Math.round(WIDTH-2*Knight.KNIGHT_TILESIZE.getX())) + (int) Knight.KNIGHT_TILESIZE.getX();
-        int randomY = random.nextInt(Math.round(HEIGHT-2*Knight.KNIGHT_TILESIZE.getY())) + (int) Knight.KNIGHT_TILESIZE.getY();
+        int randomX = random.nextInt(Math.round(MainClass.WIDTH-2*Knight.KNIGHT_TILESIZE.getX())) + (int) Knight.KNIGHT_TILESIZE.getX();
+        int randomY = random.nextInt(Math.round(MainClass.HEIGHT-2*Knight.KNIGHT_TILESIZE.getY())) + (int) Knight.KNIGHT_TILESIZE.getY();
 
         Knight tmpk = new Knight(randomX, randomY,
                 Math.round(100 * GameStats.getInstance().getDifficulty()),
@@ -89,6 +116,9 @@ public class EnemiesManager implements SummonListener {
         return tmpk;
     }
 
+    /**
+     * Random boss generation
+     */
     public void generateBoss() {
         Random random = new Random();
 
@@ -107,8 +137,12 @@ public class EnemiesManager implements SummonListener {
             boss.addSummonListener(this);
     }
 
+    /**
+     * {@link KnightBoss} generation at a random posiion. Its armor, health points and damage depends of the difficulty
+     * @return a knight boss
+     */
     private IBoss addBossKnight() {
-        KnightBoss knightBoss = new KnightBoss(WIDTH / 2, HEIGHT / 2,
+        KnightBoss knightBoss = new KnightBoss(MainClass.WIDTH / 2, MainClass.HEIGHT / 2,
                 Math.round(1000 * GameStats.getInstance().getDifficulty()),
                 Math.round(4 * GameStats.getInstance().getDifficulty()),
                 Math.round(12 * GameStats.getInstance().getDifficulty()),
@@ -121,8 +155,12 @@ public class EnemiesManager implements SummonListener {
         return knightBoss;
     }
 
+    /**
+     * {@link BowmanBoss} generation at a random posiion. Its armor, health points and damage depends of the difficulty
+     * @return a knight boss
+     */
     private IBoss addBossBowman() {
-        BowmanBoss bowmanBoss = new BowmanBoss(WIDTH / 2, HEIGHT / 2,
+        BowmanBoss bowmanBoss = new BowmanBoss(MainClass.WIDTH / 2, MainClass.HEIGHT / 2,
                 Math.round(1000 * GameStats.getInstance().getDifficulty()),
                 Math.round(4 * GameStats.getInstance().getDifficulty()),
                 Math.round(4 * GameStats.getInstance().getDifficulty()),
@@ -135,6 +173,9 @@ public class EnemiesManager implements SummonListener {
         return bowmanBoss;
     }
 
+    /**
+     * In game update : collision check, player health, dead enemies removal, and portal appearance
+     */
     public void update() {
         for (int i = 0; i < this.enemies.size(); i++) {
             Monster enemy = enemies.get(i);
@@ -143,7 +184,7 @@ public class EnemiesManager implements SummonListener {
                 enemy.checkCollision();
             }
             if (this.player.isDead()) {
-                setGamePaused();
+                MainClass.setGamePaused();
             }
             if (enemy.isDead()) {
                 LivingBeing.livingBeings.remove(enemy);
@@ -155,6 +196,10 @@ public class EnemiesManager implements SummonListener {
         }
     }
 
+    /**
+     * In game rendering
+     * @param g the graphics to draw on
+     */
     public void render(Graphics g) {
         for (Monster enemy : enemies) {
             enemy.render(g);
@@ -171,6 +216,10 @@ public class EnemiesManager implements SummonListener {
         }
     }
 
+    /**
+     * add enemies on boss summon
+     * @param monster the monster to add to the list
+     */
     @Override
     public void onSummon(Monster monster) {
         this.enemies.add(monster);

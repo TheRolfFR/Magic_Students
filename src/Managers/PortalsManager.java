@@ -8,6 +8,7 @@ import Listeners.KeyPressListener;
 import Listeners.LivingBeingMoveListener;
 import Listeners.PortalsManagerListener;
 import Main.GameStats;
+import Main.MainClass;
 import Main.TimeScale;
 import Renderers.PortalRenderer;
 import org.newdawn.slick.Color;
@@ -20,13 +21,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import static Main.MainClass.HEIGHT;
-import static Main.MainClass.WIDTH;
-
+/**
+ * Portal data manager
+ */
 public class PortalsManager implements KeyPressListener, LivingBeingMoveListener {
     private static final Map<String, Color> ROOM_COLOR = new HashMap<>();
     private static final Map<String, Float> CUMULATIVE_ROOM_PROBABILITY = new HashMap<>();
 
+    /**
+     *  Static code to add of the items for Java 1.8 (NEEDED)
+     */
     static {
         ROOM_COLOR.put("classic", new Color(0x0094FF));
         ROOM_COLOR.put("item", Color.yellow);
@@ -47,14 +51,28 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
 
     private ArrayList<PortalsManagerListener> portalsManagerListeners;
 
+    /**
+     * method to add a portal manager listener
+     * @param listener the listener to add
+     */
     private void addPortalsManagerListeners(PortalsManagerListener listener) {
         this.portalsManagerListeners.add(listener);
     }
 
+    /**
+     * room color map getter
+     * @return the map
+     */
     public static Map<String, Color> getRoomColor() {
         return ROOM_COLOR;
     }
 
+    /**
+     * Default constructor
+     * @param gc the game container to add the key listener
+     * @param player the player to add the move listener
+     * @param fadeToBlack the fadeToblack listener added to the portalManager
+     */
     public PortalsManager(GameContainer gc, Player player, FadeToBlack fadeToBlack) {
         gc.getInput().addKeyListener(this);
         this.portalSet = false;
@@ -63,13 +81,13 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
 
         int offsetFromWall = 60;
         int[][] possiblePositions = {
-                {WIDTH / 2, offsetFromWall},
-                {WIDTH / 2, HEIGHT - offsetFromWall},
-                {offsetFromWall, HEIGHT / 2},
-                {WIDTH - offsetFromWall, HEIGHT / 2}
+                {MainClass.WIDTH / 2, offsetFromWall},
+                {MainClass.WIDTH / 2, MainClass.HEIGHT - offsetFromWall},
+                {offsetFromWall, MainClass.HEIGHT / 2},
+                {MainClass.WIDTH - offsetFromWall, MainClass.HEIGHT / 2}
         };
 
-        Portal portal = new Portal(WIDTH / 2, HEIGHT / 2,
+        Portal portal = new Portal(MainClass.WIDTH / 2, MainClass.HEIGHT / 2,
                 (int) PortalRenderer.getTileSize().getX(), (int) PortalRenderer.getTileSize().getY(), 20);
         portal.setType("nextFloor");
         portal.setShowDebugRect(true);
@@ -89,14 +107,25 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         this.addPortalsManagerListeners(TimeScale.getInGameTimeScale());
     }
 
+    /**
+     * Latest portal type getter
+     * @return the portal type
+     */
     public String getLatestPortalType() {
         return this.latestPortalType;
     }
 
+    /**
+     * Latest portal setter
+     * @param type the type of the portal contained in CUMULATIVE_ROOM_PROBABILITY keys
+     */
     private void setLatestPortalType(String type) {
         this.latestPortalType = type;
     }
 
+    /**
+     * TODO : explain me what da hell is this
+     */
     void setPortals() {
         if (!portalSet) {
             if (this.latestPortalType != null && this.latestPortalType.equals("boss")) {
@@ -130,6 +159,11 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         }
     }
 
+    /**
+     * In game update : update all the portals and the floor portal
+     * @param deltaTime the duration in ms of the last frame
+     * @see Portal#update(int)
+     */
     public void update(int deltaTime) {
         if (this.portalSet) {
             for (Portal portal : portals) {
@@ -143,6 +177,9 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         }
     }
 
+    /**
+     * Hides all the portals
+     */
     public void hidePortals() {
         for (Portal portalBis : portals) {
             portalBis.setVisible(false);
@@ -151,10 +188,18 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         portalSet = false;
     }
 
+    /**
+     * Says wther the latest portal is an item portal
+     * @return true if the latest portal is an item portal, false otherwise
+     */
     private boolean lastestPortalIsItem() {
         return this.latestPortalType != null && this.latestPortalType.equals("item");
     }
 
+    /**
+     * In game rendering
+     * @param g the graphics to draw on
+     */
     public void render(Graphics g) {
         for (Portal portal: portals) {
             if (portal.isVisible()) {
@@ -166,6 +211,11 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         }
     }
 
+    /**
+     * Portal key trigger : F to engage the portals
+     * @param key the key pressed
+     * @param c the key pressed
+     */
     @Override
     public void keyPressed(int key, char c) {
         if (this.portalHovered != null && key == Input.KEY_F) {
@@ -188,6 +238,10 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         }
     }
 
+    /**
+     * Portal hover trigger
+     * @param being the being living which moved
+     */
     @Override
     public void onMove(LivingBeing being) {
         // if the being is the player
