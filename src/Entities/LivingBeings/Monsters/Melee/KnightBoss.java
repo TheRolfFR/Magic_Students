@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.Random;
 
 public class KnightBoss extends Knight implements IBoss, BossConstants {
-    public static final Vector2f KNIGHTBOSS_TILESIZE = new Vector2f(96, 96);
+    public static final Vector2f KNIGHTBOSS_TILESIZE = new Vector2f(144, 144);
     private float summonCooldown = BossConstants.SUMMON_COOLDOWN;
 
     public KnightBoss(float x, float y, int hpCount, int armor, int damage, int radius) {
