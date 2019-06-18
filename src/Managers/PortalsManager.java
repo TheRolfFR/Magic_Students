@@ -80,6 +80,8 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         this.portalHovered = null;
 
         int offsetFromWall = 60;
+
+        // the 4 possible positions of the portals
         int[][] possiblePositions = {
                 {MainClass.WIDTH / 2, offsetFromWall},
                 {MainClass.WIDTH / 2, MainClass.HEIGHT - offsetFromWall},
@@ -87,12 +89,14 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
                 {MainClass.WIDTH - offsetFromWall, MainClass.HEIGHT / 2}
         };
 
-        Portal portal = new Portal(MainClass.WIDTH / 2, MainClass.HEIGHT / 2,
+        // create the next floor portal
+        floorPortal = new Portal(MainClass.WIDTH / 2, MainClass.HEIGHT / 2,
                 (int) PortalRenderer.getTileSize().getX(), (int) PortalRenderer.getTileSize().getY(), 20);
-        portal.setType("nextFloor");
-        portal.setShowDebugRect(true);
-        floorPortal = portal;
+        floorPortal.setType("nextFloor");
+        floorPortal.setShowDebugRect(true);
 
+        // for each portal
+        Portal portal;
         for (int p = 0; p < 4; p++) {
             portal = new Portal(possiblePositions[p][0], possiblePositions[p][1],
                     (int) PortalRenderer.getTileSize().getX(), (int) PortalRenderer.getTileSize().getY(), 20);
@@ -100,8 +104,10 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
             portals.add(portal);
         }
 
+        // add the move listener
         player.addMoveListener(this);
 
+        // add the portal listeners
         this.portalsManagerListeners = new ArrayList<>();
         this.addPortalsManagerListeners(fadeToBlack);
         this.addPortalsManagerListeners(TimeScale.getInGameTimeScale());
@@ -124,38 +130,38 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
     }
 
     /**
-     * TODO : explain me what da hell is this
+     * display all the portals depending the actual room
      */
     void setPortals() {
-        if (!portalSet) {
-            if (this.latestPortalType != null && this.latestPortalType.equals("boss")) {
-                floorPortal.setVisible(true);
+        if (!portalSet) { // if the portals are not set
+            if (this.latestPortalType != null && this.latestPortalType.equals("boss")) { // if these not the first room and the room is a boss room
+                floorPortal.setVisible(true); // set visible a next room portal
             } else {
-                Random random = new Random();
+                Random random = new Random(); // generate a random object
 
-                Portal p = portals.get(random.nextInt(portals.size()));
-                p.setVisible(true);
-                p.setType("classic");
+                Portal p = portals.get(random.nextInt(portals.size())); // take a random portal
+                p.setVisible(true); // set it visible
+                p.setType("classic"); // and make it classic
 
                 float chance;
-                for (Portal portal : portals) {
-                    if (!portal.isVisible()) {
-                        chance = random.nextFloat();
+                for (Portal portal : portals) { // for each portal
+                    if (!portal.isVisible()) { // select the not visible portals
+                        chance = random.nextFloat(); // generate an random float between 0 and 1
 
-                        for (String type : CUMULATIVE_ROOM_PROBABILITY.keySet()) {
-                            if (!(type.equals("item") && lastestPortalIsItem())) {
-                                if (chance <= CUMULATIVE_ROOM_PROBABILITY.get(type)) {
-                                    portal.setVisible(true);
-                                    portal.setType(type);
-                                    break;
+                        for (String type : CUMULATIVE_ROOM_PROBABILITY.keySet()) { // for each type of portal
+                            if (!(type.equals("item") && lastestPortalIsItem())) { // if the current room isn't an item room
+                                if (chance <= CUMULATIVE_ROOM_PROBABILITY.get(type)) { // if the probability is lower or equal to chance
+                                    portal.setVisible(true); // set the portal visible
+                                    portal.setType(type); // set the portal type
+                                    break; // break the for loop
                                 }
                             }
                         }
                     }
                 }
             }
-            this.portalSet = true;
-            this.latestPortalType = null;
+            this.portalSet = true; // indicate that the portals are set
+            this.latestPortalType = null; // set last portal type selected to null
         }
     }
 
@@ -181,11 +187,11 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
      * Hides all the portals
      */
     public void hidePortals() {
-        for (Portal portalBis : portals) {
-            portalBis.setVisible(false);
+        for (Portal portalBis : portals) { // for each portals
+            portalBis.setVisible(false); // hide portal
         }
-        floorPortal.setVisible(false);
-        portalSet = false;
+        floorPortal.setVisible(false); // hide the floor portal too
+        portalSet = false; // indicate that the portals aren't set
     }
 
     /**
