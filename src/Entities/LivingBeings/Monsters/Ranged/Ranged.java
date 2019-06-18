@@ -28,7 +28,7 @@ public abstract class Ranged extends Monster {
         super(x , y, width, height, hpCount, armor, damage, radius);
     }
 
-    public static void renderAll(Graphics g) {
+    public static void renderProjectiles(Graphics g) {
         for (Projectile p : Ranged.enemyProjectiles) {
             p.render(g);
         }
