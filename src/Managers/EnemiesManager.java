@@ -7,14 +7,11 @@ import Entities.LivingBeings.Monsters.Melee.KnightBoss;
 import Entities.LivingBeings.Monsters.Monster;
 import Entities.LivingBeings.Monsters.Ranged.Bowman;
 import Entities.LivingBeings.Monsters.Ranged.BowmanBoss;
-import Entities.LivingBeings.Monsters.Ranged.Ranged;
 import Entities.LivingBeings.Player;
-import Entities.Projectiles.Projectile;
 import HUD.HealthBars.BossHealthBar;
 import Listeners.SummonListener;
 import Main.GameStats;
 import Main.MainClass;
-import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -193,26 +190,6 @@ public class EnemiesManager implements SummonListener {
         }
         if (this.enemies.size() == 0) {
             portalsManager.setPortals();
-        }
-    }
-
-    /**
-     * In game rendering
-     * @param g the graphics to draw on
-     */
-    public void render(Graphics g) {
-        for (Monster enemy : enemies) {
-            enemy.render(g);
-
-            if (!(enemy instanceof IBoss)) {
-                enemy.getWorldHealthBar().render(g);
-            }
-        }
-        for (Projectile p : Ranged.enemyProjectiles) {
-            p.render(g);
-        }
-        for (Projectile p : Ranged.allyProjectiles) {
-            p.render(g);
         }
     }
 

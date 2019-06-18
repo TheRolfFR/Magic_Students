@@ -1,6 +1,7 @@
 package Entities.LivingBeings;
 
 import Entities.Entity;
+import Entities.LivingBeings.Monsters.IBoss;
 import Entities.LivingBeings.Monsters.Monster;
 import Listeners.LivingBeingHealthListener;
 import Listeners.LivingBeingMoveListener;
@@ -148,6 +149,12 @@ public abstract class LivingBeing extends Entity implements Comparable {
 
         for (LivingBeing lb : livingBeings) {
             lb.render(g);
+
+            if (lb instanceof Monster) {
+                if (!(lb instanceof IBoss)) {
+                    ((Monster) lb).getWorldHealthBar().render(g);
+                }
+            }
         }
     }
 
