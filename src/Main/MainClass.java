@@ -169,9 +169,9 @@ public class MainClass extends BasicGame {
         this.portalsManager.render(g);
 
         LivingBeing.sortAndRenderLivingBeings(g);
+        Ranged.renderProjectiles(g);
 
         this.itemManager.render(g);
-        this.enemiesManager.render(g);
         this.hudManager.render(g);
         this.attackVisualsManager.render(g);
 

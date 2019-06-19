@@ -6,7 +6,7 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
- * The mother class of all our object
+ * The mother class of all our elements in game
  */
 public abstract class Entity {
 

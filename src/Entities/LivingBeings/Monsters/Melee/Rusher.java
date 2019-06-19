@@ -5,6 +5,9 @@ import Renderers.LivingBeingRenderer;
 import Renderers.SpriteView;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * old class that isn't relevant anymore
+ */
 public class Rusher extends Melee {
     public Rusher(float x, float y, int width, int height, int hpCount, int armor, int damage, int radius) {
         super(x, y, width, height, hpCount, armor, damage, radius);
@@ -25,7 +28,6 @@ public class Rusher extends Melee {
         this.updateSpeed(target.getCenter().sub(this.getCenter()).normalise().scale(this.getAccelerationRate()));
 
         this.move();
-        this.doDamage(target);
     }
 
     @Override

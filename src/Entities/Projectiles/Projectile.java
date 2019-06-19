@@ -52,35 +52,6 @@ public abstract class Projectile extends Entity {
     }
 
     /**
-     *
-     * @param x the first coordonate of the projectile
-     * @param y the second coordonate of the projectile
-     * @param direction the direction of the porjectile
-     * @param imagePath the path to the image
-     * @param radius the hitbox radius of the projectile
-     */
-    public Projectile(float x, float y, Vector2f direction, String imagePath, int radius) {
-        super(x, y, radius);
-        this.direction = direction;
-
-        this.image = null;
-
-        this.opacity = 1f;
-
-        this.isDead = false;
-
-        try {
-            this.image = new Image(imagePath);
-        } catch (SlickException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        // for debugging purposes
-        this.showDebugRect = true;
-    }
-
-    /**
      * Getter for the opacity
      * @return the opacity of the projectile
      */

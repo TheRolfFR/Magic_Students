@@ -1,5 +1,8 @@
 package Entities.LivingBeings;
 
+/**
+ * Interface that contains constants relative to the player
+ */
 public interface PlayerConstants {
     float ATTACK_DURATION = 0.15f;
     float DASH_DURATION = 1f/3f;
