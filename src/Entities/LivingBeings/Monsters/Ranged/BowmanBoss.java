@@ -100,7 +100,7 @@ public class BowmanBoss extends Bowman implements IBoss, BossConstants {
     }
 
     /**
-     *
+     * summon an ally
      */
     private void summon() {
         super.setSpeed(new Vector2f(0, 0));
@@ -108,12 +108,18 @@ public class BowmanBoss extends Bowman implements IBoss, BossConstants {
         this.renderer.update(new Vector2f(0,1));
         this.triggerListener(EnemiesManager.newBowman());
         this.summonCooldown = BossConstants.SUMMON_COOLDOWN;
-        super.setSpeed(new Vector2f(0, 0));
         this.stun();
     }
 
+    /**
+     * Stun the boss to prevent him from doing another action for a set amount of time
+     */
     void stun(){super.framesLeftWhileStuned = BossConstants.STUN_AFTER_SUMMON;}
 
+    /**
+     * Indicate if the boss decide to use the summon spell
+     * @return true if he does, false otherwise
+     */
     private boolean decideToSummon() {
         Random random = new Random();
         return (random.nextFloat()%1 < 1f/(MainClass.getNumberOfFramePerSecond()*BossConstants.AVERAGE_SECONDS_BEFORE_SUMMONING));
