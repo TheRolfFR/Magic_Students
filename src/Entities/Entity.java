@@ -1,5 +1,6 @@
 package Entities;
 
+import Main.GameStats;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
@@ -16,8 +17,6 @@ public abstract class Entity {
 
     private Vector2f tileSize; //Size of the image
 
-    protected boolean showDebugRect; //show the hitbox on screen if true
-
     /**
      * Default constructor
      */
@@ -25,7 +24,6 @@ public abstract class Entity {
         this.position = new Vector2f(0, 0);
         this.speed = new Vector2f(0, 0);
         this.radius = 0;
-        this.showDebugRect = false;
         this.tileSize = new Vector2f(0, 0);
     }
 
@@ -41,7 +39,6 @@ public abstract class Entity {
         this.position = new Vector2f(x, y);
         this.speed = new Vector2f(0, 0);
         this.radius = radius;
-        this.showDebugRect = false;
         this.tileSize = new Vector2f(width, height);
     }
 
@@ -55,7 +52,6 @@ public abstract class Entity {
         this.position = new Vector2f(x, y);
         this.speed = new Vector2f(0, 0);
         this.radius = radius;
-        this.showDebugRect = false;
         this.tileSize = new Vector2f(radius*2, radius*2);
     }
 
@@ -121,14 +117,6 @@ public abstract class Entity {
     public Vector2f getSpeed() { return this.speed.copy(); }
 
     /**
-     * Allows to show the hitbox
-     * @param showDebugRect show or not the hitbox
-     */
-    public void setShowDebugRect(boolean showDebugRect) {
-        this.showDebugRect = showDebugRect;
-    }
-
-    /**
      * Getter for the hitbox
      * @return a Shape that reprensents the hitbox
      */
@@ -141,7 +129,7 @@ public abstract class Entity {
      * @param g the graphics to draw on
      */
     public void render(Graphics g) {
-        if (this.showDebugRect) {
+        if (GameStats.getInstance().isShowDebugRect()) {
             g.draw(this.getBounds());
         }
     }

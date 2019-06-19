@@ -7,16 +7,26 @@ import Listeners.LivingBeingHealthListener;
 public class GameStats implements LivingBeingHealthListener, AttackListener {
     private static GameStats ourInstance = new GameStats();
 
+    public static void setShowDebugRect(boolean state) {
+        getInstance().showDebugRect = state;
+    }
+
+    public boolean isShowDebugRect() {
+        return showDebugRect;
+    }
+
     public static GameStats getInstance() {
         return ourInstance;
     }
 
+    private boolean showDebugRect;
     private int difficulty;
     private long totalDamagesDone;
     private long totalDamagesReceived;
     private long totalHealReceived;
 
     private GameStats() {
+        this.showDebugRect = false;
         this.difficulty = 1;
         this.totalDamagesDone = 0;
         this.totalDamagesReceived = 0;

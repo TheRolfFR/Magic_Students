@@ -93,14 +93,12 @@ public class PortalsManager implements KeyPressListener, LivingBeingMoveListener
         floorPortal = new Portal(MainClass.WIDTH / 2, MainClass.HEIGHT / 2,
                 (int) PortalRenderer.getTileSize().getX(), (int) PortalRenderer.getTileSize().getY(), 20);
         floorPortal.setType("nextFloor");
-        floorPortal.setShowDebugRect(true);
 
         // for each portal
         Portal portal;
         for (int p = 0; p < 4; p++) {
             portal = new Portal(possiblePositions[p][0], possiblePositions[p][1],
                     (int) PortalRenderer.getTileSize().getX(), (int) PortalRenderer.getTileSize().getY(), 20);
-            portal.setShowDebugRect(true);
             portals.add(portal);
         }
 

@@ -1,6 +1,8 @@
 package Renderers;
 
 import Entities.Entity;
+import Entities.LivingBeings.LivingBeing;
+import Listeners.LivingBeingMoveListener;
 import Main.TimeScale;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -11,7 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
 /**
  * The player spell direction indicator (white circle and arrow)
  */
-public class PlayerMarkerRenderer extends SpriteRenderer {
+public class PlayerMarkerRenderer extends SpriteRenderer implements LivingBeingMoveListener {
 
     private Image playerMarkerImage;
     private Vector2f playerMarkerImageCenter;
@@ -70,5 +72,10 @@ public class PlayerMarkerRenderer extends SpriteRenderer {
 
             g.drawOval((int) location.getX(), (int) location.getY(), this.markerRadius*2, this.markerRadius*2);
         }
+    }
+
+    @Override
+    public void onMove(LivingBeing being) {
+
     }
 }

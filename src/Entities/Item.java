@@ -41,8 +41,7 @@ public class Item extends Entity {
     public Item() {
         super(MainClass.WIDTH / 2, MainClass.HEIGHT / 2, 25, 25, 13); //Create an entity located in the middle of the screen
         Random random = new Random();
-        this.typeOfItem = random.nextInt(6); //Pick randomly of type of item
-        this.setShowDebugRect(true);
+        this.typeOfItem = random.nextInt(7); //Pick randomly of type of item
         loadImage(); //Add the image to the renderer
     }
 
@@ -112,6 +111,8 @@ public class Item extends Entity {
             case 4 : player.buffArmor( Math.round(ARMORBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
                 break;
             case 5 : player.buffSpeed( Math.round(SPEEDBUFFAMOUNT*GameStats.getInstance().getDifficulty()));
+                break;
+            case 6: GameStats.setShowDebugRect(true);
                 break;
         }
     }

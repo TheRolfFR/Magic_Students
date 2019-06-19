@@ -126,15 +126,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
     }
 
     /**
-     * Allow to show the hitbox on the screen
-     * @param showDebugRect show or not the hitbox
-     */
-    @Override
-    public void setShowDebugRect(boolean showDebugRect) {
-        super.setShowDebugRect(showDebugRect);
-    }
-
-    /**
      * Setter for the angle that the player is facing
      * @param x the x-coordonate of the mouse
      * @param y the y-coordonate of the mouse
@@ -190,6 +181,8 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
             }
             this.checkCollision();
         }
+
+        this.setAngleFaced((int) mousePosition.getX(), (int) mousePosition.getY());
         super.move();
     }
 
@@ -482,7 +475,6 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
      */
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-        this.setAngleFaced(newx, newy);
         this.mousePosition = new Vector2f(newx, newy);
     }
 

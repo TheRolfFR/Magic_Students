@@ -12,6 +12,7 @@ import Listeners.FadeToBlackListener;
 import Managers.*;
 import Renderers.BackgroundRenderer;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -24,6 +25,11 @@ public class MainClass extends BasicGame {
 
     private static final String ICON_PATH = "img/icons/icon_";
     private static final int[] ICON_SIZES = { 16, 64, 32, 24, 48};
+
+    private static final String CURSOR_PATH = "img/MouseCursor_32x32.png";
+    private static final int CURSOR_SCALE = 3;
+    private static final Vector2f CURSOR_SIZE = new Vector2f(32,32).scale(CURSOR_SCALE);
+    private static Image cursor;
 
     public static GameContainer instanceGameContainer;
     private static MainClass instance = null;
@@ -85,6 +91,7 @@ public class MainClass extends BasicGame {
 
     private void triggerGamePaused() {
         TimeScale.getInGameTimeScale().setTimeScale((isGamePaused()) ? 1f : 0f);
+        setCursor(!isGamePaused());
         this.pauseMenu.setActive(!isGamePaused());
     }
 
@@ -105,12 +112,16 @@ public class MainClass extends BasicGame {
     @Override
     public void init(GameContainer gc) {
         instanceGameContainer = gc;
+        setCursor(false);
+        // GameStats.setShowDebugRect(true);
         instance = this;
-        this.pauseMenu = new PauseMenu(gc, (i, i1, i2, i3) -> this.setGamePaused(false));
+        this.pauseMenu = new PauseMenu(gc, (i, i1, i2, i3) -> {
+            this.setGamePaused(false);
+            setCursor(false);
+        });
         this.fadeToBlack = new FadeToBlack();
 
         this.player = new Player(gc, WIDTH / 2, HEIGHT / 2);
-        this.player.setShowDebugRect(true);
 
         BackgroundRenderer.generateBackground(gc);
 
@@ -193,6 +204,24 @@ public class MainClass extends BasicGame {
         }
         catch (SlickException ex) {
             Logger.getLogger(MainClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void setCursor(boolean defaultCursor) {
+        if(defaultCursor) {
+            instanceGameContainer.setDefaultMouseCursor();
+        } else {
+
+            try {
+                if(cursor == null) {
+                    cursor = new Image(CURSOR_PATH, false, Image.FILTER_NEAREST).getScaledCopy(CURSOR_SCALE);
+                }
+
+                instanceGameContainer.setMouseCursor(cursor, (int) CURSOR_SIZE.getX()/2, (int) CURSOR_SIZE.getY()/2);
+            } catch (SlickException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
         }
     }
 }

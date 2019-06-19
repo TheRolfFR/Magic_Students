@@ -1,5 +1,6 @@
 package Entities.Projectiles;
 
+import Main.GameStats;
 import Main.MainClass;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -31,7 +32,7 @@ public class Snowball extends Projectile {
      */
     public void render(Graphics g) {
         super.render(g);
-        if (showDebugRect) {
+        if (GameStats.getInstance().isShowDebugRect()) {
             g.draw(this.getBounds());
         }
     }

@@ -10,8 +10,9 @@ public class Arrow extends Projectile implements ArrowConstants{
 
     private static final int RADIUS = 1; //hitbow radius
     private int damage = 15;
-    private static final String IMG_PATH = "img/arrow_32x32.png";
-    private static final Vector2f TILESIZE = new Vector2f(64, 64); //size of the image
+    private static final String IMG_PATH = "img/arrow_5x48.png";
+    private static final float ARROW_SCALE = 1.5f;
+    private static final Vector2f TILESIZE = new Vector2f(5, 48).scale(ARROW_SCALE); //size of the image
     private static final int FRAME_DURATION = 10000;
 
     /**

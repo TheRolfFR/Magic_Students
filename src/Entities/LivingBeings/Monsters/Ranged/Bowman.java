@@ -272,7 +272,6 @@ public class Bowman extends Ranged implements BowmanConstants{
         this.attackDirection.set(target.getCenter().sub(super.getCenter()).normalise());
         this.renderDirection.set(this.attackDirection);
         Ranged.enemyProjectiles.add(new Arrow(super.getCenter().add(this.attackDirection.copy().scale(super.getRadius())), this.attackDirection.copy(), this.getDamage()));
-        Ranged.enemyProjectiles.get(Ranged.enemyProjectiles.size()-1).setShowDebugRect(true);
         this.attackDirection.set(0, 0);
         this.shootCooldown = BowmanConstants.SHOOT_COOLDOWN;
         this.stun();

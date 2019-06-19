@@ -46,9 +46,6 @@ public abstract class Projectile extends Entity {
         this.renderer = null;
 
         this.tileSizeOffset = tileSize.copy().scale(0.5f);
-
-        // for debugging purposes
-        this.showDebugRect = true;
     }
 
     /**
@@ -75,9 +72,6 @@ public abstract class Projectile extends Entity {
             e.printStackTrace();
             System.exit(1);
         }
-
-        // for debugging purposes
-        this.showDebugRect = true;
     }
 
     /**
