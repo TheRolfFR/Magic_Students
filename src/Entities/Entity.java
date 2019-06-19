@@ -127,8 +127,10 @@ public abstract class Entity {
     /**
      * In game rendering
      * @param g the graphics to draw on
+     * @see GameStats#isShowDebugRect()
      */
     public void render(Graphics g) {
+        // show debug rect
         if (GameStats.getInstance().isShowDebugRect()) {
             g.draw(this.getBounds());
         }
@@ -137,7 +139,7 @@ public abstract class Entity {
     /**
      * Returns if this entity collides with another one
      * @param other the other entity
-     * @return whether it collides with another entity
+     * @return true if it collides with another entity, false otherwise
      */
     public boolean collidesWith(Entity other) {
         if (other != this) { //If the two entities are not the same

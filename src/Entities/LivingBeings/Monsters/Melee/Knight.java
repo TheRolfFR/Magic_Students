@@ -258,6 +258,11 @@ public class Knight extends Melee implements KnightConstants{
         return ACCELERATION_RATE;
     }
 
+    /**
+     * In game rendering : renders the character and the attack
+     * @param g the graphics to draw on
+     * @see EffectRenderer#render(Graphics, int, int, float)
+     */
     public void render(Graphics g){
         super.render(g);
         if(isAttacking() && this.timeLeftBeforeAttack < ATTACK_LOADING_DURATION/5 && this.timeLeftBeforeAttack > -ATTACK_LOADING_DURATION/5){

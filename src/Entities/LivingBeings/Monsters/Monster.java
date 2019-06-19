@@ -51,6 +51,11 @@ public abstract class Monster extends LivingBeing {
      */
     public abstract void update(LivingBeing opponent);
 
+    /**
+     * In game rendering : render with graphics
+     * @param g the graphics to draw on
+     * @see Entities.Entity#render(Graphics)
+     */
     @Override
     public void render(Graphics g) {
         super.render(g, this.getSpeed());

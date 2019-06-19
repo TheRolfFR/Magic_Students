@@ -19,7 +19,7 @@ import org.newdawn.slick.geom.Vector2f;
 import static Main.MainClass.MAX_FPS;
 
 /**
- * the player is a beinq that the user can control
+ * the player is a being that the user can control
  */
 public class Player extends LivingBeing implements KeyListener, MouseListener, PlayerConstants {
 
@@ -428,15 +428,26 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
      */
     @Override public void inputStarted() {}
 
+    /**
+     * Mouse wheel listener
+     * @param change amount of block changed
+     */
     @Override
     public void mouseWheelMoved(int change) {}
 
+    /**
+     * Mouse listener on button button down
+     * @param button the button of the mouse that was down
+     * @param x the x-coordonate of the mouse
+     * @param y the y-coordonate of the mouse
+     * @param clickCount the number of clicks
+     */
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {}
 
     /**
      * Mouse listener on button pressed
-     * @param button the vutton of the mouse that was pressed
+     * @param button the button of the mouse that was pressed
      * @param x the x-coordonate of the mouse
      * @param y the y-coordonate of the mouse
      */
@@ -462,6 +473,12 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         }
     }
 
+    /**
+     * Mouse listener on mouse button up
+     * @param button the button of the mouse that became up
+     * @param x x-coordonate of the last position of the mouse
+     * @param y y-coordonate of the last position of the mouse
+     */
     @Override
     public void mouseReleased(int button, int x, int y) {
     }
@@ -478,6 +495,13 @@ public class Player extends LivingBeing implements KeyListener, MouseListener, P
         this.mousePosition = new Vector2f(newx, newy);
     }
 
+    /**
+     * Mouse listener on mouse drag
+     * @param oldx x-coordonate of the last position of the mouse
+     * @param oldy y-coordonate of the last position of the mouse
+     * @param newx x-coordonate of the new position of the mouse
+     * @param newy y-coordonate of the new position of the mouse
+     */
     @Override
     public void mouseDragged(int oldx, int oldy, int newx, int newy) {
 

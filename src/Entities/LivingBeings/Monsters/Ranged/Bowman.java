@@ -287,6 +287,11 @@ public class Bowman extends Ranged implements BowmanConstants{
         this.framesLeftWhileStuned = BowmanConstants.STUN_AFTER_ATTACK_DURATION;
     }
 
+    /**
+     * In game rendering : character rendering, charge or release rendering
+     * @param g the graphics to draw on
+     * @see EffectRenderer#render(Graphics, int, int, float)
+     */
     public void render(Graphics g) {
         super.render(g);
             if(isAttacking()){

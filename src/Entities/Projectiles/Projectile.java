@@ -13,7 +13,9 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-
+/**
+ * A projectile is an {@link Entity} wihout life summoned by a {@link LivingBeing}
+ */
 public abstract class Projectile extends Entity {
     //A projectil is an object that deal damage to the contact
 
@@ -23,6 +25,9 @@ public abstract class Projectile extends Entity {
     protected boolean isDead; //Indication if the projectile still exist
     private Vector2f tileSizeOffset;
 
+    /**
+     * The projectile renderer
+     */
     protected ProjectileRenderer renderer;
 
     /**
@@ -157,10 +162,16 @@ public abstract class Projectile extends Entity {
         return this.opacity == 0f;
     }
 
+    /**
+     * In game rendering
+     * @param g the graphics to draw on
+     * @see Projectile#render(Graphics)
+     * @see ProjectileRenderer#render(Graphics, int, int)
+     */
     public void render(Graphics g) {
-        super.render(g);
+        super.render(g); // render debug rect
 
-        Vector2f location = this.getCenter().sub(tileSizeOffset);
+        Vector2f location = this.getCenter().sub(tileSizeOffset); // calculate
 
         if (this.image != null) {
             g.drawImage(image, location.getX(), location.getY());
