@@ -11,8 +11,8 @@ public class GameStats implements LivingBeingHealthListener, AttackListener {
         getInstance().showDebugRect = state;
     }
 
-    public boolean isShowDebugRect() {
-        return showDebugRect;
+    public static boolean isShowDebugRect() {
+        return getInstance().showDebugRect;
     }
 
     public static GameStats getInstance() {
