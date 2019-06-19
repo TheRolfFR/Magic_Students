@@ -35,7 +35,7 @@ public class Bowman extends Ranged implements BowmanConstants{
         bowCharge = new EffectRenderer(prepath + "bowCharge.png", this.getTileSize(), Math.round(1000*BowmanConstants.ATTACK_LOADING_DURATION/6));
         bowCharge.noLoop();
 
-        bowRelease = new EffectRenderer(prepath + "bowRelease.png", this.getTileSize(), Math.round(1000*BowmanConstants.STUN_AFTER_ATTACK_DURATION/8));
+        bowRelease = new EffectRenderer(prepath + "bowRelease.png", this.getTileSize(), Math.round(1000*BowmanConstants.STUN_AFTER_ATTACK_DURATION/4));
         bowRelease.noLoop();
 
         final int duration = 1000/8;
@@ -100,12 +100,12 @@ public class Bowman extends Ranged implements BowmanConstants{
                                 }
                             }
                         }
+                        }
                     }
                 }
                 super.move();
             }
         }
-    }
 
     boolean targetIsClose(LivingBeing target) {
         return target.getCenter().distance(super.getCenter()) < BowmanConstants.RUN_AWAY_THRESHOLD;
@@ -139,6 +139,7 @@ public class Bowman extends Ranged implements BowmanConstants{
     void startAttacking(LivingBeing target) {
         this.attackDirection.set(target.getCenter().sub(this.getCenter()).normalise());
         this.setSpeed(new Vector2f(0, 0));
+        this.unlockSpeed();
         this.framesLeftBeforeAttack = BowmanConstants.ATTACK_LOADING_DURATION;
         this.renderer.setLastActivity("Attack");
         this.renderer.update(this.correctedAttackDirectionForRenderer());
@@ -155,6 +156,8 @@ public class Bowman extends Ranged implements BowmanConstants{
         Random random = new Random();
         return (random.nextFloat()%1 < 1f/(MainClass.getNumberOfFramePerSecond()*BowmanConstants.AVERAGE_SECONDS_BEFORE_MOVEMENT));
     }
+
+    private void unlockSpeed(){this.framesLeftWhileSpeedLocked=0;}
 
     boolean isSpeedLocked() {
         return this.framesLeftWhileSpeedLocked > 0;

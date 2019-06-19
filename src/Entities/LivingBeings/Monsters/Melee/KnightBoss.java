@@ -20,7 +20,7 @@ public class KnightBoss extends Knight implements IBoss, BossConstants {
         super(x, y, KNIGHTBOSS_TILESIZE, hpCount, armor, damage, radius);
         this.renderer.addView("bottomSummon", new SpriteView("img/knight/" + "bottomSummon.png", KnightConstants.KNIGHT_TILESIZE, Math.round (KnightConstants.STUN_AFTER_ATTACK_DURATION*1000/3)));
 
-        Vector2f attackTileSize = new Vector2f(96, 58);
+        Vector2f attackTileSize = new Vector2f(144, 87);
         super.attackRenderer = new EffectRenderer("img/knight/" + "animationAttackWhite.png", attackTileSize, Math.round (KnightConstants.ATTACK_LOADING_DURATION*1000/10));
     }
 
