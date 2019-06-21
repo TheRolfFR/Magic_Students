@@ -63,8 +63,8 @@ public class AttackVisual implements AttackListener {
     }
 
     @Override
-    public void onCooldownUpdate(float currentValue, float maxValue) {
-        this.backgroundWidth = (int) Math.floor(currentValue / maxValue * ICON_SIZE);
+    public void onCooldownUpdate(float currentTime, float duration) {
+        this.backgroundWidth = (int) Math.floor(currentTime / duration * ICON_SIZE);
         if (this.backgroundWidth < 1) {
             this.onCooldownEnd();
         }

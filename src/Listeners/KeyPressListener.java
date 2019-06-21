@@ -3,6 +3,10 @@ package Listeners;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 
+/**
+ * Extension of the {@link KeyListener} interface with all empty defaults defined
+ * @see KeyListener
+ */
 public interface KeyPressListener extends KeyListener {
 
     @Override

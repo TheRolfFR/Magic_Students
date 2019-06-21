@@ -3,6 +3,10 @@ package Listeners;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.MouseListener;
 
+/**
+ * Extension of the Slick MouseListener interface with all empty defaults defined
+ * @see MouseListener
+ */
 public interface ButtonListener extends MouseListener {
     @Override
     default void mouseWheelMoved(int i) {
