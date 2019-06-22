@@ -11,7 +11,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class ItemRenderer extends SpriteRenderer {
     private Image itemImage; // the item image
 
-    private Vector2f imageOffset; // offset for display
+    private Vector2f imageCenter; // offset for display
 
     /**
      * Default rennder inititializing the entity, the item image and the tilesize offset
@@ -21,7 +21,7 @@ public class ItemRenderer extends SpriteRenderer {
      */
     public ItemRenderer(Entity entity, Image itemImage, Vector2f imageSize) {
         super(entity, imageSize);
-        this.imageOffset = imageSize.copy().scale(0.5f);
+        this.imageCenter = imageSize.copy().scale(0.5f);
         this.itemImage = itemImage;
     }
 
@@ -41,7 +41,7 @@ public class ItemRenderer extends SpriteRenderer {
      */
     public void render(Graphics g, int x, int y) {
         if (itemImage != null) { // avoid NullPointerException
-            g.drawImage(this.itemImage, x - (int) imageOffset.getX(), y - (int) imageOffset.getY());
+            g.drawImage(this.itemImage, x - (int) imageCenter.getX(), y - (int) imageCenter.getY());
         }
     }
 }

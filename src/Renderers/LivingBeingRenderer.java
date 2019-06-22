@@ -205,7 +205,7 @@ public class LivingBeingRenderer extends SpriteRenderer {
                 this.lastView.stop();
             }
 
-            this.lastView.render(entity.getCenter(), colorFilter);
+            this.lastView.render(entity.getCenter(), this.colorFilter);
         }
     }
 }
