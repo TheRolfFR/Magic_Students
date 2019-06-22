@@ -7,7 +7,7 @@ import Entities.LivingBeings.LivingBeing;
  */
 public interface LivingBeingHealthListener {
     /**
-     * the being <being> has been hurt with <amount> damages. Be careful, this amount may be different than  the one that could be triggered by the onAttack method of the AttackListener listener because the beings may have armor.
+     * the being has been hurt with "amount" damages. Be careful, this amount may be different than  the one that could be triggered by the onAttack method of the AttackListener listener because the beings may have armor.
      * @param being the being hurt
      * @param amount the amount of damages caused
      */
@@ -16,7 +16,7 @@ public interface LivingBeingHealthListener {
     }
 
     /**
-     * the being <being> is healed of <amount> points.
+     * the being being is healed of amount points.
      * @param being the being healed
      * @param amount the amount of health restored
      */
@@ -25,7 +25,7 @@ public interface LivingBeingHealthListener {
     }
 
     /**
-     * the being <being> is hurt or healed of <amount> points
+     * the being being is hurt or healed of amount points
      * @param being the being hurt or healed
      * @param amount amount of change (amount is signed)
      */
@@ -34,7 +34,7 @@ public interface LivingBeingHealthListener {
     }
 
     /**
-     * the being <being> just died
+     * the being being just died
      * @param being the being which just died
      */
     default void onDeath(LivingBeing being) {

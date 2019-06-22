@@ -15,40 +15,40 @@ public class SpriteView {
 
     /**
      * Constructor without transparent color
-     * @param imagePath the image spritesheet path
+     * @param spriteSheetPath the image spritesheet path
      * @param tileSize the size of a tile of the spritesheet
      * @param frameDuration the duration in ms of a tile
      */
-    public SpriteView(String imagePath, Vector2f tileSize, int frameDuration) {
-        init(imagePath, tileSize, frameDuration, null);
+    public SpriteView(String spriteSheetPath, Vector2f tileSize, int frameDuration) {
+        init(spriteSheetPath, tileSize, frameDuration, null);
     }
 
     /**
      * Constructor with transparent color
-     * @param imagePath the image spritesheet path
+     * @param spriteSheetPath the image spritesheet path
      * @param tileSize the size of a tile of the spritesheet
      * @param frameDuration the duration in ms of a tile
      * @param transparentColor the background color to put transparent
      */
-    public SpriteView(String imagePath, Vector2f tileSize, int frameDuration, Color transparentColor) {
-        init(imagePath, tileSize, frameDuration, transparentColor);
+    public SpriteView(String spriteSheetPath, Vector2f tileSize, int frameDuration, Color transparentColor) {
+        init(spriteSheetPath, tileSize, frameDuration, transparentColor);
     }
 
     /**
      * initialization function for constructors
-     * @param imagePath the image spritesheet path
+     * @param spriteSheetPath the image spritesheet path
      * @param tileSize the size of a tile of the spritesheet
      * @param frameDuration the duration in ms of a tile
      * @param transparentColor the background color to put transparent
      */
-    private void init(String imagePath, Vector2f tileSize, int frameDuration, Color transparentColor) {
+    private void init(String spriteSheetPath, Vector2f tileSize, int frameDuration, Color transparentColor) {
         Image original = null;
 
         try {
             if (transparentColor == null) {
-                original = new Image(imagePath, false, Image.FILTER_NEAREST);
+                original = new Image(spriteSheetPath, false, Image.FILTER_NEAREST);
             } else {
-                original = new Image(imagePath, false, Image.FILTER_NEAREST, transparentColor);
+                original = new Image(spriteSheetPath, false, Image.FILTER_NEAREST, transparentColor);
             }
         } catch (SlickException e) {
             System.exit(1);
