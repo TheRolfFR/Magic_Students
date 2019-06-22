@@ -16,7 +16,7 @@ public class ProjectileRenderer extends SpriteRenderer {
     private double angle;
 
     /**
-     * Default renderer : tries to load the image, crash otherwise
+     * Default constructor : tries to load the image, crash otherwise
      * @param projectile the projectile related
      * @param imgPath the path of the image
      * @param tileSize the size of the image
