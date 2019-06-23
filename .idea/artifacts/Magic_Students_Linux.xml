@@ -1,0 +1,25 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Magic_Students Linux">
+    <output-path>$PROJECT_DIR$/../Magic Students Launcher/linux</output-path>
+    <root id="archive" name="Magic_Students Linux.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/build/linux/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="Magic_Students" />
+      <element id="library" level="project" name="lwjgl-2.9(1)" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/slick/Pack200Task.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jinput.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/org-json.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/slick.jar" path-in-jar="/" />
+      <element id="directory" name="font">
+        <element id="dir-copy" path="$PROJECT_DIR$/font" />
+      </element>
+      <element id="directory" name="img">
+        <element id="dir-copy" path="$PROJECT_DIR$/img" />
+        <element id="dir-copy" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/linux" />
+      </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/linux" />
+    </root>
+  </artifact>
+</component>
