@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="Magic_Students No natives">
+  <artifact type="jar" name="Magic_Students_no_natives">
     <output-path>$PROJECT_DIR$/../Magic Students Launcher</output-path>
     <root id="archive" name="Magic_Students_no_natives.jar">
       <element id="module-output" name="Magic_Students" />
