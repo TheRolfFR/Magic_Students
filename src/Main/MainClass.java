@@ -204,6 +204,7 @@ public class MainClass extends BasicGame {
         }
         catch (SlickException ex) {
             Logger.getLogger(MainClass.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
