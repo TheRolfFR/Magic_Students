@@ -10,7 +10,11 @@
 ## Screenshot
 
 ![Screenshot](img/screenshot.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTheRolfFR%2FMagic_Students.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FTheRolfFR%2FMagic_Students?ref=badge_shield)
 
 ## Keys
 
 ![Keys](img/keys.png)
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTheRolfFR%2FMagic_Students.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FTheRolfFR%2FMagic_Students?ref=badge_large)
