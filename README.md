@@ -7,6 +7,11 @@
     <a href="https://github.com/TheRolfFR/Magic_Students/blob/master/LICENSE.md"><img alt="license" src="https://img.shields.io/badge/license-NPOSL--3.0-3DA639.svg"></a>
 </div>
 
+## Downloads
+
+The launcher repository is available here :<br>
+[https://github.com/TheRolfFR/Magic_Students_launcher](https://github.com/TheRolfFR/Magic_Students_launcher)
+
 ## Screenshot
 
 ![Screenshot](img/screenshot.png)
