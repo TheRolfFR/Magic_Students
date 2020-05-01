@@ -85,8 +85,8 @@ public class Bowman extends Ranged implements BowmanConstants{
 
         for (String vision : LivingBeingRenderer.ACCEPTED_VISION_DIRECTIONS) {
             this.renderer.addView(vision + "Move", new SpriteView(prepath + vision + ".png", tileSize, duration));
-            this.renderer.addView(vision + "Attack", new SpriteView(prepath + vision + "attack.png", tileSize, 1000));
-            this.renderer.addView(vision + "Idle", new SpriteView(prepath + "idle.png", tileSize, 1000));
+            this.renderer.addView(vision + "Attack", new SpriteView(prepath + vision + "Attack.png", tileSize, 1000));
+            this.renderer.addView(vision + "Idle", new SpriteView(prepath + "Idle.png", tileSize, 1000));
         }
     }
 

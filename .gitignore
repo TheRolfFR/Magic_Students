@@ -95,3 +95,4 @@ fabric.properties
 
 #include all libs
 !lib/
+/.idea/discord.xml
